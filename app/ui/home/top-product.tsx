@@ -1,53 +1,59 @@
-import React from 'react'
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
-import Card from './card';
+'use client'
 
-interface Product {
-  image: string,
-  name: string;
-  price: string;
-  rating: number;
-  sold: number;
-  discount: string;
-}
+import React from 'react'
+import Card from './card';
+import Carousel from 'react-multi-carousel';
+import { Product } from '@/data/interface';
+import "react-multi-carousel/lib/styles.css";
+
+const responsive = {
+    superLargeDesktop: {
+        breakpoint: { max: 4000, min: 3000 },
+        items: 5
+    },
+    desktop: {
+        breakpoint: { max: 3000, min: 1024 },
+        items: 5
+    },
+    tablet: {
+        breakpoint: { max: 1024, min: 464 },
+        items: 3
+    },
+    mobile: {
+        breakpoint: { max: 464, min: 0 },
+        items: 2
+    }
+};
 
 interface TopProductProps {
-  list: Array<Product>;
+    list: Array<Product>;
+    title: string;
 }
 
-const TopProduct: React.FC<TopProductProps> = ({ list }) => {
-  return (
-    <div className='mt-10'>
-      <div className="flex justify-between px-10 mb-2">
-        <h1>TOP SALES</h1>
-        <a href="#" className="text-xl italic underline">View more</a>
-      </div>
+const TopProduct: React.FC<TopProductProps> = ({ list, title }) => {
+    return (
+        <div className='mt-8 px-20'>
+            <div className="flex justify-between mb-2">
+                <h1>{title}</h1>
+                <a href="#" className="text-xl italic underline">View more</a>
+            </div>
 
-      <div className='relative flex justify-between h-auto space-x-4'>
-        <button
-          className="h-[405px] left-0 p-1 cursor-pointer rounded-l-xl bg-gray-700 bg-opacity-20 hover:bg-opacity-30"
-          aria-label="View Previous Image"
-        >
-          <ChevronLeftIcon className="size-8" />
-        </button>
-
-        <div className='flex w-full space-x-5'>
-          {list.map((item, index) => {
-            return (
-              <Card key={index} product={item} />
-            )
-          })}
+            <Carousel
+                ssr={true}
+                responsive={responsive}
+                swipeable={true}
+                draggable={true}
+                infinite={true}
+                containerClass='w-[1700px]'
+            >
+                {list.map((item, index) => {
+                    return (
+                        <Card key={index} product={item} />
+                    )
+                })}
+            </Carousel>
         </div>
-
-        <button
-          className="h-[405px] right-0 p-1 cursor-pointer rounded-r-xl bg-gray-700 bg-opacity-20 hover:bg-opacity-30"
-          aria-label="View Next Image"
-        >
-          <ChevronRightIcon className="size-8" />
-        </button>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default TopProduct;

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 
-export function ImageSlider() {
+export function Slider() {
     const images = [
         { url: "/assets/Slider.png", alt: "Slider" },
         { url: "/assets/Slider.png", alt: "Slider" },
@@ -30,7 +30,7 @@ export function ImageSlider() {
     }, [showNextImage]);
 
     return (
-        <section className="relative w-full h-full" aria-label="Image Slider">
+        <section className="relative w-full h-full" aria-label="Slider">
             <div className="flex w-full h-full">
                 {images.map(({ url, alt }, index) => (
                     <Image
@@ -42,6 +42,7 @@ export function ImageSlider() {
                         aria-hidden={imageIndex !== index}
                         className="object-cover w-full h-full block flex-shrink-0 flex-grow-0 transition-transform duration-300"
                         style={{ transform: `translateX(${-100 * imageIndex}%)` }}
+                        priority
                     />
                 ))}
             </div>
@@ -75,7 +76,6 @@ export function ImageSlider() {
                     </button>
                 ))}
             </div>
-            <div id="after-image-slider-controls" />
         </section>
     );
 }

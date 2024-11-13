@@ -1,15 +1,8 @@
+import { Product } from '@/data/interface';
 import { StarIcon } from '@heroicons/react/20/solid';
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react'
-
-interface Product {
-    image: string,
-    name: string;
-    price: string;
-    rating: number;
-    sold: number;
-    discount: string;
-}
 
 interface CardProps {
     product: Product;
@@ -17,22 +10,26 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ product }) => {
     return (
-        <div>
-            <Image
-                alt={product.name}
-                src={product.image}
-                width={340}
-                height={200}
-            />
-            <h2 className='my-2'>{product.name}</h2>
-            <div className='flex justify-between'>
-                <h2 className='mt-1'>{product.price}</h2>
-                <div className='flex products-center'>
-                    <h2 className='mt-1'>{product.rating}</h2>
-                    <StarIcon className='size-6' />
-                    <h2>{`(${product.sold})`}</h2>
+        <div className='w-fit select-none'>
+            <Link href={`/product/${product.id}`}>
+                <Image
+                    alt={product.name}
+                    src={product.image[0]}
+                    width={280}
+                    height={200}
+                    style={{ width: "auto", height: "auto", borderRadius: "10px" }}
+                    className='hover:opacity-60'
+                />
+                <h2 className='my-2'>{product.name}</h2>
+                <div className='flex justify-between'>
+                    <h2 className='mt-1'>{product.price}</h2>
+                    <div className='flex products-center'>
+                        <h2 className='mt-1'>{product.rating}</h2>
+                        <StarIcon className='size-7 mt-1' />
+                        <h2 className='mt-1'>{`(${product.sold})`}</h2>
+                    </div>
                 </div>
-            </div>
+            </Link>
         </div>
     )
 }

@@ -1,0 +1,399 @@
+{
+    "products": [
+        {
+            "id": "06f3d673-fd0e-4014-85c3-e8480782df8e",
+            "productName": "Hoodie Classic",
+            "image": [
+                "/assets/Product.png",
+                "/assets/Product1.png",
+                "/assets/Product2.png",
+                "/assets/Product3.png",
+                "/assets/Product4.png"
+            ],
+            "name": "Hoodie Classic",
+            "category": "Hoodie",
+            "origin": "Vietnam",
+            "description": "The navy blue hoodie features the prominent text \"MAMA\" in large white letters. Below it, the phrase \"hallu hallu\" is printed in smaller text, conveying a friendly and playful tone. The hoodie has a standard kangaroo-style pocket in the front, and the hood is generously sized, suggesting a cozy and comfortable design. The overall aesthetic of the sweatshirt gives a casual and relaxed vibe, suitable for everyday wear or lounging. The neutral color and simple design make it a versatile piece that could be paired with a variety of outfits.",
+            "color": [
+                {
+                    "name": "Black",
+                    "code": "#000000"
+                },
+                {
+                    "name": "White",
+                    "code": "#ffffff"
+                },
+                {
+                    "name": "Black Blue",
+                    "code": "#172554"
+                }
+            ],
+            "size": [
+                "S",
+                "M",
+                "L",
+                "XL",
+                "XXL"
+            ],
+            "price": "99.000đ",
+            "rating": 3.5,
+            "sold": 0,
+            "stock": 1000,
+            "discount": "-10%"
+        },
+        {
+            "id": "2b3c4d",
+            "image": [
+                "/assets/Product.png",
+                "/assets/Product1.png",
+                "/assets/Product2.png",
+                "/assets/Product3.png",
+                "/assets/Product4.png"
+            ],
+            "name": "Hoodie Modern",
+            "category": "Hoodie",
+            "origin": "Vietnam",
+            "description": "The navy blue hoodie features the prominent text \"MAMA\" in large white letters. Below it, the phrase \"hallu hallu\" is printed in smaller text, conveying a friendly and playful tone. The hoodie has a standard kangaroo-style pocket in the front, and the hood is generously sized, suggesting a cozy and comfortable design. The overall aesthetic of the sweatshirt gives a casual and relaxed vibe, suitable for everyday wear or lounging. The neutral color and simple design make it a versatile piece that could be paired with a variety of outfits.",
+            "color": [
+                {
+                    "name": "Black",
+                    "code": "#000000"
+                },
+                {
+                    "name": "White",
+                    "code": "#ffffff"
+                },
+                {
+                    "name": "Black Blue",
+                    "code": "#172554"
+                }
+            ],
+            "size": [
+                "S",
+                "M",
+                "L",
+                "XL",
+                "XXL"
+            ],
+            "price": "149.000đ",
+            "rating": 4.5,
+            "sold": 10,
+            "stock": 1000,
+            "discount": "-15%"
+        },
+        {
+            "id": "3c4d5e",
+            "image": [
+                "/assets/Product.png",
+                "/assets/Product1.png",
+                "/assets/Product2.png",
+                "/assets/Product3.png",
+                "/assets/Product4.png"
+            ],
+            "name": "Hoodie Stylish",
+            "category": "Hoodie",
+            "origin": "Vietnam",
+            "description": "The navy blue hoodie features the prominent text \"MAMA\" in large white letters. Below it, the phrase \"hallu hallu\" is printed in smaller text, conveying a friendly and playful tone. The hoodie has a standard kangaroo-style pocket in the front, and the hood is generously sized, suggesting a cozy and comfortable design. The overall aesthetic of the sweatshirt gives a casual and relaxed vibe, suitable for everyday wear or lounging. The neutral color and simple design make it a versatile piece that could be paired with a variety of outfits.",
+            "color": [
+                {
+                    "name": "Black",
+                    "code": "#000000"
+                },
+                {
+                    "name": "White",
+                    "code": "#ffffff"
+                },
+                {
+                    "name": "Black Blue",
+                    "code": "#172554"
+                }
+            ],
+            "size": [
+                "S",
+                "M",
+                "L",
+                "XL",
+                "XXL"
+            ],
+            "price": "129.000đ",
+            "rating": 4.8,
+            "sold": 5,
+            "stock": 1000,
+            "discount": "-20%"
+        },
+        {
+            "id": "4d5e6f",
+            "image": [
+                "/assets/Product.png",
+                "/assets/Product1.png",
+                "/assets/Product2.png",
+                "/assets/Product3.png",
+                "/assets/Product4.png"
+            ],
+            "name": "Hoodie Sport",
+            "category": "Hoodie",
+            "origin": "Vietnam",
+            "description": "The navy blue hoodie features the prominent text \"MAMA\" in large white letters. Below it, the phrase \"hallu hallu\" is printed in smaller text, conveying a friendly and playful tone. The hoodie has a standard kangaroo-style pocket in the front, and the hood is generously sized, suggesting a cozy and comfortable design. The overall aesthetic of the sweatshirt gives a casual and relaxed vibe, suitable for everyday wear or lounging. The neutral color and simple design make it a versatile piece that could be paired with a variety of outfits.",
+            "color": [
+                {
+                    "name": "Black",
+                    "code": "#000000"
+                },
+                {
+                    "name": "White",
+                    "code": "#ffffff"
+                },
+                {
+                    "name": "Black Blue",
+                    "code": "#172554"
+                }
+            ],
+            "size": [
+                "S",
+                "M",
+                "L",
+                "XL",
+                "XXL"
+            ],
+            "price": "89.000đ",
+            "rating": 4.2,
+            "sold": 20,
+            "stock": 1000,
+            "discount": "-5%"
+        },
+        {
+            "id": "5e6f7g",
+            "image": [
+                "/assets/Product.png",
+                "/assets/Product1.png",
+                "/assets/Product2.png",
+                "/assets/Product3.png",
+                "/assets/Product4.png"
+            ],
+            "name": "Hoodie Basic",
+            "category": "Hoodie",
+            "origin": "Vietnam",
+            "description": "The navy blue hoodie features the prominent text \"MAMA\" in large white letters. Below it, the phrase \"hallu hallu\" is printed in smaller text, conveying a friendly and playful tone. The hoodie has a standard kangaroo-style pocket in the front, and the hood is generously sized, suggesting a cozy and comfortable design. The overall aesthetic of the sweatshirt gives a casual and relaxed vibe, suitable for everyday wear or lounging. The neutral color and simple design make it a versatile piece that could be paired with a variety of outfits.",
+            "color": [
+                {
+                    "name": "Black",
+                    "code": "#000000"
+                },
+                {
+                    "name": "White",
+                    "code": "#ffffff"
+                },
+                {
+                    "name": "Black Blue",
+                    "code": "#172554"
+                }
+            ],
+            "size": [
+                "S",
+                "M",
+                "L",
+                "XL",
+                "XXL"
+            ],
+            "price": "79.000đ",
+            "rating": 4.0,
+            "sold": 15,
+            "stock": 1000,
+            "discount": "-25%"
+        }
+    ],
+    "orders": [
+        {
+            "id": "e6c56808-3848-4441-959c-34302cc742f8",
+            "customerName": "Kaylil Giorgioni",
+            "productId": "06f3d673-fd0e-4014-85c3-e8480782df8e",
+            "productName": "Hoodie Classic",
+            "color": {
+                "name": "Black",
+                "code": "#000000"
+            },
+            "size": "S",
+            "quantity": 1
+        },
+        {
+            "id": "40b548a7-cfba-4043-b190-d3aefbd8707f",
+            "customerName": "Anastassia Minard",
+            "productId": "06f3d673-fd0e-4014-85c3-e8480782df8e",
+            "productName": "Hoodie Classic",
+            "color": {
+                "name": "Black",
+                "code": "#000000"
+            },
+            "size": "XXL",
+            "quantity": 2
+        },
+        {
+            "id": "5b739daf-9186-484c-b8cb-ad21d5fa98bf",
+            "customerName": "Gideon Blatcher",
+            "productId": "06f3d673-fd0e-4014-85c3-e8480782df8e",
+            "productName": "Hoodie Classic",
+            "color": {
+                "name": "Black",
+                "code": "#000000"
+            },
+            "size": "S",
+            "quantity": 3
+        },
+        {
+            "id": "a74941be-6c1b-4d93-b257-442605ae22be",
+            "customerName": "Jeff Winship",
+            "productId": "06f3d673-fd0e-4014-85c3-e8480782df8e",
+            "productName": "Hoodie Classic",
+            "color": {
+                "name": "Black",
+                "code": "#000000"
+            },
+            "size": "XL",
+            "quantity": 4
+        },
+        {
+            "id": "b075b3c1-f545-4257-9372-6d2af9a034e6",
+            "customerName": "Lefty Maccaig",
+            "productId": "06f3d673-fd0e-4014-85c3-e8480782df8e",
+            "productName": "Hoodie Classic",
+            "color": {
+                "name": "Black",
+                "code": "#000000"
+            },
+            "size": "L",
+            "quantity": 5
+        },
+        {
+            "id": "33bf9126-960a-4a12-836a-79ef3d0f05d2",
+            "customerName": "Cleavland Rich",
+            "productId": "06f3d673-fd0e-4014-85c3-e8480782df8e",
+            "productName": "Hoodie Classic",
+            "color": {
+                "name": "Black",
+                "code": "#000000"
+            },
+            "size": "S",
+            "quantity": 6
+        },
+        {
+            "id": "68dcab7a-a3c3-4206-95d3-a4ffddca7436",
+            "customerName": "Kimberly Grinsdale",
+            "productId": "06f3d673-fd0e-4014-85c3-e8480782df8e",
+            "productName": "Hoodie Classic",
+            "color": {
+                "name": "Black",
+                "code": "#000000"
+            },
+            "size": "M",
+            "quantity": 7
+        },
+        {
+            "id": "64337b1d-b288-4640-b4e7-62481f60eafb",
+            "customerName": "Krystle Switsur",
+            "productId": "06f3d673-fd0e-4014-85c3-e8480782df8e",
+            "productName": "Hoodie Classic",
+            "color": {
+                "name": "Black",
+                "code": "#000000"
+            },
+            "size": "S",
+            "quantity": 8
+        },
+        {
+            "id": "9f98b6c5-060c-4732-b300-19a313914a72",
+            "customerName": "Anette Quinell",
+            "productId": "06f3d673-fd0e-4014-85c3-e8480782df8e",
+            "productName": "Hoodie Classic",
+            "color": {
+                "name": "Black",
+                "code": "#000000"
+            },
+            "size": "XL",
+            "quantity": 9
+        },
+        {
+            "id": "439c3e9a-bf0c-4994-9703-a2205d2ebc06",
+            "customerName": "Gwenora Stratz",
+            "productId": "06f3d673-fd0e-4014-85c3-e8480782df8e",
+            "productName": "Hoodie Classic",
+            "color": {
+                "name": "Black",
+                "code": "#000000"
+            },
+            "size": "S",
+            "quantity": 10
+        }
+    ],
+    "feedbacks": [
+        {
+            "id": "05190069-2164-4fc5-90fb-ea69c5c24a41",
+            "orderId": "e6c56808-3848-4441-959c-34302cc742f8",
+            "rating": 1,
+            "feedback": "Maecenas ut massa quis augue luctus tincidunt. Nulla mollis molestie lorem. Quisque ut erat.\n\nCurabitur gravida nisi at nibh. In hac habitasse platea dictumst. Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem.\n\nInteger tincidunt ante vel ipsum. Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat.",
+            "date": "10/3/2024"
+        },
+        {
+            "id": "f104dc35-01bc-448d-9d57-4c7104300dc2",
+            "orderId": "40b548a7-cfba-4043-b190-d3aefbd8707f",
+            "rating": 2,
+            "feedback": "Curabitur gravida nisi at nibh. In hac habitasse platea dictumst. Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem.",
+            "date": "9/23/2024"
+        },
+        {
+            "id": "9effb8b3-9072-47db-b501-36081523254b",
+            "orderId": "5b739daf-9186-484c-b8cb-ad21d5fa98bf",
+            "rating": 3,
+            "feedback": "Curabitur in libero ut massa volutpat convallis. Morbi odio odio, elementum eu, interdum eu, tincidunt in, leo. Maecenas pulvinar lobortis est.\n\nPhasellus sit amet erat. Nulla tempus. Vivamus in felis eu sapien cursus vestibulum.\n\nProin eu mi. Nulla ac enim. In tempor, turpis nec euismod scelerisque, quam turpis adipiscing lorem, vitae mattis nibh ligula nec sem.",
+            "date": "1/2/2024"
+        },
+        {
+            "id": "9cfbdaeb-5bd2-4dc5-89f3-9cc9f5bd8441",
+            "orderId": "a74941be-6c1b-4d93-b257-442605ae22be",
+            "rating": 4,
+            "feedback": "Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque.\n\nDuis bibendum. Morbi non quam nec dui luctus rutrum. Nulla tellus.",
+            "date": "2/6/2024"
+        },
+        {
+            "id": "61d94886-8286-4c93-94a6-62ee4dbc3b12",
+            "orderId": "b075b3c1-f545-4257-9372-6d2af9a034e6",
+            "rating": 5,
+            "feedback": "Integer ac leo. Pellentesque ultrices mattis odio. Donec vitae nisi.",
+            "date": "7/8/2024"
+        },
+        {
+            "id": "f88ccafe-e38c-4e55-a8ec-6f611ac5c3c5",
+            "orderId": "33bf9126-960a-4a12-836a-79ef3d0f05d2",
+            "rating": 4,
+            "feedback": "Mauris enim leo, rhoncus sed, vestibulum sit amet, cursus id, turpis. Integer aliquet, massa id lobortis convallis, tortor risus dapibus augue, vel accumsan tellus nisi eu orci. Mauris lacinia sapien quis libero.\n\nNullam sit amet turpis elementum ligula vehicula consequat. Morbi a ipsum. Integer a nibh.",
+            "date": "5/23/2024"
+        },
+        {
+            "id": "1434bb98-63b1-4807-ac7c-6a04a9e9c2d3",
+            "orderId": "68dcab7a-a3c3-4206-95d3-a4ffddca7436",
+            "rating": 5,
+            "feedback": "Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus vestibulum sagittis sapien. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.\n\nEtiam vel augue. Vestibulum rutrum rutrum neque. Aenean auctor gravida sem.",
+            "date": "12/10/2023"
+        },
+        {
+            "id": "96f6580d-6d51-43f2-a750-59e9d9b66ba8",
+            "orderId": "64337b1d-b288-4640-b4e7-62481f60eafb",
+            "rating": 5,
+            "feedback": "Duis bibendum. Morbi non quam nec dui luctus rutrum. Nulla tellus.\n\nIn sagittis dui vel nisl. Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus.",
+            "date": "7/8/2024"
+        },
+        {
+            "id": "ea929c48-4872-4ad4-bbf5-ec9a41f77c26",
+            "orderId": "9f98b6c5-060c-4732-b300-19a313914a72",
+            "rating": 2,
+            "feedback": "Integer tincidunt ante vel ipsum. Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat.\n\nPraesent blandit. Nam nulla. Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede.\n\nMorbi porttitor lorem id ligula. Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem.",
+            "date": "8/12/2024"
+        },
+        {
+            "id": "40b0e0ad-1c4b-450f-8985-6d6e4a90ccf4",
+            "orderId": "439c3e9a-bf0c-4994-9703-a2205d2ebc06",
+            "rating": 5,
+            "feedback": "Aliquam quis turpis eget elit sodales scelerisque. Mauris sit amet eros. Suspendisse accumsan tortor quis turpis.\n\nSed ante. Vivamus tortor. Duis mattis egestas metus.",
+            "date": "10/30/2024"
+        }
+    ]
+}

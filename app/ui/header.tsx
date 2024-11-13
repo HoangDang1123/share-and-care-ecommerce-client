@@ -19,6 +19,7 @@ export default function Header() {
                 src="/assets/logo.png"
                 width={120}
                 height={100}
+                style={{ width: "auto", height: "auto" }}
               />
             </Link>
           </div>

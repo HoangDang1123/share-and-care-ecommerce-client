@@ -1,35 +1,48 @@
-import Image from "next/image";
-import { ImageSlider } from "./ui/home/slider";
-import TopProduct from "./ui/home/top-product";
-import TopProduct1 from "./ui/home/top-product-v1";
+'use client'
 
-const topSales = [
-  { image: "/assets/Product.png", name: "Example Product", price: "99.000đ", rating: 5, sold: 0, discount: "-100%" },
-  { image: "/assets/Product.png", name: "Example Product", price: "99.000đ", rating: 5, sold: 0, discount: "-100%" },
-  { image: "/assets/Product.png", name: "Example Product", price: "99.000đ", rating: 5, sold: 0, discount: "-100%" },
-  { image: "/assets/Product.png", name: "Example Product", price: "99.000đ", rating: 5, sold: 0, discount: "-100%" },
-  { image: "/assets/Product.png", name: "Example Product", price: "99.000đ", rating: 5, sold: 0, discount: "-100%" },
-]
+import Image from "next/image";
+import { Slider } from "./ui/home/slider";
+import TopProduct from "./ui/home/top-product";
+import data from "@/data/data.json";
+
+const items = [
+  {
+    alt: 'Top Sales Thumb',
+    src: '/assets/Thumb.png',
+    list: data.products,
+    title: "TOP SALES",
+  },
+  {
+    alt: 'Best Seller Thumb',
+    src: '/assets/Thumb.png',
+    list: data.products,
+    title: "BEST SELLER",
+  },
+  {
+    alt: 'Latest Thumb',
+    src: '/assets/Thumb.png',
+    list: data.products,
+    title: "LATEST",
+  },
+];
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center space-y-16">
-      <ImageSlider />
+    <div className="flex flex-col items-center space-y-20 mb-10">
+      <Slider />
 
-      <div className="flex flex-col px-10">
-        <div className="px-10">
+      {items.map((item, index) => (
+        <div key={index} className="flex flex-col px-10">
           <Image
-            alt="Top Sales Thumb"
-            src="/assets/Thumb.png"
+            alt={item.alt}
+            src={item.src}
             width={1920}
             height={100}
-            className="w-screen h-72"
+            className="w-screen h-72 px-20"
           />
+          <TopProduct list={item.list} title={item.title} />
         </div>
-
-        {/* <TopProduct1 list={topSales} /> */}
-        <TopProduct list={topSales} />
-      </div>
+      ))}
     </div>
   );
 }
