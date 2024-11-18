@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import Card from './card';
+import Card from '../card';
 import Carousel from 'react-multi-carousel';
 import { Product } from '@/data/interface';
 import "react-multi-carousel/lib/styles.css";

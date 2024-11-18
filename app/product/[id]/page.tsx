@@ -3,10 +3,10 @@ import data from "@/data/data.json";
 import Link from 'next/link';
 import ImageList from '@/app/ui/product/image-list';
 import InforContainer from '@/app/ui/product/filter-container';
-import { ArrowTurnDownLeftIcon } from '@heroicons/react/24/outline';
 import Detail from '@/app/ui/product/detail';
 import Description from '@/app/ui/product/description';
 import FeedbackContainer from '@/app/ui/product/feedback-container';
+import BackButton from '@/app/ui/back-button';
 
 export default async function Page({
   params,
@@ -22,22 +22,16 @@ export default async function Page({
   }
 
   return (
-    <div className='px-24 py-10'>
+    <div className='sm:px-6 md:px-12 lg:px-24 py-10'>
       <div className='flex items-center space-x-24'>
-        <Link
-          href="/"
-          passHref
-          className='hover:bg-gray-300 hover:rounded-md px-1 py-1'
-        >
-          <ArrowTurnDownLeftIcon className='size-8' />
-        </Link>
+        <BackButton previousPathname={`/?refreshToken=${process.env.NEXT_PUBLIC_REFRESHTOKEN}`} />
 
         <ul className="flex space-x-1 text-xl">
           <li>
-            <Link href="/" className='text-gray-400 hover:text-gray-900'>Home / </Link>
+            <Link href={`/?=${process.env.NEXT_PUBLIC_}`} className='text-gray-400 hover:text-gray-900'>Home / </Link>
           </li>
           <li>
-            <Link href="#" className='text-gray-400 hover:text-gray-900'>{`${product.category} /`}</Link>
+            <Link href={`/categories/${product.category.toLowerCase()}/?refreshToken=${process.env.NEXT_PUBLIC_REFRESHTOKEN}`} className='text-gray-400 hover:text-gray-900'>{`${product.category} /`}</Link>
           </li>
           <li>
             {product.name}
@@ -45,7 +39,7 @@ export default async function Page({
         </ul>
       </div>
 
-      <div className='flex flex-col w-full px-44 space-y-20'>
+      <div className='flex flex-col w-full sm:px-11 md:px-22 lg:px-44 space-y-20'>
         <div className='flex w-full space-x-5 my-5'>
           <ImageList images={product.image} />
           <InforContainer product={product} />

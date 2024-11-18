@@ -6,21 +6,31 @@ import FeedbackContent from '@/app/ui/product/feedback/feedback-content';
 import { useParams } from 'next/navigation';
 import FeedbackFilter from '@/app/ui/product/feedback/feedback-filter';
 import Link from 'next/link';
-import { ArrowTurnDownLeftIcon } from '@heroicons/react/24/outline';
-import { TablePagination } from '@mui/material';
+import FeedbackRating from '@/app/ui/product/feedback/feedback-rating';
+import BackButton from '@/app/ui/back-button';
+import Pagination from '@/app/ui/pagination';
 
 export default function Page() {
-    // const [page, setPage] = React.useState(1);
-    // const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-    const params = useParams();
-    const id = params.id;
-    const product = data.products.find(item => item.id === id);
-
     const [ratingFilter, setRatingFilter] = useState("all");
-    const newParams = new URLSearchParams(window.location.search);
+    const [pageSize, setPageSize] = useState(5);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [isFixed, setIsFixed] = useState(false);
 
-    newParams.set('ratingFilter', ratingFilter);
+    useEffect(() => {
+        const newParams = new URLSearchParams(window.location.search);
+
+        if (ratingFilter === "all" && newParams.has('ratingFilter')) {
+            newParams.delete('ratingFilter');
+        } else if (ratingFilter !== "all") {
+            newParams.set('ratingFilter', ratingFilter);
+        }
+        window.history.pushState(null, '', `?${newParams.toString()}`);
+    }, [ratingFilter]);
+
+    const param = useParams();
+    const id = param.id;
+
+    const product = data.products.find(item => item.id === id);
     const orders = data.orders.filter(item => item.productId === id);
     const orderIds = orders.map(order => order.id);
     const feedbacks = data.feedbacks.filter(item => orderIds.includes(item.orderId));
@@ -37,25 +47,15 @@ export default function Page() {
         ? newFeedbacks
         : newFeedbacks.filter(feedback => feedback.rating === Number(ratingFilter));
 
-    useEffect(() => {
-        if (ratingFilter !== "all") {
-            window.history.pushState(null, '', `?${params.toString()}`)
-        }
-    })
+    const paginatedFeedbacks = filteredFeedbacks.slice(
+        (currentPage - 1) * pageSize,
+        currentPage * pageSize
+    );
 
-    // const handleChangePage = (
-    //     event: React.MouseEvent<HTMLButtonElement> | null,
-    //     newPage: number,
-    // ) => {
-    //     setPage(newPage);
-    // };
-
-    // const handleChangeRowsPerPage = (
-    //     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    // ) => {
-    //     setRowsPerPage(parseInt(event.target.value, 10));
-    //     setPage(0);
-    // };
+    let rating = 0
+    if (product?.rating !== undefined) {
+        rating = product.rating
+    }
 
     if (!product) {
         return <div>Product not found</div>;
@@ -64,20 +64,14 @@ export default function Page() {
     return (
         <div className='px-24 py-10'>
             <div className='flex items-center space-x-24'>
-                <Link
-                    href={`/product/${id}`}
-                    passHref
-                    className='hover:bg-gray-300 hover:rounded-md px-1 py-1'
-                >
-                    <ArrowTurnDownLeftIcon className='size-8' />
-                </Link>
+                <BackButton previousPathname={`/product/${id}/?refreshToken=${process.env.NEXT_PUBLIC_REFRESHTOKEN}`} />
 
                 <ul className="flex space-x-1 text-xl">
                     <li>
-                        <Link href="/" className='text-gray-400 hover:text-gray-900'>Home / </Link>
+                        <Link href={`/?${process.env.NEXT_PUBLIC_REFRESHTOKEN}`} className='text-gray-400 hover:text-gray-900'>Home / </Link>
                     </li>
                     <li>
-                        <Link href="#" className='text-gray-400 hover:text-gray-900'>{`${product.category} /`}</Link>
+                        <Link href={`/categories/${product.category.toLowerCase()}/?${process.env.NEXT_PUBLIC_REFRESHTOKEN}`} className='text-gray-400 hover:text-gray-900'>{`${product.category} /`}</Link>
                     </li>
                     <li>
                         <Link href={`/product/${id}`} className='text-gray-400 hover:text-gray-900'>{`${product.name} /`}</Link>
@@ -88,28 +82,45 @@ export default function Page() {
                 </ul>
             </div>
 
-            <div className='flex flex-col justify-center items-center w-full px-44 mt-10'>
-                <FeedbackFilter setRatingFilter={setRatingFilter} />
+            <div className='flex items-start space-x-20'>
+                <FeedbackRating feedbacks={feedbacks} rating={rating} isFixed={isFixed} setIsFixed={setIsFixed} />
+                <div className='flex flex-col justify-center items-center w-full mt-10'>
+                    <FeedbackFilter setRatingFilter={setRatingFilter} />
 
-                <div className='flex flex-col justify-center items-center w-full mt-10 space-y-10'>
-                    {newFeedbacks.length === 0 ? (
-                        <div>No feedback yet.</div>
-                    ) : (
-                        filteredFeedbacks.map((filteredFeedback, index) => (
-                            <FeedbackContent key={index} feedback={filteredFeedback} />
-                        ))
-                    )}
+                    <div className={`flex flex-col justify-center items-center w-fit my-10 space-y-10 ${isFixed ? 'ml-[380px]' :''}`}>
+                        {newFeedbacks.length === 0 ? (
+                            <div>No feedback yet.</div>
+                        ) : (
+                            paginatedFeedbacks.map((paginatedFeedback, index) => (
+                                <FeedbackContent key={index} feedback={paginatedFeedback} />
+                            ))
+                        )}
+                    </div>
                 </div>
             </div>
 
-            {/* <TablePagination
-                component="div"
-                count={100}
-                page={page}
-                onPageChange={handleChangePage}
-                rowsPerPage={rowsPerPage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-            /> */}
+            <div className='flex justify-center items-center w-full space-x-12 mt-10'>
+                <label className="flex items-center space-x-2 text-lg text-gray-900">
+                    <span>Show:</span>
+                    <select
+                        value={pageSize}
+                        onChange={(e) => setPageSize(Number(e.target.value))}
+                        className="border rounded-md p-1 text-gray-900 text-lg"
+                    >
+                        <option value={5}>5</option>
+                        <option value={10}>10</option>
+                        <option value={25}>25</option>
+                        <option value={50}>50</option>
+                    </select>
+                </label>
+
+                <Pagination
+                    currentPage={currentPage}
+                    totalItems={filteredFeedbacks.length}
+                    itemsPerPage={pageSize}
+                    onPageChange={setCurrentPage}
+                />
+            </div>
         </div>
     );
 }

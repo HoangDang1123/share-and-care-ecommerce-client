@@ -21,19 +21,19 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${lusitana.className} antialiased`}>
         <main>
-          <div className={`${lusitana.className} antialiased fixed w-[99vw] top-0 z-10 flex flex-col`}>
+          <div className={`${lusitana.className} antialiased fixed w-screen top-0 z-10 flex flex-col`}>
             <Banner />
             <Navbar />
             <Header />
           </div>
 
           <div className="mt-44">
-            <div className=" overflow-y-hidden h-auto z-9">
+            <div className=" overflow-y-hidden min-h-[745px] h-auto z-9">
               {children}
             </div>
           </div>
 
-          <div className={`${lusitana.className} antialiased w-full bottom-0 z-10 flex flex-col bg-gray-900`}>
+          <div className={`${lusitana.className} antialiased bottom-0 z-10 flex flex-col bg-gray-900`}>
             <Footer />
           </div>
 

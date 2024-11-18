@@ -1,8 +1,29 @@
 {
+    "categories": [
+        {
+            "id": "abc",
+            "name": "Shirt"
+        },
+        {
+            "id": "def",
+            "name": "T-shirt"
+        },
+        {
+            "id": "ghi",
+            "name": "Hoodie"
+        },
+        {
+            "id": "jkl",
+            "name": "Jeans"
+        },
+        {
+            "id": "mno",
+            "name": "Jacket"
+        }
+    ],
     "products": [
         {
             "id": "06f3d673-fd0e-4014-85c3-e8480782df8e",
-            "productName": "Hoodie Classic",
             "image": [
                 "/assets/Product.png",
                 "/assets/Product1.png",
@@ -35,7 +56,7 @@
                 "XL",
                 "XXL"
             ],
-            "price": "99.000đ",
+            "price": 99000,
             "rating": 3.5,
             "sold": 0,
             "stock": 1000,
@@ -75,7 +96,7 @@
                 "XL",
                 "XXL"
             ],
-            "price": "149.000đ",
+            "price": 149000,
             "rating": 4.5,
             "sold": 10,
             "stock": 1000,
@@ -115,7 +136,7 @@
                 "XL",
                 "XXL"
             ],
-            "price": "129.000đ",
+            "price": 129000,
             "rating": 4.8,
             "sold": 5,
             "stock": 1000,
@@ -155,7 +176,7 @@
                 "XL",
                 "XXL"
             ],
-            "price": "89.000đ",
+            "price": 89000,
             "rating": 4.2,
             "sold": 20,
             "stock": 1000,
@@ -195,13 +216,226 @@
                 "XL",
                 "XXL"
             ],
-            "price": "79.000đ",
+            "price": 79000,
             "rating": 4.0,
             "sold": 15,
             "stock": 1000,
             "discount": "-25%"
         }
     ],
+    "carts": [
+        {
+            "customerId": "h5h2321jodf32132dfskhzxnmcwi",
+            "item": {
+                "productId": "06f3d673-fd0e-4014-85c3-e8480782df8e",
+                "image": [
+                    "/assets/Product.png",
+                    "/assets/Product1.png",
+                    "/assets/Product2.png",
+                    "/assets/Product3.png",
+                    "/assets/Product4.png"
+                ],
+                "name": "Hoodie Classic",
+                "color": {
+                    "name": "White",
+                    "code": "#ffffff"
+                },
+                "size": "XL",
+                "quantity": 2,
+                "price": 198000
+            }
+        },
+        {
+            "customerId": "h5h2321jodf32132dfskhzxnmcwi",
+            "item": {
+                "productId": "06f3d673-fd0e-4014-85c3-e8480782df8e",
+                "image": [
+                    "/assets/Product.png",
+                    "/assets/Product1.png",
+                    "/assets/Product2.png",
+                    "/assets/Product3.png",
+                    "/assets/Product4.png"
+                ],
+                "name": "Hoodie Classic",
+                "color": {
+                    "name": "Black",
+                    "code": "#000000"
+                },
+                "size": "S",
+                "quantity": 1,
+                "price": 99000
+            }
+        },
+        {
+            "customerId": "h5h2321jodf32132dfskhzxnmcwi",
+            "item": {
+                "productId": "06f3d673-fd0e-4014-85c3-e8480782df8e",
+                "image": [
+                    "/assets/Product.png",
+                    "/assets/Product1.png",
+                    "/assets/Product2.png",
+                    "/assets/Product3.png",
+                    "/assets/Product4.png"
+                ],
+                "name": "Hoodie Classic",
+                "color": {
+                    "name": "Black",
+                    "code": "#000000"
+                },
+                "size": "M",
+                "quantity": 3,
+                "price": 297000
+            }
+        },
+        {
+            "customerId": "h5h2321jodf32132dfskhzxnmcwi",
+            "item": {
+                "productId": "06f3d673-fd0e-4014-85c3-e8480782df8e",
+                "image": [
+                    "/assets/Product.png",
+                    "/assets/Product1.png",
+                    "/assets/Product2.png",
+                    "/assets/Product3.png",
+                    "/assets/Product4.png"
+                ],
+                "name": "Hoodie Classic",
+                "color": {
+                    "name": "Black",
+                    "code": "#000000"
+                },
+                "size": "S",
+                "quantity": 1,
+                "price": 99000
+            }
+        },
+        {
+            "customerId": "h5h2321jodf32132dfskhzxnmcwi",
+            "item": {
+                "productId": "06f3d673-fd0e-4014-85c3-e8480782df8e",
+                "image": [
+                    "/assets/Product.png",
+                    "/assets/Product1.png",
+                    "/assets/Product2.png",
+                    "/assets/Product3.png",
+                    "/assets/Product4.png"
+                ],
+                "name": "Hoodie Classic",
+                "color": {
+                    "name": "Black",
+                    "code": "#000000"
+                },
+                "size": "S",
+                "quantity": 1,
+                "price": 99000
+            }
+        },
+        {
+            "customerId": "h5h2321jodf32132dfskhzxnmcwi",
+            "item": {
+                "productId": "06f3d673-fd0e-4014-85c3-e8480782df8e",
+                "image": [
+                    "/assets/Product.png",
+                    "/assets/Product1.png",
+                    "/assets/Product2.png",
+                    "/assets/Product3.png",
+                    "/assets/Product4.png"
+                ],
+                "name": "Hoodie Classic",
+                "color": {
+                    "name": "Black",
+                    "code": "#000000"
+                },
+                "size": "S",
+                "quantity": 1,
+                "price": 99000
+            }
+        },
+        {
+            "customerId": "h5h2321jodf32132dfskhzxnmcwi",
+            "item": {
+                "productId": "06f3d673-fd0e-4014-85c3-e8480782df8e",
+                "image": [
+                    "/assets/Product.png",
+                    "/assets/Product1.png",
+                    "/assets/Product2.png",
+                    "/assets/Product3.png",
+                    "/assets/Product4.png"
+                ],
+                "name": "Hoodie Classic",
+                "color": {
+                    "name": "Black",
+                    "code": "#000000"
+                },
+                "size": "S",
+                "quantity": 1,
+                "price": 99000
+            }
+        },
+        {
+            "customerId": "h5h2321jodf32132dfskhzxnmcwi",
+            "item": {
+                "productId": "06f3d673-fd0e-4014-85c3-e8480782df8e",
+                "image": [
+                    "/assets/Product.png",
+                    "/assets/Product1.png",
+                    "/assets/Product2.png",
+                    "/assets/Product3.png",
+                    "/assets/Product4.png"
+                ],
+                "name": "Hoodie Classic",
+                "color": {
+                    "name": "Black",
+                    "code": "#000000"
+                },
+                "size": "S",
+                "quantity": 1,
+                "price": 99000
+            }
+        },
+        {
+            "customerId": "h5h2321jodf32132dfskhzxnmcwi",
+            "item": {
+                "productId": "06f3d673-fd0e-4014-85c3-e8480782df8e",
+                "image": [
+                    "/assets/Product.png",
+                    "/assets/Product1.png",
+                    "/assets/Product2.png",
+                    "/assets/Product3.png",
+                    "/assets/Product4.png"
+                ],
+                "name": "Hoodie Classic",
+                "color": {
+                    "name": "Black",
+                    "code": "#000000"
+                },
+                "size": "S",
+                "quantity": 1,
+                "price": 99000
+            }
+        },
+        {
+            "customerId": "h5h2321jodf32132dfskhzxnmcwi",
+            "item": {
+                "productId": "06f3d673-fd0e-4014-85c3-e8480782df8e",
+                "image": [
+                    "/assets/Product.png",
+                    "/assets/Product1.png",
+                    "/assets/Product2.png",
+                    "/assets/Product3.png",
+                    "/assets/Product4.png"
+                ],
+                "name": "Hoodie Classic",
+                "color": {
+                    "name": "Black",
+                    "code": "#000000"
+                },
+                "size": "S",
+                "quantity": 1,
+                "price": 99000
+            }
+        }
+    ],
+
     "orders": [
         {
             "id": "e6c56808-3848-4441-959c-34302cc742f8",
@@ -213,7 +447,8 @@
                 "code": "#000000"
             },
             "size": "S",
-            "quantity": 1
+            "quantity": 1,
+            "price": 1000000
         },
         {
             "id": "40b548a7-cfba-4043-b190-d3aefbd8707f",
@@ -225,7 +460,8 @@
                 "code": "#000000"
             },
             "size": "XXL",
-            "quantity": 2
+            "quantity": 2,
+            "price": 1000000
         },
         {
             "id": "5b739daf-9186-484c-b8cb-ad21d5fa98bf",
@@ -237,7 +473,8 @@
                 "code": "#000000"
             },
             "size": "S",
-            "quantity": 3
+            "quantity": 3,
+            "price": 1000000
         },
         {
             "id": "a74941be-6c1b-4d93-b257-442605ae22be",
@@ -249,7 +486,8 @@
                 "code": "#000000"
             },
             "size": "XL",
-            "quantity": 4
+            "quantity": 4,
+            "price": 1000000
         },
         {
             "id": "b075b3c1-f545-4257-9372-6d2af9a034e6",
@@ -261,7 +499,8 @@
                 "code": "#000000"
             },
             "size": "L",
-            "quantity": 5
+            "quantity": 5,
+            "price": 1000000
         },
         {
             "id": "33bf9126-960a-4a12-836a-79ef3d0f05d2",
@@ -273,7 +512,8 @@
                 "code": "#000000"
             },
             "size": "S",
-            "quantity": 6
+            "quantity": 6,
+            "price": 1000000
         },
         {
             "id": "68dcab7a-a3c3-4206-95d3-a4ffddca7436",
@@ -285,7 +525,8 @@
                 "code": "#000000"
             },
             "size": "M",
-            "quantity": 7
+            "quantity": 7,
+            "price": 1000000
         },
         {
             "id": "64337b1d-b288-4640-b4e7-62481f60eafb",
@@ -297,7 +538,8 @@
                 "code": "#000000"
             },
             "size": "S",
-            "quantity": 8
+            "quantity": 8,
+            "price": 1000000
         },
         {
             "id": "9f98b6c5-060c-4732-b300-19a313914a72",
@@ -309,7 +551,8 @@
                 "code": "#000000"
             },
             "size": "XL",
-            "quantity": 9
+            "quantity": 9,
+            "price": 1000000
         },
         {
             "id": "439c3e9a-bf0c-4994-9703-a2205d2ebc06",
@@ -321,7 +564,8 @@
                 "code": "#000000"
             },
             "size": "S",
-            "quantity": 10
+            "quantity": 10,
+            "price": 1000000
         }
     ],
     "feedbacks": [

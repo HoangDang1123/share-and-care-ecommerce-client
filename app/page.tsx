@@ -1,5 +1,3 @@
-'use client'
-
 import Image from "next/image";
 import { Slider } from "./ui/home/slider";
 import TopProduct from "./ui/home/top-product";
@@ -28,7 +26,7 @@ const items = [
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center space-y-20 mb-10">
+    <div className="flex flex-col overflow-hidden items-center space-y-20 mb-10">
       <Slider />
 
       {items.map((item, index) => (

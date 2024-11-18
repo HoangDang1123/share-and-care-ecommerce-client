@@ -1,5 +1,5 @@
-export const calculateDiscountPrice = (price: string, discount: string): number => {
-    const priceString = price.replace(/\./g, '').replace('đ', '').trim();
+export const calculateDiscountPrice = (price: number, discount: string): number => {
+    const priceString = price.toString();
     const originalPrice = parseFloat(priceString);
     const discountPercentage = parseFloat(discount.replace('%', '').replace('-', ''));
     const discountAmount = (discountPercentage / 100) * originalPrice;

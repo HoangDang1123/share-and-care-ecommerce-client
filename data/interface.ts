@@ -1,3 +1,8 @@
+export interface Category {
+    id: string,
+    name: string,
+}
+
 export interface Product {
     id: string,
     image: Array<string>,
@@ -7,7 +12,7 @@ export interface Product {
     description: string,
     color: Array<Color>,
     size: Array<string>,
-    price: string,
+    price: number,
     rating: number,
     sold: number,
     stock: number,
@@ -17,6 +22,21 @@ export interface Product {
 export interface Color {
     name: string,
     code: string,
+}
+
+export interface CartItem {
+    productId: string,
+    image: Array<string>,
+    name: string,
+    color: Color,
+    size: string,
+    quantity: number,
+    price: number,
+}
+
+export interface Cart {
+    customerId: string,
+    item: Array<CartItem>,
 }
 
 export interface Order {

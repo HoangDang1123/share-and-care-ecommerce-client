@@ -1,13 +1,16 @@
 'use client'
 
 import { Rating, Slider, styled } from '@mui/material';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { StarIcon } from '@heroicons/react/20/solid';
 import { Feedback } from '@/data/interface';
+import { usePathname } from 'next/navigation';
 
 interface FeedbackRatingProps {
     feedbacks: Array<Feedback>,
     rating: number,
+    isFixed: boolean,
+    setIsFixed: (isFixed: boolean) => void;
 }
 
 const StyledSlider = styled(Slider)({
@@ -24,7 +27,28 @@ const StyledSlider = styled(Slider)({
     },
 });
 
-const FeedbackRating: React.FC<FeedbackRatingProps> = ({ feedbacks, rating }) => {
+const FeedbackRating: React.FC<FeedbackRatingProps> = ({ feedbacks, rating, isFixed, setIsFixed }) => {
+    const lastItem = usePathname().substring(usePathname().lastIndexOf('/') + 1);
+    
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollTop = window.scrollY;
+            const triggerPoint = 80;
+
+            if (scrollTop > triggerPoint && lastItem === 'feedback') {
+                setIsFixed(true);
+            } else {
+                setIsFixed(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, [lastItem, setIsFixed]);
+
     const ratingList = Array.from({ length: 5 }, (_, index) => ({
         star: index + 1,
         count: 0,
@@ -39,7 +63,7 @@ const FeedbackRating: React.FC<FeedbackRatingProps> = ({ feedbacks, rating }) =>
     ratingList.reverse();
 
     return (
-        <div className='flex justify-center items-center bg-gray-200 mt-24'>
+        <div className={`flex justify-center items-center bg-gray-200 rounded-2xl p-6 mt-24 transition-all duration-300 ease-in-out ${isFixed ? 'fixed top-44' : ''}`}>
             <div className='flex flex-col justify-center items-center space-y-2'>
                 <h6 className='text-5xl font-semibold'>{`${rating}`}</h6>
                 <Rating
@@ -59,7 +83,7 @@ const FeedbackRating: React.FC<FeedbackRatingProps> = ({ feedbacks, rating }) =>
                             </div>
                         ))}
                     </div>
-                    {/* <div className='flex flex-col justify-start items-center space-y-3'>
+                    <div className='flex flex-col justify-start items-center space-y-3'>
                         {ratingList.map((item, index) => (
                             <StyledSlider
                                 key={index}
@@ -70,7 +94,7 @@ const FeedbackRating: React.FC<FeedbackRatingProps> = ({ feedbacks, rating }) =>
                                 max={feedbacks.length}
                             />
                         ))}
-                    </div> */}
+                    </div>
                     <div className='flex flex-col justify-start items-center'>
                         {ratingList.map((item, index) => (
                             <h6 key={index} className='text-lg'>{`(${item.count})`}</h6>
