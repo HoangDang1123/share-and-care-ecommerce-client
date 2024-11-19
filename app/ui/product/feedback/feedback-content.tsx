@@ -1,11 +1,11 @@
 'use client'
 
 import React from 'react'
-import { Feedback, Order } from '@/data/interface';
-import { Rating } from '@mui/material';
+import { Feedback, OrderFB } from '@/data/interface';
+import { Rating } from '@smastrom/react-rating';
 
 interface FeedbackContentProps {
-    feedback: Feedback & Order,
+    feedback: Feedback & OrderFB,
 }
 
 const FeedbackContent: React.FC<FeedbackContentProps> = ({ feedback }) => {
@@ -19,13 +19,13 @@ const FeedbackContent: React.FC<FeedbackContentProps> = ({ feedback }) => {
             <p className='text-lg leading-8 text-justify mb-10'>{feedback.feedback}</p>
 
             <div className='flex justify-between items-center w-full'>
-                <Rating
-                    name="rating"
-                    value={feedback.rating}
-                    precision={0.5}
-                    readOnly
-                    size='small'
-                />
+                <div className='flex flex-row'>
+                    <Rating
+                        value={feedback.rating}
+                        readOnly
+                        className='size-6'
+                    />
+                </div>
                 <h4>{feedback.date}</h4>
             </div>
         </div>

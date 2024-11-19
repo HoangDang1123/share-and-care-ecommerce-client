@@ -1,4 +1,10 @@
 {
+    "customer": [
+        {
+            "id": "h5h2321jodf32132dfskhzxnmcwi",
+            "name": "Đào Hoàng Đăng"
+        }
+    ],
     "categories": [
         {
             "id": "abc",
@@ -435,7 +441,6 @@
             }
         }
     ],
-
     "orders": [
         {
             "id": "e6c56808-3848-4441-959c-34302cc742f8",
@@ -638,6 +643,43 @@
             "rating": 5,
             "feedback": "Aliquam quis turpis eget elit sodales scelerisque. Mauris sit amet eros. Suspendisse accumsan tortor quis turpis.\n\nSed ante. Vivamus tortor. Duis mattis egestas metus.",
             "date": "10/30/2024"
+        }
+    ],
+    "discounts": [
+        {
+            "id": "cf07a016-7007-46c3-b986-89dec3432366",
+            "name": "DISCOUNT001",
+            "startDate": "2024-01-01",
+            "endDate": "2024-01-30",
+            "value": "20%"
+        },
+        {
+            "id": "9b820388-057e-44a6-befd-34fcb8717e7c",
+            "name": "DISCOUNT002",
+            "startDate": "2024-10-01",
+            "endDate": "2024-12-31",
+            "value": "10,000đ"
+        },
+        {
+            "id": "674d9362-43a0-4204-a56f-08e95c134602",
+            "name": "DISCOUNT003",
+            "startDate": "2024-03-01",
+            "endDate": "2024-04-12",
+            "value": "5%"
+        },
+        {
+            "id": "1eb9c6e9-8277-4282-ad46-34cc79e864a9",
+            "name": "DISCOUNT004",
+            "startDate": "2024-11-01",
+            "endDate": "2024-11-30",
+            "value": "20%"
+        },
+        {
+            "id": "79e6d599-a682-45ef-bb11-21247327a073",
+            "name": "DISCOUNT005",
+            "startDate": "2023-11-01",
+            "endDate": "2024-11-01",
+            "value": "30,000đ"
         }
     ]
 }

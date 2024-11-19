@@ -11,8 +11,8 @@ const ImageList: React.FC<ImageSliderProps> = ({ images }) => {
     const [imageIndex, setImageIndex] = useState(0);
 
     return (
-        <section className="flex w-full h-[650px]" aria-label="Image List">
-            <div className="flex flex-col gap-y-5 mr-5">
+        <section className="flex w-full h-[700px]" aria-label="Image List">
+            <div className="flex flex-col gap-y-[0.92rem] mr-5">
                 {images.map((item, index) => (
                     <div
                         key={index}

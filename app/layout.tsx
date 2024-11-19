@@ -6,6 +6,7 @@ import Navbar from './ui/navbar';
 import Header from "./ui/header";
 import Footer from "./ui/footer";
 import ScrollToTopButton from "./ui/scroll-to-top";
+import { OrderProvider } from "./context/order-context";
 
 export const metadata: Metadata = {
   title: "Share And Care",
@@ -18,28 +19,30 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`${lusitana.className} antialiased`}>
-        <main>
-          <div className={`${lusitana.className} antialiased fixed w-screen top-0 z-10 flex flex-col`}>
-            <Banner />
-            <Navbar />
-            <Header />
-          </div>
-
-          <div className="mt-44">
-            <div className=" overflow-y-hidden min-h-[745px] h-auto z-9">
-              {children}
+    <OrderProvider>
+      <html lang="en">
+        <body className={`${lusitana.className} antialiased`}>
+          <main>
+            <div className={`${lusitana.className} antialiased fixed w-screen top-0 z-10 flex flex-col`}>
+              <Banner />
+              <Navbar />
+              <Header />
             </div>
-          </div>
 
-          <div className={`${lusitana.className} antialiased bottom-0 z-10 flex flex-col bg-gray-900`}>
-            <Footer />
-          </div>
+            <div className="mt-44">
+              <div className=" overflow-y-hidden min-h-[745px] h-auto z-9">
+                {children}
+              </div>
+            </div>
 
-          <ScrollToTopButton />
-        </main>
-      </body>
-    </html>
+            <div className={`${lusitana.className} antialiased bottom-0 z-10 flex flex-col bg-gray-900`}>
+              <Footer />
+            </div>
+
+            <ScrollToTopButton />
+          </main>
+        </body>
+      </html>
+    </OrderProvider>
   );
 }

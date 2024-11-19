@@ -1,10 +1,12 @@
 'use client'
 
-import { Rating, Slider, styled } from '@mui/material';
 import React, { useEffect } from 'react'
 import { StarIcon } from '@heroicons/react/20/solid';
 import { Feedback } from '@/data/interface';
 import { usePathname } from 'next/navigation';
+import { Rating } from '@smastrom/react-rating';
+import ProgressBar from '@ramonak/react-progress-bar';
+import '@smastrom/react-rating/style.css'
 
 interface FeedbackRatingProps {
     feedbacks: Array<Feedback>,
@@ -13,23 +15,9 @@ interface FeedbackRatingProps {
     setIsFixed: (isFixed: boolean) => void;
 }
 
-const StyledSlider = styled(Slider)({
-    width: "200px",
-    height: "15px",
-    padding: "0px",
-    '& .MuiSlider-thumb': {
-        display: "none"
-    },
-    '& .MuiSlider-track': {
-        color: "#1155CC",
-        borderTopRightRadius: "0px",
-        borderBottomRightRadius: "0px",
-    },
-});
-
 const FeedbackRating: React.FC<FeedbackRatingProps> = ({ feedbacks, rating, isFixed, setIsFixed }) => {
     const lastItem = usePathname().substring(usePathname().lastIndexOf('/') + 1);
-    
+
     useEffect(() => {
         const handleScroll = () => {
             const scrollTop = window.scrollY;
@@ -66,13 +54,13 @@ const FeedbackRating: React.FC<FeedbackRatingProps> = ({ feedbacks, rating, isFi
         <div className={`flex justify-center items-center bg-gray-200 rounded-2xl p-6 mt-24 transition-all duration-300 ease-in-out ${isFixed ? 'fixed top-44' : ''}`}>
             <div className='flex flex-col justify-center items-center space-y-2'>
                 <h6 className='text-5xl font-semibold'>{`${rating}`}</h6>
-                <Rating
-                    name="rating"
-                    value={rating}
-                    precision={0.5}
-                    readOnly
-                    size='large'
-                />
+                <div className='flex flex-row'>
+                    <Rating
+                        value={rating}
+                        readOnly
+                        className='size-12'
+                    />
+                </div>
                 <div className='flex justify-center items-center w-full space-x-4'>
                     <div className='flex flex-col items-center space-y-3'>
                         {ratingList.map((item, index) => (
@@ -85,13 +73,14 @@ const FeedbackRating: React.FC<FeedbackRatingProps> = ({ feedbacks, rating, isFi
                     </div>
                     <div className='flex flex-col justify-start items-center space-y-3'>
                         {ratingList.map((item, index) => (
-                            <StyledSlider
+                            <ProgressBar
                                 key={index}
-                                disabled
-                                aria-label='Rating Slider'
-                                valueLabelDisplay="auto"
-                                value={item.count}
-                                max={feedbacks.length}
+                                completed={item.count}
+                                maxCompleted={feedbacks.length}
+                                isLabelVisible={false}
+                                height='16px'
+                                className='w-48'
+                                bgColor='#1d4ed8'
                             />
                         ))}
                     </div>

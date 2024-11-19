@@ -39,7 +39,7 @@ export interface Cart {
     item: Array<CartItem>,
 }
 
-export interface Order {
+export interface OrderFB {
     id: string,
     customerName: string,
     productId: string,
@@ -49,10 +49,30 @@ export interface Order {
     quantity: number,
 }
 
+export interface Order {
+    id: string,
+    customerId: string,
+    item: Array<CartItem>,
+    productPrice: number,
+    phone: string,
+    address: string,
+    shipping: number,
+    discount: number,
+    totalPrice: number,
+}
+
 export interface Feedback {
     id: string,
     orderId: string,
     rating: number,
     feedback: string,
     date: string,
+}
+
+export interface Discount {
+    id: string,
+    name: string,
+    startDate: Date,
+    endDate: Date,
+    value: string,
 }

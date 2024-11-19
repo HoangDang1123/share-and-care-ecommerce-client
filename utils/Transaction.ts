@@ -1,11 +1,15 @@
-export const calculateDiscountPrice = (price: number, discount: string): number => {
-    const priceString = price.toString();
-    const originalPrice = parseFloat(priceString);
-    const discountPercentage = parseFloat(discount.replace('%', '').replace('-', ''));
-    const discountAmount = (discountPercentage / 100) * originalPrice;
-    return originalPrice - discountAmount;
-};
-
 export const formatPrice = (value: number): string => {
     return value.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }).replace('₫', 'đ');
+};
+
+export const calculateDiscount = (price: string, discount: string): number => {
+    const numericPrice = parseFloat(price.replace(/,/g, '').replace('đ', '').trim());
+
+    if (discount.endsWith('%')) {
+        const percentage = parseFloat(discount.slice(0, -1).replace(/,/g, '').trim());
+        return numericPrice * (percentage / 100);
+    } else if (discount.endsWith('đ')) {
+        return parseFloat(discount.slice(0, -1).replace(/,/g, '').trim());
+    }
+    return 0;
 };

@@ -17,7 +17,7 @@ const Card: React.FC<CardProps> = ({ product }) => {
                     alt={product.name}
                     src={product.image[0]}
                     width={280}
-                    height={200}
+                    height={373}
                     style={{ width: "auto", height: "auto", borderRadius: "10px" }}
                     className='hover:opacity-80'
                 />

@@ -9,13 +9,18 @@ import SelectedAllCombobox from '../ui/cart/selected-all-combobox';
 import { formatPrice } from '@/utils/Transaction';
 import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
+import { useOrder } from '../context/order-context';
 
 export default function Page() {
   const cart = data.carts;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { order, setOrder } = useOrder();
+
   const [selectedAll, setSelectedAll] = useState(false);
   const [selectedItem, setSelectedItem] = useState<Array<boolean>>(new Array(cart.length).fill(false));
   const [isFixed, setIsFixed] = useState(false);
+  const [orderMessage, setOrderMessage] = useState('');
   const route = useRouter();
 
   useEffect(() => {
@@ -42,6 +47,20 @@ export default function Page() {
   }, 0);
 
   const goToOrder = () => {
+    if (!selectedItem.some(isSelected => isSelected)) {
+      setOrderMessage("Please select at least 1 product !");
+      return;
+    }
+    setOrderMessage('');
+
+    const selectedProducts = cart.filter((_, index) => selectedItem[index]).map(({ item }) => item);
+    setOrder((prevOrder) => ({
+      ...prevOrder,
+      item: selectedProducts,
+      productPrice: totalCost,
+      totalPrice: totalCost
+    }))
+
     route.push(`/order/?refreshToken=${process.env.NEXT_PUBLIC_REFRESHTOKEN}`);
   }
 
@@ -73,36 +92,30 @@ export default function Page() {
         </div>
 
         <div
-          className={`flex flex-col w-[390px] h-fit mt-14 shadow-lg px-4 py-10 space-y-10 rounded-lg transition-all duration-300 ease-in-out ${isFixed ? 'fixed top-32 right-[200px]' : ''}`}
+          className={`flex flex-col w-[390px] h-fit mt-12 shadow-lg px-4 py-10 space-y-10 rounded-lg transition-all duration-300 ease-in-out ${isFixed ? 'fixed top-32 right-[200px]' : ''}`}
         >
           <h1>Order Summary</h1>
 
-          <div className='space-y-4'>
-            <div className='flex justify-between'>
-              <h4 className='font-semibold'>Product Cost:</h4>
-              <h4>{`${formatPrice(totalCost)}`}</h4>
-            </div>
-
-            <div className='flex justify-between'>
-              <h4 className='font-semibold'>Discount:</h4>
-              <h4>-40.000 đ</h4>
-            </div>
-
-            <div className='w-full h-0.5 bg-gray-200' />
-
-            <div className='flex justify-between'>
-              <h4 className='font-semibold'>Total Cost:</h4>
-              <h4>{formatPrice(totalCost - 40000)}</h4>
-            </div>
+          <div className='flex justify-between'>
+            <h4 className='font-semibold'>Total Cost:</h4>
+            <h4>{formatPrice(totalCost - 0)}</h4>
           </div>
 
-          <button
-            onClick={goToOrder}
-            className='flex justify-center items-center text-xl font-semibold bg-gray-900 px-6 py-2 rounded-md text-white'
-          >
-            <ShoppingCartIcon className='size-8 mr-3' />
-            Order
-          </button>
+          <div className='flex flex-col space-y-4'>
+            {orderMessage && (
+              <div className='text-red-500 font-semibold text-lg'>
+                {orderMessage}
+              </div>
+            )}
+
+            <button
+              onClick={goToOrder}
+              className='flex justify-center items-center text-xl font-semibold bg-gray-900 px-6 py-2 rounded-md text-white'
+            >
+              <ShoppingCartIcon className='size-8 mr-3' />
+              Order
+            </button>
+          </div>
         </div>
       </div>
     </div>
