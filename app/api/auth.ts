@@ -29,9 +29,13 @@ export const signUpRequest = async (data: SignUpData): Promise<SignUpDataRespons
         const response = await api.post(`${AUTH_URL}/register`, data);
         return response.data.metadata;
     } catch (error) {
-        const errorMessage = get(error, 'response.data.error.message', '') || JSON.stringify(error);
-        toast.error(errorMessage);
-        throw new Error(errorMessage);
+        const errorMessage = get(error, 'response.data.error.message', '');
+
+        if (errorMessage) {
+            toast.error(errorMessage);
+        }
+
+        throw new Error(errorMessage || 'An unknown error occurred.');
     }
 }
 
@@ -40,8 +44,12 @@ export const resendEmailVerification = async (data: ResendData): Promise<ResendD
         const response = await api.post(`${AUTH_URL}/resend-email-verification`, data);
         return response.data.metadata;
     } catch (error) {
-        const errorMessage = get(error, 'response.data.error.message', '') || JSON.stringify(error);
-        toast.error(errorMessage);
-        throw new Error(errorMessage);
+        const errorMessage = get(error, 'response.data.error.message', '');
+
+        if (errorMessage) {
+            toast.error(errorMessage);
+        }
+
+        throw new Error(errorMessage || 'An unknown error occurred.');
     }
 }
