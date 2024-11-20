@@ -1,6 +1,6 @@
 'use client'
 
-import { Product } from '@/data/interface';
+import { Product } from '@/data/interface-test';
 import { calculateDiscountPrice, formatPrice } from '@/utils/Transaction';
 import { PlusIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';

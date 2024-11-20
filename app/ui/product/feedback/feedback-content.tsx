@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { Feedback, OrderFB } from '@/data/interface';
+import { Feedback, OrderFB } from '@/data/interface-test';
 import { Rating } from '@smastrom/react-rating';
 
 interface FeedbackContentProps {

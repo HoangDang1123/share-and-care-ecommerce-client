@@ -20,6 +20,7 @@ export default function Page() {
             <Image
                 alt="Login Thumb"
                 src="/assets/Login-thumb.png"
+                priority
                 width={1920}
                 height={1080}
                 style={{ width: "auto", height: "auto" }}

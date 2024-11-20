@@ -7,6 +7,8 @@ import Header from "./ui/header";
 import Footer from "./ui/footer";
 import ScrollToTopButton from "./ui/scroll-to-top";
 import { OrderProvider } from "./context/order-context";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
 
 export const metadata: Metadata = {
   title: "Share And Care",
@@ -24,6 +26,7 @@ export default function RootLayout({
         <body className={`${lusitana.className} antialiased`}>
           <main>
             <div className={`${lusitana.className} antialiased fixed w-screen top-0 z-10 flex flex-col`}>
+              <ToastContainer />
               <Banner />
               <Navbar />
               <Header />

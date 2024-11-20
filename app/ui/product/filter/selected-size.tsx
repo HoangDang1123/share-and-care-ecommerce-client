@@ -1,4 +1,4 @@
-import { Product } from '@/data/interface';
+import { Product } from '@/data/interface-test';
 import React, { useState } from 'react'
 import { Description, Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 

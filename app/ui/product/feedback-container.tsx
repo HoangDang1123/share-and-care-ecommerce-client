@@ -1,6 +1,6 @@
 'use client'
 
-import { Product } from '@/data/interface'
+import { Product } from '@/data/interface-test'
 import React, { useEffect, useState } from 'react'
 import FeedbackRating from './feedback/feedback-rating';
 import FeedbackContent from './feedback/feedback-content';

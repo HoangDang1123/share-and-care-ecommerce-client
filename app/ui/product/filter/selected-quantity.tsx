@@ -1,4 +1,4 @@
-import { Product } from '@/data/interface';
+import { Product } from '@/data/interface-test';
 import { MinusIcon, PlusIcon } from '@heroicons/react/24/outline';
 import React from 'react'
 

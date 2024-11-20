@@ -4,7 +4,7 @@ import { AnimatePresence, easeOut, motion } from 'framer-motion';
 import { Fragment, useEffect, useState } from 'react';
 import data from "@/data/data.json";
 import { useOrder } from '@/app/context/order-context';
-import { Discount } from '@/data/interface';
+import { Discount } from '@/data/interface-test';
 import { calculateDiscount } from '@/utils/Transaction';
 
 export default function DiscountPanel() {

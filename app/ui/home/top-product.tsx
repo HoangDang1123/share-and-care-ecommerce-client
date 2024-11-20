@@ -3,7 +3,7 @@
 import React from 'react'
 import Card from '../card';
 import Carousel from 'react-multi-carousel';
-import { Product } from '@/data/interface';
+import { Product } from '@/data/interface-test';
 import "react-multi-carousel/lib/styles.css";
 
 const responsive = {

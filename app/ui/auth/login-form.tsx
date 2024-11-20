@@ -91,7 +91,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
 
         <p className="mt-10 text-center text-md text-gray-500">
           Doesn&apos;t have any account yet ? {' '}
-          <Link href="/sign-up" className="font-bold underline text-gray-900 hover:text-gray-700">
+          <Link href="/auth/sign-up" className="font-bold underline text-gray-900 hover:text-gray-700">
             Sign Up
           </Link>
         </p>

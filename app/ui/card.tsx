@@ -1,4 +1,4 @@
-import { Product } from '@/data/interface';
+import { Product } from '@/data/interface-test';
 import { formatPrice } from '@/utils/Transaction';
 import { StarIcon } from '@heroicons/react/20/solid';
 import Image from 'next/image';
