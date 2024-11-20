@@ -56,7 +56,9 @@ export default function SignUpForm() {
       toast.success("A verification email has been re-sent to your inbox. Please check your email to verify your account.");
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) { }
+    } catch (error) {
+      toast.error("An error occurred during sign-up.");
+    }
   }
 
   return (

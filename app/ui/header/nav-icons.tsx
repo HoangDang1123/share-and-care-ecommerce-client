@@ -10,13 +10,10 @@ export default function NavIcons() {
 
     useEffect(() => {
         const refreshToken = searchParams.get('refreshToken');
-
-        const refreshTokenString = Array.isArray(refreshToken) ? refreshToken[0] : refreshToken || '';
-
         if (refreshToken) {
-            localStorage.setItem('refreshToken', refreshTokenString);
-
             setIsLogin(true);
+        } else {
+            setIsLogin(false);
         }
     }, [searchParams]);
 

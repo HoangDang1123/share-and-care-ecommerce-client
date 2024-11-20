@@ -1,25 +1,48 @@
 import Link from 'next/link'
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image';
+import { toast } from 'react-toastify';
+import { loginRequest } from '@/app/api/auth';
+import { useRouter } from 'next/navigation';
 
-type LoginHandler = () => void;
+const LoginForm = () => {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+  const router = useRouter();
 
-interface LoginFormProps {
-  onLogin: LoginHandler;
-}
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
-const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
-  const handleLogin = (e: React.FormEvent<EventTarget>): void => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onLogin();
-  }
+    try {
+      const response = await loginRequest({
+        email: formData.email,
+        password: formData.password,
+      });
+      toast.success("Login successful.");
+
+      localStorage.setItem('accessToken', response.tokens.accessToken);
+      localStorage.setItem('refreshToken', response.tokens.refreshToken);
+      
+      router.push(`/?userId=${response.user.id}&refreshToken=${response.tokens.refreshToken}`);
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      toast.error("An error occurred during login.");
+    }
+  };
 
   return (
     <div className='w-full h-full flex flex-col justify-center shadow-xl px-16'>
       <h3>Login</h3>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form action="submit" method="POST" className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="email" className="block text-xl font-bold text-gray-900">
               Email
@@ -31,6 +54,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
                 type="email"
                 placeholder="Enter your email..."
                 required
+                onChange={handleChange}
                 autoComplete="email"
                 className="block w-full rounded-lg border-0 py-1.5 pl-2 text-gray-900 sm:text-sm sm:leading-6 md:text-lg shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-700"
               />
@@ -48,6 +72,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
                 type="password"
                 placeholder="Enter your password..."
                 required
+                onChange={handleChange}
                 autoComplete="current-password"
                 className="block w-full rounded-lg border-0 py-1.5 pl-2 text-gray-900 sm:text-sm sm:leading-6 md:text-lg shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-700"
               />
@@ -75,7 +100,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
 
             <button
               className="flex w-full justify-center items-center rounded-lg border-gray-400 border font-semibold bg-white px-3 py-1.5 text-lg text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-              onClick={handleLogin}
             >
               <Image
                 alt="Google Logo"

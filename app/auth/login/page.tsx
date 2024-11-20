@@ -3,15 +3,10 @@
 import Image from 'next/image'
 import React from 'react'
 import dynamic from 'next/dynamic'
-import { redirect } from 'next/navigation'
 
 const LoginForm = dynamic(() => import('../../ui/auth/login-form'), { ssr: false })
 
 export default function Page() {
-    const handleLogin = () => {
-        redirect("/")
-    };
-
     return (
         <div
             style={{ height: `calc(100vh - 200px)` }}
@@ -26,7 +21,7 @@ export default function Page() {
                 style={{ width: "auto", height: "auto" }}
             />
 
-            <LoginForm onLogin={handleLogin} />
+            <LoginForm />
         </div>
     )
 }
