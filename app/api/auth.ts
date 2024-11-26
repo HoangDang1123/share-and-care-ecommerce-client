@@ -1,47 +1,12 @@
+import * as Auth from "@/interface/auth"
+
 import { toast } from 'react-toastify';
 import api from './index';
 import get from 'lodash/get';
 
-const AUTH_URL = '/auth'
+const AUTH_URL = '/auth';
 
-interface SignUpData {
-    email: string;
-    username: string;
-    password: string;
-}
-
-interface SignUpDataResponse {
-    user: SignUpData,
-}
-
-interface ResendData {
-    email: string;
-    username: string;
-}
-
-interface ResendDataResponse {
-    id: string,
-    email: string,
-}
-interface LoginData {
-    email: string;
-    password: string;
-}
-
-interface LoginDataResponse {
-    user: {
-        id: string,
-        email: string,
-        name: string,
-        avatar: string,
-    },
-    tokens: {
-        accessToken: string,
-        refreshToken: string,
-    },
-}
-
-export const signUpRequest = async (data: SignUpData): Promise<SignUpDataResponse> => {
+export const signUpRequest = async (data: Auth.SignUpData): Promise<Auth.SignUpDataResponse> => {
     try {
         const response = await api.post(`${AUTH_URL}/register`, data);
         return response.data.metadata;
@@ -54,9 +19,9 @@ export const signUpRequest = async (data: SignUpData): Promise<SignUpDataRespons
 
         throw new Error(errorMessage || 'An unknown error occurred.');
     }
-}
+};
 
-export const resendEmailVerification = async (data: ResendData): Promise<ResendDataResponse> => {
+export const resendEmailVerification = async (data: Auth.ResendData): Promise<Auth.ResendDataResponse> => {
     try {
         const response = await api.post(`${AUTH_URL}/resend-email-verification`, data);
         return response.data.metadata;
@@ -67,9 +32,9 @@ export const resendEmailVerification = async (data: ResendData): Promise<ResendD
         }
         throw new Error(errorMessage || 'An unknown error occurred.');
     }
-}
+};
 
-export const loginRequest = async (data: LoginData): Promise<LoginDataResponse> => {
+export const loginRequest = async (data: Auth.LoginData): Promise<Auth.LoginDataResponse> => {
     try {
         const response = await api.post(`${AUTH_URL}/login`, data);
         return response.data.metadata;
@@ -80,7 +45,7 @@ export const loginRequest = async (data: LoginData): Promise<LoginDataResponse> 
         }
         throw new Error(errorMessage || 'An unknown error occurred.');
     }
-}
+};
 
 export const logoutRequest = async (clientId: string, accessToken: string) => {
     try {
@@ -90,6 +55,32 @@ export const logoutRequest = async (clientId: string, accessToken: string) => {
                 'Authorization': accessToken
             }
         });
+        return response.data.metadata;
+    } catch (error) {
+        const errorMessage = get(error, 'response.data.error.message', '');
+        if (errorMessage) {
+            toast.error(errorMessage);
+        }
+        throw new Error(errorMessage || 'An unknown error occurred.');
+    }
+};
+
+export const forgotPassword = async (data: Auth.ForgotPasswordData) => {
+    try {
+        const response = await api.post(`${AUTH_URL}/forgot-password`, data);
+        return response.data.metadata;
+    } catch (error) {
+        const errorMessage = get(error, 'response.data.error.message', '');
+        if (errorMessage) {
+            toast.error(errorMessage);
+        }
+        throw new Error(errorMessage || 'An unknown error occurred.');
+    }
+};
+
+export const resetPassword = async (data: Auth.ResetPasswordData) => {
+    try {
+        const response = await api.post(`${AUTH_URL}/reset-password`, data);
         return response.data.metadata;
     } catch (error) {
         const errorMessage = get(error, 'response.data.error.message', '');

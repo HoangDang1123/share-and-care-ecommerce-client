@@ -3,7 +3,7 @@ import data from "@/data/data.json";
 import { Checkbox } from '@headlessui/react';
 import { CheckIcon, TrashIcon } from '@heroicons/react/20/solid';
 import Image from 'next/image';
-import { formatPrice } from '@/utils/Transaction';
+import { formatPrice } from '@/utils/helpers';
 
 interface ItemTableProps {
   selectedAll: boolean,

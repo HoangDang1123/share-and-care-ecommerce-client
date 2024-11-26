@@ -26,7 +26,7 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         const isOrderValid = order.id || order.customerId || order.item.length > 0 || order.phone || order.address || order.shipping || order.discount || order.totalPrice;
 
-        if (isOrderValid) {
+        if (isOrderValid && typeof window !== "undefined") {
             sessionStorage.setItem('order', JSON.stringify(order));
 
             const timeoutId = setTimeout(() => {

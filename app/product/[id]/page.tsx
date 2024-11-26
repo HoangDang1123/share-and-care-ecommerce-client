@@ -24,14 +24,14 @@ export default async function Page({
   return (
     <div className='sm:px-6 md:px-12 lg:px-24 py-10'>
       <div className='flex items-center space-x-24'>
-        <BackButton previousPathname={`/?refreshToken=${process.env.NEXT_PUBLIC_REFRESHTOKEN}`} />
+        <BackButton previousPathname="/" />
 
         <ul className="flex space-x-1 text-xl">
           <li>
-            <Link href={`/?=${process.env.NEXT_PUBLIC_}`} className='text-gray-400 hover:text-gray-900'>Home / </Link>
+            <Link href="/" className='text-gray-400 hover:text-gray-900'>Home / </Link>
           </li>
           <li>
-            <Link href={`/categories/${product.category.toLowerCase()}/?refreshToken=${process.env.NEXT_PUBLIC_REFRESHTOKEN}`} className='text-gray-400 hover:text-gray-900'>{`${product.category} /`}</Link>
+            <Link href={`/categories/${product.category.toLowerCase()}`} className='text-gray-400 hover:text-gray-900'>{`${product.category} /`}</Link>
           </li>
           <li>
             {product.name}

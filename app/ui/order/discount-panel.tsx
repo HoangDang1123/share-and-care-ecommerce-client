@@ -3,9 +3,9 @@ import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import { AnimatePresence, easeOut, motion } from 'framer-motion';
 import { Fragment, useEffect, useState } from 'react';
 import data from "@/data/data.json";
-import { useOrder } from '@/app/context/order-context';
+import { useOrder } from '@/app/context/OrderContext';
 import { Discount } from '@/data/interface-test';
-import { calculateDiscount } from '@/utils/Transaction';
+import { calculateDiscount } from '@/utils/helpers';
 
 export default function DiscountPanel() {
   const discounts = data.discounts;

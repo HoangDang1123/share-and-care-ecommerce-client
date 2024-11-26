@@ -13,3 +13,8 @@ export const calculateDiscount = (price: string, discount: string): number => {
     }
     return 0;
 };
+
+export const capitalizeFirstLetter = (str: string) => {
+    if (!str) return str;
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}

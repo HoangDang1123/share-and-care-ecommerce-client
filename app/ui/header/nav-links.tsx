@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { ChevronDownIcon } from '@heroicons/react/24/outline';
-import data from "@/data/data.json";
+import { useEffect, useState } from 'react';
+import { getAllCategories } from '@/app/api/product';
+import { CategoryDataResponse } from '@/interface/product';
 
 interface CategoryLink {
   name: string,
@@ -14,14 +14,28 @@ const links = [
   { name: 'LATEST', href: '/latest' },
 ];
 
-const categories: Array<CategoryLink> = [];
-
-for (let i = 0; i < data.categories.length; i++) {
-  categories.push({ name: data.categories[i].name, href: `/categories/${data.categories[i].name.toLowerCase()}` });
-}
-
 export default function NavLinks() {
-  const user_id = null;
+  const [categories, setCategories] = useState<Array<CategoryDataResponse>>([]);
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await getAllCategories();
+        setCategories(response);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, [setCategories]);
+
+  const categoriesLink: Array<CategoryLink> = [];
+
+  for (let i = 0; i < categories.length; i++) {
+    categoriesLink.push({ name: categories[i].name, href: `/categories/${categories[i].name.toLowerCase()}` });
+  }
 
   return (
     <div className="flex space-x-4">
@@ -29,7 +43,7 @@ export default function NavLinks() {
         return (
           <Link
             key={link.name}
-            href={user_id ? `/${user_id}${link.href}` : link.href}
+            href={link.href}
             className='flex grow items-center justify-center gap-2 rounded-md text-2xl text-gray-900 font-medium hover:bg-gray-200 flex-none p-2 px-3'
           >
             <strong className="hidden md:block">{link.name}</strong>
@@ -37,26 +51,31 @@ export default function NavLinks() {
         );
       })}
 
-      <Menu as="div" className="relative ml-3">
-        <MenuButton className='flex grow items-center justify-center gap-2 rounded-md text-2xl text-gray-900 font-medium hover:bg-gray-200 flex-none p-2 px-3'>
-          <strong className="hidden md:block">CATEGORIES</strong>
-          <ChevronDownIcon className='size-6' />
-        </MenuButton>
-        <MenuItems
-          transition
-          className="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+      <div
+        className="relative inline-flex group"
+        onMouseEnter={() => setIsOpen(true)}
+        onMouseLeave={() => setIsOpen(false)}
+      >
+        <Link
+          href="/categories/all"
+          className='relative flex grow items-center justify-center gap-2 rounded-md text-2xl text-gray-900 font-medium hover:bg-gray-200 flex-none p-2 px-3'
         >
-          {categories.map((category, index) => {
-            return (
-              <MenuItem key={index}>
-                <Link href={`${category.href}/?refreshToken=${process.env.NEXT_PUBLIC_REFRESHTOKEN}`} className="block rounded-lg text-lg py-2 px-3 transition hover:bg-gray-200">
-                  {category.name}
-                </Link>
-              </MenuItem>
-            );
-          })}
-        </MenuItems>
-      </Menu>
+          <strong className="hidden md:block">CATEGORIES</strong>
+        </Link>
+
+        <div
+          className={`absolute right-0 z-10 mt-12 w-full origin-top-right rounded-md bg-white shadow-lg transition-opacity duration-300 ease-in-out ${isOpen ? 'block opacity-100' : 'hidden opacity-0'
+            }`}
+        >
+          {categoriesLink.map((category, index) => (
+            <div key={index}>
+              <Link href={category.href} className="block rounded-lg text-lg py-2 px-3 transition hover:bg-gray-200">
+                {category.name}
+              </Link>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }

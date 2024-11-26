@@ -13,7 +13,7 @@ export default function Header() {
       <div className="relative flex h-auto my-2 items-center justify-between sm:px-5 lg:px-20">
         <div className="flex flex-1 items-center justify-between">
           <div className="flex flex-shrink-0 items-center">
-            <Link href={`/?refreshToken=${process.env.NEXT_PUBLIC_REFRESHTOKEN}`} passHref>
+            <Link href="/" passHref>
               <Image
                 alt="Share And Care"
                 src="/assets/logo.png"

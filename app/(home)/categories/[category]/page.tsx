@@ -3,7 +3,7 @@ import React from 'react'
 import data from "@/data/data.json";
 import Card from '@/app/ui/card';
 import BackButton from '@/app/ui/back-button';
-import capitalizeFirstLetter from '@/utils/CapitalizeFirstLetter';
+import { capitalizeFirstLetter } from '@/utils/helpers';
 
 export default async function Page({
     params,
@@ -22,11 +22,11 @@ export default async function Page({
     return (
         <div className='flex flex-col w-full px-24 py-10'>
             <div className='flex items-center space-x-24'>
-                <BackButton previousPathname={`/?refreshToken=${process.env.NEXT_PUBLIC_REFRESHTOKEN}`} />
+                <BackButton previousPathname="/" />
 
                 <ul className="flex space-x-1 text-xl">
                     <li>
-                        <Link href={`/?refreshToken=${process.env.NEXT_PUBLIC_REFRESHTOKEN}`} className='text-gray-400 hover:text-gray-900'>Home / </Link>
+                        <Link href="/" className='text-gray-400 hover:text-gray-900'>Home / </Link>
                     </li>
                     <li>
                         {name}

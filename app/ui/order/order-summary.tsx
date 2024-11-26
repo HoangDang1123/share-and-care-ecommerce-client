@@ -1,7 +1,7 @@
 'use client'
 
-import { formatPrice } from '@/utils/Transaction';
-import { useOrder } from '@/app/context/order-context';
+import { formatPrice } from '@/utils/helpers';
+import { useOrder } from '@/app/context/OrderContext';
 import DiscountPanel from './discount-panel';
 import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 

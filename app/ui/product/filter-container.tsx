@@ -1,7 +1,7 @@
 'use client'
 
 import { Product } from '@/data/interface-test';
-import { calculateDiscountPrice, formatPrice } from '@/utils/Transaction';
+import { calculateDiscount, formatPrice } from '@/utils/helpers';
 import { PlusIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 import SelectedColor from './filter/selected-color';
@@ -18,8 +18,8 @@ const InforContainer: React.FC<InforContainerProps> = ({ product }) => {
 
     const [quantity, setQuantity] = useState(1);
 
-    const finalPrice = product && product.price && product.discount
-        ? calculateDiscountPrice(product.price, product.discount)
+    const discountPrice = product && product.price && product.discount
+        ? calculateDiscount(product.price.toString(), product.discount)
         : 0;
 
     return (
@@ -28,7 +28,7 @@ const InforContainer: React.FC<InforContainerProps> = ({ product }) => {
                 <h3 className='font-semibold'>{product.name}</h3>
                 <h6 className='text-lg'>{`ID: ${product.id}`}</h6>
                 <div className='flex items-end space-x-5'>
-                    <h1 className='font-semibold'>{finalPrice !== undefined ? `${formatPrice(finalPrice)}` : 'Giá không có'}</h1>
+                    <h1 className='font-semibold'>{discountPrice !== undefined ? `${formatPrice(product.price + discountPrice)}` : 'Giá không có'}</h1>
                     <h6 className='text-xl line-through mb-2'>{formatPrice(product.price)}</h6>
                     <div className='flex justify-center w-24 mb-2 bg-green-700 text-white text-2xl py-1 rounded-lg'>
                         {product.discount}

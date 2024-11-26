@@ -29,7 +29,7 @@ const Cart: React.FC<CartProps> = ({ isLogin }) => {
                             <MenuItem key={index}>
                                 <Link
                                     className='flex w-auto gap-x-10 px-10 py-5 rounded-lg justify-between items-center hover:bg-gray-200'
-                                    href={`/product/${cart.item.productId}/?refreshToken=${process.env.NEXT_PUBLIC_REFRESHTOKEN}`}
+                                    href={`/product/${cart.item.productId}`}
                                 >
                                     <Image
                                         alt={cart.item.name}
@@ -45,7 +45,7 @@ const Cart: React.FC<CartProps> = ({ isLogin }) => {
                         ))}
                         <MenuItem>
                             <Link
-                                href={`/cart/?refreshToken=${process.env.NEXT_PUBLIC_REFRESHTOKEN}`}
+                                href={"/cart"}
                                 className='flex justify-center items-center my-2 text-lg hover:text-blue-900 font-bold text-blue-700 underline'
                             >
                                 Go to my cart

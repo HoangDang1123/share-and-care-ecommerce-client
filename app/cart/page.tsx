@@ -6,10 +6,10 @@ import data from "@/data/data.json";
 import Link from 'next/link';
 import ItemTable from '../ui/cart/item-table';
 import SelectedAllCombobox from '../ui/cart/selected-all-combobox';
-import { formatPrice } from '@/utils/Transaction';
+import { formatPrice } from '@/utils/helpers';
 import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
-import { useOrder } from '../context/order-context';
+import { useOrder } from '../context/OrderContext';
 
 export default function Page() {
   const cart = data.carts;
@@ -61,17 +61,17 @@ export default function Page() {
       totalPrice: totalCost
     }))
 
-    route.push(`/order/?refreshToken=${process.env.NEXT_PUBLIC_REFRESHTOKEN}`);
+    route.push("/order");
   }
 
   return (
     <div className='sm:px-6 md:px-12 lg:px-24 my-10'>
       <div className='flex items-center space-x-24'>
-        <BackButton previousPathname={`/?refreshToken=${process.env.NEXT_PUBLIC_REFRESHTOKEN}`} />
+        <BackButton previousPathname="/" />
 
         <ul className="flex space-x-1 text-xl">
           <li>
-            <Link href={`/?=${process.env.NEXT_PUBLIC_}`} className='text-gray-400 hover:text-gray-900'>Home / </Link>
+            <Link href="/" className='text-gray-400 hover:text-gray-900'>Home / </Link>
           </li>
           <li>
             My Cart

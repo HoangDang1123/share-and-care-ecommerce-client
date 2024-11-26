@@ -44,7 +44,7 @@ const TopProduct: React.FC<TopProductProps> = ({ list, title }) => {
                 swipeable={true}
                 draggable={true}
                 infinite={true}
-                containerClass='w-[1700px]'
+                containerClass='w-[1700px] py-5'
             >
                 {list.map((item, index) => {
                     return (
