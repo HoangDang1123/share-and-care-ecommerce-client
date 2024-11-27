@@ -2,7 +2,7 @@ import React from 'react';
 import data from "@/data/data.json";
 import Link from 'next/link';
 import ImageList from '@/app/ui/product/image-list';
-import InforContainer from '@/app/ui/product/filter-container';
+import InforContainer from '@/app/ui/product/option-container';
 import Detail from '@/app/ui/product/detail';
 import Description from '@/app/ui/product/description';
 import FeedbackContainer from '@/app/ui/product/feedback-container';
@@ -31,7 +31,7 @@ export default async function Page({
             <Link href="/" className='text-gray-400 hover:text-gray-900'>Home / </Link>
           </li>
           <li>
-            <Link href={`/categories/${product.category.toLowerCase()}`} className='text-gray-400 hover:text-gray-900'>{`${product.category} /`}</Link>
+            <Link href={`/shop/${product.category.toLowerCase()}`} className='text-gray-400 hover:text-gray-900'>{`${product.category} /`}</Link>
           </li>
           <li>
             {product.name}

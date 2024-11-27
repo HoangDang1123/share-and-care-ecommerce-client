@@ -71,7 +71,7 @@ export default function Page() {
                         <Link href="/" className='text-gray-400 hover:text-gray-900'>Home / </Link>
                     </li>
                     <li>
-                        <Link href={`/categories/${product.category.toLowerCase()}`} className='text-gray-400 hover:text-gray-900'>{`${product.category} /`}</Link>
+                        <Link href={`/shop/${product.category.toLowerCase()}`} className='text-gray-400 hover:text-gray-900'>{`${product.category} /`}</Link>
                     </li>
                     <li>
                         <Link href={`/product/${id}`} className='text-gray-400 hover:text-gray-900'>{`${product.name} /`}</Link>

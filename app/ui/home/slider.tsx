@@ -7,10 +7,10 @@ import Image from "next/image";
 export function Slider() {
     const images = [
         { url: "/assets/Slider.png", alt: "Slider" },
-        { url: "/assets/Slider.png", alt: "Slider" },
-        { url: "/assets/Slider.png", alt: "Slider" },
-        { url: "/assets/Slider.png", alt: "Slider" },
-        { url: "/assets/Slider.png", alt: "Slider" },
+        { url: "/assets/Slider2.png", alt: "Slider2" },
+        { url: "/assets/Slider3.png", alt: "Slider3" },
+        { url: "/assets/Slider4.png", alt: "Slider" },
+        { url: "/assets/Slider5.png", alt: "Slider" },
     ]
 
     const [imageIndex, setImageIndex] = useState(0);
@@ -40,7 +40,7 @@ export function Slider() {
                         width={1920}
                         height={700}
                         aria-hidden={imageIndex !== index}
-                        className="object-cover w-full h-full block flex-shrink-0 flex-grow-0 transition-transform duration-300"
+                        className="object-cover w-[1920px] h-[700px] block flex-shrink-0 flex-grow-0 transition-transform duration-300"
                         style={{ transform: `translateX(${-100 * imageIndex}%)` }}
                         priority
                     />

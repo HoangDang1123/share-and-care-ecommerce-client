@@ -4,9 +4,9 @@ import { Product } from '@/data/interface-test';
 import { calculateDiscount, formatPrice } from '@/utils/helpers';
 import { PlusIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
-import SelectedColor from './filter/selected-color';
-import SelectedSize from './filter/selected-size';
-import SelectedQuantity from './filter/selected-quantity';
+import SelectedColor from './option/selected-color';
+import SelectedSize from './option/selected-size';
+import SelectedQuantity from './option/selected-quantity';
 
 interface InforContainerProps {
     product: Product,

@@ -42,7 +42,7 @@ export default function Page() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="email" className="block text-xl font-bold text-gray-900">
-            Email
+            Password
           </label>
           <div className="mt-1">
             <input

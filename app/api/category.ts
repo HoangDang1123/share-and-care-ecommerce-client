@@ -1,14 +1,14 @@
-import * as Product from "@/interface/product"
+import * as Category from "@/interface/category"
 
 import { toast } from 'react-toastify';
 import api from './index';
 import get from 'lodash/get';
 
-const PRODUCT_URL = '/products/public';
+const CATEGORY_URL = '/categories';
 
-export const getAllProduct = async (): Promise<Array<Product.ProductDataResponse>> => {
+export const getAllCategories = async (): Promise<Array<Category.CategoryDataResponse>> => {
     try {
-        const response = await api.get(`${PRODUCT_URL}`);
+        const response = await api.get(`${CATEGORY_URL}/all`);
         return response.data.metadata;
     } catch (error) {
         const errorMessage = get(error, 'response.data.error.message', '');
@@ -20,9 +20,9 @@ export const getAllProduct = async (): Promise<Array<Product.ProductDataResponse
     }
 }
 
-export const getSearchProduct = async (data: string): Promise<Array<Product.ProductDataResponse>> => {
+export const getChildCategories = async (data: string): Promise<Array<Category.CategoryDataResponse>> => {
     try {
-        const response = await api.get(`${PRODUCT_URL}?search=${data}`);
+        const response = await api.get(`${CATEGORY_URL}/?parentId=${data}`);
         return response.data.metadata;
     } catch (error) {
         const errorMessage = get(error, 'response.data.error.message', '');
