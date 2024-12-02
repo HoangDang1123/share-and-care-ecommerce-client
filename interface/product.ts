@@ -10,6 +10,8 @@ export interface Variants {
 }
 
 export interface SkuList {
+    id: string,
+    slug: string,
     tierIndex: Array<number>,
     isDefault: boolean,
     price: number,
@@ -26,4 +28,31 @@ export interface ProductDataResponse {
     description: string,
     rating: number,
     variants: Array<Variants>,
+}
+
+export interface Product {
+    products: Array<ProductDataResponse>
+}
+
+export interface ProductInfoDataResponse {
+    id: string,
+    name: string,
+    slug: string,
+    mainImage: string,
+    subImages: Array<string>,
+    price: number,
+    originalPrice: number,
+    quantity: number,
+    description: string,
+    category: Array<Category>,
+    attributes: Array<string>,
+    rating: number,
+    variants: Array<Variants>,
+}
+
+export interface ProductDetailDataResponse {
+    product: ProductInfoDataResponse,
+    skuList: {
+        skuList: Array<SkuList>,
+    }
 }

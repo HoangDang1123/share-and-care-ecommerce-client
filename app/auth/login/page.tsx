@@ -1,13 +1,14 @@
 'use client'
 
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image';
 import { toast } from 'react-toastify';
 import { loginRequest } from '@/app/api/auth';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/app/context/AuthContext';
 import ClipLoader from "react-spinners/ClipLoader";
+import useDeviceInfo from '@/hooks/useDeviceInfo';
+import { useAuth } from '@/app/context/AuthContext';
 
 export default function Page() {
   const [formData, setFormData] = useState({
@@ -15,8 +16,13 @@ export default function Page() {
     password: '',
   });
   const router = useRouter();
-  const { setIsLogin } = useAuth();
   const [loading, setLoading] = useState(false);
+  const { deviceToken, deviceName, browserName } = useDeviceInfo();
+  const { setIsLogin } = useAuth();
+
+  useEffect(() => {
+    setIsLogin(false);
+  }, [setIsLogin]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -30,11 +36,15 @@ export default function Page() {
       const response = await loginRequest({
         email: formData.email,
         password: formData.password,
+        deviceToken: deviceToken,
+        deviceName: deviceName,
       });
       toast.success("Login successful.");
 
-      sessionStorage.setItem('accessToken', response.tokens.accessToken);
-      sessionStorage.setItem('refreshToken', response.tokens.refreshToken);
+      localStorage.setItem('accessToken', response.tokens.accessToken);
+      localStorage.setItem('refreshToken', response.tokens.refreshToken);
+      localStorage.setItem('userId', response.user.id);
+
       setIsLogin(true);
 
       router.push(`/?userId=${response.user.id}&refreshToken=${response.tokens.refreshToken}`);
@@ -46,7 +56,7 @@ export default function Page() {
   };
 
   return (
-    <div 
+    <div
       className='flex flex-col justify-center'
     >
       <h3>Login</h3>
@@ -117,8 +127,11 @@ export default function Page() {
               <hr className='w-full h-0.5 bg-gray-900' />
             </div>
 
+            {/* Nút đăng nhập bằng Google */}
             <button
-              className="flex w-full justify-center items-center rounded-lg border-gray-400 border font-semibold bg-white px-3 py-1.5 text-lg text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+              onClick={() => window.location.href = `http://localhost:3000/api/v1/auth/google?deviceToken=${deviceToken}&deviceName=${browserName}`}
+              type="button"
+              className="flex w-full justify-start items-center rounded-lg border-gray-400 border font-semibold bg-white pl-16 py-1.5 text-lg text-gray-900 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
             >
               <Image
                 alt="Google Logo"
@@ -129,12 +142,28 @@ export default function Page() {
               />
               Sign in with Google
             </button>
+
+            {/* Nút đăng nhập bằng Facebook */}
+            {/* <button
+              onClick={() => window.location.href = `http://localhost:3000/api/v1/auth/facebook?deviceToken=${deviceToken}&deviceName=${browserName}`}
+              type="button"
+              className="flex w-full justify-start items-center rounded-lg border-gray-400 border font-semibold bg-indigo-800 pl-16 py-1.5 text-lg text-white shadow-sm hover:bg-indigo-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+            >
+              <Image
+                alt="Facebook Logo"
+                src="/assets/facebook-logo.png" // Thay đổi đường dẫn logo nếu cần
+                width={30}
+                height={30}
+                className="w-auto h-auto mr-2"
+              />
+              Sign in with Facebook
+            </button> */}
           </div>
         </form>
 
         <p className="mt-10 text-center text-md text-gray-500">
           Doesn&apos;t have any account yet ? {' '}
-          <Link 
+          <Link
             href="/auth/sign-up"
             className="font-bold underline text-gray-900 hover:text-gray-700"
           >

@@ -1,10 +1,13 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Card from '../card';
 import Carousel from 'react-multi-carousel';
-import { Product } from '@/data/interface-test';
 import "react-multi-carousel/lib/styles.css";
+import { CategoryDataResponse } from '@/interface/category';
+import { getTopCategoriesProduct } from '@/app/api/product';
+import { ProductDataResponse } from '@/interface/product';
+import Link from 'next/link';
 
 const responsive = {
     superLargeDesktop: {
@@ -26,32 +29,59 @@ const responsive = {
 };
 
 interface TopProductProps {
-    list: Array<Product>;
-    title: string;
+    category: CategoryDataResponse,
 }
 
-const TopProduct: React.FC<TopProductProps> = ({ list, title }) => {
+const TopProduct: React.FC<TopProductProps> = ({ category }) => {
+    const [topProduct, setTopProduct] = useState<Array<ProductDataResponse>>([]);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await getTopCategoriesProduct(category.id);
+                setTopProduct(response.products);
+            } catch (error) {
+                console.error("Error fetching products:", error);
+            }
+        };
+
+        fetchProducts();
+    }, [category, setTopProduct]);
+
     return (
         <div className='mt-8 px-20'>
             <div className="flex justify-between mb-2">
-                <h1>{title}</h1>
-                <a href="#" className="text-xl italic underline">View more</a>
+                <h1>{category.name.toUpperCase()}</h1>
+                <Link
+                    href={{ pathname: "/shop", query: { category: category.id } }}
+                    className="text-xl italic underline hover:font-semibold"
+                >
+
+                    View more
+                </Link>
             </div>
 
-            <Carousel
-                ssr={true}
-                responsive={responsive}
-                swipeable={true}
-                draggable={true}
-                infinite={true}
-                containerClass='w-[1700px] py-5'
-            >
-                {list.map((item, index) => {
-                    return (
-                        <Card key={index} product={item} />
-                    )
-                })}
-            </Carousel>
+            {topProduct.length === 0 ? (
+                <div className='w-[1700px] h-[360px] flex justify-center items-center bg-gray-200 rounded-xl'>
+                    There&apos;s no product.
+                </div>
+            ) : (
+                <Carousel
+                    ssr={true}
+                    responsive={responsive}
+                    swipeable={true}
+                    draggable={true}
+                    infinite={true}
+                    containerClass='w-[1700px] py-5'
+                    itemClass='px-5'
+                >
+                    {topProduct.map((item, index) => {
+                        return (
+                            <Card key={index} product={item} />
+                        )
+                    })}
+                </Carousel>
+            )}
         </div>
     );
 };

@@ -20,6 +20,8 @@ export interface ResendDataResponse {
 export interface LoginData {
     email: string;
     password: string;
+    deviceToken: string,
+    deviceName: string,
 }
 
 export interface LoginDataResponse {

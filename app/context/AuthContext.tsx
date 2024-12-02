@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
@@ -14,12 +14,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [isLogin, setIsLogin] = useState<boolean>(false);
 
     const checkAccessToken = () => {
-        const token = sessionStorage.getItem('accessToken');
-        if (!token) return false;
+        const token = localStorage.getItem('accessToken');
+        const timestamp = localStorage.getItem('tokenTimestamp');
 
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        const expiryTime = payload.exp * 1000;
-        return Date.now() < expiryTime;
+        if (!token || !timestamp) return false;
+
+        const currentTime = new Date().getTime();
+        const oneDayInMillis = 24 * 60 * 60 * 1000;
+
+        if (currentTime - Number(timestamp) > oneDayInMillis) {
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('tokenTimestamp');
+            return false;
+        }
+
+        try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            const expiryTime = payload.exp * 1000;
+            return Date.now() < expiryTime;
+        } catch {
+            return false;
+        }
     };
 
     useEffect(() => {

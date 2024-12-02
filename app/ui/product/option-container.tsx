@@ -1,72 +1,118 @@
 'use client'
 
-import { Product } from '@/data/interface-test';
-import { calculateDiscount, formatPrice } from '@/utils/helpers';
+import { formatPrice } from '@/utils/helpers';
 import { PlusIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 import SelectedColor from './option/selected-color';
 import SelectedSize from './option/selected-size';
 import SelectedQuantity from './option/selected-quantity';
+import { ProductDetailDataResponse } from '@/interface/product';
+import { useAuth } from '@/app/context/AuthContext';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
+import { addProductToCart } from '@/app/api/cart';
+import ClipLoader from 'react-spinners/ClipLoader';
 
-interface InforContainerProps {
-    product: Product,
+interface OptionContainerProps {
+  product: ProductDetailDataResponse,
 }
 
-const InforContainer: React.FC<InforContainerProps> = ({ product }) => {
-    const [selectedColorIndex, setSelectedColorIndex] = useState<number | null>(null);
-    const [selectedSizeIndex, setSelectedSizeIndex] = useState<number | null>(null);
+const OptionContainer: React.FC<OptionContainerProps> = ({ product }) => {
+  const [selectedColorIndex, setSelectedColorIndex] = useState<number | null>(null);
+  const [selectedSizeIndex, setSelectedSizeIndex] = useState<number | null>(null);
+  const [quantity, setQuantity] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const { isLogin } = useAuth();
+  const router = useRouter();
 
-    const [quantity, setQuantity] = useState(1);
+  const userId = localStorage.getItem('userId');
+  const accessToken = localStorage.getItem('accessToken');
 
-    const discountPrice = product && product.price && product.discount
-        ? calculateDiscount(product.price.toString(), product.discount)
-        : 0;
+  const handleAddToCart = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    if (!isLogin) {
+      router.push("/auth/login");
+      toast.warn("Please login to continue !");
+    } else {
+      const tierIndex = [selectedColorIndex, selectedSizeIndex];
+      const skuItem = product.skuList.skuList.find(item => JSON.stringify(item.tierIndex) === JSON.stringify(tierIndex));
 
-    return (
-        <div className='flex flex-col w-full space-y-12'>
-            <div className='space-y-2'>
-                <h3 className='font-semibold'>{product.name}</h3>
-                <h6 className='text-lg'>{`ID: ${product.id}`}</h6>
-                <div className='flex items-end space-x-5'>
-                    <h1 className='font-semibold'>{discountPrice !== undefined ? `${formatPrice(product.price + discountPrice)}` : 'Giá không có'}</h1>
-                    <h6 className='text-xl line-through mb-2'>{formatPrice(product.price)}</h6>
-                    <div className='flex justify-center w-24 mb-2 bg-green-700 text-white text-2xl py-1 rounded-lg'>
-                        {product.discount}
-                    </div>
-                </div>
-            </div>
+      if (skuItem && userId !== null && accessToken !== null) {
+        const itemData = {
+          productId: product.product.id,
+          variantId: skuItem.id,
+          quantity: quantity
+        };
 
-            <SelectedColor product={product} selectedColorIndex={selectedColorIndex} setSelectedColorIndex={setSelectedColorIndex} />
+        try {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const response = await addProductToCart(itemData, userId, accessToken);
+          toast.success("Add product to cart successful.");
 
-            <SelectedSize product={product} selectedSizeIndex={selectedSizeIndex} setSelectedSizeIndex={setSelectedSizeIndex} />
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (error) { } finally {
+          setLoading(false);
+        }
+      }
+    }
+  }
 
-            <SelectedQuantity
-                product={product}
-                quantity={quantity}
-                setQuantity={setQuantity}
-                selectedColorIndex={selectedColorIndex}
-                selectedSizeIndex={selectedSizeIndex}
-            />
-
-            <div className='flex space-x-6'>
-                <button
-                    disabled={selectedColorIndex === null || selectedSizeIndex === null}
-                    className={`flex justify-center items-center text-xl font-semibold bg-gray-300 px-6 py-2 rounded-md ${selectedColorIndex === null || selectedSizeIndex === null ? 'cursor-not-allowed' : ''}`}
-                >
-                    <PlusIcon className='size-7 mr-3' />
-                    Add To Cart
-                </button>
-
-                <button
-                    className={`flex justify-center items-center text-xl font-semibold bg-gray-900 px-6 py-2 rounded-md text-white ${selectedColorIndex === null || selectedSizeIndex === null ? 'cursor-not-allowed' : ''}`}
-                    disabled={selectedColorIndex === null || selectedSizeIndex === null}
-                >
-                    <ShoppingCartIcon className='size-8 mr-3' />
-                    Buy Now
-                </button>
-            </div>
+  return (
+    <div className='flex flex-col w-full space-y-24'>
+      <div className='flex flex-col w-full space-y-12'>
+        <div className='space-y-2'>
+          <h3 className='font-semibold'>{product.product.name}</h3>
+          <h6 className='text-lg'>{`ID: ${product.product.id}`}</h6>
+          <div className='flex items-end space-x-5'>
+            <h1 className='font-semibold'>{formatPrice(product.product.price)}</h1>
+            <h6 className='text-xl mb-2 line-through'>{formatPrice(product.product.originalPrice)}</h6>
+          </div>
         </div>
-    )
+
+        <SelectedColor product={product.product} selectedColorIndex={selectedColorIndex} setSelectedColorIndex={setSelectedColorIndex} />
+
+        <SelectedSize product={product.product} selectedSizeIndex={selectedSizeIndex} setSelectedSizeIndex={setSelectedSizeIndex} />
+
+        <SelectedQuantity
+          product={product}
+          quantity={quantity}
+          setQuantity={setQuantity}
+          selectedColorIndex={selectedColorIndex}
+          selectedSizeIndex={selectedSizeIndex}
+        />
+      </div>
+
+      <div className='flex space-x-6'>
+        <button
+          onClick={handleAddToCart}
+          disabled={selectedColorIndex === null || selectedSizeIndex === null || loading}
+          className={`flex justify-center items-center w-[200px] text-xl font-semibold bg-gray-300 px-6 py-2 rounded-md ${selectedColorIndex === null || selectedSizeIndex === null || loading ? 'cursor-not-allowed' : ''}`}
+        >{loading ? (
+          <ClipLoader
+            size={20}
+            color='#000000'
+            aria-label="Loading Spinner"
+          />
+        ) : (
+
+          <span className='flex'>
+            <PlusIcon className='size-7 mr-3' />
+            Add To Cart
+          </span>
+        )}
+        </button>
+
+        <button
+          className={`flex justify-center items-center text-xl font-semibold bg-gray-900 px-6 py-2 rounded-md text-white ${selectedColorIndex === null || selectedSizeIndex === null ? 'cursor-not-allowed' : ''}`}
+          disabled={selectedColorIndex === null || selectedSizeIndex === null}
+        >
+          <ShoppingCartIcon className='size-8 mr-3' />
+          Buy Now
+        </button>
+      </div>
+    </div>
+  )
 }
 
-export default InforContainer;
+export default OptionContainer;

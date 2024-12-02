@@ -7,7 +7,7 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { ProductDataResponse } from '@/interface/product';
 import { useSearchParams, useRouter } from 'next/navigation';
 import SearchCard from '../../search-card';
-import { getSearchProductWithSize } from '@/app/api/product';
+import { getTopSearchProduct } from '@/app/api/product';
 
 export default function Search() {
   const [searchData, setSearchData] = useState('');
@@ -18,8 +18,8 @@ export default function Search() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await getSearchProductWithSize(searchData, 6);
-        setSearchProductList(response);
+        const response = await getTopSearchProduct(searchData);
+        setSearchProductList(response.products);
       } catch (error) {
         console.error("Error fetching products:", error);
       }

@@ -1,13 +1,36 @@
 'use client'
 
+import { useFilter } from "@/app/context/FilterContext";
 import { formatPrice } from "@/utils/helpers";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useMemo } from "react";
 import { Range } from "react-range";
 
 export default function PriceFilter() {
-  const [price, setPrice] = useState({
-    values: [0, 1000000],
-  });
+  const initialValues = useMemo(() => [0, 1000000], []);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const {price, setPrice} = useFilter();
+
+  useEffect(() => {
+    const [minPrice, maxPrice] = price.values;
+    const params = new URLSearchParams(searchParams);
+
+    if (minPrice !== initialValues[0]) {
+      params.set('minPrice', minPrice.toString());
+    } else {
+      params.delete('minPrice');
+    }
+
+    if (maxPrice !== initialValues[1]) {
+      params.set('maxPrice', maxPrice.toString());
+    } else {
+      params.delete('maxPrice');
+    }
+
+    const newUrl = `${window.location.pathname}?${params.toString()}`;
+    window.history.pushState({}, '', newUrl);
+  }, [initialValues, price, router, searchParams]);
 
   return (
     <div className='flex flex-col'>

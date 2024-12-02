@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { logoutRequest } from '@/app/api/auth';
 import { toast } from 'react-toastify';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useAuth } from '@/app/context/AuthContext';
 
 interface UserProps {
   isLogin: boolean;
@@ -14,9 +13,8 @@ interface UserProps {
 const User: React.FC<UserProps> = ({ isLogin }) => {
   const searchParams = useSearchParams();
   const [userId, setUserId] = useState('');
-  const { setIsLogin } = useAuth();
   const router = useRouter();
-  const accessToken = sessionStorage.getItem('accessToken');
+  const accessToken = localStorage.getItem('accessToken');
 
   useEffect(() => {
     const id = searchParams.get('userId');
@@ -38,11 +36,11 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
       const response = await logoutRequest(userId, accessToken);
       toast.success("Logout successfull.");
 
-      sessionStorage.removeItem('accessToken');
-      sessionStorage.removeItem('refreshToken');
-      setIsLogin(false);
-      
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('userId');
       router.push("/auth/login");
+      
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("An error occurred during logout.");
