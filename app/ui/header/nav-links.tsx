@@ -74,7 +74,7 @@ export default function NavLinks() {
         </Link>
 
         <div
-          className={`absolute flex w-[1200px] -right-[270px] z-10 mt-12 origin-top space-x-10 px-10 py-5 rounded-md bg-white shadow-lg transition-opacity duration-300 ease-in-out ${isOpen ? 'block opacity-100' : 'hidden opacity-0'}`}
+          className={`absolute flex -right-[440px] z-10 mt-12 origin-top space-x-10 px-10 py-5 rounded-md bg-white shadow-lg transition-opacity duration-300 ease-in-out ${isOpen ? 'block opacity-100' : 'hidden opacity-0'}`}
         >
           {categories.map((category, index) => (
             <div key={index} className='flex flex-col items-start'>

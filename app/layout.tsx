@@ -8,7 +8,7 @@ import Footer from "./ui/footer";
 import ScrollToTopButton from "./ui/scroll-to-top";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
-import { AuthProvider } from "./context/AuthContext";
+import { AppProvider } from "./context/AuthContext";
 
 export const metadata: Metadata = {
   title: "Share And Care",
@@ -21,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <AuthProvider>
+    <AppProvider>
       <html lang="en">
         <body className={`${lusitana.className} antialiased`}>
           <main>
@@ -46,6 +46,6 @@ export default function RootLayout({
           </main>
         </body>
       </html>
-    </AuthProvider>
+    </AppProvider>
   );
 }

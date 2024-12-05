@@ -1,55 +1,14 @@
-import * as Auth from "@/interface/auth"
+import * as Address from "@/interface/address"
 
 import { toast } from 'react-toastify';
 import api from './index';
 import get from 'lodash/get';
 
-const AUTH_URL = '/auth';
+const ADDRESS_URL = '/address';
 
-export const signUpRequest = async (data: Auth.SignUpData): Promise<Auth.SignUpDataResponse> => {
+export const getAllAddress = async (clientId: string, accessToken: string): Promise<Array<Address.AddressDataResponse>> => {
     try {
-        const response = await api.post(`${AUTH_URL}/register`, data);
-        return response.data.metadata;
-    } catch (error) {
-        const errorMessage = get(error, 'response.data.error.message', '');
-
-        if (errorMessage) {
-            toast.error(errorMessage);
-        }
-
-        throw new Error(errorMessage || 'An unknown error occurred.');
-    }
-};
-
-export const resendEmailVerification = async (data: Auth.ResendData): Promise<Auth.ResendDataResponse> => {
-    try {
-        const response = await api.post(`${AUTH_URL}/resend-email-verification`, data);
-        return response.data.metadata;
-    } catch (error) {
-        const errorMessage = get(error, 'response.data.error.message', '');
-        if (errorMessage) {
-            toast.error(errorMessage);
-        }
-        throw new Error(errorMessage || 'An unknown error occurred.');
-    }
-};
-
-export const loginRequest = async (data: Auth.LoginData): Promise<Auth.LoginDataResponse> => {
-    try {
-        const response = await api.post(`${AUTH_URL}/login`, data);
-        return response.data.metadata;
-    } catch (error) {
-        const errorMessage = get(error, 'response.data.error.message', '');
-        if (errorMessage) {
-            toast.error(errorMessage);
-        }
-        throw new Error(errorMessage || 'An unknown error occurred.');
-    }
-};
-
-export const logoutRequest = async (clientId: string, accessToken: string) => {
-    try {
-        const response = await api.post(`${AUTH_URL}/logout`, null, {
+        const response = await api.get(`${ADDRESS_URL}`, {
             headers: {
                 'x-client-id': clientId,
                 'Authorization': accessToken
@@ -58,35 +17,86 @@ export const logoutRequest = async (clientId: string, accessToken: string) => {
         return response.data.metadata;
     } catch (error) {
         const errorMessage = get(error, 'response.data.error.message', '');
+
         if (errorMessage) {
             toast.error(errorMessage);
         }
         throw new Error(errorMessage || 'An unknown error occurred.');
     }
-};
+}
 
-export const forgotPassword = async (data: Auth.ForgotPasswordData) => {
+export const createAddress = async (data: Address.AddressData, clientId: string, accessToken: string): Promise<Array<Address.AddressDataResponse>> => {
     try {
-        const response = await api.post(`${AUTH_URL}/forgot-password`, data);
+        const response = await api.post(`${ADDRESS_URL}`, data, {
+            headers: {
+                'x-client-id': clientId,
+                'Authorization': accessToken
+            }
+        });
         return response.data.metadata;
     } catch (error) {
         const errorMessage = get(error, 'response.data.error.message', '');
+
         if (errorMessage) {
             toast.error(errorMessage);
         }
         throw new Error(errorMessage || 'An unknown error occurred.');
     }
-};
+}
 
-export const resetPassword = async (data: Auth.ResetPasswordData) => {
+export const deleteAddress = async (id: string, clientId: string, accessToken: string) => {
     try {
-        const response = await api.post(`${AUTH_URL}/reset-password`, data);
+        const response = await api.delete(`${ADDRESS_URL}/${id}`, {
+            headers: {
+                'x-client-id': clientId,
+                'Authorization': accessToken
+            }
+        });
         return response.data.metadata;
     } catch (error) {
         const errorMessage = get(error, 'response.data.error.message', '');
+
         if (errorMessage) {
             toast.error(errorMessage);
         }
         throw new Error(errorMessage || 'An unknown error occurred.');
     }
-};
+}
+
+export const getDefaultAddress = async (clientId: string, accessToken: string): Promise<Address.AddressDataResponse> => {
+    try {
+        const response = await api.get(`${ADDRESS_URL}/default`, {
+            headers: {
+                'x-client-id': clientId,
+                'Authorization': accessToken
+            }
+        });
+        return response.data.metadata;
+    } catch (error) {
+        const errorMessage = get(error, 'response.data.error.message', '');
+
+        if (errorMessage) {
+            toast.error(errorMessage);
+        }
+        throw new Error(errorMessage || 'An unknown error occurred.');
+    }
+}
+
+export const setDefault = async (id: string, clientId: string, accessToken: string) => {
+    try {
+        const response = await api.patch(`${ADDRESS_URL}/default/${id}`, null, {
+            headers: {
+                'x-client-id': clientId,
+                'Authorization': accessToken
+            }
+        });
+        return response.data.metadata;
+    } catch (error) {
+        const errorMessage = get(error, 'response.data.error.message', '');
+
+        if (errorMessage) {
+            toast.error(errorMessage);
+        }
+        throw new Error(errorMessage || 'An unknown error occurred.');
+    }
+}

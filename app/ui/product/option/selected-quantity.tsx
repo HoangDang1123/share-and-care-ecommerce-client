@@ -1,6 +1,6 @@
 import { ProductDetailDataResponse } from '@/interface/product';
 import { MinusIcon, PlusIcon } from '@heroicons/react/24/outline';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 interface SelectedQuantityProps {
   product: ProductDetailDataResponse,
@@ -11,6 +11,23 @@ interface SelectedQuantityProps {
 }
 
 const SelectedQuantity: React.FC<SelectedQuantityProps> = ({ product, quantity, setQuantity, selectedColorIndex, selectedSizeIndex }) => {
+  const [quantityInStock, setQuantityInStock] = useState(product.product.quantity);
+
+  useEffect(() => {
+    if (selectedColorIndex !== null && selectedSizeIndex !== null) {
+      const tierIndex = [selectedColorIndex, selectedSizeIndex];
+      const skuItem = product.skuList.skuList.find(item => JSON.stringify(item.tierIndex) === JSON.stringify(tierIndex));
+
+      if (skuItem) {
+        setQuantityInStock(skuItem.quantity);
+      } else {
+        setQuantityInStock(product.product.quantity);
+      }
+    } else {
+      setQuantityInStock(product.product.quantity);
+    }
+  }, [selectedColorIndex, selectedSizeIndex, product.product.quantity, product.skuList.skuList]);
+
   const decQuantity = () => {
     setQuantity(prevQuantity => Math.max(prevQuantity - 1, 1));
   }
@@ -48,7 +65,7 @@ const SelectedQuantity: React.FC<SelectedQuantityProps> = ({ product, quantity, 
           <PlusIcon className='size-6' />
         </button>
       </div>
-      <h6 className='text-2xl'>{`( ${product.product.quantity} left )`}</h6>
+      <h6 className='text-2xl'>{`( ${quantityInStock} left )`}</h6>
     </div>
   )
 }

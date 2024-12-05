@@ -16,7 +16,7 @@ export default function AuthLayout({
                 src="/assets/Auth-thumb.png"
                 priority
                 width={1920}
-                height={1080}
+                height={1082}
                 style={{ width: "auto", height: "auto" }}
             />
 

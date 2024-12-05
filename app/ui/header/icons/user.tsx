@@ -35,15 +35,19 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const response = await logoutRequest(userId, accessToken);
       toast.success("Logout successfull.");
-
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-      localStorage.removeItem('userId');
-      router.push("/auth/login");
       
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("An error occurred during logout.");
+    } finally {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('userId');
+      localStorage.removeItem('tokenTimestamp');
+      localStorage.removeItem('order');
+      localStorage.removeItem('productPrice');
+      localStorage.removeItem('deliveryFee');
+      router.push("/auth/login");
     }
   }
 

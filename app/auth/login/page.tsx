@@ -15,6 +15,7 @@ export default function Page() {
     email: '',
     password: '',
   });
+
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { deviceToken, deviceName, browserName } = useDeviceInfo();
@@ -41,9 +42,12 @@ export default function Page() {
       });
       toast.success("Login successful.");
 
+      const currentTime = new Date().getTime();
+
       localStorage.setItem('accessToken', response.tokens.accessToken);
       localStorage.setItem('refreshToken', response.tokens.refreshToken);
       localStorage.setItem('userId', response.user.id);
+      localStorage.setItem('tokenTimestamp', currentTime.toString());
 
       setIsLogin(true);
 

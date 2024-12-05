@@ -12,6 +12,8 @@ import { CartDataResponse } from '@/interface/cart';
 import { clearCartItem, getCart } from '../api/cart';
 import { toast } from 'react-toastify';
 import ClipLoader from 'react-spinners/ClipLoader';
+import { useOrder } from '../context/AuthContext';
+import { OrderData } from '@/interface/order';
 
 export default function Page() {
   const [cart, setCart] = useState<CartDataResponse>();
@@ -21,6 +23,7 @@ export default function Page() {
   const [orderMessage, setOrderMessage] = useState('');
   const [loading, setLoading] = useState(true);
   const route = useRouter();
+  const { setOrder } = useOrder();
 
   const userId = localStorage.getItem('userId');
   const accessToken = localStorage.getItem('accessToken');
@@ -98,7 +101,37 @@ export default function Page() {
     }
     setOrderMessage('');
 
-    // const selectedProducts = cart?.items.filter((_, index) => selectedItem[index]) || [];
+    const selectedProducts = cart?.items.filter((_, index) => selectedItem[index]) || [];
+    const productDetails = selectedProducts.map(item => ({
+      productId: item.productId,
+      variantId: item.variantId,
+      quantity: item.quantity
+    }));
+
+    setOrder(prevOrder => {
+      const currentOrder: OrderData = prevOrder || {
+        shippingAddress: {
+          fullname: '',
+          phone: '',
+          street: '',
+          ward: '',
+          district: '',
+          city: ''
+        },
+        items: [],
+        couponCode: '',
+        paymentMethod: '',
+        deliveryId: ''
+      };
+
+      return {
+        ...currentOrder,
+        items: productDetails,
+      };
+    });
+
+    localStorage.setItem('productPrice', totalCost.toString());
+
     route.push("/order");
   }
 

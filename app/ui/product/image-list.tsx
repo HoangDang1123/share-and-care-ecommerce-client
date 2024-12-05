@@ -41,7 +41,7 @@ const ImageList: React.FC<ImageSliderProps> = ({ images }) => {
             src={item}
             alt=""
             width={1920}
-            height={1080}
+            height={1082}
             aria-hidden={imageIndex !== index}
             className={`${imageIndex === index ? 'block' : 'hidden'} object-cover w-auto`}
           />

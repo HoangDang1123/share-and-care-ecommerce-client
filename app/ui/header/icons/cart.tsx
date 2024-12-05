@@ -32,12 +32,6 @@ const Cart: React.FC<CartProps> = ({ isLogin }) => {
     fetchCart();
   }, [accessToken, setCart, userId]);
 
-  if (!cart) {
-    return (
-      <div>Cart not found</div>
-    )
-  }
-
   return (
     <Menu as="div" className="relative ml-3">
       <div>
@@ -51,10 +45,10 @@ const Cart: React.FC<CartProps> = ({ isLogin }) => {
       >
         {isLogin ? (
           <>
-            {cart.items.length === 0 ? (
+            {cart?.items.length === 0 ? (
               <div className='flex justify-center items-center w-96 text-lg py-4'>There&apos;s no item.</div>
             ) : (
-              cart.items.slice(0, 3).map((cart, index) => (
+              cart?.items.slice(0, 3).map((cart, index) => (
                 <MenuItem key={index}>
                   <Link
                     className='flex w-auto gap-x-10 px-10 py-5 rounded-lg justify-between items-center hover:bg-gray-200'
