@@ -9,6 +9,7 @@ import ScrollToTopButton from "./ui/scroll-to-top";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
 import { AppProvider } from "./context/AuthContext";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Share And Care",
@@ -34,7 +35,7 @@ export default function RootLayout({
 
             <div className="mt-44">
               <div className=" overflow-y-hidden min-h-[745px] h-auto z-9">
-                {children}
+                <Suspense>{children}</Suspense>
               </div>
             </div>
 
