@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import React from 'react'
+import React, { Suspense } from 'react'
 
 export default function AuthLayout({
     children,
@@ -21,7 +21,7 @@ export default function AuthLayout({
             />
 
             <div className='w-[500px] h-full flex flex-col justify-center shadow-xl px-16'>
-                {children}
+                <Suspense>{children}</Suspense>
             </div>
         </div>
     )
