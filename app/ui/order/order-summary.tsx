@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 
 export default function OrderSummary() {
   const [isFixed, setIsFixed] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { order } = useOrder();
 
   const productPrice = Number(localStorage.getItem('productPrice'));

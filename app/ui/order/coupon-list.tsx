@@ -1,12 +1,14 @@
 'use client'
 
-import { Disclosure, DisclosureButton, DisclosurePanel, Radio, RadioGroup } from '@headlessui/react';
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import { AnimatePresence, easeOut, motion } from 'framer-motion';
 import { Fragment } from 'react';
 
 const CouponList = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const userId = localStorage.getItem('userId');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const accessToken = localStorage.getItem('accessToken');
 
   return (
