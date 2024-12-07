@@ -2,6 +2,7 @@ import BackButton from "@/app/ui/back-button";
 import FilterContainer from "@/app/ui/shop/filter-container";
 import Link from "next/link";
 import { FilterProvider } from "@/app/context/FilterContext";
+import { Suspense } from "react";
 
 export default function ShopLayout({
   children,
@@ -29,7 +30,7 @@ export default function ShopLayout({
             <FilterContainer />
           </div>
           <div className="col-span-1">
-            {children}
+            <Suspense>{children}</Suspense>
           </div>
         </div>
       </div>
