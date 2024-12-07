@@ -6,7 +6,7 @@ import Card from "@/app/ui/card";
 import SortSelected from "@/app/ui/shop/sort-selected";
 import { ProductDataResponse } from "@/interface/product";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 
 export default function Page() {
   const { price } = useFilter();
@@ -60,17 +60,19 @@ export default function Page() {
     <div className="flex flex-col space-y-8">
       <SortSelected />
 
-      {productList.length === 0 ? (
-        <div className='h-[480px] flex justify-center items-center'>
-          There&apos;s no product.
-        </div>
-      ) : (
-        <div className="w-full grid min-[0px]:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-10 gap-y-16">
-          {productList.map((product, index) => (
-            <Card key={index} product={product} />
-          ))}
-        </div>
-      )}
+      <Suspense fallback={<div>Loading products...</div>}>
+        {productList.length === 0 ? (
+          <div className='h-[480px] flex justify-center items-center'>
+            There&apos;s no product.
+          </div>
+        ) : (
+          <div className="w-full grid min-[0px]:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-10 gap-y-16">
+            {productList.map((product, index) => (
+              <Card key={index} product={product} />
+            ))}
+          </div>
+        )}
+      </Suspense>
     </div>
   )
 }

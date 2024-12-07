@@ -8,9 +8,6 @@ module.exports = {
   images: {
     domains: ['res.cloudinary.com'],
   },
-  experimental: {
-    missingSuspenseWithCSRBailout: false,
-  },
 };
 
 const nextConfig: NextConfig = {

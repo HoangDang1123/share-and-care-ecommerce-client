@@ -1,6 +1,5 @@
 'use client'
 
-// import Image from "next/image";
 import { Slider } from "./ui/home/slider";
 import TopProduct from "./ui/home/top-product";
 import { useEffect, useRef, useState } from "react";
@@ -10,6 +9,7 @@ import { useAuth } from "./context/AuthContext";
 import { useSearchParams } from "next/navigation";
 import { getAccessToken } from "./api/token";
 import { toast } from "react-toastify";
+import { Suspense } from 'react';
 
 export default function Home() {
   const [categories, setCategories] = useState<Array<CategoryDataResponse>>([]);
@@ -59,18 +59,13 @@ export default function Home() {
     <div className="flex flex-col overflow-hidden items-center space-y-20 mb-10">
       <Slider />
 
-      {categories.map((category, index) => (
-        <div key={index} className="flex flex-col px-10">
-          {/* <Image
-            alt={item.alt}
-            src={item.src}
-            width={1920}
-            height={100}
-            className="w-screen h-72 px-20"
-          /> */}
-          <TopProduct category={category} />
-        </div>
-      ))}
+      <Suspense fallback={<div>Loading categories...</div>}>
+        {categories.map((category, index) => (
+          <div key={index} className="flex flex-col px-10">
+            <TopProduct category={category} />
+          </div>
+        ))}
+      </Suspense>
     </div>
   );
 }
