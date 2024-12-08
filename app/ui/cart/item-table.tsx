@@ -157,8 +157,8 @@ const ItemTable: React.FC<ItemTableProps> = ({ cart, setCart, selectedAll, selec
               <div className='flex flex-col justify-between w-[200px]'>
                 <h6 className='font-bold text-left'>{item.productName}</h6>
                 <div className='flex flex-col text-left'>
-                  <h6>Color: {splitVariantSlug(item.variantSlug)[0]}</h6>
-                  <h6>Size: {splitVariantSlug(item.variantSlug)[1]}</h6>
+                  <h6>Color: {item.variantSlug && splitVariantSlug(item.variantSlug)[0]}</h6>
+                  <h6>Size: {item.variantSlug && splitVariantSlug(item.variantSlug)[1]}</h6>
                 </div>
               </div>
             </td>
