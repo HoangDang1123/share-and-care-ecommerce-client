@@ -50,7 +50,10 @@ const DeliveryList: React.FC<DeliveryListProps> = ({ defaultAddress }) => {
   return (
     <div className="flex flex-col w-[1082px] space-y-4 mx-auto p-10 rounded-xl shadow-lg">
       <h1 className="mb-6">Delivery Method</h1>
-      <RadioGroup value={selected} onChange={setSelected} aria-label="Payment Method" className="space-y-6">
+      {deliveryList.length === 0 ? (
+        <div className='flex justify-center items-center w-full text-lg py-4'>There&apos;s no delivery.</div>
+      ) : (
+        <RadioGroup value={selected} onChange={setSelected} aria-label="Payment Method" className="space-y-6">
         {deliveryList.map((delivery) => (
           <Radio
             key={delivery.name}
@@ -69,6 +72,7 @@ const DeliveryList: React.FC<DeliveryListProps> = ({ defaultAddress }) => {
           </Radio>
         ))}
       </RadioGroup>
+      )}
     </div>
   )
 }

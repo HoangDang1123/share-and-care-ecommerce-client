@@ -163,7 +163,11 @@ export default function Page() {
               className="flex w-full justify-center rounded-lg bg-gray-900 mt-10 px-3 py-1.5 text-lg font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
             >
               {loading ? (
-                <ClipLoader />
+                <ClipLoader
+                  size={20}
+                  color='#ffffff'
+                  aria-label="Loading Spinner"
+                 />
               ) : (
                 'SIGN UP'
               )}

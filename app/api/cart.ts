@@ -6,7 +6,7 @@ import get from 'lodash/get';
 
 const CART_URL = '/cart';
 
-export const addProductToCart = async (data: Cart.CartData, clientId: string, accessToken: string): Promise<Cart.AddCartDataResponse> => {
+export const addProductToCart = async (data: Cart.CartDataHasVariant | Cart.CartDataNoVariant, clientId: string, accessToken: string): Promise<Cart.AddCartDataResponse> => {
     try {
         const response = await api.post(`${CART_URL}/`, data, {
             headers: {
@@ -64,7 +64,7 @@ export const deleteCartItem = async (data: Cart.CartItemDeleted, clientId: strin
     }
 }
 
-export const updateCartItem = async (data: Cart.CartData, clientId: string, accessToken: string): Promise<Cart.CartDataResponse> => {
+export const updateCartItem = async (data: Cart.CartDataHasVariant | Cart.CartDataNoVariant, clientId: string, accessToken: string): Promise<Cart.CartDataResponse> => {
     try {
         const response = await api.patch(`${CART_URL}/`, data, {
             headers: {

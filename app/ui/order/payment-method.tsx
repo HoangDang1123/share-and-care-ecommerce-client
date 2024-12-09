@@ -7,8 +7,8 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const methods = [
-  { name: 'COD', image: '/assets/cash-payment.png', alt: 'Cash Payment Img' },
-  { name: 'VNPAY', image: '/assets/vnpay.png', alt: 'VNPAY Img' },
+  { name: 'COD', value: 'COD', image: '/assets/cash-payment.png', alt: 'Cash Payment Img' },
+  { name: 'VNPAY', value: 'VN_PAY', image: '/assets/vnpay.png', alt: 'VNPAY Img' },
 ]
 
 export default function PaymentMethod() {
@@ -19,7 +19,7 @@ export default function PaymentMethod() {
     setOrder(prevOrder => {
       return {
         ...prevOrder,
-        paymentMethod: selected.name,
+        paymentMethod: selected.value,
       } as OrderData;
     });
   }, [selected, setOrder]);

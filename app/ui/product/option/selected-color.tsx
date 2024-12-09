@@ -8,6 +8,8 @@ const colorCodes: { [key: string]: string } = {
   "Đỏ": "#8B0000",
   "Xanh Lá": "#004d00",
   "Vàng": "#BDAA00",
+  "Light blue": "#ADD8E6",
+  "Xanh wash": "#A0C4E1",
 };
 
 interface SelectedColorProps {

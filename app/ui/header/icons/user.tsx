@@ -24,6 +24,7 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
   }, [searchParams]);
 
   const handleGoToProfile = () => {
+    router.push("/profile");
   }
 
   const handleLogout = async () => {

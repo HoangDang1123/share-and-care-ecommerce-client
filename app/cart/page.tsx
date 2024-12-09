@@ -102,9 +102,11 @@ export default function Page() {
     setOrderMessage('');
 
     const selectedProducts = cart?.items.filter((_, index) => selectedItem[index]) || [];
+
+    console.log(selectedProducts)
     const productDetails = selectedProducts.map(item => ({
       productId: item.productId,
-      variantId: item.variantId,
+      variantId: item.variantId !== undefined ? item.variantId : null,
       quantity: item.quantity
     }));
 

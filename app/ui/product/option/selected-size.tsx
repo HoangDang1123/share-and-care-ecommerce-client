@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
+import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import { ProductInfoDataResponse } from '@/interface/product';
 import SizeGuide from './size-guide';
 
@@ -19,7 +19,7 @@ const SelectedSize: React.FC<SelectedSizeProps> = ({ product, selectedSizeIndex,
 
   if (!sizes) {
     return (
-      <div>There&apos;s no color</div>
+      <div>There&apos;s no size</div>
     )
   }
 
@@ -37,6 +37,10 @@ const SelectedSize: React.FC<SelectedSizeProps> = ({ product, selectedSizeIndex,
           Size Guide
         </button>
         <Dialog open={isOpenDialog} onClose={() => setIsOpenDialog(false)} className="relative z-50">
+          <DialogBackdrop
+            transition
+            className="fixed inset-0 bg-gray-500/75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
+          />
           <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
             <DialogPanel className="max-w-lg space-y-4 border bg-white p-12">
               <DialogTitle className="font-bold">Size Guide</DialogTitle>

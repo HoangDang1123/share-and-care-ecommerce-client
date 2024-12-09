@@ -1,3 +1,5 @@
+'use client'
+
 import { ProductDetailDataResponse } from '@/interface/product';
 import { MinusIcon, PlusIcon } from '@heroicons/react/24/outline';
 import React, { useEffect, useState } from 'react'
@@ -12,6 +14,14 @@ interface SelectedQuantityProps {
 
 const SelectedQuantity: React.FC<SelectedQuantityProps> = ({ product, quantity, setQuantity, selectedColorIndex, selectedSizeIndex }) => {
   const [quantityInStock, setQuantityInStock] = useState(product.product.quantity);
+  const [disabled, setDisabled] = useState(true);
+
+  useEffect(() => {
+    const hasVariants = product.product.variants.length > 0;
+    const isColorOrSizeNotSelected = selectedColorIndex === null || selectedSizeIndex === null;
+  
+    setDisabled(hasVariants && isColorOrSizeNotSelected);
+  }, [product.product.variants.length, selectedColorIndex, selectedSizeIndex, setDisabled]);
 
   useEffect(() => {
     if (selectedColorIndex !== null && selectedSizeIndex !== null) {
@@ -42,8 +52,8 @@ const SelectedQuantity: React.FC<SelectedQuantityProps> = ({ product, quantity, 
       <div className='flex items-center justify-between space-x-2 rounded-md'>
         <button
           onClick={decQuantity}
-          className={`flex justify-center items-center px-1 py-1 h-full rounded-md border-solid border border-gray-900 ${selectedColorIndex === null || selectedSizeIndex === null ? 'cursor-not-allowed' : ''}`}
-          disabled={selectedColorIndex === null || selectedSizeIndex === null}
+          className={`flex justify-center items-center px-1 py-1 h-full rounded-md border-solid border border-gray-900 ${disabled ? 'cursor-not-allowed' : ''}`}
+          disabled={disabled}
         >
           <MinusIcon className='size-6' />
         </button>
@@ -54,13 +64,13 @@ const SelectedQuantity: React.FC<SelectedQuantityProps> = ({ product, quantity, 
           value={quantity}
           onChange={(e) => setQuantity(Math.max(Number(e.target.value), 1))}
           min="1"
-          disabled={selectedColorIndex === null || selectedSizeIndex === null}
+          disabled={disabled}
         />
 
         <button
           onClick={incQuantity}
-          className={`flex justify-center items-center px-1 py-1 h-full rounded-md border-solid border border-gray-900 ${selectedColorIndex === null || selectedSizeIndex === null ? 'cursor-not-allowed' : ''}`}
-          disabled={selectedColorIndex === null || selectedSizeIndex === null}
+          className={`flex justify-center items-center px-1 py-1 h-full rounded-md border-solid border border-gray-900 ${disabled ? 'cursor-not-allowed' : ''}`}
+          disabled={disabled}
         >
           <PlusIcon className='size-6' />
         </button>

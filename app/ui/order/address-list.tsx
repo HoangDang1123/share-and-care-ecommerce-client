@@ -42,7 +42,7 @@ const AddressList: React.FC<AddressListProps> = ({ isRefresh, setIsRefresh, defa
     }
 
     fetchAddress();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setAddressList, userId, accessToken, isRefresh]);
 
   useEffect(() => {
@@ -138,42 +138,46 @@ const AddressList: React.FC<AddressListProps> = ({ isRefresh, setIsRefresh, defa
                     transition={{ duration: 0.2, ease: easeOut }}
                     className="mt-4 w-full"
                   >
-                    <RadioGroup className="grid" value={selected} onChange={setSelected} aria-label="Address">
-                      {addressList.map((address, index) => (
-                        <Radio
-                          key={index}
-                          value={address}
-                          className="group flex cursor-pointer"
-                        >
-                          <div className="flex w-full items-center justify-between space-x-10 px-4 py-2 rounded-xl hover:bg-gray-100 group-data-[checked]:bg-gray-100">
-                            <span role="radio" aria-checked className="size-5 rounded-full flex justify-center items-center border border-gray-700 bg-white">
-                              <div className="invisible bg-gray-700 size-2 rounded-full group-data-[checked]:visible" />
-                            </span>
+                    {addressList.length === 0 ? (
+                      <div className='flex justify-center items-center w-full text-lg py-4'>There&apos;s no address.</div>
+                    ) : (
+                      <RadioGroup className="grid" value={selected} onChange={setSelected} aria-label="Address">
+                        {addressList.map((address, index) => (
+                          <Radio
+                            key={index}
+                            value={address}
+                            className="group flex cursor-pointer"
+                          >
+                            <div className="flex w-full items-center justify-between space-x-10 px-4 py-2 rounded-xl hover:bg-gray-100 group-data-[checked]:bg-gray-100">
+                              <span role="radio" aria-checked className="size-5 rounded-full flex justify-center items-center border border-gray-700 bg-white">
+                                <div className="invisible bg-gray-700 size-2 rounded-full group-data-[checked]:visible" />
+                              </span>
 
-                            <div className='grid grid-cols-3 w-full'>
-                              <h4 className='col-span-2'>{address.name}</h4>
-                              <h4 className='col-span-1'>{address.phone}</h4>
-                              <h4 className='font-normal col-span-3'>{`${address.street}, ${address.ward}, ${address.district}, ${address.city}`}</h4>
+                              <div className='grid grid-cols-3 w-full'>
+                                <h4 className='col-span-2'>{address.name}</h4>
+                                <h4 className='col-span-1'>{address.phone}</h4>
+                                <h4 className='font-normal col-span-3'>{`${address.street}, ${address.ward}, ${address.district}, ${address.city}`}</h4>
+                              </div>
+
+                              <button
+                                onClick={(e) => handleDeleteAddress(e, address.id, index)}
+                                className='hover:bg-gray-300 rounded-lg'
+                              >
+                                {loadingItems[index] ? (
+                                  <ClipLoader
+                                    size={20}
+                                    color='#000000'
+                                    aria-label="Loading Spinner"
+                                  />
+                                ) : (
+                                  <XMarkIcon className='size-6 text-red-500' />
+                                )}
+                              </button>
                             </div>
-
-                            <button
-                              onClick={(e) => handleDeleteAddress(e, address.id, index)}
-                              className='hover:bg-gray-300 rounded-lg'
-                            >
-                              {loadingItems[index] ? (
-                                <ClipLoader
-                                  size={20}
-                                  color='#000000'
-                                  aria-label="Loading Spinner"
-                                />
-                              ) : (
-                                <XMarkIcon className='size-6 text-red-500' />
-                              )}
-                            </button>
-                          </div>
-                        </Radio>
-                      ))}
-                    </RadioGroup>
+                          </Radio>
+                        ))}
+                      </RadioGroup>
+                    )}
                   </motion.div>
                 </DisclosurePanel>
               )}

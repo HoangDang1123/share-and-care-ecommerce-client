@@ -2,7 +2,7 @@
 
 import { formatPrice } from '@/utils/helpers';
 import { PlusIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SelectedColor from './option/selected-color';
 import SelectedSize from './option/selected-size';
 import SelectedQuantity from './option/selected-quantity';
@@ -22,11 +22,19 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product }) => {
   const [selectedSizeIndex, setSelectedSizeIndex] = useState<number | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [disabled, setDisabled] = useState(true);
   const { isLogin } = useAuth();
   const router = useRouter();
 
   const userId = localStorage.getItem('userId');
   const accessToken = localStorage.getItem('accessToken');
+
+  useEffect(() => {
+    const hasVariants = product.product.variants.length > 0;
+    const isColorOrSizeNotSelected = selectedColorIndex === null || selectedSizeIndex === null;
+
+    setDisabled((hasVariants && isColorOrSizeNotSelected) || loading);
+  }, [product.product.variants.length, selectedColorIndex, selectedSizeIndex, loading, setDisabled]);
 
   const handleAddToCart = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -38,18 +46,17 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product }) => {
       const tierIndex = [selectedColorIndex, selectedSizeIndex];
       const skuItem = product.skuList.skuList.find(item => JSON.stringify(item.tierIndex) === JSON.stringify(tierIndex));
 
-      if (skuItem && userId !== null && accessToken !== null) {
+      if (userId !== null && accessToken !== null) {
         const itemData = {
           productId: product.product.id,
-          variantId: skuItem.id,
-          quantity: quantity
+          quantity: quantity,
+          ...(skuItem && { variantId: skuItem.id })
         };
 
         try {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const response = await addProductToCart(itemData, userId, accessToken);
           toast.success("Add product to cart successful.");
-
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) { } finally {
           setLoading(false);
@@ -86,8 +93,8 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product }) => {
       <div className='flex space-x-6'>
         <button
           onClick={handleAddToCart}
-          disabled={selectedColorIndex === null || selectedSizeIndex === null || loading}
-          className={`flex justify-center items-center w-[200px] text-xl font-semibold bg-gray-300 px-6 py-2 rounded-md ${selectedColorIndex === null || selectedSizeIndex === null || loading ? 'cursor-not-allowed' : ''}`}
+          disabled={disabled}
+          className={`flex justify-center items-center w-[200px] text-xl font-semibold bg-gray-300 px-6 py-2 rounded-md ${disabled ? 'cursor-not-allowed' : ''}`}
         >{loading ? (
           <ClipLoader
             size={20}
@@ -104,8 +111,8 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product }) => {
         </button>
 
         <button
-          className={`flex justify-center items-center text-xl font-semibold bg-gray-900 px-6 py-2 rounded-md text-white ${selectedColorIndex === null || selectedSizeIndex === null ? 'cursor-not-allowed' : ''}`}
-          disabled={selectedColorIndex === null || selectedSizeIndex === null}
+          className={`flex justify-center items-center text-xl font-semibold bg-gray-900 px-6 py-2 rounded-md text-white ${disabled ? 'cursor-not-allowed' : ''}`}
+          disabled={disabled}
         >
           <ShoppingCartIcon className='size-8 mr-3' />
           Buy Now

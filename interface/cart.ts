@@ -1,6 +1,6 @@
 export interface CartData {
     productId: string,
-    variantId: string,
+    variantId: string | null,
     quantity: number,
 }
 

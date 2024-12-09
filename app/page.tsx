@@ -21,16 +21,19 @@ export default function Home() {
   const refreshToken = searchParams.get('refreshToken');
 
   useEffect(() => {
-    if (!isLogin && userId && refreshToken) {
+    if (!isLogin && userId && refreshToken && !hasFetched.current) {
       hasFetched.current = true;
       const fetchProducts = async () => {
         try {
           toast.success("Login successful.");
           const response = await getAccessToken(userId, refreshToken);
 
+          const currentTime = new Date().getTime();
+
           localStorage.setItem('accessToken', response.tokens.accessToken);
           localStorage.setItem('refreshToken', response.tokens.refreshToken);
           localStorage.setItem('userId', userId);
+          localStorage.setItem('tokenTimestamp', currentTime.toString());
 
           setIsLogin(true);
         } catch (error) {
@@ -40,7 +43,8 @@ export default function Home() {
 
       fetchProducts();
     }
-  }, [isLogin, userId, refreshToken, setIsLogin]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLogin, userId, refreshToken]);
 
   useEffect(() => {
     const fetchCategories = async () => {

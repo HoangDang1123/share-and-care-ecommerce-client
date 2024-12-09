@@ -70,7 +70,7 @@ const Cart: React.FC<CartProps> = ({ isLogin }) => {
             <MenuItem>
               <Link
                 href={"/cart"}
-                className='flex justify-center items-center my-2 text-lg hover:text-blue-900 font-bold text-blue-700 underline'
+                className='flex justify-center items-center my-2 text-lg w-96 hover:text-blue-900 font-bold text-blue-700 underline'
               >
                 Go to my cart
                 <ArrowRightIcon className='size-4 ml-1' />
