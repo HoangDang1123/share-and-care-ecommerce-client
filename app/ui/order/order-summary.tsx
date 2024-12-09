@@ -20,8 +20,8 @@ export default function OrderSummary() {
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : "";
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";
 
-  const productPrice = Number(localStorage.getItem('productPrice'));
-  const deliveryFee = Number(localStorage.getItem('deliveryFee'));
+  const productPrice = Number(typeof window !== "undefined" ? localStorage.getItem("productPrice") || "" : "");
+  const deliveryFee = Number(typeof window !== "undefined" ? localStorage.getItem("deliveryFee") || "" : "");
 
   useEffect(() => {
     const handleScroll = () => {

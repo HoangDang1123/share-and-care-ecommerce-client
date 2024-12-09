@@ -6,11 +6,6 @@ import { AnimatePresence, easeOut, motion } from 'framer-motion';
 import { Fragment } from 'react';
 
 const CouponList = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const userId = localStorage.getItem('userId');
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const accessToken = localStorage.getItem('accessToken');
-
   return (
     <Disclosure as="div" defaultOpen={false}>
       {({ open }) => (
