@@ -21,8 +21,8 @@ const ItemTable: React.FC<ItemTableProps> = ({ cart, setCart, selectedAll, selec
   const [loadingItems, setLoadingItems] = useState<boolean[]>([]);
   const [quantities, setQuantities] = useState<number[]>([]);
 
-  const userId = localStorage.getItem('userId');
-  const accessToken = localStorage.getItem('accessToken');
+  const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : "";
+  const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";
 
   useEffect(() => {
     if (cart) {

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { Suspense, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion';
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
@@ -79,13 +79,11 @@ export default function Search() {
                     <MagnifyingGlassIcon className="absolute right-3 top-2 size-6 text-gray-400" />
                   </div>
 
-                  <Suspense fallback={<div>Loading products...</div>}>
-                    <div className='grid grid-cols-3 gap-x-10 gap-y-6 px-4 w-full'>
-                      {searchProductList.map((product, index) => (
-                        <SearchCard key={index} product={product} />
-                      ))}
-                    </div>
-                  </Suspense>
+                  <div className='grid grid-cols-3 gap-x-10 gap-y-6 px-4 w-full'>
+                    {searchProductList.map((product, index) => (
+                      <SearchCard key={index} product={product} />
+                    ))}
+                  </div>
                 </div>
               </PopoverPanel>
             )}

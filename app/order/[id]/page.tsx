@@ -20,8 +20,8 @@ export default function Page() {
   const param = useParams();
   const id = param.id;
 
-  const userId = localStorage.getItem('userId');
-  const accessToken = localStorage.getItem('accessToken');
+  const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : "";
+  const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";
 
   useEffect(() => {
     const handleScroll = () => {

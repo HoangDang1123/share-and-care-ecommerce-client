@@ -26,8 +26,8 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product }) => {
   const { isLogin } = useAuth();
   const router = useRouter();
 
-  const userId = localStorage.getItem('userId');
-  const accessToken = localStorage.getItem('accessToken');
+  const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : "";
+  const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";
 
   useEffect(() => {
     const hasVariants = product.product.variants.length > 0;
@@ -50,7 +50,7 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product }) => {
         const itemData = {
           productId: product.product.id,
           quantity: quantity,
-          ...(skuItem && { variantId: skuItem.id })
+          variantId: skuItem ? skuItem.id : null
         };
 
         try {

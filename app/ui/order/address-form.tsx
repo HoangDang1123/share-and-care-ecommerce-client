@@ -28,8 +28,8 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh }) => {
     city: '',
   })
 
-  const userId = localStorage.getItem('userId');
-  const accessToken = localStorage.getItem('accessToken');
+  const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : "";
+  const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";
 
   useEffect(() => {
     const fetchData = async () => {

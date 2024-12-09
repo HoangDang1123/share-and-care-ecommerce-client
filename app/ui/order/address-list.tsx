@@ -25,8 +25,8 @@ const AddressList: React.FC<AddressListProps> = ({ isRefresh, setIsRefresh, defa
   const [loadingItems, setLoadingItems] = useState<boolean[]>([]);
   const router = useRouter();
 
-  const userId = localStorage.getItem('userId');
-  const accessToken = localStorage.getItem('accessToken');
+  const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : "";
+  const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";
   const { setOrder } = useOrder();
 
   useEffect(() => {

@@ -22,8 +22,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const [order, setOrder] = useState<OrderData | null>(null);
 
     const checkAccessToken = () => {
-        const token = localStorage.getItem('accessToken');
-        const timestamp = localStorage.getItem('tokenTimestamp');
+        const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";
+        const timestamp = typeof window !== "undefined" ? localStorage.getItem("tokenTimestamp") || "" : "";
 
         if (!token || !timestamp) return false;
 
@@ -49,7 +49,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     useEffect(() => {
         setIsLogin(checkAccessToken());
 
-        const storedOrder = localStorage.getItem('order');
+        const storedOrder = typeof window !== "undefined" ? localStorage.getItem("order") || "" : "";
         if (storedOrder) {
             setOrder(JSON.parse(storedOrder));
         }

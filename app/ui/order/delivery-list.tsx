@@ -15,8 +15,8 @@ const DeliveryList: React.FC<DeliveryListProps> = ({ defaultAddress }) => {
   const [selected, setSelected] = useState<Delivery | null>(null);
   const { setOrder } = useOrder();
 
-  const userId = localStorage.getItem('userId');
-  const accessToken = localStorage.getItem('accessToken');
+  const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : "";
+  const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";
 
   useEffect(() => {
     const fetchDelivery = async () => {
