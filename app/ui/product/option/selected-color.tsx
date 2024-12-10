@@ -1,21 +1,11 @@
 import { ProductInfoDataResponse } from '@/interface/product';
 import { CheckIcon } from '@heroicons/react/24/outline';
-import React from 'react'
-
-const colorCodes: { [key: string]: string } = {
-  "Trắng": "#ffffff",
-  "Xanh Dương": "#001F6B",
-  "Đỏ": "#8B0000",
-  "Xanh Lá": "#004d00",
-  "Vàng": "#BDAA00",
-  "Light blue": "#ADD8E6",
-  "Xanh wash": "#A0C4E1",
-};
+import React from 'react';
 
 interface SelectedColorProps {
-  product: ProductInfoDataResponse,
-  selectedColorIndex: number | null,
-  setSelectedColorIndex: (selectedColorIndex: number | null) => void,
+  product: ProductInfoDataResponse;
+  selectedColorIndex: number | null;
+  setSelectedColorIndex: (selectedColorIndex: number | null) => void;
 }
 
 const SelectedColor: React.FC<SelectedColorProps> = ({ product, selectedColorIndex, setSelectedColorIndex }) => {
@@ -26,9 +16,7 @@ const SelectedColor: React.FC<SelectedColorProps> = ({ product, selectedColorInd
   };
 
   if (!colors) {
-    return (
-      <div>There&apos;s no color</div>
-    )
+    return <div>There&apos;s no color</div>;
   }
 
   return (
@@ -38,21 +26,18 @@ const SelectedColor: React.FC<SelectedColorProps> = ({ product, selectedColorInd
         {colors.options.map((item, index) => (
           <li
             key={index}
-            className='flex justify-center items-center w-12 h-6 rounded-md hover:cursor-pointer'
-            style={{
-              backgroundColor: colorCodes[item] || 'transparent',
-              border: colorCodes[item] === "#ffffff" ? '1px solid black' : 'none'
-            }}
+            className='flex justify-center items-center w-24 h-8 rounded-md hover:cursor-pointer border'
             onClick={() => handleColorClick(index)}
           >
+            {item}
             {selectedColorIndex === index && (
-              <CheckIcon className={`size-5 font-bold ${colorCodes[item] === "#ffffff" ? 'text-gray-900' : 'text-white'}`} />
+              <CheckIcon className={`size-5 font-bold ml-2 ${item === "Trắng" ? 'text-gray-900' : 'text-black'}`} />
             )}
           </li>
         ))}
       </ul>
     </div>
-  )
+  );
 }
 
 export default SelectedColor;

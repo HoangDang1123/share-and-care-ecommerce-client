@@ -133,7 +133,7 @@ export default function Page() {
 
             {/* Nút đăng nhập bằng Google */}
             <button
-              onClick={() => window.location.href = `http://localhost:3000/api/v1/auth/google?deviceToken=${deviceToken}&deviceName=${browserName}`}
+              onClick={() => window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/google?deviceToken=${deviceToken}&deviceName=${browserName}`}
               type="button"
               className="flex w-full justify-start items-center rounded-lg border-gray-400 border font-semibold bg-white pl-16 py-1.5 text-lg text-gray-900 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
             >

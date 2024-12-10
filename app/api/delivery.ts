@@ -8,7 +8,7 @@ const DELIVERY_URL = '/delivery';
 
 export const getAllDelivery = async (id: string, clientId: string, accessToken: string): Promise<Delivery.DeliveryDataResponse> => {
     try {
-        const response = await api.get(`${DELIVERY_URL}`, {
+        const response = await api.get(`${DELIVERY_URL}?destinationId=${id}`, {
             headers: {
                 'x-client-id': clientId,
                 'Authorization': accessToken
