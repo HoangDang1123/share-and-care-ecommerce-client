@@ -1,5 +1,4 @@
 import { ProductInfoDataResponse } from '@/interface/product';
-import { CheckIcon } from '@heroicons/react/24/outline';
 import React from 'react';
 
 interface SelectedColorProps {
@@ -26,13 +25,10 @@ const SelectedColor: React.FC<SelectedColorProps> = ({ product, selectedColorInd
         {colors.options.map((item, index) => (
           <li
             key={index}
-            className='flex justify-center items-center w-24 h-8 rounded-md hover:cursor-pointer border'
+            className={`flex justify-center items-center w-24 h-8 rounded-md hover:cursor-pointer ${selectedColorIndex === index ? 'bg-gray-900 text-white' : 'bg-transparent text-black'}`}
             onClick={() => handleColorClick(index)}
           >
             {item}
-            {selectedColorIndex === index && (
-              <CheckIcon className={`size-5 font-bold ml-2 ${item === "Trắng" ? 'text-gray-900' : 'text-black'}`} />
-            )}
           </li>
         ))}
       </ul>
