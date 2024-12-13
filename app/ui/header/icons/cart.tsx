@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { CartDataResponse } from '@/interface/cart';
 import { getCart } from '@/app/api/cart';
+import { formatPrice } from '@/utils/helpers';
 
 interface CartProps {
   isLogin: boolean;
@@ -20,7 +21,7 @@ const Cart: React.FC<CartProps> = ({ isLogin }) => {
 
   useEffect(() => {
     const fetchCart = async () => {
-      if (userId !== null && accessToken !== null) {
+      if (userId !== "" && accessToken !== "") {
         try {
           const response = await getCart(userId, accessToken);
           setCart(response);
@@ -41,18 +42,18 @@ const Cart: React.FC<CartProps> = ({ isLogin }) => {
       </div>
       <MenuItems
         transition
-        className="absolute right-0 z-10 w-max origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+        className="absolute right-0 z-10 w-[600px] origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
       >
         {isLogin ? (
           <>
             {cart?.items.length === 0 ? (
-              <div className='flex justify-center items-center w-96 text-lg py-4'>There&apos;s no item.</div>
+              <div className='flex justify-center items-center text-lg py-4'>There&apos;s no item.</div>
             ) : (
               cart?.items.slice(0, 3).map((cart, index) => (
                 <MenuItem key={index}>
                   <Link
                     className='flex w-auto gap-x-10 px-10 py-5 rounded-lg justify-between items-center hover:bg-gray-200'
-                    href={`/product/${cart.productId}`}
+                    href="/cart"
                   >
                     <Image
                       alt={cart.productName}
@@ -62,7 +63,7 @@ const Cart: React.FC<CartProps> = ({ isLogin }) => {
                     />
                     <h1 className='text-xl'>{cart.productName}</h1>
                     <h1 className='text-xl'>{cart.quantity}</h1>
-                    <h1 className='text-xl'>{cart.price}</h1>
+                    <h1 className='text-xl'>{formatPrice(cart.price)}</h1>
                   </Link>
                 </MenuItem>
               ))
@@ -70,7 +71,7 @@ const Cart: React.FC<CartProps> = ({ isLogin }) => {
             <MenuItem>
               <Link
                 href={"/cart"}
-                className='flex justify-center items-center my-2 text-lg w-96 hover:text-blue-900 font-bold text-blue-700 underline'
+                className='flex justify-center items-center my-2 text-lg w-full hover:text-blue-900 font-bold text-blue-700 underline'
               >
                 Go to my cart
                 <ArrowRightIcon className='size-4 ml-1' />
@@ -80,7 +81,7 @@ const Cart: React.FC<CartProps> = ({ isLogin }) => {
         ) : (
           <Link
             href="/auth/login"
-            className='flex justify-center items-center w-96 h-20 mx-5 my-10 text-lg hover:text-blue-900 font-bold text-blue-700 underline'
+            className='flex justify-center items-center h-20 mx-5 my-10 text-lg hover:text-blue-900 font-bold text-blue-700 underline'
           >
             Go to login
             <ArrowRightIcon className='size-4 ml-1' />

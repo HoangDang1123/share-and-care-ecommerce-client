@@ -8,10 +8,12 @@ const useDeviceInfo = () => {
   useEffect(() => {
     const getDeviceInfo = () => {
       // Generate a unique device token
-      let deviceToken = localStorage.getItem('deviceToken');
-      if (!deviceToken) {
-        deviceToken = uuidv4(); // Create a new UUID if it doesn't exist
-        localStorage.setItem('deviceToken', deviceToken); // Store the token in localStorage
+      let deviceToken = '';
+      if (typeof window !== "undefined") {
+        deviceToken = localStorage.getItem('deviceToken') || uuidv4(); // Create a new UUID if it doesn't exist
+        if (!localStorage.getItem('deviceToken')) {
+          localStorage.setItem('deviceToken', deviceToken); // Store the token in localStorage
+        }
       }
 
       // Retrieve platform and user agent information

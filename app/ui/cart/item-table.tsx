@@ -8,6 +8,7 @@ import { CartDataResponse } from '@/interface/cart';
 import { deleteCartItem, getCart, updateCartItem } from '@/app/api/cart';
 import { toast } from 'react-toastify';
 import ClipLoader from 'react-spinners/ClipLoader';
+import { useRouter } from 'next/navigation';
 
 interface ItemTableProps {
   cart: CartDataResponse | undefined,
@@ -20,6 +21,7 @@ interface ItemTableProps {
 const ItemTable: React.FC<ItemTableProps> = ({ cart, setCart, selectedAll, selectedItem, setSelectedItem }) => {
   const [loadingItems, setLoadingItems] = useState<boolean[]>([]);
   const [quantities, setQuantities] = useState<number[]>([]);
+  const router = useRouter();
 
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : "";
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";
@@ -59,7 +61,7 @@ const ItemTable: React.FC<ItemTableProps> = ({ cart, setCart, selectedAll, selec
       newLoadingItems[index] = true;
       setLoadingItems(newLoadingItems);
 
-      if (userId !== null && accessToken !== null) {
+      if (userId !== "" && accessToken !== "") {
         try {
           await deleteCartItem(cartItem, userId, accessToken);
           try {
@@ -121,6 +123,10 @@ const ItemTable: React.FC<ItemTableProps> = ({ cart, setCart, selectedAll, selec
     updateQuantity(productId, variantId, validQuantity, index);
   };
 
+  const handleClickItem = (id: string) => {
+    router.push(`/product/${id}`);
+  }
+
   return (
     <table className='w-full'>
       <thead className='w-full'>
@@ -136,7 +142,7 @@ const ItemTable: React.FC<ItemTableProps> = ({ cart, setCart, selectedAll, selec
 
       <tbody>
         {cart?.items.map((item, index) => (
-          <tr key={index}>
+          <tr key={index} >
             <td>
               <Checkbox
                 checked={selectedItem[index]}
@@ -147,7 +153,10 @@ const ItemTable: React.FC<ItemTableProps> = ({ cart, setCart, selectedAll, selec
               </Checkbox>
             </td>
 
-            <td className='flex space-x-4'>
+            <td 
+              className='flex space-x-4 hover:cursor-pointer'
+              onClick={() => handleClickItem(item.productId)}
+            >
               <Image
                 src={item.productImage}
                 alt={item.productName}

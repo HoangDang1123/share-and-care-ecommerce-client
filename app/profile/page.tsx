@@ -13,7 +13,7 @@ export default function Page() {
 
   useEffect(() => {
     const fetchOrder = async () => {
-      if (userId !== null && accessToken !== null) {
+      if (userId !== "" && accessToken !== "") {
         const response = await getAllOrder(userId, accessToken);
         setOrderData(response);
       }

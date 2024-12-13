@@ -72,7 +72,7 @@ export default function Page() {
 
   const handleClearAll = async () => {
     setLoading(true);
-    if (userId !== null && accessToken !== null) {
+    if (userId !== "" && accessToken !== "") {
       try {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         await clearCartItem(userId, accessToken);
@@ -103,7 +103,6 @@ export default function Page() {
 
     const selectedProducts = cart?.items.filter((_, index) => selectedItem[index]) || [];
 
-    console.log(selectedProducts)
     const productDetails = selectedProducts.map(item => ({
       productId: item.productId,
       variantId: item.variantId !== undefined ? item.variantId : null,
@@ -121,7 +120,7 @@ export default function Page() {
           city: ''
         },
         items: [],
-        couponCode: '',
+        couponCode: "",
         paymentMethod: '',
         deliveryId: ''
       };
@@ -132,7 +131,9 @@ export default function Page() {
       };
     });
 
-    localStorage.setItem('productPrice', totalCost.toString());
+    if (typeof window !== "undefined") {
+      localStorage.setItem('productPrice', totalCost.toString());
+    }
 
     route.push("/order");
   }

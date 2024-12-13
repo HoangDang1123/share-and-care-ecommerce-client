@@ -31,7 +31,7 @@ const AddressList: React.FC<AddressListProps> = ({ isRefresh, setIsRefresh, defa
 
   useEffect(() => {
     const fetchAddress = async () => {
-      if (userId !== null && accessToken !== null) {
+      if (userId !== "" && accessToken !== "") {
         try {
           const response = await getAllAddress(userId, accessToken);
           setAddressList(response);
@@ -47,7 +47,7 @@ const AddressList: React.FC<AddressListProps> = ({ isRefresh, setIsRefresh, defa
 
   useEffect(() => {
     const fetchAddress = async () => {
-      if (userId !== null && accessToken !== null && selected && selected.id) {
+      if (userId !== "" && accessToken !== "" && selected && selected.id) {
         try {
           await setDefault(selected.id, userId, accessToken);
           const response = await getDefaultAddress(userId, accessToken);
@@ -95,7 +95,7 @@ const AddressList: React.FC<AddressListProps> = ({ isRefresh, setIsRefresh, defa
       newLoadingItems[index] = true;
       setLoadingItems(newLoadingItems);
 
-      if (userId !== null && accessToken !== null) {
+      if (userId !== "" && accessToken !== "") {
         try {
           await deleteAddress(id, userId, accessToken);
           try {

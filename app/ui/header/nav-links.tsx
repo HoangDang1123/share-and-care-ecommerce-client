@@ -83,7 +83,7 @@ export default function NavLinks() {
               </span>
 
               <Link 
-                href={{ pathname: "/shop", query: { id: category.id } }} 
+                href={{ pathname: "/shop", query: { category: category.id } }} 
                 className="block w-48 text-start rounded-lg text-lg py-1 px-2 transition hover:font-semibold whitespace-nowrap"
               >
                 {`All ${category.name}`}
@@ -92,7 +92,7 @@ export default function NavLinks() {
               {Array.isArray(childCategories[index]) && childCategories[index].map((child, childIndex) => (
                 <Link
                   key={childIndex}
-                  href={{ pathname: "/shop", query: { id: child.id } }}
+                  href={{ pathname: "/shop", query: { category: child.id } }}
                   className="block w-48 text-start rounded-lg text-lg py-1 px-2 transition hover:font-semibold whitespace-nowrap"
                 >
                   {child.name}

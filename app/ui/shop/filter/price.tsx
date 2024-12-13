@@ -7,7 +7,7 @@ import { useEffect, useMemo } from "react";
 import { Range } from "react-range";
 
 export default function PriceFilter() {
-  const initialValues = useMemo(() => [0, 1000000], []);
+  const initialValues = useMemo(() => [0, 2000000], []);
   const searchParams = useSearchParams();
   const router = useRouter();
   const { price, setPrice } = useFilter();
@@ -38,7 +38,7 @@ export default function PriceFilter() {
       <Range
         step={1000}
         min={0}
-        max={1000000}
+        max={2000000}
         values={price.values}
         onChange={(values) => setPrice({ values })}
         renderTrack={({ props, children }) => {

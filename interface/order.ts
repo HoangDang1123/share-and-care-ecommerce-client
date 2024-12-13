@@ -21,7 +21,7 @@ export interface City {
 export interface OrderData {
     shippingAddress: ShippingAddressData,
     items: Array<Cart.CartData>,
-    couponCode: string,
+    couponCode: string | null,
     paymentMethod: string,
     deliveryId: string,
 }
@@ -36,13 +36,14 @@ export interface ShippingAddressData {
 }
 
 export interface Item {
-    productId: string;
-    variantId: string | null;
-    productName: string;
-    variantSlug: string;
-    price: number;
-    image: string;
-    quantity: number;
+    productId: string,
+    variantId: string | null,
+    productName: string,
+    variantSlug: string,
+    price: number,
+    image: string,
+    quantity: number,
+    discount: number,
 }
 
 export interface DeliveryMethod {
@@ -51,65 +52,69 @@ export interface DeliveryMethod {
 }
 
 export interface OrderDataResponse {
-    id: string;
-    userId: string;
-    couponId: string | null;
+    id: string,
+    userId: string,
+    couponId: string | null,
     items: Array<Item>
-    shippingAddress: ShippingAddressData;
-    paymentMethod: string;
-    deliveryMethod: string;
-    itemsPrice: number;
-    discountPrice: number;
-    shippingPrice: number;
-    totalPrice: number;
-    isPaid: boolean;
-    isDelivered: boolean;
-    paidAt: string | null;
-    deliveredAt: string | null;
-    status: string;
-    createdAt: string;
-    updatedAt: string;
+    shippingAddress: ShippingAddressData,
+    paymentMethod: string,
+    deliveryMethod: string,
+    itemsPrice: number,
+    itemsDiscount: number,
+    shippingPrice: number,
+    shippingDiscount: number,
+    discountPrice: number,
+    totalPrice: number,
+    isPaid: boolean,
+    isDelivered: boolean,
+    paidAt: string | null,
+    deliveredAt: string | null,
+    status: string,
+    createdAt: string,
+    updatedAt: string,
 }
 
 export interface OrderDataDetailResponse {
     orders: {
-        id: string;
-        userId: string;
-        couponId: string | null;
+        id: string,
+        userId: string,
+        couponId: string | null,
         items: Array<Item>
-        shippingAddress: ShippingAddressData;
-        paymentMethod: string;
-        deliveryMethod: DeliveryMethod;
-        itemsPrice: number;
-        discountPrice: number;
-        shippingPrice: number;
-        totalPrice: number;
-        status: string;
+        shippingAddress: ShippingAddressData,
+        paymentMethod: string,
+        deliveryMethod: DeliveryMethod,
+        itemsPrice: number,
+        itemsDiscount: number,
+        shippingPrice: number,
+        shippingDiscount: number,
+        discountPrice: number,
+        totalPrice: number,
+        status: string,
     }
 }
 
 export interface ShippingAddress {
-    fullname: string;
-    phone: string;
+    fullname: string,
+    phone: string,
 }
 
 export interface DeliveryMethod {
-    id: string;
-    name: string;
+    id: string,
+    name: string,
 }
 
 export interface Order {
-    id: string;
-    shippingAddress: ShippingAddress;
-    paymentMethod: string;
-    deliveryMethod: DeliveryMethod;
-    totalPrice: number;
-    status: string;
+    id: string,
+    shippingAddress: ShippingAddress,
+    paymentMethod: string,
+    deliveryMethod: DeliveryMethod,
+    totalPrice: number,
+    status: string,
 }
 
 export interface OrderResponse {
-    totalPages: number;
-    totalOrders: number;
-    currentPage: number;
-    orders: Array<Order>;
+    totalPages: number,
+    totalOrders: number,
+    currentPage: number,
+    orders: Array<Order>,
 }

@@ -8,7 +8,7 @@ const PRODUCT_URL = '/products/public';
 
 export const getAllProduct = async (): Promise<Product.Product> => {
     try {
-        const response = await api.get(`${PRODUCT_URL}`);
+        const response = await api.get(`${PRODUCT_URL}?size=20`);
         return response.data.metadata;
     } catch (error) {
         const errorMessage = get(error, 'response.data.error.message', '');
@@ -34,20 +34,6 @@ export const getTopSearchProduct = async (search: string): Promise<Product.Produ
     }
 }
 
-export const getAllSearchProduct = async (search: string): Promise<Product.Product> => {
-    try {
-        const response = await api.get(`${PRODUCT_URL}?search=${search}`);
-        return response.data.metadata;
-    } catch (error) {
-        const errorMessage = get(error, 'response.data.error.message', '');
-
-        if (errorMessage) {
-            toast.error(errorMessage);
-        }
-        throw new Error(errorMessage || 'An unknown error occurred.');
-    }
-}
-
 export const getTopCategoriesProduct = async (categoryId: string): Promise<Product.Product> => {
     try {
         const response = await api.get(`${PRODUCT_URL}?size=10&category=${categoryId}`);
@@ -62,23 +48,25 @@ export const getTopCategoriesProduct = async (categoryId: string): Promise<Produ
     }
 }
 
-export const getCategoryFilterProduct = async (categoryId: string): Promise<Product.Product> => {
-    try {
-        const response = await api.get(`${PRODUCT_URL}?category=${categoryId}`);
-        return response.data.metadata;
-    } catch (error) {
-        const errorMessage = get(error, 'response.data.error.message', '');
+export const getShopProducts = async (params: Product.FetchProductsParams = {}): Promise<Product.Product> => {
+    const { search, categoryId, minPrice, maxPrice, sort } = params;
 
-        if (errorMessage) {
-            toast.error(errorMessage);
+    try {
+        let url = `${PRODUCT_URL}?size=20`;
+
+        if (search) {
+            url += `&search=${search}`;
+        } if (categoryId) {
+            url += `&category=${categoryId}`;
+        } if (minPrice) {
+            url += `&minPrice=${minPrice}`;
+        } if (maxPrice) {
+            url += `&maxPrice=${maxPrice}`;
+        } if (sort) {
+            url += `&sort=${sort}`;
         }
-        throw new Error(errorMessage || 'An unknown error occurred.');
-    }
-}
 
-export const getPriceFilterProduct = async (minPrice: number, maxPrice: number): Promise<Product.Product> => {
-    try {
-        const response = await api.get(`${PRODUCT_URL}?minPrice=${minPrice}&maxPrice=${maxPrice}`);
+        const response = await api.get(url);
         return response.data.metadata;
     } catch (error) {
         const errorMessage = get(error, 'response.data.error.message', '');

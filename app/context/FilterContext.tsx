@@ -14,7 +14,7 @@ interface FilterContextType {
 const FilterContext = createContext<FilterContextType | undefined>(undefined);
 
 export const FilterProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const initialValues = useMemo(() => [0, 1000000], []);
+    const initialValues = useMemo(() => [0, 2000000], []);
     const [price, setPrice] = useState({
       values: initialValues,
     });

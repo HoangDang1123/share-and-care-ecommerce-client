@@ -15,8 +15,6 @@ export default function OrderSummary() {
   const router = useRouter();
   const { order, setOrder } = useOrder();
 
-  console.log(order)
-
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : "";
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";
 
@@ -46,7 +44,7 @@ export default function OrderSummary() {
     e.preventDefault();
     setLoading(true);
 
-    if (order !== null && userId !== null && accessToken !== null) {
+    if (order !== null && userId !== "" && accessToken !== "") {
       try {
         const response = await createOrder(order, userId, accessToken);
         toast.success("Create order successful.");
@@ -58,7 +56,9 @@ export default function OrderSummary() {
         }
 
         setOrder(null);
-        localStorage.removeItem('productPrice');
+        if (typeof window !== "undefined") {
+          localStorage.removeItem('productPrice');
+        }
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) { } finally {
@@ -80,7 +80,7 @@ export default function OrderSummary() {
 
         <div className='flex justify-between'>
           <h4 className='font-semibold'>Shipping Fee:</h4>
-          <h4>{formatPrice(deliveryFee)}</h4>
+          <h4>{`+ ${formatPrice(deliveryFee)}`}</h4>
         </div>
 
         <div className='flex justify-between'>
@@ -92,7 +92,7 @@ export default function OrderSummary() {
 
         <div className='flex justify-between'>
           <h4 className='font-semibold'>Total Cost:</h4>
-          <h4>{formatPrice(productPrice - deliveryFee)}</h4>
+          <h4>{formatPrice(productPrice + deliveryFee)}</h4>
         </div>
       </div>
 
@@ -100,7 +100,7 @@ export default function OrderSummary() {
         <button
           disabled={loading}
           onClick={(e) => handleCreateOrder(e)}
-          className='flex justify-center items-center bg-gray-900 px-6 py-2 rounded-md'
+          className='flex justify-center items-center h-12 bg-gray-900 px-6 rounded-md'
         >
           {loading ? (
             <ClipLoader

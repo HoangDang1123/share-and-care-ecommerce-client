@@ -47,7 +47,7 @@ export default function Page() {
       if (typeof id !== 'string') {
         return;
       }
-      if (userId !== null && accessToken !== null) {
+      if (userId !== "" && accessToken !== "") {
         try {
           const response = await getOrderDetail(id, userId, accessToken);
           setOrder(response);
@@ -145,7 +145,7 @@ export default function Page() {
 
               <div className='flex justify-between'>
                 <h4 className='font-semibold'>Shipping Fee:</h4>
-                <h4>{formatPrice(order.orders.shippingPrice)}</h4>
+                <h4>{`+ ${formatPrice(order.orders.shippingPrice)}`}</h4>
               </div>
 
               <div className='flex justify-between'>

@@ -11,7 +11,7 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ product }) => {
   return (
-    <div className='w-fit select-none'>
+    <div className='w-fit h-full select-none'>
       <Link href={`/product/${product.id}`}>
         <Image
           alt={product.name}
@@ -22,12 +22,14 @@ const Card: React.FC<CardProps> = ({ product }) => {
           style={{ width: "auto", height: "auto", borderRadius: "10px" }}
           className='transition ease-in-out hover:scale-110 duration-300 mb-5'
         />
-        <h2 className='my-2'>{product.name}</h2>
-        <div className='flex justify-between'>
-          <h2 className='mt-1'>{formatPrice(product.price)}</h2>
-          <div className='flex products-center'>
-            <h2 className='mt-1'>{product.rating}</h2>
-            <StarIcon className='size-7 mt-1' />
+        <div className='flex flex-col justify-between'>
+          <h2 className='my-2'>{product.name}</h2>
+          <div className='flex justify-between'>
+            <h2 className='mt-1'>{formatPrice(product.price)}</h2>
+            <div className='flex products-center'>
+              <h2 className='mt-1'>{product.rating}</h2>
+              <StarIcon className='size-7 mt-1' />
+            </div>
           </div>
         </div>
       </Link>

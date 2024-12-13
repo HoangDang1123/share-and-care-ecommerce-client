@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
 import { AppProvider } from "./context/AuthContext";
 import { Suspense } from "react";
+import ClearLocalStorage from "./ui/clear-localStorage";
 
 export const metadata: Metadata = {
   title: "Share And Care",
@@ -25,6 +26,7 @@ export default function RootLayout({
     <AppProvider>
       <html lang="en">
         <body className={`${lusitana.className} antialiased`}>
+          <ClearLocalStorage />
           <main>
             <div className={`${lusitana.className} antialiased fixed w-screen top-0 z-10 flex flex-col`}>
               <ToastContainer />

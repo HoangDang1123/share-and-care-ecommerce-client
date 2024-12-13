@@ -56,3 +56,11 @@ export interface ProductDetailDataResponse {
         skuList: Array<SkuList>,
     }
 }
+
+export interface FetchProductsParams {
+    search?: string,
+    categoryId?: string;
+    minPrice?: number;
+    maxPrice?: number;
+    sort?: string;
+}

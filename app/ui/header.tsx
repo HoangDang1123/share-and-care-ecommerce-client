@@ -7,7 +7,6 @@ import NavLinks from './header/nav-links';
 import NavIcons from './header/nav-icons';
 
 export default function Header() {
-
   return (
     <Disclosure as="nav" className="shadow-md bg-white">
       <div className="relative flex h-auto my-2 items-center justify-between sm:px-5 lg:px-20">

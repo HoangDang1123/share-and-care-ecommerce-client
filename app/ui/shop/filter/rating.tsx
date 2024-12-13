@@ -18,11 +18,13 @@ export default function RatingFilter() {
           >
             <span className="invisible size-3 rounded-full bg-gray-700 group-data-[checked]:visible" />
           </Radio>
-          <Rating
-            value={value}
-            readOnly
-            className='size-8'
-          />
+          <div className='flex w-48'>
+            <Rating
+              value={value}
+              readOnly
+              className='size-8'
+            />
+          </div>
         </div>
       ))}
     </RadioGroup>

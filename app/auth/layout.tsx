@@ -16,11 +16,11 @@ export default function AuthLayout({
                 src="/assets/Auth-thumb.png"
                 priority
                 width={1920}
-                height={1082}
-                style={{ width: "auto", height: "auto" }}
+                height={1080}
+                className="w-full h-full"
             />
 
-            <div className='w-[500px] h-full flex flex-col justify-center shadow-xl px-16'>
+            <div className='w-[600px] h-full flex flex-col justify-center shadow-xl px-16'>
                 <Suspense>{children}</Suspense>
             </div>
         </div>

@@ -21,7 +21,8 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product }) => {
   const [selectedColorIndex, setSelectedColorIndex] = useState<number | null>(null);
   const [selectedSizeIndex, setSelectedSizeIndex] = useState<number | null>(null);
   const [quantity, setQuantity] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const [loadingAddToCart, setLoadingAddToCart] = useState(false);
+  const [loadingBuyNow, setLoadingBuyNow] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const { isLogin } = useAuth();
   const router = useRouter();
@@ -33,12 +34,12 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product }) => {
     const hasVariants = product.product.variants.length > 0;
     const isColorOrSizeNotSelected = selectedColorIndex === null || selectedSizeIndex === null;
 
-    setDisabled((hasVariants && isColorOrSizeNotSelected) || loading);
-  }, [product.product.variants.length, selectedColorIndex, selectedSizeIndex, loading, setDisabled]);
+    setDisabled((hasVariants && isColorOrSizeNotSelected) || loadingAddToCart || loadingBuyNow);
+  }, [product.product.variants.length, selectedColorIndex, selectedSizeIndex, loadingAddToCart, loadingBuyNow]);
 
   const handleAddToCart = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setLoading(true);
+    setLoadingAddToCart(true);
     if (!isLogin) {
       router.push("/auth/login");
       toast.warn("Please login to continue !");
@@ -46,7 +47,7 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product }) => {
       const tierIndex = [selectedColorIndex, selectedSizeIndex];
       const skuItem = product.skuList.skuList.find(item => JSON.stringify(item.tierIndex) === JSON.stringify(tierIndex));
 
-      if (userId !== null && accessToken !== null) {
+      if (userId !== "" && accessToken !== "") {
         const itemData = {
           productId: product.product.id,
           quantity: quantity,
@@ -54,20 +55,28 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product }) => {
         };
 
         try {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const response = await addProductToCart(itemData, userId, accessToken);
+          await addProductToCart(itemData, userId, accessToken);
           toast.success("Add product to cart successful.");
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) { } finally {
-          setLoading(false);
+          setLoadingAddToCart(false);
         }
       }
     }
   }
 
+  const handleBuyNow = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setLoadingBuyNow(true);
+    if (!isLogin) {
+      router.push("/auth/login");
+      toast.warn("Please login to continue !");
+    }
+  }
+
   return (
     <div className='flex flex-col w-full space-y-24'>
-      <div className='flex flex-col w-full space-y-12'>
+      <div className='flex flex-col w-full h-full space-y-6'>
         <div className='space-y-2'>
           <h3 className='font-semibold'>{product.product.name}</h3>
           <h6 className='text-lg'>{`ID: ${product.product.id}`}</h6>
@@ -94,32 +103,35 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product }) => {
         <button
           onClick={handleAddToCart}
           disabled={disabled}
-          className={`flex justify-center items-center w-[200px] text-xl font-semibold bg-gray-300 px-6 py-2 rounded-md ${disabled ? 'cursor-not-allowed' : ''}`}
-        >{loading ? (
-          <ClipLoader
-            size={20}
-            color='#000000'
-            aria-label="Loading Spinner"
-          />
-        ) : (
-
-          <span className='flex'>
-            <PlusIcon className='size-7 mr-3' />
-            Add To Cart
-          </span>
-        )}
+          className={`flex justify-center items-center w-[200px] h-14 text-xl font-semibold bg-gray-300 rounded-md ${disabled ? 'cursor-not-allowed' : ''}`}
+        >
+          {loadingAddToCart ? (
+            <ClipLoader size={20} color='#000000' aria-label="Loading Spinner" />
+          ) : (
+            <span className='flex'>
+              <PlusIcon className='size-7 mr-3' />
+              Add To Cart
+            </span>
+          )}
         </button>
 
         <button
-          className={`flex justify-center items-center text-xl font-semibold bg-gray-900 px-6 py-2 rounded-md text-white ${disabled ? 'cursor-not-allowed' : ''}`}
+          onClick={handleBuyNow}
           disabled={disabled}
+          className={`flex justify-center items-center w-[180px] h-14 text-xl font-semibold bg-gray-900 text-white rounded-md ${disabled ? 'cursor-not-allowed' : ''}`}
         >
-          <ShoppingCartIcon className='size-8 mr-3' />
-          Buy Now
+          {loadingBuyNow ? (
+            <ClipLoader size={20} color='#ffffff' aria-label="Loading Spinner" />
+          ) : (
+            <span className='flex'>
+              <ShoppingCartIcon className='size-7 mr-3' />
+              Buy Now
+            </span>
+          )}
         </button>
       </div>
     </div>
-  )
+  );
 }
 
 export default OptionContainer;

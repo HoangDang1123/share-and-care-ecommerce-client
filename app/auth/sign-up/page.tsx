@@ -2,7 +2,7 @@
 
 import { resendEmailVerification, signUpRequest } from '@/app/api/auth';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import ClipLoader from 'react-spinners/ClipLoader';
 
@@ -15,6 +15,11 @@ export default function Page() {
   });
   const [errors, setErrors] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -70,121 +75,125 @@ export default function Page() {
   }
 
   return (
-    <div 
-      className='flex flex-col justify-center'
-    >
-      <h3>Sign Up</h3>
+    <>
+      {isClient && (
+        <div
+          className='flex flex-col justify-center'
+        >
+          <h3>Sign Up</h3>
 
-      <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="name" className="block text-xl font-bold text-gray-900">
-              Name
-            </label>
-            <div className="mt-1">
-              <input
-                id="name"
-                name="name"
-                type="text"
-                required
-                autoComplete="name"
-                value={formData.name}
-                onChange={handleChange}
-                className="block w-full rounded-lg border-0 py-1.5 pl-2 text-gray-900 sm:text-sm sm:leading-6 md:text-lg shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-700"
-              />
-            </div>
+          <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label htmlFor="name" className="block text-xl font-bold text-gray-900">
+                  Name
+                </label>
+                <div className="mt-1">
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    required
+                    autoComplete="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className="block w-full rounded-lg border-0 py-1.5 pl-2 text-gray-900 sm:text-sm sm:leading-6 md:text-lg shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-700"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="email" className="block text-xl font-bold text-gray-900">
+                  Email
+                </label>
+                <div className="mt-1">
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    required
+                    autoComplete="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="block w-full rounded-lg border-0 py-1.5 pl-2 text-gray-900 sm:text-sm sm:leading-6 md:text-lg shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-700"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="password" className="block text-xl font-bold text-gray-900">
+                  Password
+                </label>
+                <div className="mt-1">
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    required
+                    value={formData.password}
+                    onChange={handleChange}
+                    className="block w-full rounded-lg border-0 py-1.5 pl-2 text-gray-900 sm:text-sm sm:leading-6 md:text-lg shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-700"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="confirm-password" className="block text-xl font-bold text-gray-900">
+                  Confirm Password
+                </label>
+                <div className="mt-1">
+                  <input
+                    id="confirm-password"
+                    name="confirmPassword"
+                    type="password"
+                    required
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    className="block w-full rounded-lg border-0 py-1.5 pl-2 text-gray-900 sm:text-sm sm:leading-6 md:text-lg shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-700"
+                  />
+                  {errors && <p className="text-red-500 text-sm">{errors}</p>}
+                </div>
+
+                <div className='flex w-full justify-end'>
+                  <button
+                    onClick={handleResendVerification}
+                    className="font-bold underline text-gray-900 hover:text-gray-700">
+                    Resend email verification
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <button
+                  disabled={loading}
+                  type="submit"
+                  className="flex w-full justify-center rounded-lg bg-gray-900 mt-10 px-3 py-1.5 text-lg font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                >
+                  {loading ? (
+                    <ClipLoader
+                      size={20}
+                      color='#ffffff'
+                      aria-label="Loading Spinner"
+                    />
+                  ) : (
+                    'SIGN UP'
+                  )}
+                </button>
+              </div>
+            </form>
+
+            <p className="mt-10 text-left text-md text-gray-500">
+              Already have an account? {' '}
+              <Link
+                href="/auth/login"
+                className="font-bold underline text-gray-900 hover:text-gray-700"
+              >
+                Login
+              </Link>
+            </p>
           </div>
-
-          <div>
-            <label htmlFor="email" className="block text-xl font-bold text-gray-900">
-              Email
-            </label>
-            <div className="mt-1">
-              <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                autoComplete="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="block w-full rounded-lg border-0 py-1.5 pl-2 text-gray-900 sm:text-sm sm:leading-6 md:text-lg shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-700"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label htmlFor="password" className="block text-xl font-bold text-gray-900">
-              Password
-            </label>
-            <div className="mt-1">
-              <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                value={formData.password}
-                onChange={handleChange}
-                className="block w-full rounded-lg border-0 py-1.5 pl-2 text-gray-900 sm:text-sm sm:leading-6 md:text-lg shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-700"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label htmlFor="confirm-password" className="block text-xl font-bold text-gray-900">
-              Confirm Password
-            </label>
-            <div className="mt-1">
-              <input
-                id="confirm-password"
-                name="confirmPassword"
-                type="password"
-                required
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                className="block w-full rounded-lg border-0 py-1.5 pl-2 text-gray-900 sm:text-sm sm:leading-6 md:text-lg shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-700"
-              />
-              {errors && <p className="text-red-500 text-sm">{errors}</p>}
-            </div>
-
-            <div className='flex w-full justify-end'>
-              <button
-                onClick={handleResendVerification}
-                className="font-bold underline text-gray-900 hover:text-gray-700">
-                Resend email verification
-              </button>
-            </div>
-          </div>
-
-          <div>
-            <button
-              disabled={loading}
-              type="submit"
-              className="flex w-full justify-center rounded-lg bg-gray-900 mt-10 px-3 py-1.5 text-lg font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-            >
-              {loading ? (
-                <ClipLoader
-                  size={20}
-                  color='#ffffff'
-                  aria-label="Loading Spinner"
-                 />
-              ) : (
-                'SIGN UP'
-              )}
-            </button>
-          </div>
-        </form>
-
-        <p className="mt-10 text-left text-md text-gray-500">
-          Already have an account? {' '}
-          <Link 
-            href="/auth/login"
-            className="font-bold underline text-gray-900 hover:text-gray-700"
-          >
-            Login
-          </Link>
-        </p>
-      </div>
-    </div>
+        </div>
+      )}
+    </>
   );
 }

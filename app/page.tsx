@@ -30,10 +30,12 @@ export default function Home() {
 
           const currentTime = new Date().getTime();
 
-          localStorage.setItem('accessToken', response.tokens.accessToken);
-          localStorage.setItem('refreshToken', response.tokens.refreshToken);
-          localStorage.setItem('userId', userId);
-          localStorage.setItem('tokenTimestamp', currentTime.toString());
+          if (typeof window !== "undefined") {
+            localStorage.setItem('accessToken', response.tokens.accessToken);
+            localStorage.setItem('refreshToken', response.tokens.refreshToken);
+            localStorage.setItem('userId', userId);
+            localStorage.setItem('tokenTimestamp', currentTime.toString());
+          }
 
           setIsLogin(true);
         } catch (error) {
@@ -43,7 +45,7 @@ export default function Home() {
 
       fetchProducts();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLogin, userId, refreshToken]);
 
   useEffect(() => {

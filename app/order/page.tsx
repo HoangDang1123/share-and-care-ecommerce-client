@@ -10,7 +10,6 @@ import { useEffect, useState } from "react";
 import { AddressDataResponse } from "@/interface/address";
 import { getDefaultAddress } from "../api/address";
 import DeliveryList from "../ui/order/delivery-list";
-import CouponList from "../ui/order/coupon-list";
 import { useOrder } from "../context/AuthContext";
 import { OrderData, ShippingAddressData } from "@/interface/order";
 
@@ -24,7 +23,7 @@ export default function Page() {
 
   useEffect(() => {
     const fetchAddress = async () => {
-      if (userId !== null && accessToken !== null) {
+      if (userId !== "" && accessToken !== "") {
         try {
           const response = await getDefaultAddress(userId, accessToken);
           setDefaultAddress(response);
@@ -71,7 +70,6 @@ export default function Page() {
           <AddressForm setIsRefresh={setIsRefresh} />
           <AddressList isRefresh={isRefresh} setIsRefresh={setIsRefresh} defaultAddress={defaultAddress} />
           <DeliveryList defaultAddress={defaultAddress} />
-          <CouponList />
           <PaymentMethod />
         </div>
         <OrderSummary />

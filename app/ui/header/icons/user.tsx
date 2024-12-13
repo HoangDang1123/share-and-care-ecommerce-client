@@ -14,7 +14,8 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
   const searchParams = useSearchParams();
   const [userId, setUserId] = useState('');
   const router = useRouter();
-  const accessToken = localStorage.getItem('accessToken');
+  
+  const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";
 
   useEffect(() => {
     const id = searchParams.get('userId');
@@ -41,13 +42,15 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
     } catch (error) {
       toast.error("An error occurred during logout.");
     } finally {
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-      localStorage.removeItem('userId');
-      localStorage.removeItem('tokenTimestamp');
-      localStorage.removeItem('order');
-      localStorage.removeItem('productPrice');
-      localStorage.removeItem('deliveryFee');
+      if (typeof window !== "undefined") {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('tokenTimestamp');
+        localStorage.removeItem('order');
+        localStorage.removeItem('productPrice');
+        localStorage.removeItem('deliveryFee');
+      }
       router.push("/auth/login");
     }
   }

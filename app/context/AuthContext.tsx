@@ -30,7 +30,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         const currentTime = new Date().getTime();
         const oneDayInMillis = 24 * 60 * 60 * 1000;
 
-        if (currentTime - Number(timestamp) > oneDayInMillis) {
+        if (currentTime - Number(timestamp) > oneDayInMillis && typeof window !== "undefined") {
             localStorage.removeItem('accessToken');
             localStorage.removeItem('tokenTimestamp');
             localStorage.removeItem('order');
@@ -56,10 +56,12 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }, []);
 
     useEffect(() => {
-        if (order) {
-            localStorage.setItem('order', JSON.stringify(order));
-        } else {
-            localStorage.removeItem('order');
+        if (typeof window !== "undefined") {
+            if (order) {
+                localStorage.setItem('order', JSON.stringify(order));
+            } else {
+                localStorage.removeItem('order');
+            }
         }
     }, [order]);
 

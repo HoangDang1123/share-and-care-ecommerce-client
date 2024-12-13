@@ -20,7 +20,7 @@ const DeliveryList: React.FC<DeliveryListProps> = ({ defaultAddress }) => {
 
   useEffect(() => {
     const fetchDelivery = async () => {
-      if (userId !== null && accessToken !== null && defaultAddress && defaultAddress.placeId) {
+      if (userId !== "" && accessToken !== "" && defaultAddress && defaultAddress.placeId) {
         try {
           const response = await getAllDelivery(defaultAddress.placeId, userId, accessToken);
           setDeliveryList(response.deliveries);
@@ -43,7 +43,10 @@ const DeliveryList: React.FC<DeliveryListProps> = ({ defaultAddress }) => {
           deliveryId: selected.id,
         } as OrderData;
       });
-      localStorage.setItem('deliveryFee', selected.fee.toString());
+
+      if (typeof window !== "undefined") {
+        localStorage.setItem('deliveryFee', selected.fee.toString());
+      }
     }
   }, [selected, setOrder]);
 
@@ -54,24 +57,24 @@ const DeliveryList: React.FC<DeliveryListProps> = ({ defaultAddress }) => {
         <div className='flex justify-center items-center w-full text-lg py-4'>There&apos;s no delivery.</div>
       ) : (
         <RadioGroup value={selected} onChange={setSelected} aria-label="Payment Method" className="space-y-6">
-        {deliveryList.map((delivery) => (
-          <Radio
-            key={delivery.name}
-            value={delivery}
-            className="group relative flex cursor-pointer rounded-xl border border-gray-200"
-          >
-            <div className="flex w-full items-center justify-between px-6 py-4 rounded-xl hover:bg-gray-100 group-data-[checked]:bg-gray-100">
-              <div className="flex flex-col justify-between items-start space-y-2">
-                <h4 className="font-semibold">{delivery.name}</h4>
-                <h4>{delivery.description}</h4>
+          {deliveryList.map((delivery) => (
+            <Radio
+              key={delivery.name}
+              value={delivery}
+              className="group relative flex cursor-pointer rounded-xl border border-gray-200"
+            >
+              <div className="flex w-full items-center justify-between px-6 py-4 rounded-xl hover:bg-gray-100 group-data-[checked]:bg-gray-100">
+                <div className="flex flex-col justify-between items-start space-y-2">
+                  <h4 className="font-semibold">{delivery.name}</h4>
+                  <h4>{delivery.description}</h4>
+                </div>
+                <span role="radio" aria-checked className=" size-5 rounded-full flex justify-center items-center border border-gray-700 bg-white">
+                  <div className="invisible bg-gray-700 size-2 rounded-full group-data-[checked]:visible" />
+                </span>
               </div>
-              <span role="radio" aria-checked className=" size-5 rounded-full flex justify-center items-center border border-gray-700 bg-white">
-                <div className="invisible bg-gray-700 size-2 rounded-full group-data-[checked]:visible" />
-              </span>
-            </div>
-          </Radio>
-        ))}
-      </RadioGroup>
+            </Radio>
+          ))}
+        </RadioGroup>
       )}
     </div>
   )

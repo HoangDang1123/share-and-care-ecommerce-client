@@ -73,7 +73,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh }) => {
     const city = cities?.find(city => city.Id === selectedCity);
     const district = districts?.find(district => district.Id === selectedDistrict);
     const ward = wards?.find(ward => ward.Id === selectedWard);
-    if (userId !== null && accessToken !== null && city && district && ward) {
+    if (userId !== "" && accessToken !== "" && city && district && ward) {
       try {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const response = await createAddress({
