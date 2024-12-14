@@ -2,6 +2,7 @@ import { ProductDataResponse } from '@/interface/product';
 import { formatPrice } from '@/utils/helpers'
 import { StarIcon } from '@heroicons/react/20/solid'
 import Image from 'next/image'
+import Link from 'next/link';
 import React from 'react'
 
 interface SearchCardProps {
@@ -10,26 +11,29 @@ interface SearchCardProps {
 
 const SearchCard: React.FC<SearchCardProps> = ({ product }) => {
   return (
-    <div
-      className='grid grid-rows-3 grid-flow-col gap-x-4 px-4 py-2 rounded-lg items-center justify-start hover:cursor-pointer hover:bg-gray-200'
-    >
-      <Image
-        alt={product.name}
-        src={product.mainImage}
-        priority
-        width={90}
-        height={120}
-        style={{ width: "auto", height: "auto", borderRadius: "10px" }}
-        className='row-span-3'
-      />
-      <span className="text-xl font-semibold text-start col-span-2">{product.name}</span>
-      <span className="text-xl self-end text-start row-span-2 col-span-2">
-        {formatPrice(product.price)}
-        <span className='flex items-center'>
-          {product.rating}
-          <StarIcon className='size-5 mb-1' />
+    <div>
+      <Link
+        href={`/product/${product.id}`}
+        className='grid grid-rows-3 grid-flow-col gap-x-4 px-4 py-2 rounded-lg items-center justify-start hover:cursor-pointer hover:bg-gray-200'
+      >
+        <Image
+          alt={product.name}
+          src={product.mainImage}
+          priority
+          width={90}
+          height={120}
+          style={{ width: "auto", height: "auto", borderRadius: "10px" }}
+          className='row-span-3'
+        />
+        <span className="text-xl font-semibold text-start col-span-2">{product.name}</span>
+        <span className="text-xl self-end text-start row-span-2 col-span-2">
+          {formatPrice(product.price)}
+          <span className='flex items-center'>
+            {product.rating}
+            <StarIcon className='size-5 mb-1' />
+          </span>
         </span>
-      </span>
+      </Link>
     </div>
   )
 }
