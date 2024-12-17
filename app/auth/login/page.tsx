@@ -47,20 +47,15 @@ export default function Page() {
       });
       toast.success("Login successful.");
 
+      setIsLogin(true);
+
       const currentTime = new Date().getTime();
 
-      // if (typeof window !== "undefined") {
-      //   localStorage.setItem('accessToken', response.tokens.accessToken);
-      //   localStorage.setItem('refreshToken', response.tokens.refreshToken);
-      //   localStorage.setItem('userId', response.user.id);
-      //   localStorage.setItem('tokenTimestamp', currentTime.toString());
-      // }
       localStorage.setItem('accessToken', response.tokens.accessToken);
       localStorage.setItem('refreshToken', response.tokens.refreshToken);
       localStorage.setItem('userId', response.user.id);
       localStorage.setItem('tokenTimestamp', currentTime.toString());
-
-      setIsLogin(true);
+      localStorage.setItem('isLogin', 'true');
 
       router.push(`/?userId=${response.user.id}&refreshToken=${response.tokens.refreshToken}`);
 

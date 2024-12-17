@@ -12,6 +12,8 @@ interface AuthContextType {
 interface OrderContextType {
     order: OrderData | null;
     setOrder: React.Dispatch<React.SetStateAction<OrderData | null>>;
+    productPrice: number | null;
+    setProductPrice: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -20,6 +22,7 @@ const OrderContext = createContext<OrderContextType | undefined>(undefined);
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [isLogin, setIsLogin] = useState<boolean>(false);
     const [order, setOrder] = useState<OrderData | null>(null);
+    const [productPrice, setProductPrice] = useState<number>(0);
 
     const checkAccessToken = () => {
         const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";
@@ -32,8 +35,12 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
         if (currentTime - Number(timestamp) > oneDayInMillis && typeof window !== "undefined") {
             localStorage.removeItem('accessToken');
+            localStorage.removeItem('userId');
             localStorage.removeItem('tokenTimestamp');
             localStorage.removeItem('order');
+            localStorage.removeItem('productPrice');
+            localStorage.removeItem('deliveryFee');
+            localStorage.removeItem('isLogin');
             return false;
         }
 
@@ -50,24 +57,28 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         setIsLogin(checkAccessToken());
 
         const storedOrder = typeof window !== "undefined" ? localStorage.getItem("order") || "" : "";
-        if (storedOrder) {
+        const storedPrice = typeof window !== "undefined" ? localStorage.getItem("productPrice") || "0" : "0";
+        if (storedOrder && storedPrice) {
             setOrder(JSON.parse(storedOrder));
         }
+        setProductPrice(Number(storedPrice));
     }, []);
 
     useEffect(() => {
         if (typeof window !== "undefined") {
             if (order) {
                 localStorage.setItem('order', JSON.stringify(order));
+                localStorage.setItem('productPrice', JSON.stringify(productPrice));
             } else {
                 localStorage.removeItem('order');
+                localStorage.removeItem('productPrice');
             }
         }
-    }, [order]);
+    }, [order, productPrice]);
 
     return (
         <AuthContext.Provider value={{ isLogin, setIsLogin, checkAccessToken }}>
-            <OrderContext.Provider value={{ order, setOrder }}>
+            <OrderContext.Provider value={{ order, setOrder, productPrice, setProductPrice }}>
                 {children}
             </OrderContext.Provider>
         </AuthContext.Provider>

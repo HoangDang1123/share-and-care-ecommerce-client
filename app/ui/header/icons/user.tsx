@@ -1,28 +1,19 @@
-import React, { useEffect, useState } from 'react'
 import { UserIcon } from '@heroicons/react/20/solid';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import Link from 'next/link';
 import { logoutRequest } from '@/app/api/auth';
 import { toast } from 'react-toastify';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 interface UserProps {
   isLogin: boolean;
 }
 
 const User: React.FC<UserProps> = ({ isLogin }) => {
-  const searchParams = useSearchParams();
-  const [userId, setUserId] = useState('');
   const router = useRouter();
   
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";
-
-  useEffect(() => {
-    const id = searchParams.get('userId');
-    if (id) {
-      setUserId(id);
-    }
-  }, [searchParams]);
+  const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : "";
 
   const handleGoToProfile = () => {
     router.push("/profile");
@@ -50,6 +41,7 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
         localStorage.removeItem('order');
         localStorage.removeItem('productPrice');
         localStorage.removeItem('deliveryFee');
+        localStorage.removeItem('isLogin');
       }
       router.push("/auth/login");
     }

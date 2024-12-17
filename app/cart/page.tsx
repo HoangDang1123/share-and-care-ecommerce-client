@@ -23,7 +23,7 @@ export default function Page() {
   const [orderMessage, setOrderMessage] = useState('');
   const [loading, setLoading] = useState(true);
   const route = useRouter();
-  const { setOrder } = useOrder();
+  const { setOrder, setProductPrice } = useOrder();
 
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : "";
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";
@@ -131,9 +131,7 @@ export default function Page() {
       };
     });
 
-    if (typeof window !== "undefined") {
-      localStorage.setItem('productPrice', totalCost.toString());
-    }
+    setProductPrice(totalCost);
 
     route.push("/order");
   }

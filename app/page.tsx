@@ -16,17 +16,29 @@ export default function Home() {
   const searchParams = useSearchParams();
   const { isLogin, setIsLogin } = useAuth();
   const hasFetched = useRef(false);
+  const hasLoggedIn = useRef(false);
 
   const userId = searchParams.get('userId');
   const refreshToken = searchParams.get('refreshToken');
 
   useEffect(() => {
-    if (!isLogin && userId && refreshToken && !hasFetched.current) {
+    const storedIsLogin = localStorage.getItem('isLogin');
+    if (storedIsLogin === 'true') {
+      setIsLogin(true);
+      hasLoggedIn.current = true;
+    }
+  }, [setIsLogin]);
+
+  useEffect(() => {
+    if (!isLogin && userId && refreshToken && !hasFetched.current && !hasLoggedIn.current) {
       hasFetched.current = true;
-      const fetchProducts = async () => {
+      const fetchToken = async () => {
         try {
           toast.success("Login successful.");
           const response = await getAccessToken(userId, refreshToken);
+
+          setIsLogin(true);
+          hasLoggedIn.current = true;
 
           const currentTime = new Date().getTime();
 
@@ -35,15 +47,14 @@ export default function Home() {
             localStorage.setItem('refreshToken', response.tokens.refreshToken);
             localStorage.setItem('userId', userId);
             localStorage.setItem('tokenTimestamp', currentTime.toString());
+            localStorage.setItem('isLogin', 'true');
           }
-
-          setIsLogin(true);
         } catch (error) {
           console.error("Error fetching token:", error);
         }
       }
 
-      fetchProducts();
+      fetchToken();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLogin, userId, refreshToken]);
