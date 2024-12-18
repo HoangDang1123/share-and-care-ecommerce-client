@@ -37,5 +37,5 @@ export interface Variant {
 
 export interface CartItemDeleted {
     productId: string,
-    variantId: string,
+    variantId: string | null,
 }

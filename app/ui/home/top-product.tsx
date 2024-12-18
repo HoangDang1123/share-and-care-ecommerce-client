@@ -8,6 +8,7 @@ import { CategoryDataResponse } from '@/interface/category';
 import { getTopCategoriesProduct } from '@/app/api/product';
 import { ProductDataResponse } from '@/interface/product';
 import Link from 'next/link';
+import { ChevronDoubleRightIcon } from '@heroicons/react/24/outline';
 
 const responsive = {
     superLargeDesktop: {
@@ -54,10 +55,13 @@ const TopProduct: React.FC<TopProductProps> = ({ category }) => {
                 <h1>{category.name.toUpperCase()}</h1>
                 <Link
                     href={{ pathname: "/shop", query: { category: category.id } }}
-                    className="text-xl italic underline hover:font-semibold"
+                    className="flex justify-center items-center space-x-2 bg-gray-700 text-white text-xl h-fit px-4 py-2 rounded-full hover:bg-gray-800"
                 >
 
-                    View more
+                    <span>
+                        View All
+                    </span>
+                    <ChevronDoubleRightIcon className='size-4' />
                 </Link>
             </div>
 

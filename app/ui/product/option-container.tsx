@@ -7,11 +7,12 @@ import SelectedColor from './option/selected-color';
 import SelectedSize from './option/selected-size';
 import SelectedQuantity from './option/selected-quantity';
 import { ProductDetailDataResponse } from '@/interface/product';
-import { useAuth } from '@/app/context/AuthContext';
+import { useAuth, useOrder } from '@/app/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { addProductToCart } from '@/app/api/cart';
 import ClipLoader from 'react-spinners/ClipLoader';
+import { OrderData } from '@/interface/order';
 
 interface OptionContainerProps {
   product: ProductDetailDataResponse,
@@ -26,6 +27,7 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product }) => {
   const [disabled, setDisabled] = useState(true);
   const { isLogin } = useAuth();
   const router = useRouter();
+  const { setOrder, setProductPrice } = useOrder();
 
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : "";
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";
@@ -57,7 +59,7 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product }) => {
         try {
           await addProductToCart(itemData, userId, accessToken);
           toast.success("Add product to cart successful.");
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) { } finally {
           setLoadingAddToCart(false);
         }
@@ -71,6 +73,43 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product }) => {
     if (!isLogin) {
       router.push("/auth/login");
       toast.warn("Please login to continue !");
+    } else {
+      const tierIndex = [selectedColorIndex, selectedSizeIndex];
+      const skuItem = product.skuList.skuList.find(item => JSON.stringify(item.tierIndex) === JSON.stringify(tierIndex));
+
+      if (userId !== "" && accessToken !== "") {
+        const itemData = [{
+          productId: product.product.id,
+          quantity: quantity,
+          variantId: skuItem ? skuItem.id : null
+        }];
+
+        setOrder(prevOrder => {
+          const currentOrder: OrderData = prevOrder || {
+            shippingAddress: {
+              fullname: '',
+              phone: '',
+              street: '',
+              ward: '',
+              district: '',
+              city: ''
+            },
+            items: [],
+            couponCode: "",
+            paymentMethod: '',
+            deliveryId: ''
+          };
+
+          return {
+            ...currentOrder,
+            items: itemData,
+          };
+        });
+
+        setProductPrice(skuItem ? skuItem.price : 0);
+
+        router.push("/order");
+      }
     }
   }
 

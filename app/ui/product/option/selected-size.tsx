@@ -32,7 +32,7 @@ const SelectedSize: React.FC<SelectedSizeProps> = ({ product, selectedSizeIndex,
 
         <button
           onClick={() => setIsOpenDialog(true)}
-          className='text-xl text-blue-700 hover:text-blue-900 underline font-semibold'
+          className="flex justify-center items-center space-x-2 bg-gray-700 text-white text-sm font-semibold h-fit px-4 py-2 rounded-full hover:bg-gray-800"
         >
           Size Guide
         </button>

@@ -22,7 +22,7 @@ export default function Page() {
   const [isFixed, setIsFixed] = useState(false);
   const [orderMessage, setOrderMessage] = useState('');
   const [loading, setLoading] = useState(true);
-  const route = useRouter();
+  const router = useRouter();
   const { setOrder, setProductPrice } = useOrder();
 
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : "";
@@ -133,7 +133,7 @@ export default function Page() {
 
     setProductPrice(totalCost);
 
-    route.push("/order");
+    router.push("/order");
   }
 
   return (

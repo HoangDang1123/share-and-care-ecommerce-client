@@ -153,7 +153,7 @@ const ItemTable: React.FC<ItemTableProps> = ({ cart, setCart, selectedAll, selec
               </Checkbox>
             </td>
 
-            <td 
+            <td
               className='flex space-x-4 hover:cursor-pointer'
               onClick={() => handleClickItem(item.productId)}
             >

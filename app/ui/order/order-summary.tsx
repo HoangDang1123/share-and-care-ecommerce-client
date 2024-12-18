@@ -1,5 +1,6 @@
 'use client'
 
+import { deleteCartItem } from '@/app/api/cart';
 import { createOrder } from '@/app/api/order';
 import { useOrder } from '@/app/context/AuthContext';
 import { formatPrice } from '@/utils/helpers';
@@ -49,15 +50,22 @@ export default function OrderSummary() {
         const response = await createOrder(order, userId, accessToken);
         toast.success("Create order successful.");
 
-        if (order && order.paymentMethod === "VN_PAY") {
-          router.push(`/order/${response.id}`)
-        } else {
-          router.push("/profile");
+        router.push(`/order/${response.id}`)
+
+        for (const item of order.items) {
+          const cartItem = {
+            productId: item.productId,
+            variantId: item.variantId
+          }
+          try {
+            await deleteCartItem(cartItem, userId, accessToken);
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          } catch (error) { }
         }
 
         setOrder(null);
         if (typeof window !== "undefined") {
-          localStorage.removeItem('productPrice');
+          localStorage.setItem('productPrice', '0');
         }
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
