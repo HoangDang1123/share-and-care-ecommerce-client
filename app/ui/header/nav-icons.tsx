@@ -1,7 +1,7 @@
 import Search from './icons/search';
 import User from './icons/user';
 import Cart from './icons/cart';
-import { useAuth } from "@/app/context/AuthContext";
+import { useAuth } from "@/app/context/AppContext";
 import { Suspense } from 'react';
 
 export default function NavIcons() {

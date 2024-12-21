@@ -5,7 +5,7 @@ import TopProduct from "./ui/home/top-product";
 import { useEffect, useRef, useState } from "react";
 import { CategoryDataResponse } from "@/interface/category";
 import { getAllCategories } from "./api/category";
-import { useAuth } from "./context/AuthContext";
+import { useAuth } from "./context/AppContext";
 import { useSearchParams } from "next/navigation";
 import { getAccessToken } from "./api/token";
 import { toast } from "react-toastify";

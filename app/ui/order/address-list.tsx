@@ -10,7 +10,7 @@ import ClipLoader from 'react-spinners/ClipLoader';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { OrderData, ShippingAddressData } from '@/interface/order';
-import { useOrder } from '@/app/context/AuthContext';
+import { useOrder } from '@/app/context/AppContext';
 
 interface AddressListProps {
   isRefresh: boolean,

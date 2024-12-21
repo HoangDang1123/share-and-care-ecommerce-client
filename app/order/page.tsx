@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { AddressDataResponse } from "@/interface/address";
 import { getDefaultAddress } from "../api/address";
 import DeliveryList from "../ui/order/delivery-list";
-import { useOrder } from "../context/AuthContext";
+import { useOrder } from "../context/AppContext";
 import { OrderData, ShippingAddressData } from "@/interface/order";
 
 export default function Page() {

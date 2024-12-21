@@ -1,5 +1,6 @@
 'use client';
 
+import { CartDataResponse } from '@/interface/cart';
 import { OrderData } from '@/interface/order';
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
@@ -7,6 +8,11 @@ interface AuthContextType {
     isLogin: boolean;
     setIsLogin: (value: boolean) => void;
     checkAccessToken: () => boolean;
+}
+
+interface CartContextType {
+    cart: CartDataResponse | null;
+    setCart: React.Dispatch<React.SetStateAction<CartDataResponse | null>>;
 }
 
 interface OrderContextType {
@@ -17,10 +23,12 @@ interface OrderContextType {
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const CartContext = createContext<CartContextType | undefined>(undefined);
 const OrderContext = createContext<OrderContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [isLogin, setIsLogin] = useState<boolean>(false);
+    const [cart, setCart] = useState<CartDataResponse | null>(null);
     const [order, setOrder] = useState<OrderData | null>(null);
     const [productPrice, setProductPrice] = useState<number>(0);
 
@@ -78,9 +86,11 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
     return (
         <AuthContext.Provider value={{ isLogin, setIsLogin, checkAccessToken }}>
-            <OrderContext.Provider value={{ order, setOrder, productPrice, setProductPrice }}>
-                {children}
-            </OrderContext.Provider>
+            <CartContext.Provider value={{ cart, setCart }}>
+                <OrderContext.Provider value={{ order, setOrder, productPrice, setProductPrice }}>
+                    {children}
+                </OrderContext.Provider>
+            </CartContext.Provider>
         </AuthContext.Provider>
     );
 };
@@ -89,6 +99,14 @@ export const useAuth = () => {
     const context = useContext(AuthContext);
     if (!context) {
         throw new Error("useAuth must be used within an AuthProvider");
+    }
+    return context;
+};
+
+export const useCart = () => {
+    const context = useContext(CartContext);
+    if (!context) {
+        throw new Error("useCart must be used within an CartProvider");
     }
     return context;
 };

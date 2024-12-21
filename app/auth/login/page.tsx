@@ -8,7 +8,7 @@ import { loginRequest } from '@/app/api/auth';
 import { useRouter } from 'next/navigation';
 import ClipLoader from "react-spinners/ClipLoader";
 import useDeviceInfo from '@/hooks/useDeviceInfo';
-import { useAuth } from '@/app/context/AuthContext';
+import { useAuth } from '@/app/context/AppContext';
 
 export default function Page() {
   const [formData, setFormData] = useState({

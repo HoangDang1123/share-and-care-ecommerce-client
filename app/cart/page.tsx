@@ -8,21 +8,20 @@ import SelectedAllCombobox from '../ui/cart/selected-all-combobox';
 import { formatPrice } from '@/utils/helpers';
 import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
-import { CartDataResponse } from '@/interface/cart';
 import { clearCartItem, getCart } from '../api/cart';
 import { toast } from 'react-toastify';
 import ClipLoader from 'react-spinners/ClipLoader';
-import { useOrder } from '../context/AuthContext';
+import { useCart, useOrder } from '../context/AppContext';
 import { OrderData } from '@/interface/order';
 
 export default function Page() {
-  const [cart, setCart] = useState<CartDataResponse>();
   const [selectedAll, setSelectedAll] = useState(false);
   const [selectedItem, setSelectedItem] = useState<Array<boolean>>([]);
   const [isFixed, setIsFixed] = useState(false);
   const [orderMessage, setOrderMessage] = useState('');
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const { cart, setCart } = useCart();
   const { setOrder, setProductPrice } = useOrder();
 
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : "";
@@ -45,7 +44,7 @@ export default function Page() {
     };
 
     fetchCart();
-  }, [accessToken, userId]);
+  }, [accessToken, setCart, userId]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -178,7 +177,7 @@ export default function Page() {
               </button>
             </div>
           </div>
-          <ItemTable cart={cart} setCart={setCart} selectedAll={selectedAll} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
+          <ItemTable selectedAll={selectedAll} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
           {cart?.items?.length === 0 && (
             <div className='flex justify-center items-center w-[1085px] text-lg py-4'>There&apos;s no item</div>
           )}

@@ -4,24 +4,23 @@ import { CheckIcon, TrashIcon } from '@heroicons/react/20/solid';
 import { MinusIcon, PlusIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import { formatPrice, splitVariantSlug } from '@/utils/helpers';
-import { CartDataResponse } from '@/interface/cart';
 import { deleteCartItem, getCart, updateCartItem } from '@/app/api/cart';
 import { toast } from 'react-toastify';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { useRouter } from 'next/navigation';
+import { useCart } from '@/app/context/AppContext';
 
 interface ItemTableProps {
-  cart: CartDataResponse | undefined,
-  setCart: (cart: CartDataResponse) => void,
   selectedAll: boolean,
   selectedItem: Array<boolean>,
   setSelectedItem: (selectedItem: Array<boolean>) => void,
 }
 
-const ItemTable: React.FC<ItemTableProps> = ({ cart, setCart, selectedAll, selectedItem, setSelectedItem }) => {
+const ItemTable: React.FC<ItemTableProps> = ({ selectedAll, selectedItem, setSelectedItem }) => {
   const [loadingItems, setLoadingItems] = useState<boolean[]>([]);
   const [quantities, setQuantities] = useState<number[]>([]);
   const router = useRouter();
+  const { cart, setCart } = useCart();
 
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : "";
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";
@@ -141,11 +140,11 @@ const ItemTable: React.FC<ItemTableProps> = ({ cart, setCart, selectedAll, selec
       </thead>
 
       <tbody>
-        {cart?.items.map((item, index) => (
+        {cart && cart.items.map((item, index) => (
           <tr key={index} >
             <td>
               <Checkbox
-                checked={selectedItem[index]}
+                checked={selectedItem[index] !== undefined ? selectedItem[index] : false}
                 onChange={() => handleSetSelectedItem(index)}
                 className="group block size-5 rounded border border-gray-700 bg-white data-[checked]:bg-gray-200 hover:cursor-pointer"
               >
@@ -223,7 +222,8 @@ const ItemTable: React.FC<ItemTableProps> = ({ cart, setCart, selectedAll, selec
               </button>
             </td>
           </tr>
-        ))}
+        ))
+        }
       </tbody>
     </table>
   );

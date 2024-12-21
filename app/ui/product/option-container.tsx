@@ -7,10 +7,10 @@ import SelectedColor from './option/selected-color';
 import SelectedSize from './option/selected-size';
 import SelectedQuantity from './option/selected-quantity';
 import { ProductDetailDataResponse } from '@/interface/product';
-import { useAuth, useOrder } from '@/app/context/AuthContext';
+import { useAuth, useCart, useOrder } from '@/app/context/AppContext';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
-import { addProductToCart } from '@/app/api/cart';
+import { addProductToCart, getCart } from '@/app/api/cart';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { OrderData } from '@/interface/order';
 
@@ -25,8 +25,9 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product }) => {
   const [loadingAddToCart, setLoadingAddToCart] = useState(false);
   const [loadingBuyNow, setLoadingBuyNow] = useState(false);
   const [disabled, setDisabled] = useState(true);
-  const { isLogin } = useAuth();
   const router = useRouter();
+  const { isLogin } = useAuth();
+  const { setCart } = useCart();
   const { setOrder, setProductPrice } = useOrder();
 
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : "";
@@ -59,6 +60,11 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product }) => {
         try {
           await addProductToCart(itemData, userId, accessToken);
           toast.success("Add product to cart successful.");
+          try {
+            const response = await getCart(userId, accessToken);
+            setCart(response);
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          } catch (error) { }
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) { } finally {
           setLoadingAddToCart(false);

@@ -1,20 +1,20 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { ArrowRightIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
-import { CartDataResponse } from '@/interface/cart';
 import { getCart } from '@/app/api/cart';
 import { formatPrice } from '@/utils/helpers';
+import { useCart } from '@/app/context/AppContext';
 
 interface CartProps {
   isLogin: boolean;
 }
 
 const Cart: React.FC<CartProps> = ({ isLogin }) => {
-  const [cart, setCart] = useState<CartDataResponse>();
+  const { cart, setCart } = useCart();
 
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : "";
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";

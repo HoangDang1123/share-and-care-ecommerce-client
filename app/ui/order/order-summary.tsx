@@ -2,7 +2,7 @@
 
 import { deleteCartItem } from '@/app/api/cart';
 import { createOrder } from '@/app/api/order';
-import { useOrder } from '@/app/context/AuthContext';
+import { useOrder } from '@/app/context/AppContext';
 import { formatPrice } from '@/utils/helpers';
 import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';

@@ -1,6 +1,6 @@
 'use client'
 
-import { useOrder } from "@/app/context/AuthContext";
+import { useOrder } from "@/app/context/AppContext";
 import { OrderData } from "@/interface/order";
 import { Radio, RadioGroup } from "@headlessui/react";
 import Image from "next/image";

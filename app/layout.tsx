@@ -8,7 +8,7 @@ import Footer from "./ui/footer";
 import ScrollToTopButton from "./ui/scroll-to-top";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
-import { AppProvider } from "./context/AuthContext";
+import { AppProvider } from "./context/AppContext";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
