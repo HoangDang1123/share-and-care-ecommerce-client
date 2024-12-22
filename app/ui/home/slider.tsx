@@ -40,7 +40,7 @@ export function Slider() {
                         width={1920}
                         height={700}
                         aria-hidden={imageIndex !== index}
-                        className="object-cover w-[1920px] h-[700px] block flex-shrink-0 flex-grow-0 transition-transform duration-300"
+                        className="object-cover w-screen h-[700px] block flex-shrink-0 flex-grow-0 transition-transform duration-300"
                         style={{ transform: `translateX(${-100 * imageIndex}%)` }}
                         priority
                     />

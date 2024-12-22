@@ -1,8 +1,8 @@
 'use client'
 
-import { deleteCartItem } from '@/app/api/cart';
+import { deleteCartItem, getCart } from '@/app/api/cart';
 import { createOrder } from '@/app/api/order';
-import { useOrder } from '@/app/context/AppContext';
+import { useCart, useOrder } from '@/app/context/AppContext';
 import { formatPrice } from '@/utils/helpers';
 import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
@@ -14,6 +14,7 @@ export default function OrderSummary() {
   const [isFixed, setIsFixed] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { setCart } = useCart();
   const { order, setOrder } = useOrder();
 
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : "";
@@ -52,15 +53,31 @@ export default function OrderSummary() {
 
         router.push(`/order/${response.id}`)
 
+        const cartResponse = await getCart(userId, accessToken);
+        const cartItems = cartResponse.items || [];
+
         for (const item of order.items) {
           const cartItem = {
             productId: item.productId,
-            variantId: item.variantId
+            variantId: item.variantId,
+          };
+
+          const existsInCart = cartItems.some(cartItem =>
+            cartItem.productId === item.productId && cartItem.variantId === item.variantId
+          );
+
+          if (existsInCart) {
+            try {
+              await deleteCartItem(cartItem, userId, accessToken);
+              try {
+                const response = await getCart(userId, accessToken);
+                setCart(response);
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              } catch (error) { }
+            } catch (error) {
+              console.error("Error deleting cart item:", error);
+            }
           }
-          try {
-            await deleteCartItem(cartItem, userId, accessToken);
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          } catch (error) { }
         }
 
         setOrder(null);

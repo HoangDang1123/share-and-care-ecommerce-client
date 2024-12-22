@@ -189,7 +189,7 @@ export default function Page() {
 
           <div className='flex flex-col space-y-4'>
             {order.orders.paymentMethod === 'VN_PAY' ? (
-              order.orders.status !== "AWAITING_PAYMENT" ? (
+              order.orders.status === "AWAITING_PAYMENT" ? (
                 <button
                   disabled={loading}
                   onClick={(e) => handlePayment(e)}
