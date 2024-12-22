@@ -38,9 +38,9 @@ export function Slider() {
                         src={url}
                         alt={alt}
                         width={1920}
-                        height={700}
+                        height={960}
                         aria-hidden={imageIndex !== index}
-                        className="object-cover w-screen h-[700px] block flex-shrink-0 flex-grow-0 transition-transform duration-300"
+                        className="object-cover w-screen h-[960px] block flex-shrink-0 flex-grow-0 transition-transform duration-300"
                         style={{ transform: `translateX(${-100 * imageIndex}%)` }}
                         priority
                     />
