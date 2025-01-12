@@ -28,7 +28,7 @@ export default function Footer() {
         <div className="w-5/12 lg:w-8/12 sm:w-full">
           <div className="flex justify-center sm:justify-start sm:mt-6 w-full">
             <div>
-              <h2 className="font-bold text-lg mb-2">Usefull Links </h2>
+              <h2 className="font-bold text-lg mb-2">Useful Links </h2>
               <div className="flex justify-between gap-[80px] lg:gap-[40px]">
                 <ul className="flex flex-col gap-2 text-sm font-semibold">
                   <li>

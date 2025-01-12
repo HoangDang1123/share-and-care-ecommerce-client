@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { lusitana } from '@/app/ui/fonts';
-import Banner from './ui/banner';
-import Navbar from './ui/navbar';
+import Banner from "./ui/banner";
 import Header from "./ui/header";
 import Footer from "./ui/footer";
 import ScrollToTopButton from "./ui/scroll-to-top";
@@ -29,11 +28,10 @@ export default function RootLayout({
             <div className={`${lusitana.className} antialiased fixed w-screen top-0 z-10 flex flex-col`}>
               <ToastContainer />
               <Banner />
-              <Navbar />
               <Header />
             </div>
 
-            <div className="mt-44">
+            <div className="mt-32">
               <div className=" overflow-y-hidden min-h-[745px] h-auto z-9">
                 <Suspense>
                   {children}

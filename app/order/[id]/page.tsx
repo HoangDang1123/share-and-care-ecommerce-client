@@ -3,6 +3,7 @@
 import { getOrderDetail } from '@/app/api/order';
 import { VNPAYPayment } from '@/app/api/payment';
 import BackButton from '@/app/ui/back-button';
+import Status from '@/app/ui/order/status';
 import { OrderDataDetailResponse } from '@/interface/order';
 import { PaymentData } from '@/interface/payment';
 import { formatPrice } from '@/utils/helpers';
@@ -16,8 +17,8 @@ import ClipLoader from 'react-spinners/ClipLoader';
 
 export default function Page() {
   const [order, setOrder] = useState<OrderDataDetailResponse>();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [loading, setLoading] = useState(false);
+  const [paymentLoading, setPaymentLoading] = useState(false);
+  const [cancelLoading, setCancelLoading] = useState(false);
   const [isFixed, setIsFixed] = useState(false);
   const router = useRouter();
   const param = useParams();
@@ -66,6 +67,7 @@ export default function Page() {
   const handlePayment = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
 
+    setPaymentLoading(true);
     try {
       if (typeof id !== 'string') {
         return;
@@ -80,6 +82,12 @@ export default function Page() {
       router.replace(response);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) { }
+  }
+
+  const handleCanceling = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+
+    setCancelLoading(true);
   }
 
   if (!order) {
@@ -106,9 +114,12 @@ export default function Page() {
         </ul>
       </div>
 
-      <div className='grid grid-cols-1 md:grid-cols-7 px-5 md:px-20 space-x-0 md:space-x-14 mt-10'>
+      <div className='grid grid-cols-1 md:grid-cols-7 px-5 md:px-20 space-x-0 md:space-x-14 mt-4'>
         <div className="col-span-5 rounded-lg p-5 shadow-lg">
           <h1 className="text-2xl font-bold mb-5">Order Information</h1>
+          
+          <Status status={order.orders.status} method={order.orders.paymentMethod} />
+
           <table className='w-full'>
             <thead className='w-full'>
               <tr className="bg-gray-200 text-gray-700">
@@ -191,11 +202,11 @@ export default function Page() {
             {order.orders.paymentMethod === 'VN_PAY' ? (
               order.orders.status === "AWAITING_PAYMENT" ? (
                 <button
-                  disabled={loading}
+                  disabled={paymentLoading || cancelLoading}
                   onClick={(e) => handlePayment(e)}
-                  className='flex justify-center items-center bg-gray-900 px-6 py-2 rounded-md'
+                  className='flex justify-center items-center h-11 bg-gray-900 rounded-md'
                 >
-                  {loading ? (
+                  {paymentLoading ? (
                     <ClipLoader
                       size={20}
                       color='#ffffff'
@@ -203,8 +214,8 @@ export default function Page() {
                     />
                   ) : (
                     <div className='flex justify-center items-center'>
-                      <CreditCardIcon className='size-8 mr-3 text-white' />
-                      <h6 className='text-xl font-semibold text-white'>Order Payment</h6>
+                      <CreditCardIcon className='size-6 mr-3 text-white' />
+                      <h6 className='text-lg font-semibold text-white'>PAYMENT</h6>
                     </div>
                   )}
                 </button>
@@ -214,16 +225,38 @@ export default function Page() {
                   className='flex justify-center items-center bg-gray-200 opacity-50 px-6 py-2 rounded-md'
                 >
                   <div className='flex justify-center items-center'>
-                    <CheckCircleIcon className='size-8 mr-3 text-green-600' />
+                    <CheckCircleIcon className='size-6 mr-3 text-green-600' />
                     <h6 className='text-xl font-semibold text-green-600'>Order is Paid</h6>
                   </div>
                 </button>
               )
             ) : (
-              <div className="flex justify-center items-center">
-                <h6 className="text-xl font-semibold text-green-600">Please make payment upon delivery !</h6>
-              </div>
+              <button
+                disabled
+                className='flex justify-center items-center bg-gray-200 opacity-50 px-6 py-2 rounded-md'
+              >
+                <div className='flex justify-center items-center'>
+                  <h6 className='text-lg font-semibold text-green-600'>{order.orders.status}</h6>
+                </div>
+              </button>
             )}
+            <button
+              disabled={cancelLoading || paymentLoading}
+              onClick={(e) => handleCanceling(e)}
+              className='flex justify-center items-center h-11 bg-red-500 rounded-md hover:bg-red-600'
+            >
+              {cancelLoading ? (
+                <ClipLoader
+                  size={20}
+                  color='#ffffff'
+                  aria-label="Loading Spinner"
+                />
+              ) : (
+                <div className='flex justify-center items-center'>
+                  <h6 className='text-lg font-semibold text-white'>CANCEL</h6>
+                </div>
+              )}
+            </button>
           </div>
         </div>
       </div>

@@ -44,65 +44,75 @@ export default function Page() {
         {orderData && orderData.orders.length > 0 ? (
           <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
             <thead>
-              <tr className="bg-gray-200 text-gray-700">
-                <th className="border px-4 py-2 text-center">ID</th>
-                <th className="border px-4 py-2 text-center">Full Name</th>
-                <th className="border px-4 py-2 text-center">Phone</th>
-                <th className="border px-4 py-2 text-center">Payment Method</th>
-                <th className="border px-4 py-2 text-center">Delivery Method</th>
-                <th className="border px-4 py-2 text-center">Total Price</th>
-                <th className="border px-4 py-2 text-center">Status</th>
-                <th className="border px-4 py-2 text-center">View</th>
+              <tr className="border">
+                <th className="px-2 py-2 text-center">ID</th>
+                <th className="px-2 py-2 text-left">Full Name</th>
+                <th className="px-2 py-2 text-left">Phone</th>
+                <th className="px-2 py-2 text-left">Payment Method</th>
+                <th className="px-2 py-2 text-left">Delivery Method</th>
+                <th className="px-2 py-2 text-left">Total Price</th>
+                <th className="px-2 py-2 text-left">Status</th>
+                <th className="px-2 py-2 text-left">View</th>
               </tr>
             </thead>
             <tbody>
               {orderData.orders.map((order, index) => (
-                <tr key={index}>
-                  <td className="border px-4 py-2 text-center">{index + 1}</td>
-                  <td className="border px-4 py-2">{order.shippingAddress.fullname}</td>
-                  <td className="border px-4 py-2">{order.shippingAddress.phone}</td>
-                  <td className="border px-4 py-2 text-center">
+                <tr key={index} className={`${index % 2 == 0 ? 'bg-gray-100': ''}`}>
+                  <td className="px-2 py-8 text-center">{index + 1}</td>
+                  <td className="px-2 py-8 text-left">{order.shippingAddress.fullname}</td>
+                  <td className="px-2 py-8 text-left">{order.shippingAddress.phone}</td>
+                  <td className="px-2 py-8 text-left">
                     {order.paymentMethod === "VN_PAY" ? (
                       <span className="text-green-600 font-semibold">VNPay</span>
                     ) : (
                       <span className="text-blue-600 font-semibold">COD</span>
                     )}
                   </td>
-                  <td className="border px-4 py-2 text-center">{order.deliveryMethod.name}</td>
-                  <td className="border px-4 py-2 text-center">{formatPrice(order.totalPrice)}</td>
-                  <td className="border px-4 py-2 text-center">
+                  <td className="px-2 py-8 text-left">{order.deliveryMethod.name}</td>
+                  <td className="px-2 py-8 text-left">{formatPrice(order.totalPrice)}</td>
+                  <td className="px-2 py-8 text-left">
                     {order.status === "AWAITING_PAYMENT" && (
-                      <div className="bg-yellow-600 text-white text-lg font-semibold py-1 rounded-full">
+                      <div className="bg-yellow-300 text-gray-800 text-lg font-semibold px-4 py-1 rounded-full w-fit">
                         Awaiting Payment
                       </div>
                     )}
                     {order.status === "PENDING" && (
-                      <div className="bg-orange-600 text-white text-lg font-semibold py-1 rounded-full">
+                      <div className="bg-orange-200 text-gray-800 text-lg font-semibold px-4 py-1 rounded-full w-fit">
                         Pending
                       </div>
                     )}
                     {order.status === "PROCESSING" && (
-                      <div className="bg-blue-600 text-white text-lg font-semibold py-1 rounded-full">
+                      <div className="bg-blue-200 text-gray-800 text-lg font-semibold px-4 py-1 rounded-full w-fit">
                         Processing
                       </div>
                     )}
                     {order.status === "AWAITING_SHIPMENT" && (
-                      <div className="bg-orange-600 text-white text-lg font-semibold py-1 rounded-full">
+                      <div className="bg-teal-200 text-gray-800 text-lg font-semibold px-4 py-1 rounded-full w-fit">
                         Awaiting Shipment
                       </div>
                     )}
                     {order.status === "SHIPPED" && (
-                      <div className="bg-green-600 text-white text-lg font-semibold py-1 rounded-full">
+                      <div className="bg-green-200 text-gray-800 text-lg font-semibold px-4 py-1 rounded-full w-fit">
                         Shipped
                       </div>
                     )}
                     {order.status === "DELIVERED" && (
-                      <div className="bg-gray-600 text-white text-lg font-semibold py-1 rounded-full">
+                      <div className="bg-gray-200 text-gray-800 text-lg font-semibold px-4 py-1 rounded-full w-fit">
                         Delivered
                       </div>
                     )}
+                    {order.status === "CANCELED" && (
+                      <div className="bg-red-200 text-gray-800 text-lg font-semibold px-4 py-1 rounded-full w-fit">
+                        Canceled
+                      </div>
+                    )}
+                    {order.status === "PAID" && (
+                      <div className="bg-gray-300 text-gray-800 text-lg font-semibold px-4 py-1 rounded-full w-fit">
+                        Paid
+                      </div>
+                    )}
                   </td>
-                  <td className="border px-4 py-2 text-center">
+                  <td className="px-4 py-8 text-center">
                     <Link
                       href={`/order/${order.id}`}
                       className="flex justify-center text-md py-1 rounded-lg transition duration-200"
@@ -115,7 +125,7 @@ export default function Page() {
             </tbody>
           </table>
         ) : (
-          <div className="text-center text-gray-600">
+          <div className="text-left text-gray-600">
             {orderData ? (
               <p>No orders available.</p>
             ) : (

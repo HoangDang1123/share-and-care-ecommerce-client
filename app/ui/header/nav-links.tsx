@@ -4,9 +4,12 @@ import { getAllCategories, getChildCategories } from '@/app/api/category';
 import { CategoryDataResponse } from '@/interface/category';
 
 const links = [
-  { name: 'TOP SALES', href: '/top-sales' },
-  { name: 'BEST SELLER', href: '/best-seller' },
-  { name: 'LATEST', href: '/latest' },
+  { name: 'ABOUT US', href: '/about' },
+  {
+    name: 'BLOG',
+    href: '/blog',
+  },
+  { name: 'CUSTOMER SERVICE', href: '/customer-service' },
 ];
 
 export default function NavLinks() {
@@ -49,18 +52,6 @@ export default function NavLinks() {
 
   return (
     <div className="flex space-x-4">
-      {links.map((link) => {
-        return (
-          <Link
-            key={link.name}
-            href={link.href}
-            className='flex grow items-center justify-center gap-2 rounded-md text-2xl text-gray-900 font-medium hover:bg-gray-200 flex-none p-2 px-3'
-          >
-            <strong className="hidden md:block">{link.name}</strong>
-          </Link>
-        );
-      })}
-
       <div
         className="relative inline-flex group"
         onMouseEnter={() => setIsOpen(true)}
@@ -74,7 +65,7 @@ export default function NavLinks() {
         </Link>
 
         <div
-          className={`absolute flex w-[1080px] -right-[220px] z-10 mt-12 origin-top space-x-10 px-10 py-5 rounded-md bg-white shadow-lg transition-opacity duration-300 ease-in-out ${isOpen ? 'block opacity-100' : 'hidden opacity-0'}`}
+          className={`absolute flex w-[1080px] -right-[760px] z-10 mt-12 origin-top space-x-10 px-10 py-5 rounded-md bg-white shadow-lg transition-opacity duration-300 ease-in-out ${isOpen ? 'block opacity-100' : 'hidden opacity-0'}`}
         >
           {categories.map((category, index) => (
             <div key={index} className='flex flex-col items-start'>
@@ -102,6 +93,18 @@ export default function NavLinks() {
           ))}
         </div>
       </div>
+      
+      {links.map((link) => {
+        return (
+          <Link
+            key={link.name}
+            href={link.href}
+            className='flex grow items-center justify-center gap-2 rounded-md text-2xl text-gray-900 font-medium hover:bg-gray-200 flex-none p-2 px-3'
+          >
+            <strong className="hidden md:block">{link.name}</strong>
+          </Link>
+        );
+      })}
     </div>
   )
 }

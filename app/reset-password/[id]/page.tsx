@@ -2,19 +2,23 @@
 
 import { resetPassword } from "@/app/api/auth";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 import { toast } from "react-toastify";
 
 export default function Page() {
-  const [loading, setLoading] = useState(false);
-  const pathName = usePathname();
-  const resetToken = pathName.split('/').pop();
   const [formData, setFormData] = useState({
-    resetToken: resetToken,
+    resetToken: '',
     newPassword: '',
   });
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const pathName = usePathname();
+  const resetToken = pathName?.split('/').pop() ?? '';
+
+  useEffect(() => {
+    setFormData((prev) => ({ ...prev, resetToken }));
+  }, [resetToken]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -26,10 +30,10 @@ export default function Page() {
     setLoading(true);
     try {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const response = await resetPassword(formData);
+      await resetPassword(formData);
       toast.success("Your password has been updated successfully. Please log in again.");
 
-      router.push("/auth/login")
+      router.push("/auth/login");
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) { } finally {
