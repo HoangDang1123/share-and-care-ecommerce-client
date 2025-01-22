@@ -49,7 +49,7 @@ export default function Page() {
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
-      const triggerPoint = 175;
+      const triggerPoint = 120;
 
       if (scrollTop > triggerPoint) {
         setIsFixed(true);
@@ -184,7 +184,7 @@ export default function Page() {
         </div>
 
         <div
-          className={`flex flex-col w-[390px] h-fit mt-12 shadow-lg px-4 py-10 space-y-10 rounded-lg transition-all duration-300 ease-in-out ${isFixed ? 'fixed top-32 right-[175px]' : ''}`}
+          className={`flex flex-col w-[390px] h-fit mt-12 shadow-lg px-4 py-10 space-y-10 rounded-lg transition-all duration-300 ease-in-out ${isFixed ? 'fixed top-32 right-[180px]' : ''}`}
         >
           <h1>Order Summary</h1>
 

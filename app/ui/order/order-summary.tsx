@@ -2,7 +2,9 @@
 
 import { deleteCartItem, getCart } from '@/app/api/cart';
 import { createOrder } from '@/app/api/order';
+import { VNPAYPayment } from '@/app/api/payment';
 import { useCart, useOrder } from '@/app/context/AppContext';
+import { PaymentData } from '@/interface/payment';
 import { formatPrice } from '@/utils/helpers';
 import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
@@ -26,7 +28,7 @@ export default function OrderSummary() {
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
-      const triggerPoint = 120;
+      const triggerPoint = 60;
 
       if (scrollTop > triggerPoint) {
         setIsFixed(true);
@@ -51,7 +53,18 @@ export default function OrderSummary() {
         const response = await createOrder(order, userId, accessToken);
         toast.success("Create order successful.");
 
-        router.push(`/order/${response.id}`)
+        if (response.paymentMethod === "COD") {
+          router.push(`/order/${response.id}`);
+        }
+        else {
+          const paymentData: PaymentData = {
+            orderId: response.id,
+            language: "",
+            bankCode: "",
+          }
+          const paymentUrl = await VNPAYPayment(paymentData);
+          router.replace(paymentUrl);
+        }
 
         const cartResponse = await getCart(userId, accessToken);
         const cartItems = cartResponse.items || [];
@@ -94,7 +107,7 @@ export default function OrderSummary() {
 
   return (
     <div
-      className={`flex flex-col w-[390px] h-fit shadow-lg px-4 py-10 space-y-10 rounded-lg transition-all duration-300 ease-in-out ${isFixed ? 'fixed top-44 right-[175px]' : ''}`}
+      className={`flex flex-col w-[390px] h-fit shadow-lg px-4 py-10 space-y-10 rounded-lg transition-all duration-300 ease-in-out ${isFixed ? 'fixed top-48 right-[182px]' : ''}`}
     >
       <h1>Order Summary</h1>
       <div className='space-y-4'>

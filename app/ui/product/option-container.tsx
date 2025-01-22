@@ -16,12 +16,14 @@ import { OrderData } from '@/interface/order';
 
 interface OptionContainerProps {
   product: ProductDetailDataResponse,
+  setVariantImage: (selectedColorIndex: string) => void;
 }
 
-const OptionContainer: React.FC<OptionContainerProps> = ({ product }) => {
+const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantImage }) => {
   const [selectedColorIndex, setSelectedColorIndex] = useState<number | null>(null);
   const [selectedSizeIndex, setSelectedSizeIndex] = useState<number | null>(null);
   const [quantity, setQuantity] = useState(1);
+  const [quantityInStock, setQuantityInStock] = useState(product.product.quantity);
   const [loadingAddToCart, setLoadingAddToCart] = useState(false);
   const [loadingBuyNow, setLoadingBuyNow] = useState(false);
   const [disabled, setDisabled] = useState(true);
@@ -34,11 +36,33 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product }) => {
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";
 
   useEffect(() => {
+    if (selectedColorIndex !== null) {
+      setVariantImage(product.product.variants[0].images[selectedColorIndex]);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedColorIndex])
+
+  useEffect(() => {
     const hasVariants = product.product.variants.length > 0;
     const isColorOrSizeNotSelected = selectedColorIndex === null || selectedSizeIndex === null;
 
     setDisabled((hasVariants && isColorOrSizeNotSelected) || loadingAddToCart || loadingBuyNow);
   }, [product.product.variants.length, selectedColorIndex, selectedSizeIndex, loadingAddToCart, loadingBuyNow]);
+
+  useEffect(() => {
+    if (selectedColorIndex !== null && selectedSizeIndex !== null) {
+      const tierIndex = [selectedColorIndex, selectedSizeIndex];
+      const skuItem = product.skuList.skuList.find(item => JSON.stringify(item.tierIndex) === JSON.stringify(tierIndex));
+
+      if (skuItem) {
+        setQuantityInStock(skuItem.quantity);
+      } else {
+        setQuantityInStock(product.product.quantity);
+      }
+    } else {
+      setQuantityInStock(product.product.quantity);
+    }
+  }, [selectedColorIndex, selectedSizeIndex, product.product.quantity, product.skuList.skuList]);
 
   const handleAddToCart = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -137,7 +161,7 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product }) => {
 
         <SelectedQuantity
           product={product}
-          quantity={quantity}
+          quantityInStock={quantityInStock}
           setQuantity={setQuantity}
           selectedColorIndex={selectedColorIndex}
           selectedSizeIndex={selectedSizeIndex}
@@ -147,8 +171,8 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product }) => {
       <div className='flex space-x-6'>
         <button
           onClick={handleAddToCart}
-          disabled={disabled}
-          className={`flex justify-center items-center w-[200px] h-14 text-xl font-semibold bg-gray-300 rounded-md ${disabled ? 'cursor-not-allowed' : ''}`}
+          disabled={disabled || quantityInStock === 0}
+          className={`flex justify-center items-center w-[200px] h-14 text-xl font-semibold bg-gray-300 rounded-md ${disabled || quantityInStock === 0 ? 'cursor-not-allowed' : ''}`}
         >
           {loadingAddToCart ? (
             <ClipLoader size={20} color='#000000' aria-label="Loading Spinner" />
@@ -162,8 +186,8 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product }) => {
 
         <button
           onClick={handleBuyNow}
-          disabled={disabled}
-          className={`flex justify-center items-center w-[180px] h-14 text-xl font-semibold bg-gray-900 text-white rounded-md ${disabled ? 'cursor-not-allowed' : ''}`}
+          disabled={disabled || quantityInStock === 0}
+          className={`flex justify-center items-center w-[180px] h-14 text-xl font-semibold bg-gray-900 text-white rounded-md ${disabled || quantityInStock === 0 ? 'cursor-not-allowed' : ''}`}
         >
           {loadingBuyNow ? (
             <ClipLoader size={20} color='#ffffff' aria-label="Loading Spinner" />

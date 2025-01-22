@@ -34,8 +34,11 @@ export default function Banner() {
           <p className="text-sm leading-6 text-gray-200 animate-marquee">
             <strong className="font-semibold">Share And Care 2024</strong>
             <span className="mx-2">|</span>
-            Join us in Denver from June 7 – 9 to see what’s coming next.
+            <span className="ml-2 mr-40">Join us in Denver from June 7 – 9 to see what’s coming next.</span>
+
+            <strong className="font-semibold">Share And Care 2024</strong>
             <span className="mx-2">|</span>
+            <span className="mx-2">Join us in Denver from June 7 – 9 to see what’s coming next.</span>
           </p>
         </div>
         <Link

@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { CategoryDataResponse } from "@/interface/category";
 import { getAllCategories } from "./api/category";
 import { useAuth } from "./context/AppContext";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { getAccessToken } from "./api/token";
 import { toast } from "react-toastify";
 import { Suspense } from 'react';
@@ -14,6 +14,7 @@ import { Suspense } from 'react';
 export default function Home() {
   const [categories, setCategories] = useState<Array<CategoryDataResponse>>([]);
   const searchParams = useSearchParams();
+  const router = useRouter();
   const { isLogin, setIsLogin } = useAuth();
   const hasFetched = useRef(false);
   const hasLoggedIn = useRef(false);
@@ -49,6 +50,8 @@ export default function Home() {
             localStorage.setItem('tokenTimestamp', currentTime.toString());
             localStorage.setItem('isLogin', 'true');
           }
+
+          router.push('/');
         } catch (error) {
           console.error("Error fetching token:", error);
         }

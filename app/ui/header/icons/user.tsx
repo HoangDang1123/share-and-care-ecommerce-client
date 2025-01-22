@@ -3,21 +3,16 @@ import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import Link from 'next/link';
 import { logoutRequest } from '@/app/api/auth';
 import { toast } from 'react-toastify';
-import { useRouter } from 'next/navigation';
 
 interface UserProps {
   isLogin: boolean;
 }
 
 const User: React.FC<UserProps> = ({ isLogin }) => {
-  const router = useRouter();
-  
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : "";
 
-  const handleGoToProfile = () => {
-    router.push("/profile");
-  }
+  const handleGoToProfile = () => {}
 
   const handleLogout = async () => {
     if (!accessToken) {
@@ -43,7 +38,6 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
         localStorage.removeItem('deliveryFee');
         localStorage.removeItem('isLogin');
       }
-      router.push("/auth/login");
     }
   }
 
@@ -53,8 +47,8 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
   ];
 
   const customer = [
-    { name: 'Profile', click: handleGoToProfile },
-    { name: 'Logout', click: handleLogout },
+    { name: 'Profile', click: handleGoToProfile, href: '/profile' },
+    { name: 'Logout', click: handleLogout, href: '/auth/login' },
   ];
 
   return (
@@ -71,15 +65,15 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
         {isLogin ? (
           customer.map((item, index) => (
             <MenuItem key={index}>
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
+              <Link
+                href={item.href}
+                onClick={() => {
                   item.click();
                 }}
                 className="block w-full rounded-lg text-lg text-start py-2 px-3 transition hover:bg-gray-200"
               >
                 {item.name}
-              </button>
+              </Link>
             </MenuItem>
           ))
         ) : (

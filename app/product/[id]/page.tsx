@@ -15,6 +15,7 @@ import { getProductDetail } from '@/app/api/product';
 export default function Page() {
   const [product, setProduct] = useState<ProductDetailDataResponse>();
   const [images, setImages] = useState<Array<string>>([]);
+  const [variantImage, setVariantImage] = useState<string>("");
   const param = useParams();
   const id = param.id;
 
@@ -63,8 +64,8 @@ export default function Page() {
 
       <div className='flex flex-col w-full sm:px-11 md:px-22 lg:px-44 space-y-20'>
         <div className='flex w-full space-x-5 my-5'>
-          <ImageList images={images} />
-          <OptionContainer product={product} />
+          <ImageList images={images} variantImage={variantImage} />
+          <OptionContainer product={product} setVariantImage={setVariantImage} />
         </div>
 
         <div className='flex flex-col space-y-10'>

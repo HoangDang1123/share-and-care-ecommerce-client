@@ -1,19 +1,28 @@
 'use client'
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import ImageMagnifier from "./option/ImageMagnifier";
 
 interface ImageSliderProps {
   images: Array<string>,
+  variantImage: string,
 }
 
-const ImageList: React.FC<ImageSliderProps> = ({ images }) => {
+const ImageList: React.FC<ImageSliderProps> = ({ images, variantImage }) => {
   const [imageIndex, setImageIndex] = useState(0);
+
+  useEffect(() => {
+    if (variantImage !== "") {
+      setImageIndex(images.findIndex(item => item === variantImage));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [variantImage])
 
   return (
     <section className="flex w-full h-[700px]" aria-label="Image List">
-      <div className="flex flex-col gap-y-[0.92rem] mr-5">
-        {images.slice(0, 5).map((item, index) => (
+      <div className="flex flex-col gap-y-[0.92rem] mr-5 pr-8 overflow-x-hidden overflow-y-auto whitespace-nowrap">
+        {images.map((item, index) => (
           <div
             key={index}
             className="cursor-pointer w-24 hover:opacity-60"
@@ -35,15 +44,12 @@ const ImageList: React.FC<ImageSliderProps> = ({ images }) => {
       </div>
 
       <div className="flex w-full">
-        {images.slice(0, 5).map((item, index) => (
-          <Image
-            key={index}
-            src={item}
-            alt=""
-            width={1920}
-            height={1082}
-            aria-hidden={imageIndex !== index}
-            className={`${imageIndex === index ? 'block' : 'hidden'} object-cover w-auto`}
+        {images.map((item, index) => (
+          <ImageMagnifier 
+            key={index} 
+            imgSrc={item}
+            imageIndex={imageIndex}
+            index={index}
           />
         ))}
       </div>

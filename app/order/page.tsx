@@ -16,6 +16,7 @@ import { OrderData, ShippingAddressData } from "@/interface/order";
 export default function Page() {
   const [isRefresh, setIsRefresh] = useState<boolean>(false);
   const [defaultAddress, setDefaultAddress] = useState<AddressDataResponse>();
+  const [existAddress, setExistAddress] = useState(false);
   const { setOrder } = useOrder();
 
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : "";
@@ -67,8 +68,8 @@ export default function Page() {
 
       <div className='flex px-20 space-x-20 mt-10'>
         <div className="flex flex-col space-y-10">
-          <AddressForm setIsRefresh={setIsRefresh} />
-          <AddressList isRefresh={isRefresh} setIsRefresh={setIsRefresh} defaultAddress={defaultAddress} />
+          <AddressList isRefresh={isRefresh} setIsRefresh={setIsRefresh} defaultAddress={defaultAddress} setExistAddress={setExistAddress} />
+          <AddressForm setIsRefresh={setIsRefresh} existAddress={existAddress} />
           <DeliveryList defaultAddress={defaultAddress} />
           <PaymentMethod />
         </div>

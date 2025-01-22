@@ -72,7 +72,7 @@ export default function Footer() {
       </div>
 
       <div className="w-[90%] flex flex-wrap justify-center items-center mx-auto py-5 text-center">
-        <span>Copiright @ 2024 All Rights Reserved </span>
+        <span>Copyright @ 2024 All Rights Reserved </span>
       </div>
     </div>
   )

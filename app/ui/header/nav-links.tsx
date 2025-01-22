@@ -9,7 +9,7 @@ const links = [
     name: 'BLOG',
     href: '/blog',
   },
-  { name: 'CUSTOMER SERVICE', href: '/customer-service' },
+  { name: 'SERVICE', href: '/customer-service' },
 ];
 
 export default function NavLinks() {
@@ -51,7 +51,7 @@ export default function NavLinks() {
   }, [categories, setChildCategories]);
 
   return (
-    <div className="flex space-x-4">
+    <div className="flex space-x-8">
       <div
         className="relative inline-flex group"
         onMouseEnter={() => setIsOpen(true)}
@@ -61,7 +61,7 @@ export default function NavLinks() {
           href="/shop"
           className='relative flex grow items-center justify-center gap-2 rounded-md text-2xl text-gray-900 font-medium hover:bg-gray-200 flex-none p-2 px-3'
         >
-          <strong className="hidden md:block">PRODUCT</strong>
+          <strong className="hidden md:block">SHOP</strong>
         </Link>
 
         <div

@@ -6,14 +6,13 @@ import React, { useEffect, useState } from 'react'
 
 interface SelectedQuantityProps {
   product: ProductDetailDataResponse,
-  quantity: number,
+  quantityInStock: number,
   setQuantity: React.Dispatch<React.SetStateAction<number>>,
   selectedColorIndex: number | null,
   selectedSizeIndex: number | null,
 }
 
-const SelectedQuantity: React.FC<SelectedQuantityProps> = ({ product, quantity, setQuantity, selectedColorIndex, selectedSizeIndex }) => {
-  const [quantityInStock, setQuantityInStock] = useState(product.product.quantity);
+const SelectedQuantity: React.FC<SelectedQuantityProps> = ({ product, quantityInStock, setQuantity, selectedColorIndex, selectedSizeIndex }) => {
   const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
@@ -22,21 +21,6 @@ const SelectedQuantity: React.FC<SelectedQuantityProps> = ({ product, quantity, 
   
     setDisabled(hasVariants && isColorOrSizeNotSelected);
   }, [product.product.variants.length, selectedColorIndex, selectedSizeIndex, setDisabled]);
-
-  useEffect(() => {
-    if (selectedColorIndex !== null && selectedSizeIndex !== null) {
-      const tierIndex = [selectedColorIndex, selectedSizeIndex];
-      const skuItem = product.skuList.skuList.find(item => JSON.stringify(item.tierIndex) === JSON.stringify(tierIndex));
-
-      if (skuItem) {
-        setQuantityInStock(skuItem.quantity);
-      } else {
-        setQuantityInStock(product.product.quantity);
-      }
-    } else {
-      setQuantityInStock(product.product.quantity);
-    }
-  }, [selectedColorIndex, selectedSizeIndex, product.product.quantity, product.skuList.skuList]);
 
   const decQuantity = () => {
     setQuantity(prevQuantity => Math.max(prevQuantity - 1, 1));
@@ -61,7 +45,7 @@ const SelectedQuantity: React.FC<SelectedQuantityProps> = ({ product, quantity, 
         <input
           type="number"
           className="w-20 text-center border-solid border border-gray-900 rounded-md text-2xl"
-          value={quantity}
+          value={quantityInStock}
           onChange={(e) => setQuantity(Math.max(Number(e.target.value), 1))}
           min="1"
           disabled={disabled}

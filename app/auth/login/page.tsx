@@ -57,7 +57,7 @@ export default function Page() {
       localStorage.setItem('tokenTimestamp', currentTime.toString());
       localStorage.setItem('isLogin', 'true');
 
-      router.push(`/?userId=${response.user.id}&refreshToken=${response.tokens.refreshToken}`);
+      router.push('/');
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) { } finally {

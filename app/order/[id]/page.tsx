@@ -19,7 +19,8 @@ export default function Page() {
   const [order, setOrder] = useState<OrderDataDetailResponse>();
   const [paymentLoading, setPaymentLoading] = useState(false);
   const [cancelLoading, setCancelLoading] = useState(false);
-  const [isFixed, setIsFixed] = useState(false);
+  // const [isFixedTop, setIsFixedTop] = useState(false);
+  // const [isFixedBottom, setIsFixedBottom] = useState(false);
   const router = useRouter();
   const param = useParams();
   const id = param.id;
@@ -27,24 +28,30 @@ export default function Page() {
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : "";
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      const triggerPoint = 120;
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     const scrollTop = window.scrollY;
+  //     const triggerTopPoint = 60;
+  //     const triggerBottomPoint = 260;
 
-      if (scrollTop > triggerPoint) {
-        setIsFixed(true);
-      } else {
-        setIsFixed(false);
-      }
-    };
+  //     if (scrollTop > triggerTopPoint && scrollTop < triggerBottomPoint) {
+  //       setIsFixedTop(true);
+  //       setIsFixedBottom(false);
+  //     } else if (scrollTop >= triggerBottomPoint) {
+  //       setIsFixedTop(false);
+  //       setIsFixedBottom(true);
+  //     } else {
+  //       setIsFixedTop(false);
+  //       setIsFixedBottom(false);
+  //     }
+  //   };
 
-    window.addEventListener('scroll', handleScroll);
+  //   window.addEventListener('scroll', handleScroll);
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener('scroll', handleScroll);
+  //   };
+  // }, []);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -117,7 +124,7 @@ export default function Page() {
       <div className='grid grid-cols-1 md:grid-cols-7 px-5 md:px-20 space-x-0 md:space-x-14 mt-4'>
         <div className="col-span-5 rounded-lg p-5 shadow-lg">
           <h1 className="text-2xl font-bold mb-5">Order Information</h1>
-          
+
           <Status status={order.orders.status} method={order.orders.paymentMethod} />
 
           <table className='w-full'>
@@ -170,8 +177,11 @@ export default function Page() {
           </div>
         </div>
 
+        {/* <div
+          className={`col-span-2 flex flex-col w-[390px] h-fit shadow-lg px-4 py-10 space-y-10 rounded-lg transition-all duration-300 ease-in-out ${isFixedTop ? 'fixed top-40 right-[173px]' : isFixedBottom ? 'absolute bottom-9 right-[173px]' : ''}`}
+        > */}
         <div
-          className={`flex flex-col w-[390px] h-fit shadow-lg px-4 py-10 space-y-10 rounded-lg transition-all duration-300 ease-in-out ${isFixed ? 'fixed top-40 right-[173px]' : ''}`}
+          className='col-span-2 flex flex-col w-[390px] h-fit shadow-lg px-4 py-10 space-y-10 rounded-lg transition-all duration-300 ease-in-out'
         >
           <h1>Order Summary</h1>
           <div className='space-y-4'>
