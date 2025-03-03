@@ -144,14 +144,14 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
   }
 
   return (
-    <div className='flex flex-col w-full space-y-24'>
+    <div className='flex flex-col w-full sm:px-6 md:px-0 sm:space-y-12 md:space-y-24'>
       <div className='flex flex-col w-full h-full space-y-6'>
         <div className='space-y-2'>
-          <h3 className='font-semibold'>{product.product.name}</h3>
-          <h6 className='text-lg'>{`ID: ${product.product.id}`}</h6>
+          <h3 className='sm:text-4xl md:text-5xl font-semibold'>{product.product.name}</h3>
+          <h6 className='sm:text-base md:text-lg'>{`ID: ${product.product.id}`}</h6>
           <div className='flex items-end space-x-5'>
-            <h1 className='font-semibold'>{formatPrice(product.product.price)}</h1>
-            <h6 className='text-xl mb-2 line-through'>{formatPrice(product.product.originalPrice)}</h6>
+            <h1 className='sm:text-3xl md:text-[2em] font-semibold'>{formatPrice(product.product.price)}</h1>
+            <h6 className='sm:text-lg md:text-xl mb-2 line-through'>{formatPrice(product.product.originalPrice)}</h6>
           </div>
         </div>
 
@@ -162,6 +162,7 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
         <SelectedQuantity
           product={product}
           quantityInStock={quantityInStock}
+          quantity={quantity}
           setQuantity={setQuantity}
           selectedColorIndex={selectedColorIndex}
           selectedSizeIndex={selectedSizeIndex}
@@ -172,7 +173,7 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
         <button
           onClick={handleAddToCart}
           disabled={disabled || quantityInStock === 0}
-          className={`flex justify-center items-center w-[200px] h-14 text-xl font-semibold bg-gray-300 rounded-md ${disabled || quantityInStock === 0 ? 'cursor-not-allowed' : ''}`}
+          className={`flex justify-center items-center w-[200px] h-12 sm:text-lg md:text-xl font-semibold bg-gray-300 rounded-md ${disabled || quantityInStock === 0 ? 'cursor-not-allowed' : ''}`}
         >
           {loadingAddToCart ? (
             <ClipLoader size={20} color='#000000' aria-label="Loading Spinner" />
@@ -187,7 +188,7 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
         <button
           onClick={handleBuyNow}
           disabled={disabled || quantityInStock === 0}
-          className={`flex justify-center items-center w-[180px] h-14 text-xl font-semibold bg-gray-900 text-white rounded-md ${disabled || quantityInStock === 0 ? 'cursor-not-allowed' : ''}`}
+          className={`flex justify-center items-center w-[180px] h-12 sm:text-lg md:text-xl font-semibold bg-gray-900 text-white rounded-md ${disabled || quantityInStock === 0 ? 'cursor-not-allowed' : ''}`}
         >
           {loadingBuyNow ? (
             <ClipLoader size={20} color='#ffffff' aria-label="Loading Spinner" />

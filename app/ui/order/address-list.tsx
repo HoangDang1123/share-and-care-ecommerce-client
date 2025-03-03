@@ -120,8 +120,8 @@ const AddressList: React.FC<AddressListProps> = ({ isRefresh, setIsRefresh, defa
   };
 
   return (
-    <div className="flex flex-col w-[1082px] space-y-4 mx-auto px-16 py-10 rounded-xl shadow-lg">
-      <h1 className="mb-6">Address Information</h1>
+    <div className="flex flex-col w-full space-y-4 mx-auto sm:p-4 md:p-10 md:rounded-xl md:shadow-lg">
+      <h1 className="md:mb-6 sm:text-2xl md:text-3xl">Address Information</h1>
       {addressList.length === 0 ? (
         <div className='flex justify-center items-center w-full text-lg py-4'>There&apos;s no address.</div>
       ) : (
@@ -132,15 +132,15 @@ const AddressList: React.FC<AddressListProps> = ({ isRefresh, setIsRefresh, defa
               value={address}
               className="group flex cursor-pointer"
             >
-              <div className="flex w-full items-center justify-between space-x-10 px-4 py-2 rounded-xl hover:bg-gray-100 group-data-[checked]:bg-gray-100">
-                <span role="radio" aria-checked className="size-5 rounded-full flex justify-center items-center border border-gray-700 bg-white">
-                  <div className="invisible bg-gray-700 size-2 rounded-full group-data-[checked]:visible" />
+              <div className="flex w-full items-center justify-between sm:space-x-4 md:space-x-10 px-4 py-2 rounded-xl hover:bg-gray-100 group-data-[checked]:bg-gray-100">
+                <span role="radio" aria-checked className="sm:size-3 md:size-5 rounded-full flex justify-center items-center border border-gray-700 bg-white">
+                  <div className="invisible bg-gray-700 sm:size-1 md:size-2 rounded-full group-data-[checked]:visible" />
                 </span>
 
                 <div className='grid grid-cols-3 w-full'>
-                  <h4 className='col-span-2'>{address.name}</h4>
-                  <h4 className='col-span-1'>{address.phone}</h4>
-                  <h4 className='font-normal col-span-3'>{`${address.street}, ${address.ward}, ${address.district}, ${address.city}`}</h4>
+                  <h4 className='col-span-2 sm:text-base md:text-xl'>{address.name}</h4>
+                  <h4 className='col-span-1 sm:text-base md:text-xl'>{address.phone}</h4>
+                  <h4 className='font-normal col-span-3 sm:text-base md:text-xl'>{`${address.street}, ${address.ward}, ${address.district}, ${address.city}`}</h4>
                 </div>
 
                 <button

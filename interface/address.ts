@@ -23,3 +23,13 @@ export interface AddressDataResponse {
     },
     type: string,
 }
+
+export interface AutoCompleteDataResponse {
+    placeId: string,
+    description: string,
+    compound: {
+        ward: string,
+        district: string,
+        city: string,
+    }
+}

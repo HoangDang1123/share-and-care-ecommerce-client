@@ -25,8 +25,8 @@ export default function PaymentMethod() {
   }, [selected, setOrder]);
 
   return (
-    <div className="flex flex-col w-[1082px] space-y-4 mx-auto p-10 rounded-xl shadow-lg">
-      <h1 className="mb-6">Payment Method</h1>
+    <div className="flex flex-col w-full space-y-4 mx-auto sm:p-4 md:p-10 md:rounded-xl md:shadow-lg">
+      <h1 className="md:mb-6 sm:text-2xl md:text-3xl">Payment Method</h1>
       <RadioGroup value={selected} onChange={setSelected} aria-label="Payment Method" className="space-y-6">
         {methods.map((method) => (
           <Radio
@@ -42,10 +42,10 @@ export default function PaymentMethod() {
                   width={40}
                   height={40}
                 />
-                <h6 className="text-xl font-semibold">{method.name}</h6>
+                <h6 className="sm:text-base md:text-xl font-semibold">{method.name}</h6>
               </div>
-              <span role="radio" aria-checked className=" size-5 rounded-full flex justify-center items-center border border-gray-700 bg-white">
-                <div className="invisible bg-gray-700 size-2 rounded-full group-data-[checked]:visible" />
+              <span role="radio" aria-checked className="sm:size-3 md:size-5 rounded-full flex justify-center items-center border border-gray-700 bg-white">
+                <div className="invisible bg-gray-700 sm:size-1 md:size-2 rounded-full group-data-[checked]:visible" />
               </span>
             </div>
           </Radio>

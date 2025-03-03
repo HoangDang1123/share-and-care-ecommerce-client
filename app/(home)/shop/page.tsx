@@ -60,14 +60,16 @@ export default function Page() {
 
   return (
     <div className="flex flex-col space-y-8">
-      <SortSelected setSort={setSort} />
+      <div>
+        <SortSelected setSort={setSort} />
+      </div>
 
       {productList.length === 0 ? (
         <div className='h-[480px] flex justify-center items-center'>
           There&apos;s no product.
         </div>
       ) : (
-        <div className="w-full grid min-[0px]:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-10 gap-y-16">
+        <div className="w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-10 sm:gap-y-8 md:gap-y-16">
           {productList.map((product, index) => (
             <Card key={index} product={product} />
           ))}

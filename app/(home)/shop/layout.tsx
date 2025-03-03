@@ -11,11 +11,11 @@ export default function ShopLayout({
 }) {
   return (
     <FilterProvider>
-      <div className='sm:px-6 md:px-12 lg:px-24 my-10'>
-        <div className='flex items-center space-x-24'>
+      <div className='sm:px-6 md:px-12 lg:px-24 sm:my-5 md:my-10'>
+        <div className='flex items-center sm:space-x-8 md:space-x-24'>
           <BackButton previousPathname="/" />
 
-          <ul className="flex space-x-1 text-xl">
+          <ul className="flex space-x-1 sm:text-md md:text-xl">
             <li>
               <Link href="/" className='text-gray-400 hover:text-gray-900'>Home / </Link>
             </li>
@@ -25,7 +25,7 @@ export default function ShopLayout({
           </ul>
         </div>
 
-        <div className='grid grid-cols-[1fr_3fr] mt-10 gap-10'>
+        <div className='grid md:grid-cols-[1fr_3fr] md:mt-10 sm:gap-4 md:gap-10'>
           <div>
             <FilterContainer />
           </div>

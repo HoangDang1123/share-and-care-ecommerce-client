@@ -49,9 +49,9 @@ thead {
   border-radius: 15px;
 }
 
-th, td {
+th,
+td {
   text-align: center;
-  font-size: 0.875em;
 }
 
 th {
@@ -62,7 +62,6 @@ th {
 }
 
 td {
-  padding: 30px 20px;
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
@@ -79,17 +78,45 @@ img {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1; 
+  background: #f1f1f1;
   border-radius: 10px;
 }
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #d2d2d2; 
+  background: #d2d2d2;
   border-radius: 10px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #aeaeae; 
+  background: #aeaeae;
+}
+
+.scroll-y-list::-webkit-scrollbar {
+  width: 2px;
+}
+
+.scroll-x-list::-webkit-scrollbar {
+  height: 0px;
+}
+
+@media screen and (min-width: 0px) {
+  th,
+  td {
+    font-size: 0.75em;
+  }
+  td {
+    padding: 20px 10px;
+  }
+}
+
+@media screen and (min-width: 481px) {
+  th,
+  td {
+    font-size: 0.875em;
+  }
+  td {
+    padding: 30px 20px;
+  }
 }

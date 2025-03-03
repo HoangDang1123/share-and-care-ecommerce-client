@@ -20,12 +20,12 @@ const SelectedColor: React.FC<SelectedColorProps> = ({ product, selectedColorInd
 
   return (
     <div className='flex flex-col space-y-2'>
-      <h6 className='text-2xl font-semibold'>{`Selected Color: ${selectedColorIndex !== null ? colors.options[selectedColorIndex] : ''}`}</h6>
-      <ul className='grid grid-cols-4 gap-4'>
+      <h6 className='sm:text-xl md:text-2xl font-semibold'>{`Selected Color: ${selectedColorIndex !== null ? colors.options[selectedColorIndex] : ''}`}</h6>
+      <ul className='grid sm:grid-cols-3 md:grid-cols-4 gap-4'>
         {colors.options.map((item, index) => (
           <li
             key={index}
-            className={`flex justify-center items-center h-8 rounded-md hover:cursor-pointer ${selectedColorIndex === index ? 'bg-gray-900 text-white' : 'bg-gray-300'}`}
+            className={`flex justify-center items-center h-8 rounded-full hover:cursor-pointer ${selectedColorIndex === index ? 'bg-gray-900 text-white' : 'bg-gray-300'}`}
             onClick={() => handleColorClick(index)}
           >
             {item}

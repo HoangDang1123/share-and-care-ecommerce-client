@@ -16,11 +16,11 @@ const SelectedAllCombobox: React.FC<SelectedAllComboboxProps> = ({ selectedAll, 
       <Checkbox
         checked={selectedAll}
         onChange={setSelectedAll}
-        className="group block size-5 rounded border border-gray-700 bg-white data-[checked]:bg-gray-200"
+        className="group block sm:size-4 md:size-5 rounded border border-gray-700 bg-white data-[checked]:bg-gray-200"
       >
         <CheckIcon className='opacity-0 group-data-[checked]:opacity-100' />
       </Checkbox>
-      <h4 className='mt-1 select-none'>Select All</h4>
+      <h4 className='mt-1 select-none sm:text-base md:text-xl'>Select All</h4>
     </div>
   )
 }

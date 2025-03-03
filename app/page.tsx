@@ -76,7 +76,7 @@ export default function Home() {
   }, [setCategories]);
 
   return (
-    <div className="flex flex-col overflow-hidden items-center space-y-20 mb-10">
+    <div className="flex flex-col overflow-hidden items-center sm:space-y-10 md:space-y-20 mb-10">
       <Slider />
 
       <Suspense fallback={<div>Loading categories...</div>}>

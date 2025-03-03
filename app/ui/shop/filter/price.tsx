@@ -34,7 +34,7 @@ export default function PriceFilter() {
 
   return (
     <div className='flex flex-col'>
-      <h1 className='font-bold mb-2'>Price</h1>
+      <h1 className='sm:hidden md:flex font-bold mb-2'>Price</h1>
       <Range
         step={1000}
         min={0}
@@ -58,7 +58,7 @@ export default function PriceFilter() {
         }}
       />
       <div className="mt-4">
-        <span className="text-slate-800 font-bold text-lg">
+        <span className="text-slate-800 font-bold sm:text-sm md:text-lg">
           {formatPrice(price.values[0])} - {formatPrice(price.values[1])}
         </span>
       </div>

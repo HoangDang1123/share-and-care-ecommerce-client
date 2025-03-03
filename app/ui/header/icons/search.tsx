@@ -44,20 +44,18 @@ export default function Search() {
   }
 
   return (
-    <Menu as="div" className="relative ml-3">
-      <div>
-        <MenuButton>
-          <MagnifyingGlassIcon className='size-8' />
-        </MenuButton>
-      </div>
+    <Menu as="div" className="relative">
+      <MenuButton className="flex items-center xl:hover:bg-gray-200 p-1 rounded-md">
+        <MagnifyingGlassIcon className="sm:size-7 xl:size-8" />
+      </MenuButton>
       <MenuItems
         transition
         as={motion.div}
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.95 }}
+        initial={{ y: '-100%' }}
+        animate={{ y: 0 }}
+        exit={{ y: '-100%' }}
         anchor="bottom"
-        className="rounded-lg relative bg-white flex mt-5 px-40 py-10 flex-col shadow-lg w-full"
+        className="rounded-lg relative bg-white flex sm:px-4 md:px-20 xl:px-40 sm:py-6 md:py-10 flex-col shadow-lg w-full"
       >
         <div className='space-y-6'>
           <div className='relative'>
@@ -78,7 +76,7 @@ export default function Search() {
             <MagnifyingGlassIcon className="absolute right-3 top-2 size-6 text-gray-400" />
           </div>
 
-          <div className='grid grid-cols-3 gap-x-10 gap-y-6 px-4 w-full'>
+          <div className='sm:hidden md:grid md:grid-cols-2 xl:grid-cols-3 gap-x-10 gap-y-6 px-4 w-full'>
             {searchProductList.map((product, index) => (
               <MenuItem key={index}>
                 <Link href={`/product/${product.id}`}>

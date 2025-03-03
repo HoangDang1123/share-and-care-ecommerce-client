@@ -48,11 +48,11 @@ export default function Page() {
   }
 
   return (
-    <div className='sm:px-6 md:px-12 lg:px-24 py-10'>
-      <div className='flex items-center space-x-24'>
+    <div className='md:px-12 lg:px-24 sm:my-5 md:my-10'>
+      <div className='flex items-center sm:px-6 md:px-0 sm:space-x-8 md:space-x-24'>
         <BackButton previousPathname="/" />
 
-        <ul className="flex space-x-1 text-xl">
+        <ul className="flex space-x-1 sm:text-md md:text-xl whitespace-nowrap text-ellipsis">
           <li>
             <Link href="/" className='text-gray-400 hover:text-gray-900'>Home / </Link>
           </li>
@@ -62,13 +62,13 @@ export default function Page() {
         </ul>
       </div>
 
-      <div className='flex flex-col w-full sm:px-11 md:px-22 lg:px-44 space-y-20'>
-        <div className='flex w-full space-x-5 my-5'>
+      <div className='flex flex-col w-full md:px-22 xl:px-44 sm:space-y-10 xl:space-y-20'>
+        <div className='flex sm:flex-col md:flex-row w-full md:space-x-5 sm:space-y-5 md:space-y-0 my-5'>
           <ImageList images={images} variantImage={variantImage} />
           <OptionContainer product={product} setVariantImage={setVariantImage} />
         </div>
 
-        <div className='flex flex-col space-y-10'>
+        <div className='flex flex-col sm:px-6 md:px-0 space-y-10'>
           <Detail category={product.product.category} quantity={product.product.quantity} attributes={product.product.attributes} />
           <Description description={product.product.description} />
         </div>

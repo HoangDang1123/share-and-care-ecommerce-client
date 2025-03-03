@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { getCart } from '@/app/api/cart';
 import { formatPrice } from '@/utils/helpers';
 import { useCart } from '@/app/context/AppContext';
+import { motion } from 'framer-motion';
 
 interface CartProps {
   isLogin: boolean;
@@ -34,15 +35,18 @@ const Cart: React.FC<CartProps> = ({ isLogin }) => {
   }, [accessToken, setCart, userId]);
 
   return (
-    <Menu as="div" className="relative ml-3">
-      <div>
-        <MenuButton>
-          <ShoppingCartIcon className='size-8' />
-        </MenuButton>
-      </div>
+    <Menu as="div" className="relative">
+      <MenuButton className="flex items-center xl:hover:bg-gray-200 p-1 rounded-md">
+        <ShoppingCartIcon className="sm:size-7 xl:size-8" />
+      </MenuButton>
       <MenuItems
         transition
-        className="absolute right-0 z-10 w-[600px] origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+        as={motion.div}
+        initial={{ y: '-100%' }}
+        animate={{ y: 0 }}
+        exit={{ y: '-100%' }}
+        anchor="bottom end"
+        className="relative z-10 mt-2 sm:w-full md:w-[600px] rounded-lg bg-white shadow-lg"
       >
         {isLogin ? (
           <>
@@ -52,7 +56,7 @@ const Cart: React.FC<CartProps> = ({ isLogin }) => {
               cart?.items.slice(0, 3).map((cart, index) => (
                 <MenuItem key={index}>
                   <Link
-                    className='flex w-auto gap-x-10 px-10 py-5 rounded-lg justify-between items-center hover:bg-gray-200'
+                    className='flex w-auto gap-x-10 sm:px-5 md:px-10 py-5 rounded-lg justify-between items-center hover:bg-gray-200'
                     href="/cart"
                   >
                     <Image
@@ -61,9 +65,9 @@ const Cart: React.FC<CartProps> = ({ isLogin }) => {
                       width={70}
                       height={100}
                     />
-                    <h1 className='text-xl'>{cart.productName}</h1>
-                    <h1 className='text-xl'>{cart.quantity}</h1>
-                    <h1 className='text-xl'>{formatPrice(cart.price)}</h1>
+                    <h1 className='sm:text-lg md:text-xl'>{cart.productName}</h1>
+                    <h1 className='sm:text-lg md:text-xl'>{cart.quantity}</h1>
+                    <h1 className='sm:text-lg md:text-xl'>{formatPrice(cart.price)}</h1>
                   </Link>
                 </MenuItem>
               ))
@@ -71,7 +75,7 @@ const Cart: React.FC<CartProps> = ({ isLogin }) => {
             <MenuItem>
               <Link
                 href={"/cart"}
-                className='flex justify-center items-center my-2 text-lg w-full hover:text-blue-900 font-bold text-blue-700 underline'
+                className='flex justify-center items-center my-2 sm:text-md xl:text-lg w-full hover:text-blue-900 font-bold text-blue-700 underline'
               >
                 Go to my cart
                 <ArrowRightIcon className='size-4 ml-1' />
@@ -81,7 +85,7 @@ const Cart: React.FC<CartProps> = ({ isLogin }) => {
         ) : (
           <Link
             href="/auth/login"
-            className='flex justify-center items-center h-20 mx-5 my-10 text-lg hover:text-blue-900 font-bold text-blue-700 underline'
+            className='flex justify-center items-center sm:h-4 xl:h-20 mx-5 my-10 sm:text-md xl:text-lg hover:text-blue-900 font-bold text-blue-700 underline'
           >
             Go to login
             <ArrowRightIcon className='size-4 ml-1' />

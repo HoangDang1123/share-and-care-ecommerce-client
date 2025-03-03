@@ -104,11 +104,11 @@ export default function Page() {
   }
 
   return (
-    <div className='sm:px-6 md:px-12 lg:px-24 my-10'>
-      <div className='flex items-center space-x-24'>
+    <div className='md:px-12 lg:px-24 my-10'>
+      <div className='flex items-center sm:px-6 md:px-0 sm:space-x-8 md:space-x-24'>
         <BackButton previousPathname="/profile" />
 
-        <ul className="flex space-x-1 text-xl">
+        <ul className="flex space-x-1 sm:text-md md:text-xl text-ellipsis text-nowrap">
           <li>
             <Link href="/" className='text-gray-400 hover:text-gray-900'>Home / </Link>
           </li>
@@ -121,9 +121,9 @@ export default function Page() {
         </ul>
       </div>
 
-      <div className='grid grid-cols-1 md:grid-cols-7 px-5 md:px-20 space-x-0 md:space-x-14 mt-4'>
-        <div className="col-span-5 rounded-lg p-5 shadow-lg">
-          <h1 className="text-2xl font-bold mb-5">Order Information</h1>
+      <div className='grid sm:grid-cols-1 md:grid-cols-3 w-full md:px-20 sm:gap-y-10 md:gap-x-20 sm:mt-4 md:mt-10'>
+        <div className="flex flex-col w-full md:col-span-2 space-y-4 mx-auto sm:p-4 md:p-10 md:rounded-xl md:shadow-lg">
+          <h1 className="md:mb-6 sm:text-2xl md:text-3xl">Order Information</h1>
 
           <Status status={order.orders.status} method={order.orders.paymentMethod} />
 
@@ -155,24 +155,26 @@ export default function Page() {
             </tbody>
           </table>
 
-          <h2 className="mt-5">Shipping Address</h2>
-          <div className='space-y-4'>
-            <div>
-              <h6>{order.orders.shippingAddress.fullname}</h6>
-              <h6>{order.orders.shippingAddress.phone}</h6>
-              <h6>{order.orders.shippingAddress.street}, {order.orders.shippingAddress.ward}, {order.orders.shippingAddress.district}, {order.orders.shippingAddress.city}</h6>
+          <div className='space-y-6'>
+            <div className='space-y-2'>
+              <h1 className="sm:text-2xl md:text-3xl">Shipping Address</h1>
+              <div className='space-y-2'>
+                <h6 className="sm:text-base md:text-lg">{order.orders.shippingAddress.fullname}</h6>
+                <h6 className="sm:text-base md:text-lg">{order.orders.shippingAddress.phone}</h6>
+                <h6 className="sm:text-base md:text-lg">{order.orders.shippingAddress.street}, {order.orders.shippingAddress.ward}, {order.orders.shippingAddress.district}, {order.orders.shippingAddress.city}</h6>
+              </div>
             </div>
 
-            <div>
-              <h2>Payment Method</h2>
-              <h6>
+            <div className='space-y-2'>
+              <h1 className='sm:text-2xl md:text-3xl'>Payment Method</h1>
+              <h6 className="sm:text-base md:text-lg">
                 {order.orders.paymentMethod === "VN_PAY" ? "VNPay" : order.orders.paymentMethod}
               </h6>
             </div>
 
-            <div>
-              <h2>Delivery Information</h2>
-              <h6>{order.orders.deliveryMethod.name}</h6>
+            <div className='space-y-2'>
+              <h1 className='sm:text-2xl md:text-3xl'>Delivery Information</h1>
+              <h6 className="sm:text-base md:text-lg">{order.orders.deliveryMethod.name}</h6>
             </div>
           </div>
         </div>
@@ -181,30 +183,30 @@ export default function Page() {
           className={`col-span-2 flex flex-col w-[390px] h-fit shadow-lg px-4 py-10 space-y-10 rounded-lg transition-all duration-300 ease-in-out ${isFixedTop ? 'fixed top-40 right-[173px]' : isFixedBottom ? 'absolute bottom-9 right-[173px]' : ''}`}
         > */}
         <div
-          className='col-span-2 flex flex-col w-[390px] h-fit shadow-lg px-4 py-10 space-y-10 rounded-lg transition-all duration-300 ease-in-out'
+          className='flex flex-col w-full h-fit shadow-lg px-4 py-10 space-y-10 rounded-lg transition-all duration-300 ease-in-out'
         >
-          <h1>Order Summary</h1>
+          <h1 className='sm:text-2xl md:text-3xl'>Order Summary</h1>
           <div className='space-y-4'>
             <div className='flex justify-between'>
-              <h4 className='font-semibold'>Product Cost:</h4>
-              <h4>{`${formatPrice(order.orders.itemsPrice)}`}</h4>
+              <h4 className='font-semibold sm:text-lg md:text-xl'>Product Cost:</h4>
+              <h4 className='sm:text-lg md:text-xl'>{`${formatPrice(order.orders.itemsPrice)}`}</h4>
             </div>
 
             <div className='flex justify-between'>
-              <h4 className='font-semibold'>Shipping Fee:</h4>
-              <h4>{`+ ${formatPrice(order.orders.shippingPrice)}`}</h4>
+              <h4 className='font-semibold sm:text-lg md:text-xl'>Shipping Fee:</h4>
+              <h4 className='sm:text-lg md:text-xl'>{`+ ${formatPrice(order.orders.shippingPrice)}`}</h4>
             </div>
 
             <div className='flex justify-between'>
-              <h4 className='font-semibold'>Discount:</h4>
-              <h4>{`- ${formatPrice(order.orders.discountPrice)}`}</h4>
+              <h4 className='font-semibold sm:text-lg md:text-xl'>Discount:</h4>
+              <h4 className='sm:text-lg md:text-xl'>{`- ${formatPrice(order.orders.discountPrice)}`}</h4>
             </div>
 
             <div className='w-full h-0.5 bg-gray-200' />
 
             <div className='flex justify-between'>
-              <h4 className='font-semibold'>Total Cost:</h4>
-              <h4>{formatPrice(order.orders.totalPrice)}</h4>
+              <h4 className='font-semibold sm:text-lg md:text-xl'>Total Cost:</h4>
+              <h4 className='sm:text-lg md:text-xl'>{formatPrice(order.orders.totalPrice)}</h4>
             </div>
           </div>
 

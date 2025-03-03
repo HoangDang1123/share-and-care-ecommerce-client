@@ -6,10 +6,10 @@ interface SortSelectedProps {
 
 const SortSelected: React.FC<SortSelectedProps> = ({ setSort }) => {
   return (
-    <div className="flex justify-end w-full bg-gray-200 px-4 py-2 text-md rounded-md">
+    <div className="flex justify-end w-full bg-gray-200 px-4 py-2 sm:text-sm md:text-md rounded-md">
       <select
         onChange={(e) => setSort(e.target.value)} 
-        className='p-1 rounded-md'
+        className='sm:w-full md:w-fit p-1 rounded-md'
       >
         <option value="">Sort</option>
         <option value="PRICE">Price: Low to High</option>

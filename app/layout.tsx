@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
 import { AppProvider } from "./context/AppContext";
 import { Suspense } from "react";
+import Chat from "./ui/chat";
 
 export const metadata: Metadata = {
   title: "Share And Care",
@@ -31,7 +32,7 @@ export default function RootLayout({
               <Header />
             </div>
 
-            <div className="mt-32">
+            <div className="sm:mt-24 md:mt-32">
               <div className=" overflow-y-hidden min-h-[745px] h-auto z-9">
                 <Suspense>
                   {children}
@@ -44,6 +45,8 @@ export default function RootLayout({
             </div>
 
             <ScrollToTopButton />
+
+            <Chat />
           </main>
         </body>
       </html>

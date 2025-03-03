@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Banner() {
   return (
-    <div className="relative isolate flex items-center justify-center gap-x-6 overflow-hidden bg-gray-800 px-6 py-2.5 sm:px-3.5">
+    <div className="relative isolate flex items-center justify-center gap-x-6 overflow-hidden bg-gray-800 sm:px-2 md:px-6 py-2">
       <div
         aria-hidden="true"
         className="absolute left-[max(-7rem,calc(50%-52rem))] top-1/2 -z-10 -translate-y-1/2 transform-gpu blur-2xl"
@@ -29,9 +29,9 @@ export default function Banner() {
           className="aspect-[577/310] w-[36.0625rem] bg-gradient-to-r from-[#00c6ff] to-[#0072ff] opacity-30"
         />
       </div>
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+      <div className="flex whitespace-nowrap overflow-hidden items-center gap-x-4 gap-y-2">
         <div className="whitespace-nowrap overflow-hidden">
-          <p className="text-sm leading-6 text-gray-200 animate-marquee">
+          <p className="sm:text-xs md:text-sm leading-6 text-gray-200 animate-marquee">
             <strong className="font-semibold">Share And Care 2024</strong>
             <span className="mx-2">|</span>
             <span className="ml-2 mr-40">Join us in Denver from June 7 – 9 to see what’s coming next.</span>
@@ -43,7 +43,7 @@ export default function Banner() {
         </div>
         <Link
           href="/shop"
-          className="flex-none rounded-full bg-teal-600 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-teal-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
+          className="flex-none rounded-full bg-teal-600 px-3 py-1 sm:text-xs md:text-sm font-semibold text-white shadow-sm hover:bg-teal-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
         >
           Visit now <span aria-hidden="true">&rarr;</span>
         </Link>

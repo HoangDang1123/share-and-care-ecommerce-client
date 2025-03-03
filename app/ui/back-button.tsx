@@ -15,7 +15,7 @@ const BackButton: React.FC<BackButtonProps> = ({ previousPathname }) => {
             passHref
             className='hover:bg-gray-300 hover:rounded-md px-1 py-1'
         >
-            <ArrowTurnDownLeftIcon className='size-8' />
+            <ArrowTurnDownLeftIcon className='sm:size-6 xl:size-8' />
         </Link>
     )
 }

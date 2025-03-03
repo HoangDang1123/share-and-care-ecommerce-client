@@ -100,3 +100,17 @@ export const setDefault = async (id: string, clientId: string, accessToken: stri
         throw new Error(errorMessage || 'An unknown error occurred.');
     }
 }
+
+export const getAutoComplete = async (query: string) => {
+    try {
+        const response = await api.get(`${ADDRESS_URL}/autocomplete?query=${query}`);
+        return response.data.metadata;
+    } catch (error) {
+        const errorMessage = get(error, 'response.data.error.message', '');
+
+        if (errorMessage) {
+            toast.error(errorMessage);
+        }
+        throw new Error(errorMessage || 'An unknown error occurred.');
+    }
+}

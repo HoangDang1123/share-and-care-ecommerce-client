@@ -8,12 +8,13 @@ import { PaymentData } from '@/interface/payment';
 import { formatPrice } from '@/utils/helpers';
 import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { toast } from 'react-toastify';
 
 export default function OrderSummary() {
-  const [isFixed, setIsFixed] = useState(false);
+  // const [isFixed, setIsFixed] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { setCart } = useCart();
@@ -25,24 +26,24 @@ export default function OrderSummary() {
   const productPrice = Number(typeof window !== "undefined" ? localStorage.getItem("productPrice") || "" : "");
   const deliveryFee = Number(typeof window !== "undefined" ? localStorage.getItem("deliveryFee") || "" : "");
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      const triggerPoint = 60;
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     const scrollTop = window.scrollY;
+  //     const triggerPoint = 60;
 
-      if (scrollTop > triggerPoint) {
-        setIsFixed(true);
-      } else {
-        setIsFixed(false);
-      }
-    };
+  //     if (scrollTop > triggerPoint) {
+  //       setIsFixed(true);
+  //     } else {
+  //       setIsFixed(false);
+  //     }
+  //   };
 
-    window.addEventListener('scroll', handleScroll);
+  //   window.addEventListener('scroll', handleScroll);
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener('scroll', handleScroll);
+  //   };
+  // }, []);
 
   const handleCreateOrder = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
@@ -107,30 +108,31 @@ export default function OrderSummary() {
 
   return (
     <div
-      className={`flex flex-col w-[390px] h-fit shadow-lg px-4 py-10 space-y-10 rounded-lg transition-all duration-300 ease-in-out ${isFixed ? 'fixed top-48 right-[182px]' : ''}`}
+      // className={`flex flex-col w-[390px] h-fit shadow-lg px-4 py-10 space-y-10 rounded-lg transition-all duration-300 ease-in-out ${isFixed ? 'fixed top-48 right-[182px]' : ''}`}
+      className="flex flex-col w-full h-fit md:shadow-lg px-4 py-10 space-y-10 md:rounded-lg transition-all duration-300 ease-in-out"
     >
-      <h1>Order Summary</h1>
+      <h1 className='sm:text-2xl md:text-3xl'>Order Summary</h1>
       <div className='space-y-4'>
         <div className='flex justify-between'>
-          <h4 className='font-semibold'>Product Cost:</h4>
-          <h4>{`${formatPrice(productPrice)}`}</h4>
+          <h4 className='font-semibold sm:text-lg md:text-xl'>Product Cost:</h4>
+          <h4 className='sm:text-lg md:text-xl'>{`${formatPrice(productPrice)}`}</h4>
         </div>
 
         <div className='flex justify-between'>
-          <h4 className='font-semibold'>Shipping Fee:</h4>
-          <h4>{`+ ${formatPrice(deliveryFee)}`}</h4>
+          <h4 className='font-semibold sm:text-lg md:text-xl'>Shipping Fee:</h4>
+          <h4 className='sm:text-lg md:text-xl'>{`+ ${formatPrice(deliveryFee)}`}</h4>
         </div>
 
         <div className='flex justify-between'>
-          <h4 className='font-semibold'>Discount:</h4>
-          <h4>{`- ${formatPrice(0)}`}</h4>
+          <h4 className='font-semibold sm:text-lg md:text-xl'>Discount:</h4>
+          <h4 className='sm:text-lg md:text-xl'>{`- ${formatPrice(0)}`}</h4>
         </div>
 
         <div className='w-full h-0.5 bg-gray-200' />
 
         <div className='flex justify-between'>
-          <h4 className='font-semibold'>Total Cost:</h4>
-          <h4>{formatPrice(productPrice + deliveryFee)}</h4>
+          <h4 className='font-semibold sm:text-lg md:text-xl'>Total Cost:</h4>
+          <h4 className='sm:text-lg md:text-xl'>{formatPrice(productPrice + deliveryFee)}</h4>
         </div>
       </div>
 

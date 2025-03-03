@@ -3,6 +3,7 @@ import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import Link from 'next/link';
 import { logoutRequest } from '@/app/api/auth';
 import { toast } from 'react-toastify';
+import { motion } from 'framer-motion';
 
 interface UserProps {
   isLogin: boolean;
@@ -12,7 +13,7 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : "";
 
-  const handleGoToProfile = () => {}
+  const handleGoToProfile = () => { }
 
   const handleLogout = async () => {
     if (!accessToken) {
@@ -52,15 +53,18 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
   ];
 
   return (
-    <Menu as="div" className="relative ml-3">
-      <div>
-        <MenuButton>
-          <UserIcon className='size-8' />
-        </MenuButton>
-      </div>
+    <Menu as="div" className="relative">
+      <MenuButton className="flex items-center xl:hover:bg-gray-200 p-1 rounded-md">
+        <UserIcon className="sm:size-7 xl:size-8" />
+      </MenuButton>
       <MenuItems
         transition
-        className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+        as={motion.div}
+        initial={{ y: '-100%' }}
+        animate={{ y: 0 }}
+        exit={{ y: '-100%' }}
+        anchor="bottom end"
+        className="relative z-10 mt-2 sm:w-36 md:w-48 rounded-lg bg-white shadow-lg"
       >
         {isLogin ? (
           customer.map((item, index) => (
@@ -70,7 +74,7 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
                 onClick={() => {
                   item.click();
                 }}
-                className="block w-full rounded-lg text-lg text-start py-2 px-3 transition hover:bg-gray-200"
+                className="block w-full rounded-lg sm:text-md xl:text-lg py-2 px-3 transition hover:bg-gray-200"
               >
                 {item.name}
               </Link>
@@ -79,7 +83,7 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
         ) : (
           guest.map((item, index) => (
             <MenuItem key={index}>
-              <Link href={item.href} className="block rounded-lg text-lg py-2 px-3 transition hover:bg-gray-200">
+              <Link href={item.href} className="block rounded-lg sm:text-md xl:text-lg py-2 px-3 transition hover:bg-gray-200">
                 {item.name}
               </Link>
             </MenuItem>

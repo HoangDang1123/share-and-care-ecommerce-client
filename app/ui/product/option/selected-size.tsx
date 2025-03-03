@@ -26,7 +26,7 @@ const SelectedSize: React.FC<SelectedSizeProps> = ({ product, selectedSizeIndex,
   return (
     <div className='flex flex-col space-y-2'>
       <div className='flex justify-between'>
-        <h6 className='text-2xl font-semibold'>
+        <h6 className='sm:text-xl md:text-2xl font-semibold'>
           {`Selected Size: ${selectedSizeIndex !== null ? sizes.options[selectedSizeIndex] : ''}`}
         </h6>
 
@@ -49,11 +49,11 @@ const SelectedSize: React.FC<SelectedSizeProps> = ({ product, selectedSizeIndex,
           </div>
         </Dialog>
       </div>
-      <ul className='flex space-x-4'>
+      <ul className='sm:grid md:flex sm:grid-cols-5 sm:gap-4 md:gap-0 md:space-x-4'>
         {sizes.options.map((item, index) => (
           <li
             key={index}
-            className={`flex justify-center items-center w-16 h-8 rounded-md hover:cursor-pointer ${selectedSizeIndex === index ? 'bg-gray-700 text-white' : 'bg-gray-300'}`}
+            className={`flex justify-center items-center w-16 h-8 rounded-full hover:cursor-pointer ${selectedSizeIndex === index ? 'bg-gray-700 text-white' : 'bg-gray-300'}`}
             title={item}
             onClick={() => handleSizeClick(index)}
           >

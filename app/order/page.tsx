@@ -52,11 +52,11 @@ export default function Page() {
   }, [userId, accessToken, isRefresh, setOrder]);
 
   return (
-    <div className='sm:px-6 md:px-12 lg:px-24 my-10'>
-      <div className='flex items-center space-x-24'>
+    <div className='md:px-12 lg:px-24 my-10'>
+      <div className='flex items-center sm:px-6 md:px-0 sm:space-x-8 md:space-x-24'>
         <BackButton previousPathname="/cart" />
 
-        <ul className="flex space-x-1 text-xl">
+        <ul className="flex space-x-1 sm:text-md md:text-xl">
           <li>
             <Link href="/" className='text-gray-400 hover:text-gray-900'>Home / </Link>
           </li>
@@ -66,13 +66,14 @@ export default function Page() {
         </ul>
       </div>
 
-      <div className='flex px-20 space-x-20 mt-10'>
-        <div className="flex flex-col space-y-10">
+      <div className='grid sm:grid-cols-1 md:grid-cols-3 w-full md:px-20 sm:gap-y-10 md:gap-x-20 sm:mt-4 md:mt-10'>
+        <div className="flex flex-col md:col-span-2 w-full sm:space-y-4 md:space-y-10">
           <AddressList isRefresh={isRefresh} setIsRefresh={setIsRefresh} defaultAddress={defaultAddress} setExistAddress={setExistAddress} />
           <AddressForm setIsRefresh={setIsRefresh} existAddress={existAddress} />
           <DeliveryList defaultAddress={defaultAddress} />
           <PaymentMethod />
         </div>
+
         <OrderSummary />
       </div>
     </div>

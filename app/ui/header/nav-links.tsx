@@ -51,7 +51,7 @@ export default function NavLinks() {
   }, [categories, setChildCategories]);
 
   return (
-    <div className="flex space-x-8">
+    <div className="sm:hidden md:flex space-x-8">
       <div
         className="relative inline-flex group"
         onMouseEnter={() => setIsOpen(true)}
@@ -59,9 +59,9 @@ export default function NavLinks() {
       >
         <Link
           href="/shop"
-          className='relative flex grow items-center justify-center gap-2 rounded-md text-2xl text-gray-900 font-medium hover:bg-gray-200 flex-none p-2 px-3'
+          className='relative flex grow items-center justify-center gap-2 rounded-md md:text-xl xl:text-2xl text-gray-900 font-medium hover:bg-gray-200 flex-none px-3 py-2'
         >
-          <strong className="hidden md:block">SHOP</strong>
+          <strong>SHOP</strong>
         </Link>
 
         <div
@@ -99,9 +99,9 @@ export default function NavLinks() {
           <Link
             key={link.name}
             href={link.href}
-            className='flex grow items-center justify-center gap-2 rounded-md text-2xl text-gray-900 font-medium hover:bg-gray-200 flex-none p-2 px-3'
+            className='flex grow items-center justify-center gap-2 rounded-md md:text-xl xl:text-2xl text-gray-900 font-medium hover:bg-gray-200 flex-none px-3 py-2'
           >
-            <strong className="hidden md:block">{link.name}</strong>
+            <strong>{link.name}</strong>
           </Link>
         );
       })}

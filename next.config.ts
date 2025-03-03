@@ -8,6 +8,9 @@ module.exports = {
   images: {
     domains: ['res.cloudinary.com'],
   },
+  devIndicators: {
+    position: false
+  }
 };
 
 const nextConfig: NextConfig = {

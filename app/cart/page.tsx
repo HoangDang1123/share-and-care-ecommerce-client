@@ -136,11 +136,11 @@ export default function Page() {
   }
 
   return (
-    <div className='sm:px-6 md:px-12 lg:px-24 my-10'>
-      <div className='flex items-center space-x-24'>
+    <div className='md:px-12 lg:px-24 my-10'>
+      <div className='flex items-center sm:px-6 md:px-0 sm:space-x-8 md:space-x-24'>
         <BackButton previousPathname="/" />
 
-        <ul className="flex space-x-1 text-xl">
+        <ul className="flex space-x-1 sm:text-md md:text-xl">
           <li>
             <Link href="/" className='text-gray-400 hover:text-gray-900'>Home / </Link>
           </li>
@@ -150,20 +150,20 @@ export default function Page() {
         </ul>
       </div>
 
-      <div className='flex mt-10 px-20 space-x-20'>
+      <div className='flex sm:mt-4 md:mt-10 md:px-20 space-x-20'>
         <div className='flex flex-col items-start space-y-4'>
           <div className='flex justify-between items-center w-full px-4'>
             <SelectedAllCombobox selectedAll={selectedAll} setSelectedAll={setSelectedAll} />
-            <div className='flex items-center space-x-6'>
+            <div className='flex items-center sm:space-x-2 md:space-x-6'>
               <div className='flex mt-1 space-x-2'>
-                <h4 className='font-semibold'>Total:</h4>
-                <h4>{`${cart?.items?.length || 0} ${cart?.items?.length === 1 ? 'item' : 'items'}`}</h4>
+                <h4 className='font-semibold sm:text-base md:text-xl'>Total:</h4>
+                <h4 className='sm:text-base md:text-xl'>{`${cart?.items?.length || 0} ${cart?.items?.length === 1 ? 'item' : 'items'}`}</h4>
               </div>
 
               <button
                 onClick={handleClearAll}
                 disabled={loading}
-                className="flex justify-center h-fit w-20 py-1 rounded-md border border-gray-700 text-md"
+                className="flex justify-center h-fit sm:w-16 md:w-20 py-1 rounded-md border border-gray-700 sm:text-sm md:text-md"
               >
                 {loading ? (
                   <ClipLoader
@@ -181,10 +181,33 @@ export default function Page() {
           {cart?.items?.length === 0 && (
             <div className='flex justify-center items-center w-[1085px] text-lg py-4'>There&apos;s no item</div>
           )}
+
+          <div className='sm:flex md:hidden flex-col mt-4'>
+            <div className='flex justify-end space-x-2 px-2'>
+              <h4 className='font-semibold'>Total Cost:</h4>
+              <h4>{formatPrice(totalCost)}</h4>
+            </div>
+
+            <div className='flex flex-col w-screen space-y-4'>
+              {orderMessage && (
+                <div className='text-red-500 font-semibold text-lg'>
+                  {orderMessage}
+                </div>
+              )}
+
+              <button
+                onClick={goToOrder}
+                className='flex justify-center items-center text-xl font-semibold bg-gray-900 px-6 py-2 rounded-md text-white'
+              >
+                <ShoppingCartIcon className='size-8 mr-3' />
+                Order
+              </button>
+            </div>
+          </div>
         </div>
 
         <div
-          className={`flex flex-col w-[390px] h-fit mt-12 shadow-lg px-4 py-10 space-y-10 rounded-lg transition-all duration-300 ease-in-out ${isFixed ? 'fixed top-32 right-[180px]' : ''}`}
+          className={`sm:hidden md:flex flex-col w-[390px] h-fit mt-12 shadow-lg px-4 py-10 space-y-10 rounded-lg transition-all duration-300 ease-in-out ${isFixed ? 'md:fixed md:top-32 md:right-[180px]' : ''}`}
         >
           <h1>Order Summary</h1>
 
