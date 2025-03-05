@@ -8,7 +8,7 @@ import { CategoryDataResponse } from '@/interface/category';
 import { getTopCategoriesProduct } from '@/app/api/product';
 import { ProductDataResponse } from '@/interface/product';
 import Link from 'next/link';
-import { ArrowLeftIcon, ArrowRightIcon, ChevronDoubleRightIcon } from '@heroicons/react/24/outline';
+import { ChevronDoubleRightIcon } from '@heroicons/react/24/outline';
 
 const responsive = {
   superLargeDesktop: {
