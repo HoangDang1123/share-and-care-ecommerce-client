@@ -1,30 +1,30 @@
-export interface SignUpData {
+export interface SignUp {
     email: string;
     username: string;
     password: string;
 }
 
-export interface SignUpDataResponse {
-    user: SignUpData,
+export interface SignUpResponse {
+    user: SignUp,
 }
 
-export interface ResendData {
+export interface Resend {
     email: string;
     username: string;
 }
 
-export interface ResendDataResponse {
+export interface ResendResponse {
     id: string,
     email: string,
 }
-export interface LoginData {
+export interface Login {
     email: string;
     password: string;
     deviceToken: string,
     deviceName: string,
 }
 
-export interface LoginDataResponse {
+export interface LoginResponse {
     user: {
         id: string,
         email: string,
@@ -37,11 +37,11 @@ export interface LoginDataResponse {
     },
 }
 
-export interface ForgotPasswordData {
+export interface ForgotPassword {
     email: string,
 }
 
-export interface ResetPasswordData {
+export interface ResetPassword {
     resetToken: string | undefined,
     newPassword: string,
 }

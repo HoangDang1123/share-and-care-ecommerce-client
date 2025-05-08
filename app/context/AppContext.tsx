@@ -1,34 +1,41 @@
 'use client';
 
-import { CartDataResponse } from '@/interface/cart';
+import { CartResponse } from '@/interface/cart';
 import { OrderData } from '@/interface/order';
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
+interface MenuContextType {
+    isMenu: boolean,
+    setIsMenu: (value: boolean) => void,
+}
+
 interface AuthContextType {
-    isLogin: boolean;
-    setIsLogin: (value: boolean) => void;
-    checkAccessToken: () => boolean;
+    isLogin: boolean,
+    setIsLogin: (value: boolean) => void,
+    checkAccessToken: () => boolean,
 }
 
 interface CartContextType {
-    cart: CartDataResponse | null;
-    setCart: React.Dispatch<React.SetStateAction<CartDataResponse | null>>;
+    cart: CartResponse | null,
+    setCart: React.Dispatch<React.SetStateAction<CartResponse | null>>,
 }
 
 interface OrderContextType {
-    order: OrderData | null;
-    setOrder: React.Dispatch<React.SetStateAction<OrderData | null>>;
-    productPrice: number | null;
-    setProductPrice: React.Dispatch<React.SetStateAction<number>>;
+    order: OrderData | null,
+    setOrder: React.Dispatch<React.SetStateAction<OrderData | null>>,
+    productPrice: number | null,
+    setProductPrice: React.Dispatch<React.SetStateAction<number>>,
 }
 
+const MenuContext = createContext<MenuContextType | undefined>(undefined);
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 const CartContext = createContext<CartContextType | undefined>(undefined);
 const OrderContext = createContext<OrderContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+    const [isMenu, setIsMenu] = useState<boolean>(false);
     const [isLogin, setIsLogin] = useState<boolean>(false);
-    const [cart, setCart] = useState<CartDataResponse | null>(null);
+    const [cart, setCart] = useState<CartResponse | null>(null);
     const [order, setOrder] = useState<OrderData | null>(null);
     const [productPrice, setProductPrice] = useState<number>(0);
 
@@ -85,14 +92,24 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }, [order, productPrice]);
 
     return (
-        <AuthContext.Provider value={{ isLogin, setIsLogin, checkAccessToken }}>
-            <CartContext.Provider value={{ cart, setCart }}>
-                <OrderContext.Provider value={{ order, setOrder, productPrice, setProductPrice }}>
-                    {children}
-                </OrderContext.Provider>
-            </CartContext.Provider>
-        </AuthContext.Provider>
+        <MenuContext.Provider value={{ isMenu, setIsMenu }}>
+            <AuthContext.Provider value={{ isLogin, setIsLogin, checkAccessToken }}>
+                <CartContext.Provider value={{ cart, setCart }}>
+                    <OrderContext.Provider value={{ order, setOrder, productPrice, setProductPrice }}>
+                        {children}
+                    </OrderContext.Provider>
+                </CartContext.Provider>
+            </AuthContext.Provider>
+        </MenuContext.Provider>
     );
+};
+
+export const useMenu = () => {
+    const context = useContext(MenuContext);
+    if (!context) {
+        throw new Error("useMenu must be used within an MenuProvider");
+    }
+    return context;
 };
 
 export const useAuth = () => {

@@ -4,20 +4,24 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import ImageList from '@/app/ui/product/image-list';
 import OptionContainer from '@/app/ui/product/option-container';
-import Detail from '@/app/ui/product/detail';
-import Description from '@/app/ui/product/description';
 // import FeedbackContainer from '@/app/ui/product/feedback-container';
 import BackButton from '@/app/ui/back-button';
 import { useParams } from 'next/navigation';
-import { ProductDetailDataResponse } from '@/interface/product';
+import { ProductDetailResponse } from '@/interface/product';
 import { getProductDetail } from '@/app/api/product';
+import Description from '@/app/ui/product/description';
+import Detail from '@/app/ui/product/detail';
 
 export default function Page() {
-  const [product, setProduct] = useState<ProductDetailDataResponse>();
-  const [images, setImages] = useState<Array<string>>([]);
-  const [variantImage, setVariantImage] = useState<string>("");
+  const [product, setProduct] = useState<ProductDetailResponse>();
+  const [images, setImages] = useState<string[]>([]);
+  const [variantImage, setVariantImage] = useState<string>('');
   const param = useParams();
   const id = param.id;
+
+  useEffect(() => {
+    console.log(product)
+  })
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -48,9 +52,9 @@ export default function Page() {
   }
 
   return (
-    <div className='md:px-12 lg:px-24 sm:my-5 md:my-10'>
+    <div className='md:px-12 lg:px-24 sm:my-5 md:my-20'>
       <div className='flex items-center sm:px-6 md:px-0 sm:space-x-8 md:space-x-24'>
-        <BackButton previousPathname="/" />
+        <BackButton />
 
         <ul className="flex space-x-1 sm:text-md md:text-xl whitespace-nowrap text-ellipsis">
           <li>
@@ -62,14 +66,17 @@ export default function Page() {
         </ul>
       </div>
 
-      <div className='flex flex-col w-full md:px-22 xl:px-44 sm:space-y-10 xl:space-y-20'>
-        <div className='flex sm:flex-col md:flex-row w-full md:space-x-5 sm:space-y-5 md:space-y-0 my-5'>
-          <ImageList images={images} variantImage={variantImage} />
+      <div className='flex flex-col w-full md:px-22 xl:px-44 sm:gap-y-10 xl:gap-y-20'>
+        <div className='flex sm:flex-col md:flex-row w-full md:gap-x-5 sm:gap-y-5 md:gap-y-0 my-5'>
+          <ImageList images={images} video={product.product.video} variantImage={variantImage} />
           <OptionContainer product={product} setVariantImage={setVariantImage} />
         </div>
 
-        <div className='flex flex-col sm:px-6 md:px-0 space-y-10'>
-          <Detail category={product.product.category} quantity={product.product.quantity} attributes={product.product.attributes} />
+        <div className='flex flex-col gap-y-10'>
+          <Detail
+            categories={product.product.category}
+            attributes={[...product.product.attributes, ...product.product.variantAttributes]}
+          />
           <Description description={product.product.description} />
         </div>
 

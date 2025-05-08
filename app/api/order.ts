@@ -6,7 +6,7 @@ import get from 'lodash/get';
 
 const ORDER_URL = '/order';
 
-export const createOrder = async (data: Order.OrderData, clientId: string, accessToken: string): Promise<Order.OrderDataResponse> => {
+export const createOrder = async (data: Order.OrderData, clientId: string, accessToken: string): Promise<Order.OrderResponse> => {
     try {
         const response = await api.post(`${ORDER_URL}/`, data, {
             headers: {
@@ -44,7 +44,7 @@ export const getAllOrder = async (clientId: string, accessToken: string): Promis
     }
 }
 
-export const getOrderDetail = async (id: string, clientId: string, accessToken: string): Promise<Order.OrderDataDetailResponse> => {
+export const getOrderDetail = async (id: string, clientId: string, accessToken: string): Promise<Order.OrderDetailResponse> => {
     try {
         const response = await api.get(`${ORDER_URL}/${id}`, {
             headers: {

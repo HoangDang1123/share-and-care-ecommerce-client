@@ -1,4 +1,4 @@
-import * as Cart from "./cart";
+import { Cart } from "./cart"
 
 export interface Ward {
     Id: string,
@@ -9,18 +9,18 @@ export interface Ward {
 export interface District {
     Id: string,
     Name: string,
-    Wards: Array<Ward>,
+    Wards: Ward[],
 }
 
 export interface City {
     Id: string,
     Name: string,
-    Districts: Array<District>,
+    Districts: District[],
 }
 
 export interface OrderData {
     shippingAddress: ShippingAddressData,
-    items: Array<Cart.CartData>,
+    items: Cart[],
     couponCode: string | null,
     paymentMethod: string,
     deliveryId: string,
@@ -51,11 +51,11 @@ export interface DeliveryMethod {
     name: string,
 }
 
-export interface OrderDataResponse {
+export interface OrderResponse {
     id: string,
     userId: string,
     couponId: string | null,
-    items: Array<Item>
+    items: Item[],
     shippingAddress: ShippingAddressData,
     paymentMethod: string,
     deliveryMethod: string,
@@ -74,12 +74,12 @@ export interface OrderDataResponse {
     updatedAt: string,
 }
 
-export interface OrderDataDetailResponse {
+export interface OrderDetailResponse {
     orders: {
         id: string,
         userId: string,
         couponId: string | null,
-        items: Array<Item>
+        items: Item[],
         shippingAddress: ShippingAddressData,
         paymentMethod: string,
         deliveryMethod: DeliveryMethod,
@@ -96,11 +96,6 @@ export interface OrderDataDetailResponse {
 export interface ShippingAddress {
     fullname: string,
     phone: string,
-}
-
-export interface DeliveryMethod {
-    id: string,
-    name: string,
 }
 
 export interface Order {

@@ -1,11 +1,11 @@
-import { ProductDataResponse } from '@/interface/product';
+import { ProductResponse } from '@/interface/product';
 import { formatPrice } from '@/utils/helpers'
 import { StarIcon } from '@heroicons/react/20/solid'
 import Image from 'next/image'
 import React from 'react'
 
 interface SearchCardProps {
-  product: ProductDataResponse;
+  product: ProductResponse;
 }
 
 const SearchCard: React.FC<SearchCardProps> = ({ product }) => {

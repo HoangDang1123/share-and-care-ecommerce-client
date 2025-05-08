@@ -1,19 +1,21 @@
-export interface CartData {
+import { CartVariant } from "./variant";
+
+export interface Cart {
     productId: string,
     variantId: string | null,
     quantity: number,
 }
 
-export interface AddCartDataResponse {
+export interface AddCartResponse {
     id: string,
     userId: string,
-    items: Array<CartData>,
+    items: Cart[],
 }
 
-export interface CartDataResponse {
+export interface CartResponse {
     id: string,
     userId: string,
-    items: Array<CartItem>,
+    items: CartItem[],
 }
 
 export interface CartItem {
@@ -27,13 +29,10 @@ export interface CartItem {
     itemTotalPrice: number,
     itemTotalOriginalPrice: number,
     productImage: string,
-    variants: Array<Variant>
+    variants: CartVariant[],
 }
 
-export interface Variant {
-    name: string,
-    options: Array<string>,
-}
+
 
 export interface CartItemDeleted {
     productId: string,

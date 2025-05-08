@@ -1,14 +1,14 @@
-import { ProductInfoDataResponse } from '@/interface/product';
+import { ProductDetailResponse } from '@/interface/product';
 import React from 'react';
 
 interface SelectedColorProps {
-  product: ProductInfoDataResponse;
+  product: ProductDetailResponse;
   selectedColorIndex: number | null;
   setSelectedColorIndex: (selectedColorIndex: number | null) => void;
 }
 
 const SelectedColor: React.FC<SelectedColorProps> = ({ product, selectedColorIndex, setSelectedColorIndex }) => {
-  const colors = product.variants.find(item => item.name === 'Color');
+  const colors = product.product.variantAttributes.find(item => item.type === "COLOR");
 
   const handleColorClick = (index: number) => {
     setSelectedColorIndex(index);
@@ -20,15 +20,18 @@ const SelectedColor: React.FC<SelectedColorProps> = ({ product, selectedColorInd
 
   return (
     <div className='flex flex-col space-y-2'>
-      <h6 className='sm:text-xl md:text-2xl font-semibold'>{`Selected Color: ${selectedColorIndex !== null ? colors.options[selectedColorIndex] : ''}`}</h6>
-      <ul className='grid sm:grid-cols-3 md:grid-cols-4 gap-4'>
-        {colors.options.map((item, index) => (
+      <h6 className='sm:text-base md:text-xl font-semibold'>{`Selected Color: ${selectedColorIndex !== null ? colors.values[selectedColorIndex].value : ''}`}</h6>
+      <ul className='grid sm:grid-cols-10 md:grid-cols-12'>
+        {colors.values.map((value, index) => (
           <li
             key={index}
-            className={`flex justify-center items-center h-8 rounded-full hover:cursor-pointer ${selectedColorIndex === index ? 'bg-gray-900 text-white' : 'bg-gray-300'}`}
+            className={`flex justify-center items-center sm:size-8 md:size-9 bg-transparent p-0.5 rounded-full hover:cursor-pointer ${selectedColorIndex === index ? 'border-2 border-gray-600' : ''}`}
             onClick={() => handleColorClick(index)}
           >
-            {item}
+            <span
+              className={`flex justify-center items-center w-full h-full rounded-full ${value.descriptionUrl.toLowerCase() === '#ffffff' ? 'border border-gray-300' : ''}`}
+              style={{ backgroundColor: `${value.descriptionUrl}` }}
+            />
           </li>
         ))}
       </ul>

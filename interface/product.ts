@@ -1,59 +1,75 @@
-export interface Category {
-    id: string,
-    name: string,
-}
-
-export interface Variants {
-    name: string,
-    images: Array<string>,
-    options: Array<string>,
-}
+import { Attribute } from "./attribute";
+import { Category } from "./category";
+import { ProductVariant } from "./variant";
 
 export interface SkuList {
     id: string,
     slug: string,
-    tierIndex: Array<number>,
+    tierIndex: number[],
     isDefault: boolean,
     price: number,
     quantity: number,
 }
 
-export interface ProductDataResponse {
-    id: string,
+export interface ProductResponse {
+    code: string,
     name: string,
     slug: string,
     mainImage: string,
-    price: number,
-    originalPrice: number,
-    description: string,
+    variants: ProductVariant[],
     rating: number,
-    variants: Array<Variants>,
+    ratingCount: number,
+    variantAttributes: Attribute[],
+    price: number | {
+        min: number,
+        max: number,
+    },
+    discountedPrice: null | {
+        min: number,
+        max: number,
+    },
+    hasDiscount: boolean,
 }
 
 export interface Product {
-    products: Array<ProductDataResponse>
+    total: number,
+    totalPages: number,
+    page: number,
+    size: number,
+    hasMore: boolean,
+    items: ProductResponse[]
 }
 
-export interface ProductInfoDataResponse {
-    id: string,
-    name: string,
-    slug: string,
-    mainImage: string,
-    subImages: Array<string>,
-    price: number,
-    originalPrice: number,
-    quantity: number,
-    description: string,
-    category: Array<Category>,
-    attributes: Array<string>,
-    rating: number,
-    variants: Array<Variants>,
-}
-
-export interface ProductDetailDataResponse {
-    product: ProductInfoDataResponse,
+export interface ProductDetailResponse {
+    product: {
+        id: string,
+        code: string,
+        name: string,
+        slug: string,
+        mainImage: string,
+        subImages: string[],
+        qrCode: string,
+        description: string,
+        video: string,
+        returnDays: number,
+        category: Category[],
+        variants: ProductVariant[],
+        rating: number,
+        ratingCount: number,
+        attributes: Attribute[],
+        variantAttributes: Attribute[],
+        price: number | {
+            min: number,
+            max: number,
+        },
+        discountedPrice: null | {
+            min: number,
+            max: number,
+        },
+        hasDiscount: boolean,
+    },
     skuList: {
-        skuList: Array<SkuList>,
+        skuList: SkuList[],
     }
 }
 

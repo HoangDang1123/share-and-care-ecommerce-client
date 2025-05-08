@@ -17,7 +17,7 @@ export default function ScrollToTopButton() {
             left: "20px",
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: "#38a59f",
+            backgroundColor: "#000000",
             padding: "10px 0px",
             borderRadius: "10px",
             width: "50px",

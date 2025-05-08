@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { lusitana } from '@/app/ui/fonts';
+import { lato } from '@/app/ui/fonts';
 import Banner from "./ui/banner";
 import Header from "./ui/header";
 import Footer from "./ui/footer";
@@ -8,8 +8,9 @@ import ScrollToTopButton from "./ui/scroll-to-top";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
 import { AppProvider } from "./context/AppContext";
-import { Suspense } from "react";
 import Chat from "./ui/chat";
+import Navbar from "./ui/navbar";
+import ClientWrapper from "./ui/client-wrapper";
 
 export const metadata: Metadata = {
   title: "Share And Care",
@@ -24,23 +25,20 @@ export default function RootLayout({
   return (
     <AppProvider>
       <html lang="en">
-        <body className={`${lusitana.className} antialiased`}>
+        <body className={`${lato.className} antialiased`}>
           <main>
-            <div className={`${lusitana.className} antialiased fixed w-screen top-0 z-10 flex flex-col`}>
+            <div className={`${lato.className} antialiased fixed w-screen top-0 z-10 flex flex-col`}>
               <ToastContainer />
               <Banner />
+              <Navbar />
               <Header />
             </div>
 
-            <div className="sm:mt-24 md:mt-32">
-              <div className=" overflow-y-hidden min-h-[745px] h-auto z-9">
-                <Suspense>
-                  {children}
-                </Suspense>
-              </div>
-            </div>
+            <ClientWrapper>
+              {children}
+            </ClientWrapper>
 
-            <div className={`${lusitana.className} antialiased bottom-0 z-10 flex flex-col bg-gray-900`}>
+            <div className={`${lato.className} antialiased bottom-0 z-10 flex flex-col bg-black`}>
               <Footer />
             </div>
 

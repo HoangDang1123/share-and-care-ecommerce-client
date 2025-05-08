@@ -6,7 +6,7 @@ import get from 'lodash/get';
 
 const ADDRESS_URL = '/address';
 
-export const getAllAddress = async (clientId: string, accessToken: string): Promise<Array<Address.AddressDataResponse>> => {
+export const getAllAddress = async (clientId: string, accessToken: string): Promise<Address.AddressResponse[]> => {
     try {
         const response = await api.get(`${ADDRESS_URL}`, {
             headers: {
@@ -25,7 +25,7 @@ export const getAllAddress = async (clientId: string, accessToken: string): Prom
     }
 }
 
-export const createAddress = async (data: Address.AddressData, clientId: string, accessToken: string): Promise<Array<Address.AddressDataResponse>> => {
+export const createAddress = async (data: Address.Address, clientId: string, accessToken: string): Promise<Address.AddressResponse[]> => {
     try {
         const response = await api.post(`${ADDRESS_URL}`, data, {
             headers: {
@@ -63,7 +63,7 @@ export const deleteAddress = async (id: string, clientId: string, accessToken: s
     }
 }
 
-export const getDefaultAddress = async (clientId: string, accessToken: string): Promise<Address.AddressDataResponse> => {
+export const getDefaultAddress = async (clientId: string, accessToken: string): Promise<Address.AddressResponse> => {
     try {
         const response = await api.get(`${ADDRESS_URL}/default`, {
             headers: {

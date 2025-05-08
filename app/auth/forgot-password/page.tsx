@@ -38,7 +38,7 @@ export default function Page() {
     >
       <div className='flex flex-col space-y-5'>
         <div className='flex'>
-          <BackButton previousPathname='/auth/login' />
+          <BackButton />
         </div>
         <div className='space-y-4'>
           <h3>Forgot Password</h3>

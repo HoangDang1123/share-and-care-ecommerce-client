@@ -1,5 +1,5 @@
-export const formatPrice = (value: number): string => {
-    return value.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }).replace('₫', 'đ');
+export const formatPrice = (value: number | { min: number, max: number }): string => {
+    return value.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 };
 
 export const calculateDiscount = (price: string, discount: string): number => {

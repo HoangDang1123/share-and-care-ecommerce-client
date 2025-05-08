@@ -34,7 +34,7 @@ export default function PriceFilter() {
 
   return (
     <div className='flex flex-col'>
-      <h1 className='sm:hidden md:flex font-bold mb-2'>Price</h1>
+      <h2 className='sm:hidden md:flex font-bold mb-2'>Price</h2>
       <Range
         step={1000}
         min={0}

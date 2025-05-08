@@ -4,9 +4,9 @@ import React, { useEffect, useState } from 'react'
 import Card from '../card';
 import Carousel from 'react-multi-carousel';
 import "react-multi-carousel/lib/styles.css";
-import { CategoryDataResponse } from '@/interface/category';
+import { CategoryResponse } from '@/interface/category';
 import { getTopCategoriesProduct } from '@/app/api/product';
-import { ProductDataResponse } from '@/interface/product';
+import { ProductResponse } from '@/interface/product';
 import Link from 'next/link';
 import { ChevronDoubleRightIcon } from '@heroicons/react/24/outline';
 
@@ -34,7 +34,7 @@ const responsive = {
 };
 
 interface TopProductProps {
-  category: CategoryDataResponse,
+  category: CategoryResponse,
 }
 
 // // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -64,13 +64,13 @@ interface TopProductProps {
 // };
 
 const TopProduct: React.FC<TopProductProps> = ({ category }) => {
-  const [topProduct, setTopProduct] = useState<Array<ProductDataResponse>>([]);
+  const [topProduct, setTopProduct] = useState<ProductResponse[]>([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await getTopCategoriesProduct(category.id);
-        setTopProduct(response.products);
+        setTopProduct(response.items);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -85,7 +85,7 @@ const TopProduct: React.FC<TopProductProps> = ({ category }) => {
         <h1 className='sm:text-xl md:text-3xl'>{category.name.toUpperCase()}</h1>
         <Link
           href={{ pathname: "/shop", query: { category: category.id } }}
-          className="flex justify-center items-center sm:space-x-1 md:space-x-2 bg-gray-700 text-white sm:text-sm md:text-md xl:text-xl h-fit sm:px-3 md:px-4 py-2 rounded-full hover:bg-gray-800"
+          className="flex justify-center items-center sm:space-x-1 md:space-x-2 bg-gray-700 text-white sm:text-sm md:text-base xl:text-lg h-fit sm:px-3 md:px-4 py-1 rounded-full hover:bg-gray-800"
         >
           <span>
             View All

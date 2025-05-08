@@ -1,4 +1,4 @@
-export interface AddressData {
+export interface Address {
     name: string,
     phone: string,
     street: string,
@@ -7,7 +7,7 @@ export interface AddressData {
     city: string,
 }
 
-export interface AddressDataResponse {
+export interface AddressResponse {
     id: string,
     userId: string,
     name: string,
@@ -24,7 +24,7 @@ export interface AddressDataResponse {
     type: string,
 }
 
-export interface AutoCompleteDataResponse {
+export interface AutoCompleteResponse {
     placeId: string,
     description: string,
     compound: {

@@ -3,16 +3,16 @@
 import { Slider } from "./ui/home/slider";
 import TopProduct from "./ui/home/top-product";
 import { useEffect, useRef, useState } from "react";
-import { CategoryDataResponse } from "@/interface/category";
 import { getAllCategories } from "./api/category";
 import { useAuth } from "./context/AppContext";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getAccessToken } from "./api/token";
 import { toast } from "react-toastify";
 import { Suspense } from 'react';
+import { CategoryResponse } from "@/interface/category";
 
 export default function Home() {
-  const [categories, setCategories] = useState<Array<CategoryDataResponse>>([]);
+  const [categories, setCategories] = useState<CategoryResponse[]>([]);
   const searchParams = useSearchParams();
   const router = useRouter();
   const { isLogin, setIsLogin } = useAuth();

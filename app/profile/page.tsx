@@ -23,12 +23,26 @@ export default function Page() {
     }
 
     fetchOrder();
-  }, [accessToken, userId])
+  }, [accessToken, userId]);
+
+  if (userId === "" || accessToken === "") {
+    return (
+      <div className="flex justify-center items-center h-[735px] bg-black gap-x-4">
+        <h6 className="text-white">Please log in to continue</h6>
+        <Link
+          href="/auth/login"
+          className="flex-none rounded-full bg-white px-3 py-1 sm:text-xs md:text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
+        >
+          Go to Login <span aria-hidden="true">&rarr;</span>
+        </Link>
+      </div>
+    )
+  }
 
   return (
-    <div className='sm:px-6 md:px-12 lg:px-24 py-10'>
+    <div className='md:px-12 lg:px-24 sm:my-5 md:my-20'>
       <div className='flex items-center space-x-24'>
-        <BackButton previousPathname="/" />
+        <BackButton />
 
         <ul className="flex space-x-1 text-xl">
           <li>
@@ -57,7 +71,7 @@ export default function Page() {
             </thead>
             <tbody>
               {orderData.orders.map((order, index) => (
-                <tr key={index} className={`${index % 2 == 0 ? 'bg-gray-100': ''}`}>
+                <tr key={index} className={`${index % 2 == 0 ? 'bg-gray-100' : ''}`}>
                   <td className="px-2 py-8 text-center">{index + 1}</td>
                   <td className="px-2 py-8 text-left">{order.shippingAddress.fullname}</td>
                   <td className="px-2 py-8 text-left">{order.shippingAddress.phone}</td>

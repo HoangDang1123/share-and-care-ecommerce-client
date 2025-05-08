@@ -6,7 +6,7 @@ import get from 'lodash/get';
 
 const AUTH_URL = '/auth';
 
-export const signUpRequest = async (data: Auth.SignUpData): Promise<Auth.SignUpDataResponse> => {
+export const signUpRequest = async (data: Auth.SignUp): Promise<Auth.SignUpResponse> => {
     try {
         const response = await api.post(`${AUTH_URL}/register`, data);
         return response.data.metadata;
@@ -21,7 +21,7 @@ export const signUpRequest = async (data: Auth.SignUpData): Promise<Auth.SignUpD
     }
 };
 
-export const resendEmailVerification = async (data: Auth.ResendData): Promise<Auth.ResendDataResponse> => {
+export const resendEmailVerification = async (data: Auth.Resend): Promise<Auth.ResendResponse> => {
     try {
         const response = await api.post(`${AUTH_URL}/resend-email-verification`, data);
         return response.data.metadata;
@@ -34,7 +34,7 @@ export const resendEmailVerification = async (data: Auth.ResendData): Promise<Au
     }
 };
 
-export const loginRequest = async (data: Auth.LoginData): Promise<Auth.LoginDataResponse> => {
+export const loginRequest = async (data: Auth.Login): Promise<Auth.LoginResponse> => {
     try {
         const response = await api.post(`${AUTH_URL}/login`, data);
         return response.data.metadata;
@@ -65,7 +65,7 @@ export const logoutRequest = async (clientId: string, accessToken: string) => {
     }
 };
 
-export const forgotPassword = async (data: Auth.ForgotPasswordData) => {
+export const forgotPassword = async (data: Auth.ForgotPassword) => {
     try {
         const response = await api.post(`${AUTH_URL}/forgot-password`, data);
         return response.data.metadata;
@@ -78,7 +78,7 @@ export const forgotPassword = async (data: Auth.ForgotPasswordData) => {
     }
 };
 
-export const resetPassword = async (data: Auth.ResetPasswordData) => {
+export const resetPassword = async (data: Auth.ResetPassword) => {
     try {
         const response = await api.post(`${AUTH_URL}/reset-password`, data);
         return response.data.metadata;

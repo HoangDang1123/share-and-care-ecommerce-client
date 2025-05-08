@@ -60,7 +60,7 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
       <MenuItems
         transition
         as={motion.div}
-        initial={{ y: '-100%' }}
+        initial={{ y: '-50%' }}
         animate={{ y: 0 }}
         exit={{ y: '-100%' }}
         anchor="bottom end"

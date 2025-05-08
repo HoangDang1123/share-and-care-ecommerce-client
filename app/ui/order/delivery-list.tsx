@@ -1,13 +1,13 @@
 import { getAllDelivery } from '@/app/api/delivery'
 import { useOrder } from '@/app/context/AppContext'
-import { AddressDataResponse } from '@/interface/address'
+import { AddressResponse } from '@/interface/address'
 import { Delivery } from '@/interface/delivery'
 import { OrderData } from '@/interface/order'
 import { Radio, RadioGroup } from '@headlessui/react'
 import { useEffect, useState } from 'react'
 
 interface DeliveryListProps {
-  defaultAddress: AddressDataResponse | undefined,
+  defaultAddress: AddressResponse | undefined,
 }
 
 const DeliveryList: React.FC<DeliveryListProps> = ({ defaultAddress }) => {

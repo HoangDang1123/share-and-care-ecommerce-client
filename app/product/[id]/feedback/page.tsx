@@ -64,7 +64,7 @@ export default function Page() {
     return (
         <div className='px-24 py-10'>
             <div className='flex items-center space-x-24'>
-                <BackButton previousPathname={`/product/${id}`} />
+                <BackButton />
 
                 <ul className="flex space-x-1 text-xl">
                     <li>

@@ -36,7 +36,7 @@ export const getTopSearchProduct = async (search: string): Promise<Product.Produ
 
 export const getTopCategoriesProduct = async (categoryId: string): Promise<Product.Product> => {
     try {
-        const response = await api.get(`${PRODUCT_URL}?size=10&category=${categoryId}`);
+        const response = await api.get(`${PRODUCT_URL}?category=${categoryId}`);
         return response.data.metadata;
     } catch (error) {
         const errorMessage = get(error, 'response.data.error.message', '');
@@ -78,7 +78,7 @@ export const getShopProducts = async (params: Product.FetchProductsParams = {}):
     }
 }
 
-export const getProductDetail = async (id: string): Promise<Product.ProductDetailDataResponse> => {
+export const getProductDetail = async (id: string): Promise<Product.ProductDetailResponse> => {
     try {
         const response = await api.get(`${PRODUCT_URL}/${id}`);
         return response.data.metadata;

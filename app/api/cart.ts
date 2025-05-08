@@ -6,7 +6,7 @@ import get from 'lodash/get';
 
 const CART_URL = '/cart';
 
-export const addProductToCart = async (data: Cart.CartData, clientId: string, accessToken: string): Promise<Cart.AddCartDataResponse> => {
+export const addProductToCart = async (data: Cart.Cart, clientId: string, accessToken: string): Promise<Cart.AddCartResponse> => {
     try {
         const response = await api.post(`${CART_URL}/`, data, {
             headers: {
@@ -25,7 +25,7 @@ export const addProductToCart = async (data: Cart.CartData, clientId: string, ac
     }
 }
 
-export const getCart = async (clientId: string, accessToken: string): Promise<Cart.CartDataResponse> => {
+export const getCart = async (clientId: string, accessToken: string): Promise<Cart.CartResponse> => {
     try {
         const response = await api.get(`${CART_URL}/`, {
             headers: {
@@ -64,7 +64,7 @@ export const deleteCartItem = async (data: Cart.CartItemDeleted, clientId: strin
     }
 }
 
-export const updateCartItem = async (data: Cart.CartData, clientId: string, accessToken: string): Promise<Cart.CartDataResponse> => {
+export const updateCartItem = async (data: Cart.Cart, clientId: string, accessToken: string): Promise<Cart.CartResponse> => {
     try {
         const response = await api.patch(`${CART_URL}/`, data, {
             headers: {
@@ -83,7 +83,7 @@ export const updateCartItem = async (data: Cart.CartData, clientId: string, acce
     }
 }
 
-export const clearCartItem = async (clientId: string, accessToken: string): Promise<Cart.CartDataResponse> => {
+export const clearCartItem = async (clientId: string, accessToken: string): Promise<Cart.CartResponse> => {
     try {
         const response = await api.delete(`${CART_URL}/clear`, {
             headers: {

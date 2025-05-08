@@ -4,15 +4,18 @@ import { getAllProduct, getShopProducts } from "@/app/api/product";
 import { useFilter } from "@/app/context/FilterContext";
 import Card from "@/app/ui/card";
 import SortSelected from "@/app/ui/shop/sort-selected";
-import { FetchProductsParams, ProductDataResponse } from "@/interface/product";
-import { useSearchParams } from "next/navigation";
+import { FetchProductsParams, ProductResponse } from "@/interface/product";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Page() {
   const { price } = useFilter();
-  const [productList, setProductList] = useState<Array<ProductDataResponse>>([]);
+  const [productList, setProductList] = useState<ProductResponse[]>([]);
+  const [searchData, setSearchData] = useState('');
   const [sort, setSort] = useState('');
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   const fetchProducts = async () => {
     const searchData = searchParams.get('search');
@@ -47,7 +50,7 @@ export default function Page() {
         response = await getAllProduct();
       }
 
-      setProductList(response.products);
+      setProductList(response.items);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
@@ -58,9 +61,37 @@ export default function Page() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [price.values, searchParams, sort]);
 
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+    if (searchData) {
+      params.set('search', searchData);
+    } else {
+      params.delete('search');
+    }
+    router.push(`/shop?${params.toString()}`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchData]);
+
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchData(e.target.value);
+  }
+
   return (
     <div className="flex flex-col space-y-8">
-      <div>
+      <div className="sm:hidden md:flex justify-between w-full bg-gray-200 p-4 gap-x-96 rounded-xl">
+        <div className='relative w-full'>
+          <input
+            id="search"
+            name="search"
+            type="text"
+            placeholder="Search..."
+            onChange={handleChangeInput}
+            className="block w-full rounded-lg border-0 py-1.5 pl-5 text-gray-900 sm:text-sm sm:leading-6 md:text-lg placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-400"
+          />
+
+          <MagnifyingGlassIcon className="absolute right-3 top-2 size-6 text-gray-400" />
+        </div>
+
         <SortSelected setSort={setSort} />
       </div>
 
@@ -69,7 +100,7 @@ export default function Page() {
           There&apos;s no product.
         </div>
       ) : (
-        <div className="w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-10 sm:gap-y-8 md:gap-y-16">
+        <div className="w-full grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-10 sm:gap-y-8 md:gap-y-16 items-stretch">
           {productList.map((product, index) => (
             <Card key={index} product={product} />
           ))}

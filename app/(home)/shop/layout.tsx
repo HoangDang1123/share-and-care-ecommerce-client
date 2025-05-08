@@ -11,9 +11,9 @@ export default function ShopLayout({
 }) {
   return (
     <FilterProvider>
-      <div className='sm:px-6 md:px-12 lg:px-24 sm:my-5 md:my-10'>
+      <div className='sm:px-6 md:px-12 lg:px-24 sm:my-5 md:my-20'>
         <div className='flex items-center sm:space-x-8 md:space-x-24'>
-          <BackButton previousPathname="/" />
+          <BackButton />
 
           <ul className="flex space-x-1 sm:text-md md:text-xl">
             <li>
@@ -25,13 +25,9 @@ export default function ShopLayout({
           </ul>
         </div>
 
-        <div className='grid md:grid-cols-[1fr_3fr] md:mt-10 sm:gap-4 md:gap-10'>
-          <div>
-            <FilterContainer />
-          </div>
-          <div className="col-span-1">
-            <Suspense>{children}</Suspense>
-          </div>
+        <div className='grid md:grid-cols-[1fr_5fr] md:mt-10 sm:gap-4 md:gap-10'>
+          <FilterContainer />
+          <Suspense>{children}</Suspense>
         </div>
       </div>
     </FilterProvider>

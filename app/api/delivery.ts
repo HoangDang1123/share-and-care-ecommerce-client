@@ -6,7 +6,7 @@ import get from 'lodash/get';
 
 const DELIVERY_URL = '/delivery';
 
-export const getAllDelivery = async (id: string, clientId: string, accessToken: string): Promise<Delivery.DeliveryDataResponse> => {
+export const getAllDelivery = async (id: string, clientId: string, accessToken: string): Promise<Delivery.DeliveryResponse> => {
     try {
         const response = await api.get(`${DELIVERY_URL}?destinationId=${id}`, {
             headers: {

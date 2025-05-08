@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState, useMemo } from 'react';
 
 interface PriceValues {
-    values: Array<number>,
+    values: number[],
 }
 
 interface FilterContextType {

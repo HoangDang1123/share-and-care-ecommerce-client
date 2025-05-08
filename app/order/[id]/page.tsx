@@ -4,7 +4,7 @@ import { getOrderDetail } from '@/app/api/order';
 import { VNPAYPayment } from '@/app/api/payment';
 import BackButton from '@/app/ui/back-button';
 import Status from '@/app/ui/order/status';
-import { OrderDataDetailResponse } from '@/interface/order';
+import { OrderDetailResponse } from '@/interface/order';
 import { PaymentData } from '@/interface/payment';
 import { formatPrice } from '@/utils/helpers';
 import { CheckCircleIcon } from '@heroicons/react/20/solid';
@@ -16,7 +16,7 @@ import React, { useEffect, useState } from 'react';
 import ClipLoader from 'react-spinners/ClipLoader';
 
 export default function Page() {
-  const [order, setOrder] = useState<OrderDataDetailResponse>();
+  const [order, setOrder] = useState<OrderDetailResponse>();
   const [paymentLoading, setPaymentLoading] = useState(false);
   const [cancelLoading, setCancelLoading] = useState(false);
   // const [isFixedTop, setIsFixedTop] = useState(false);
@@ -97,6 +97,20 @@ export default function Page() {
     setCancelLoading(true);
   }
 
+  if (userId === "" || accessToken === "") {
+    return (
+      <div className="flex justify-center items-center h-[735px] bg-black gap-x-4">
+        <h6 className="text-white">Please log in to continue</h6>
+        <Link
+          href="/auth/login"
+          className="flex-none rounded-full bg-white px-3 py-1 sm:text-xs md:text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
+        >
+          Go to Login <span aria-hidden="true">&rarr;</span>
+        </Link>
+      </div>
+    )
+  }
+
   if (!order) {
     return (
       <div>Loading...</div>
@@ -104,9 +118,9 @@ export default function Page() {
   }
 
   return (
-    <div className='md:px-12 lg:px-24 my-10'>
+    <div className='md:px-12 lg:px-24 sm:my-5 md:my-20'>
       <div className='flex items-center sm:px-6 md:px-0 sm:space-x-8 md:space-x-24'>
-        <BackButton previousPathname="/profile" />
+        <BackButton />
 
         <ul className="flex space-x-1 sm:text-md md:text-xl text-ellipsis text-nowrap">
           <li>

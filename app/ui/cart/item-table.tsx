@@ -236,7 +236,7 @@ const ItemTable: React.FC<ItemTableProps> = ({ selectedAll, selectedItem, setSel
         {cart && cart.items.map((item, index) => (
           <div 
             key={index} 
-            className='sm:grid md:hidden grid-cols-[1fr_8fr_1fr] w-full px-4 py-2 place-items-center border-t-4 border-b-4 border-gray-100'
+            className='sm:grid md:hidden grid-cols-[1fr_8fr_1fr] w-full px-4 py-2 justify-center items-center border-t-4 border-b-4 border-gray-100'
           >
             <Checkbox
               checked={selectedItem[index] !== undefined ? selectedItem[index] : false}
@@ -247,7 +247,7 @@ const ItemTable: React.FC<ItemTableProps> = ({ selectedAll, selectedItem, setSel
             </Checkbox>
 
             <div
-              className='grid grid-cols-[1fr_3fr] place-items-center'
+              className='grid grid-cols-[1fr_3fr] justify-center items-center'
               onClick={() => handleClickItem(item.productId)}
             >
               <Image

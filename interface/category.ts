@@ -1,6 +1,10 @@
-export interface CategoryDataResponse {
+export interface Category {
+    id: string,
+    name: string,
+}
+
+export interface CategoryResponse {
     id: string,
     name: string,
     parentId: null,
-    children: Array<null>,
 }

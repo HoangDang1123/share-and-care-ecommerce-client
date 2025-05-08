@@ -1,15 +1,14 @@
 'use client'
 
 import { getAllCategories, getChildCategories } from "@/app/api/category";
-import { CategoryDataResponse } from "@/interface/category";
+import { CategoryResponse } from "@/interface/category";
 import { Radio, RadioGroup } from "@headlessui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function CategoryFilter() {
-  const [categories, setCategories] = useState<Array<CategoryDataResponse>>([]);
-  const [childCategories, setChildCategories] = useState<Array<CategoryDataResponse[]>>([]);
-  const [parentIndex, setParentIndex] = useState('');
+  const [categories, setCategories] = useState<CategoryResponse[]>([]);
+  const [childMap, setChildMap] = useState<Record<string, CategoryResponse[]>>({});
   const [selected, setSelected] = useState('');
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -19,38 +18,37 @@ export default function CategoryFilter() {
       try {
         const response = await getAllCategories();
         setCategories(response);
+        for (const category of response) {
+          await fetchChildRecursive(category.id);
+        }
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
     };
 
     fetchCategories();
-  }, [setCategories]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  useEffect(() => {
-    const fetchAllChildCategories = async () => {
-      const tempCategories: Array<CategoryDataResponse[]> = [];
+  const fetchChildRecursive = async (categoryId: string) => {
+    try {
+      if (!childMap[categoryId]) {
+        const response = await getChildCategories(categoryId);
+        setChildMap(prev => ({ ...prev, [categoryId]: response }));
 
-      const fetchPromises = categories.map(async (category) => {
-        try {
-          const response = await getChildCategories(category.id);
-          tempCategories.push(response);
-        } catch (error) {
-          console.error("Error fetching child categories:", error);
+        for (const child of response) {
+          await fetchChildRecursive(child.id);
         }
-      });
-
-      await Promise.all(fetchPromises);
-      setChildCategories(tempCategories);
-    };
-
-    fetchAllChildCategories();
-  }, [categories, setChildCategories]);
+      }
+    } catch (error) {
+      console.error(`Error fetching children for ${categoryId}:`, error);
+    }
+  };
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
 
-    if (selected !== '' && parentIndex !== '') {
+    if (selected) {
       params.set('category', selected);
     } else {
       params.delete('category');
@@ -58,95 +56,55 @@ export default function CategoryFilter() {
 
     const newUrl = `${window.location.pathname}?${params.toString()}`;
     window.history.pushState({}, '', newUrl);
-  }, [router, selected, searchParams, parentIndex]);
+  }, [router, selected, searchParams]);
 
   const handleClearAll = () => {
     const params = new URLSearchParams(searchParams);
     params.delete('category');
-
     setSelected('');
-
     const newUrl = `${window.location.pathname}?${params.toString()}`;
     window.history.pushState({}, '', newUrl);
-  }
+  };
+
+  const renderCategoryRecursive = (category: CategoryResponse, level = 0) => {
+    const baseClass = level === 0 ? 'font-bold text-lg' : level === 1 ? 'font-semibold text-md' : 'text-sm text-gray-600';
+    const containerClass = level === 0 ? '' : 'ml-6';
+
+    return (
+      <div key={category.id} className={`mt-1 ${containerClass}`}>
+        <div className="flex items-center gap-x-2 py-1 px-2">
+          <Radio
+            value={category.id}
+            className="group flex justify-center items-center size-4 rounded-full border border-gray-700 bg-white hover:cursor-pointer"
+          >
+            <span className="invisible size-2 rounded-full bg-gray-700 group-data-[checked]:visible" />
+          </Radio>
+          <span className={baseClass}>{category.name}</span>
+        </div>
+        {childMap[category.id]?.map(child => renderCategoryRecursive(child, level + 1))}
+      </div>
+    );
+  };
 
   return (
     <div>
       <RadioGroup
         value={selected}
         onChange={setSelected}
-        className='sm:hidden md:flex flex-col select-none'
+        className='flex flex-col select-none'
       >
         <div className="flex justify-between items-center">
-          <h1 className='font-bold mb-2'>Category</h1>
+          <h2 className='font-bold'>Category</h2>
           <button
             onClick={handleClearAll}
-            className="flex h-fit px-3 py-1 rounded-md border border-gray-700 text-md"
+            className="flex h-fit px-3 py-1 rounded-xl bg-gray-200 hover:bg-gray-300"
           >
-            Clear all
+            Clear
           </button>
         </div>
 
-        {categories.map((category, index) => (
-          <div key={index} className='flex flex-col items-start w-full'>
-            <div className="flex w-full">
-              <span className="block text-lg font-semibold px-2">
-                {category.name}
-              </span>
-            </div>
-
-            <div className="grid grid-cols-2 gap-x-6 w-full px-2">
-              <div className="flex items-center space-x-2 text-lg py-1 px-2">
-                <Radio
-                  value={category.id}
-                  className="group flex justify-center items-center size-5 rounded-full border border-gray-700 bg-white hover:cursor-pointer"
-                >
-                  <span className="invisible size-3 rounded-full bg-gray-700 group-data-[checked]:visible" />
-                </Radio>
-                <h6 className="text-lg mt-1">{`All ${category.name}`}</h6>
-              </div>
-
-              {Array.isArray(childCategories[index]) && childCategories[index].map((child, index) => (
-                <div
-                  key={index}
-                  className="flex items-center space-x-2 text-lg py-1 px-2"
-                >
-                  <Radio
-                    value={child.id}
-                    className="group flex justify-center items-center size-5 rounded-full border border-gray-700 bg-white hover:cursor-pointer"
-                  >
-                    <span className="invisible size-3 rounded-full bg-gray-700 group-data-[checked]:visible" />
-                  </Radio>
-                  <h6 className="text-lg mt-1">{child.name}</h6>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
+        {categories.map(category => renderCategoryRecursive(category))}
       </RadioGroup>
-
-      <div className="sm:flex md:hidden space-x-4 text-sm">
-        <select
-          onChange={(e) => setParentIndex(e.target.value)}
-          className='sm:w-full md:w-fit p-1 border border-gray-900 border-solid rounded-md'
-        >
-          <option value="">Category</option>
-          {categories.map((category, index) => (
-            <option key={index} value={index}>{category.name}</option>
-          ))}
-        </select>
-
-        <select
-          disabled={parentIndex === ''}
-          onChange={(e) => setSelected(e.target.value)}
-          className='sm:w-full md:w-fit p-1 border border-gray-900 border-solid rounded-md disabled:bg-gray-200 disabled:border-gray-200'
-        >
-          <option value="">Child category</option>
-          {parentIndex !== '' && Array.isArray(childCategories[Number(parentIndex)]) && childCategories[Number(parentIndex)].map((child, index) => (
-            <option key={index} value={child.id}>{child.name}</option>
-          ))}
-        </select>
-      </div>
     </div>
-  )
+  );
 }

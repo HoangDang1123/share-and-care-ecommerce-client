@@ -6,7 +6,7 @@ module.exports = {
     removeConsole: false
   },
   images: {
-    domains: ['res.cloudinary.com'],
+    domains: ['res.cloudinary.com', 'www.youtube.com', 'img.youtube.com'],
   },
   devIndicators: {
     position: false

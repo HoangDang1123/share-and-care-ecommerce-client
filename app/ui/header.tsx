@@ -6,11 +6,33 @@ import Image from 'next/image';
 import NavLinks from './header/nav-links';
 import NavIcons from './header/nav-icons';
 import Sidebar from './sidebar';
+import { useEffect, useState } from 'react';
 
 export default function Header() {
+  const [isHidden, setIsHidden] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const triggerPoint = 100;
+
+      if (scrollTop > triggerPoint) {
+        setIsHidden(true);
+      } else {
+        setIsHidden(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
     <Disclosure as="nav" className="shadow-md bg-white">
-      <div className="relative flex flex-1 h-auto my-2 items-center justify-between sm:px-5 lg:px-20 md:space-x-20 lg:space-x-0">
+      <div className={`relative flex flex-1 h-auto my-2 items-center justify-between sm:px-5 lg:px-20 md:space-x-20 lg:space-x-0 transition-all duration-700 ease-in-out ${isHidden ? 'max-h-0 opacity-0 overflow-hidden' : 'max-h-[500px] opacity-100'}`}>
         <div className="sm:block md:hidden w-auto h-auto items-center">
           <Sidebar />
         </div>

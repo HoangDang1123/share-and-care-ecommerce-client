@@ -1,17 +1,17 @@
 import React, { useState } from 'react'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
-import { ProductInfoDataResponse } from '@/interface/product';
+import { ProductDetailResponse } from '@/interface/product';
 import SizeGuide from './size-guide';
 
 interface SelectedSizeProps {
-  product: ProductInfoDataResponse,
+  product: ProductDetailResponse;
   selectedSizeIndex: number | null,
   setSelectedSizeIndex: (selectedSizeIndex: number | null) => void,
 }
 
 const SelectedSize: React.FC<SelectedSizeProps> = ({ product, selectedSizeIndex, setSelectedSizeIndex }) => {
   const [isOpenDialog, setIsOpenDialog] = useState(false);
-  const sizes = product.variants.find(item => item.name === 'Size');
+  const sizes = product.product.variantAttributes.find(item => item.name.includes("Size"));
 
   const handleSizeClick = (index: number) => {
     setSelectedSizeIndex(index);
@@ -26,8 +26,8 @@ const SelectedSize: React.FC<SelectedSizeProps> = ({ product, selectedSizeIndex,
   return (
     <div className='flex flex-col space-y-2'>
       <div className='flex justify-between'>
-        <h6 className='sm:text-xl md:text-2xl font-semibold'>
-          {`Selected Size: ${selectedSizeIndex !== null ? sizes.options[selectedSizeIndex] : ''}`}
+        <h6 className='sm:text-base md:text-xl font-semibold'>
+          {`Selected Size: ${selectedSizeIndex !== null ? sizes.values[selectedSizeIndex].descriptionUrl : ''}`}
         </h6>
 
         <button
@@ -49,15 +49,14 @@ const SelectedSize: React.FC<SelectedSizeProps> = ({ product, selectedSizeIndex,
           </div>
         </Dialog>
       </div>
-      <ul className='sm:grid md:flex sm:grid-cols-5 sm:gap-4 md:gap-0 md:space-x-4'>
-        {sizes.options.map((item, index) => (
+      <ul className='sm:grid md:flex sm:grid-cols-6 sm:gap-4 md:gap-0 md:space-x-4'>
+        {sizes.values.map((item, index) => (
           <li
             key={index}
-            className={`flex justify-center items-center w-16 h-8 rounded-full hover:cursor-pointer ${selectedSizeIndex === index ? 'bg-gray-700 text-white' : 'bg-gray-300'}`}
-            title={item}
+            className={`flex justify-center items-center sm:w-12 sm:h-6 sm:text-sm md:w-16 md:h-8 md:text-lg rounded-full hover:cursor-pointer ${selectedSizeIndex === index ? 'bg-gray-700 text-white' : 'bg-gray-300'}`}
             onClick={() => handleSizeClick(index)}
           >
-            {item}
+            {item.value}
           </li>
         ))}
       </ul>

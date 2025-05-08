@@ -38,7 +38,7 @@ export default function Chat() {
     <div>
       <button
         onClick={() => openChatFrame ? setOpenChatFrame(false) : setOpenChatFrame(true)}
-        className={`${openChatFrame ? 'flex' : 'flex'} fixed items-center space-x-2 bottom-[20px] right-[20px] p-4 shadow-2xl bg-teal-600 text-white rounded-full transition ease-in-out hover:scale-110 duration-300`}
+        className={`${openChatFrame ? 'flex' : 'flex'} fixed items-center space-x-2 bottom-[20px] right-[20px] p-4 shadow-2xl bg-gray-900 text-white rounded-full transition ease-in-out hover:scale-110 duration-300`}
       >
         <ChatBubbleBottomCenterTextIcon className='size-6' />
       </button>
@@ -51,11 +51,11 @@ export default function Chat() {
         className="fixed flex-col bottom-0 right-[90px] w-96 shadow-2xl shadow-gray-400 bg-white rounded-lg"
         style={{ display: openChatFrame ? "flex" : "hidden", transformOrigin: "bottom right" }}
       >
-        <div className="flex justify-between w-full items-center px-4 py-2 bg-teal-600 rounded-tl-lg rounded-tr-lg">
+        <div className="flex justify-between w-full items-center px-4 py-2 bg-gray-900 rounded-tl-lg rounded-tr-lg">
           <span className="text-xl font-semibold text-white">Chat</span>
           <button
             onClick={() => setOpenChatFrame(false)}
-            className="bg-white text-teal-600 rounded-sm"
+            className="bg-white text-gray-900 rounded-sm"
           >
             <MinusIcon className="size-4" />
           </button>
@@ -100,7 +100,7 @@ export default function Chat() {
             <button
               onClick={handleSubmit}
             >
-              <PaperAirplaneIcon className="size-6 text-teal-600" />
+              <PaperAirplaneIcon className="size-6 text-gray-900" />
             </button>
           </div>
         </div>

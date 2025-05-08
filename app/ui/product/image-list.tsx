@@ -2,41 +2,68 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import ReactPlayer from "react-player";
 import ImageMagnifier from "./image-magnifier";
 
 interface ImageSliderProps {
-  images: Array<string>,
+  images: string[],
+  video: string,
   variantImage: string,
 }
 
-const ImageList: React.FC<ImageSliderProps> = ({ images, variantImage }) => {
+const getYoutubeThumbnail = (url: string) => {
+  const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]+)/);
+  return match ? `https://img.youtube.com/vi/${match[1]}/0.jpg` : "";
+};
+
+const ImageList: React.FC<ImageSliderProps> = ({ images, video, variantImage }) => {
   const [imageIndex, setImageIndex] = useState(0);
+  const [isVideo, setIsVideo] = useState(false);
+  const videoThumbnail = getYoutubeThumbnail(video);
 
   useEffect(() => {
     if (variantImage !== "") {
       setImageIndex(images.findIndex(item => item === variantImage));
+      setIsVideo(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [variantImage])
+  }, [images, variantImage]);
 
   return (
-    <section className="flex sm:flex-col md:flex-row w-full md:h-[700px]" aria-label="Image List">
-      <div className="sm:hidden md:flex flex-col gap-y-[0.92rem] mr-5 pr-8 overflow-x-hidden overflow-y-auto whitespace-nowrap scroll-y-list">
+    <section className="flex sm:flex-col md:flex-row w-full md:h-full" aria-label="Image List">
+      <div className="sm:hidden md:flex flex-col h-[45.5rem] gap-y-[0.92rem] mr-3 pr-8 overflow-x-hidden overflow-y-auto whitespace-nowrap scroll-y-list">
+        {videoThumbnail && (
+          <div
+            className="cursor-pointer w-24 hover:opacity-60"
+            onClick={() => {
+              setIsVideo(true);
+              setImageIndex(-1);
+            }}
+          >
+            <Image
+              src={videoThumbnail}
+              alt="Video Thumbnail"
+              width={100}
+              height={30}
+              className="object-cover rounded-xl"
+            />
+          </div>
+        )}
+
         {images.map((item, index) => (
           <div
             key={index}
             className="cursor-pointer w-24 hover:opacity-60"
-            aria-label={`View Image ${index + 1}`}
-            onClick={() => setImageIndex(index)}
+            onClick={() => {
+              setImageIndex(index);
+              setIsVideo(false);
+            }}
           >
             <Image
-              key={index}
               src={item}
               alt=""
               width={100}
               height={30}
-              aria-hidden={imageIndex !== index}
-              className="object-cover"
+              className="object-cover rounded-xl"
               priority
             />
           </div>
@@ -44,50 +71,81 @@ const ImageList: React.FC<ImageSliderProps> = ({ images, variantImage }) => {
       </div>
 
       <div className="sm:hidden xl:flex w-full">
-        {images.map((item, index) => (
-          <ImageMagnifier
-            key={index}
-            src={item}
-            className={`${imageIndex === index ? 'block' : 'hidden'}`}
-            width={600}
-            height={600}
-            magnifierHeight={150}
-            magnifierWidth={150}
-            zoomLevel={2}
-            alt="Main Image"
-          />
-        ))}
+        {isVideo ? (
+          <div className="w-full bg-black flex items-center justify-center rounded-2xl overflow-hidden">
+            <ReactPlayer
+              url={video}
+              width="100%"
+              controls
+            />
+          </div>
+        ) : (
+          images.map((item, index) => (
+            <ImageMagnifier
+              key={index}
+              src={item}
+              className={`${imageIndex === index ? 'block rounded-2xl' : 'hidden'}`}
+              width={600}
+              height={600}
+              magnifierHeight={150}
+              magnifierWidth={150}
+              zoomLevel={2}
+              alt="Main Image"
+            />
+          ))
+        )}
       </div>
 
       <div className="sm:flex xl:hidden w-full">
-        {images.map((item, index) => (
-          <Image
-            key={index}
-            src={item}
-            alt=""
-            width={1920}
-            height={1080}
-            aria-hidden={imageIndex !== index}
-            className={`${imageIndex === index ? 'block' : 'hidden'} object-cover w-full`}
-          />
-        ))}
-      </div>
-
-      <div className="sm:flex md:hidden gap-x-2 mt-2 overflow-x-auto whitespace-nowrap scroll-x-list">
-        {images.map((item, index) => (
-          <div
-            key={index}
-            aria-label={`View Image ${index + 1}`}
-            onClick={() => setImageIndex(index)}
-            className="flex-shrink-0"
-          >
+        {isVideo ? (
+          <ReactPlayer url={video} width="100%" controls />
+        ) : (
+          images.map((item, index) => (
             <Image
               key={index}
               src={item}
               alt=""
+              width={1920}
+              height={1080}
+              className={`${imageIndex === index ? 'block' : 'hidden'} object-cover w-full`}
+            />
+          ))
+        )}
+      </div>
+
+      <div className="sm:flex md:hidden gap-x-2 mt-2 overflow-x-auto whitespace-nowrap scroll-x-list">
+        {videoThumbnail && (
+          <div
+            className="cursor-pointer w-24 hover:opacity-60"
+            onClick={() => {
+              setIsVideo(true);
+              setImageIndex(-1);
+            }}
+          >
+            <Image
+              src={videoThumbnail}
+              alt="Video Thumbnail"
               width={80}
               height={24}
-              aria-hidden={imageIndex !== index}
+              className="object-cover"
+            />
+          </div>
+        )}
+
+        {images.map((item, index) => (
+          <div
+            key={index}
+            className="cursor-pointer w-24 hover:opacity-60"
+            onClick={() => {
+              setImageIndex(index);
+              setIsVideo(false);
+            }}
+          >
+            <Image
+              src={item}
+              alt=""
+              width={80}
+              height={24}
               className="object-cover"
               priority
             />
@@ -95,7 +153,7 @@ const ImageList: React.FC<ImageSliderProps> = ({ images, variantImage }) => {
         ))}
       </div>
     </section>
-  )
-}
+  );
+};
 
 export default ImageList;
