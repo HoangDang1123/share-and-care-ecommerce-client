@@ -56,7 +56,9 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
   }, [product.product.variants.length, selectedColorIndex, selectedSizeIndex, loadingAddToCart, loadingBuyNow]);
 
   useEffect(() => {
-    if (selectedColorIndex !== null && selectedSizeIndex !== null) {
+    if ((selectedColorIndex && selectedSizeIndex && selectedColorIndex !== null && selectedSizeIndex !== null) 
+      || (selectedColorIndex === undefined && selectedSizeIndex && selectedSizeIndex !== null) 
+      || (selectedSizeIndex === undefined && selectedColorIndex && selectedColorIndex !== null)) {
       const tierIndex = [selectedColorIndex, selectedSizeIndex];
       const skuItem = product.skuList.skuList.find(item => JSON.stringify(item.tierIndex) === JSON.stringify(tierIndex));
 
