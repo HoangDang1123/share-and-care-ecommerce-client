@@ -1,5 +1,7 @@
+'use client'
+
 import { ProductDetailResponse } from '@/interface/product';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 interface SelectedColorProps {
   product: ProductDetailResponse;
@@ -9,6 +11,12 @@ interface SelectedColorProps {
 
 const SelectedColor: React.FC<SelectedColorProps> = ({ product, selectedColorIndex, setSelectedColorIndex }) => {
   const colors = product.product.variantAttributes.find(item => item.type === "COLOR");
+
+  useEffect(() => {
+    if (!colors) {
+      setSelectedColorIndex(null);
+    }
+  }, [colors, setSelectedColorIndex]);
 
   const handleColorClick = (index: number) => {
     setSelectedColorIndex(index);
@@ -20,7 +28,9 @@ const SelectedColor: React.FC<SelectedColorProps> = ({ product, selectedColorInd
 
   return (
     <div className='flex flex-col space-y-2'>
-      <h6 className='sm:text-base md:text-xl font-semibold'>{`Selected Color: ${selectedColorIndex !== null ? colors.values[selectedColorIndex].value : ''}`}</h6>
+      <h6 className='sm:text-base md:text-xl font-semibold'>
+        {`Selected Color: ${selectedColorIndex && selectedColorIndex !== -1 ? colors.values[selectedColorIndex].value : ''}`}
+      </h6>
       <ul className='grid sm:grid-cols-10 md:grid-cols-12'>
         {colors.values.map((value, index) => (
           <li

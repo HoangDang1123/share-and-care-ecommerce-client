@@ -108,6 +108,7 @@ const ImageList: React.FC<ImageSliderProps> = ({ images, video, variantImage }) 
               width={1920}
               height={1080}
               className={`${imageIndex === index ? 'block' : 'hidden'} object-cover w-full`}
+              priority
             />
           ))
         )}

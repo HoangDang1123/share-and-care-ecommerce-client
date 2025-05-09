@@ -14,7 +14,7 @@ export default function Header() {
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
-      const triggerPoint = 100;
+      const triggerPoint = 0;
 
       if (scrollTop > triggerPoint) {
         setIsHidden(true);

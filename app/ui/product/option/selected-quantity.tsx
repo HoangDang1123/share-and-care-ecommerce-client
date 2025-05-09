@@ -18,7 +18,7 @@ const SelectedQuantity: React.FC<SelectedQuantityProps> = ({ product, quantityIn
 
   useEffect(() => {
     const hasVariants = product.product.variants.length > 0;
-    const isColorOrSizeNotSelected = selectedColorIndex === null || selectedSizeIndex === null;
+    const isColorOrSizeNotSelected = selectedColorIndex === -1 || selectedSizeIndex === -1;
   
     setDisabled(hasVariants && isColorOrSizeNotSelected);
   }, [product.product.variants.length, selectedColorIndex, selectedSizeIndex, setDisabled]);

@@ -22,8 +22,8 @@ interface OptionContainerProps {
 }
 
 const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantImage }) => {
-  const [selectedColorIndex, setSelectedColorIndex] = useState<number | null>(null);
-  const [selectedSizeIndex, setSelectedSizeIndex] = useState<number | null>(null);
+  const [selectedColorIndex, setSelectedColorIndex] = useState<number | null>(-1);
+  const [selectedSizeIndex, setSelectedSizeIndex] = useState<number | null>(-1);
   const [quantity, setQuantity] = useState(1);
   const [quantityInStock, setQuantityInStock] = useState(0);
   const [loadingAddToCart, setLoadingAddToCart] = useState(false);
@@ -38,7 +38,7 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";
 
   useEffect(() => {
-    if (selectedColorIndex !== null) {
+    if (selectedColorIndex && selectedColorIndex !== -1) {
       const colorVariant = product.product.variants.find(variant => variant.name === "Color");
 
       if (colorVariant?.images?.[selectedColorIndex]) {
@@ -50,20 +50,31 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
 
   useEffect(() => {
     const hasVariants = product.product.variants.length > 0;
-    const isColorOrSizeNotSelected = selectedColorIndex === null || selectedSizeIndex === null;
+    const isColorOrSizeNotSelected = selectedColorIndex === -1 || selectedSizeIndex === -1;
 
     setDisabled((hasVariants && isColorOrSizeNotSelected) || loadingAddToCart || loadingBuyNow);
   }, [product.product.variants.length, selectedColorIndex, selectedSizeIndex, loadingAddToCart, loadingBuyNow]);
 
   useEffect(() => {
-    if ((selectedColorIndex && selectedSizeIndex && selectedColorIndex !== null && selectedSizeIndex !== null) 
-      || (selectedColorIndex === undefined && selectedSizeIndex && selectedSizeIndex !== null) 
-      || (selectedSizeIndex === undefined && selectedColorIndex && selectedColorIndex !== null)) {
-      const tierIndex = [selectedColorIndex, selectedSizeIndex];
-      const skuItem = product.skuList.skuList.find(item => JSON.stringify(item.tierIndex) === JSON.stringify(tierIndex));
+    let tierIndex: number[] | null = null;
+
+    if (selectedColorIndex !== null && selectedSizeIndex !== null) {
+      tierIndex = [selectedColorIndex, selectedSizeIndex];
+    } else if (selectedColorIndex !== null) {
+      tierIndex = [selectedColorIndex];
+    } else if (selectedSizeIndex !== null) {
+      tierIndex = [selectedSizeIndex];
+    }
+
+    if (tierIndex) {
+      const skuItem = product.skuList.skuList.find(
+        (item) => JSON.stringify(item.tierIndex) === JSON.stringify(tierIndex)
+      );
 
       if (skuItem) {
         setQuantityInStock(skuItem.quantity);
+      } else {
+        setQuantityInStock(0); // fallback nếu không tìm thấy
       }
     }
   }, [selectedColorIndex, selectedSizeIndex, product.skuList.skuList]);

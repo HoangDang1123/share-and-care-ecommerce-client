@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+'use client'
+
+import React, { useEffect, useState } from 'react'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import { ProductDetailResponse } from '@/interface/product';
 import SizeGuide from './size-guide';
@@ -12,6 +14,12 @@ interface SelectedSizeProps {
 const SelectedSize: React.FC<SelectedSizeProps> = ({ product, selectedSizeIndex, setSelectedSizeIndex }) => {
   const [isOpenDialog, setIsOpenDialog] = useState(false);
   const sizes = product.product.variantAttributes.find(item => item.name.includes("Size"));
+
+  useEffect(() => {
+    if (!sizes) {
+      setSelectedSizeIndex(null);
+    }
+  }, [sizes, setSelectedSizeIndex]);
 
   const handleSizeClick = (index: number) => {
     setSelectedSizeIndex(index);
@@ -27,7 +35,7 @@ const SelectedSize: React.FC<SelectedSizeProps> = ({ product, selectedSizeIndex,
     <div className='flex flex-col space-y-2'>
       <div className='flex justify-between'>
         <h6 className='sm:text-base md:text-xl font-semibold'>
-          {`Selected Size: ${selectedSizeIndex !== null ? sizes.values[selectedSizeIndex].descriptionUrl : ''}`}
+          {`Selected Size: ${selectedSizeIndex && selectedSizeIndex !== -1 ? sizes.values[selectedSizeIndex].descriptionUrl : ''}`}
         </h6>
 
         <button

@@ -20,10 +20,6 @@ export default function Page() {
   const id = param.id;
 
   useEffect(() => {
-    console.log(product)
-  })
-
-  useEffect(() => {
     const fetchProducts = async () => {
       if (typeof id !== 'string') {
         return;
