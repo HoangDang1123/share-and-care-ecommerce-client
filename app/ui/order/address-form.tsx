@@ -9,7 +9,7 @@ import ClipLoader from 'react-spinners/ClipLoader';
 import { toast } from 'react-toastify';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
-import { AutoCompleteDataResponse } from '@/interface/address';
+import { AutoCompleteResponse } from '@/interface/address';
 
 interface AddressFormProps {
   setIsRefresh: (isRefresh: boolean) => void;
@@ -24,7 +24,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
   const [selectedDistrict, setSelectedDistrict] = useState('');
   const [selectedWard, setSelectedWard] = useState('');
   const [street, setStreet] = useState('');
-  const [autoComplete, setAutoComplete] = useState<Array<AutoCompleteDataResponse>>([]);
+  const [autoComplete, setAutoComplete] = useState<Array<AutoCompleteResponse>>([]);
   const [loading, setLoading] = useState(false);
   const [inputData, setInputData] = useState({
     name: '',

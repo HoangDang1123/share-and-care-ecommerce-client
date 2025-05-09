@@ -1,7 +1,7 @@
 'use client'
 
 import { deleteAddress, getAllAddress, getDefaultAddress, setDefault } from '@/app/api/address';
-import { AddressDataResponse } from '@/interface/address';
+import { AddressResponse } from '@/interface/address';
 import { Radio, RadioGroup } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
@@ -14,14 +14,14 @@ import { useOrder } from '@/app/context/AppContext';
 interface AddressListProps {
   isRefresh: boolean,
   setIsRefresh: (isRefresh: boolean) => void,
-  defaultAddress: AddressDataResponse | undefined,
+  defaultAddress: AddressResponse | undefined,
   setExistAddress: (isRefresh: boolean) => void,
 }
 
 const AddressList: React.FC<AddressListProps> = ({ isRefresh, setIsRefresh, defaultAddress, setExistAddress }) => {
-  const [addressList, setAddressList] = useState<Array<AddressDataResponse>>([]);
-  const [address, setAddress] = useState<AddressDataResponse | undefined>(defaultAddress);
-  const [selected, setSelected] = useState<AddressDataResponse>();
+  const [addressList, setAddressList] = useState<Array<AddressResponse>>([]);
+  const [address, setAddress] = useState<AddressResponse | undefined>(defaultAddress);
+  const [selected, setSelected] = useState<AddressResponse>();
   const [loadingItems, setLoadingItems] = useState<boolean[]>([]);
   const router = useRouter();
 
