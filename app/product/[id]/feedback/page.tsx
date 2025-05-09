@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react';
-import data from "@/data/data.json";
+// import data from "@/data/data.json";
 import FeedbackContent from '@/app/ui/product/feedback/feedback-content';
 import { useParams } from 'next/navigation';
 import FeedbackFilter from '@/app/ui/product/feedback/feedback-filter';

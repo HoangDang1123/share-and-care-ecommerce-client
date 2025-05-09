@@ -1,11 +1,9 @@
 'use client'
 
-import { Product } from '@/data/interface-test'
 import React, { useEffect, useState } from 'react'
 import FeedbackRating from './feedback/feedback-rating';
 import FeedbackContent from './feedback/feedback-content';
 import FeedbackFilter from './feedback/feedback-filter';
-import data from "@/data/data.json";
 import { useRouter } from 'next/navigation';
 
 interface FeedbackContainerProps {

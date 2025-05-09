@@ -2,7 +2,6 @@
 
 import React, { useEffect } from 'react'
 import { StarIcon } from '@heroicons/react/20/solid';
-import { Feedback } from '@/data/interface-test';
 import { usePathname } from 'next/navigation';
 import { Rating } from '@smastrom/react-rating';
 import ProgressBar from '@ramonak/react-progress-bar';
