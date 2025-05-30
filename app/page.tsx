@@ -48,7 +48,7 @@ export default function Home() {
             localStorage.setItem('refreshToken', response.tokens.refreshToken);
             localStorage.setItem('userId', userId);
             localStorage.setItem('tokenTimestamp', currentTime.toString());
-            localStorage.setItem('isLogin', 'true');
+            localStorage.setItem('isLogin', 'true');;
           }
 
           router.push('/');

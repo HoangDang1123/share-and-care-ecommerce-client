@@ -56,6 +56,9 @@ export default function Page() {
       localStorage.setItem('userId', response.user.id);
       localStorage.setItem('tokenTimestamp', currentTime.toString());
       localStorage.setItem('isLogin', 'true');
+      localStorage.setItem('avatarUrl', response.user.avatar);
+      localStorage.setItem('email', response.user.email);
+      localStorage.setItem('name', response.user.name);
 
       router.push('/');
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { CartResponse } from '@/interface/cart';
-import { OrderData } from '@/interface/order';
+import { CreateOrder } from '@/interface/order';
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 interface MenuContextType {
@@ -21,8 +21,8 @@ interface CartContextType {
 }
 
 interface OrderContextType {
-    order: OrderData | null,
-    setOrder: React.Dispatch<React.SetStateAction<OrderData | null>>,
+    order: CreateOrder | null,
+    setOrder: React.Dispatch<React.SetStateAction<CreateOrder | null>>,
     productPrice: number | null,
     setProductPrice: React.Dispatch<React.SetStateAction<number>>,
 }
@@ -36,7 +36,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const [isMenu, setIsMenu] = useState<boolean>(false);
     const [isLogin, setIsLogin] = useState<boolean>(false);
     const [cart, setCart] = useState<CartResponse | null>(null);
-    const [order, setOrder] = useState<OrderData | null>(null);
+    const [order, setOrder] = useState<CreateOrder | null>(null);
     const [productPrice, setProductPrice] = useState<number>(0);
 
     const checkAccessToken = () => {

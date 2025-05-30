@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
-import { OrderData, ShippingAddressData } from '@/interface/order';
+import { CreateOrder, ShippingAddress } from '@/interface/order';
 import { useOrder } from '@/app/context/AppContext';
 
 interface AddressListProps {
@@ -65,7 +65,7 @@ const AddressList: React.FC<AddressListProps> = ({ isRefresh, setIsRefresh, defa
   useEffect(() => {
     if (address) {
       setOrder(prevOrder => {
-        const newShippingAddress: ShippingAddressData = {
+        const newShippingAddress: ShippingAddress = {
           fullname: address.name,
           phone: address.phone,
           street: address.street,
@@ -77,7 +77,7 @@ const AddressList: React.FC<AddressListProps> = ({ isRefresh, setIsRefresh, defa
         return {
           ...prevOrder,
           shippingAddress: newShippingAddress,
-        } as OrderData;
+        } as CreateOrder;
       });
     }
   }, [address, setOrder]);
@@ -121,7 +121,7 @@ const AddressList: React.FC<AddressListProps> = ({ isRefresh, setIsRefresh, defa
 
   return (
     <div className="flex flex-col w-full space-y-4 mx-auto sm:p-4 md:p-10 md:rounded-xl md:shadow-lg">
-      <h1 className="md:mb-6 sm:text-2xl md:text-3xl">Address Information</h1>
+      <h1>Address Information</h1>
       {addressList.length === 0 ? (
         <div className='flex justify-center items-center w-full text-lg py-4'>There&apos;s no address.</div>
       ) : (
@@ -138,9 +138,9 @@ const AddressList: React.FC<AddressListProps> = ({ isRefresh, setIsRefresh, defa
                 </span>
 
                 <div className='grid grid-cols-3 w-full'>
-                  <h4 className='col-span-2 sm:text-base md:text-xl'>{address.name}</h4>
-                  <h4 className='col-span-1 sm:text-base md:text-xl'>{address.phone}</h4>
-                  <h4 className='font-normal col-span-3 sm:text-base md:text-xl'>{`${address.street}, ${address.ward}, ${address.district}, ${address.city}`}</h4>
+                  <h4 className='col-span-2 sm:text-sm md:text-base'>{address.name}</h4>
+                  <h4 className='col-span-1 sm:text-sm md:text-base'>{address.phone}</h4>
+                  <h4 className='font-normal col-span-3 sm:text-sm md:text-base'>{`${address.street}, ${address.ward}, ${address.district}, ${address.city}`}</h4>
                 </div>
 
                 <button

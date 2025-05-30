@@ -6,13 +6,13 @@ import { useEffect, useState } from 'react';
 import SelectedColor from './option/selected-color';
 import SelectedSize from './option/selected-size';
 import SelectedQuantity from './option/selected-quantity';
-import { ProductDetailResponse } from '@/interface/product';
+import { ProductDetailResponse, SkuList } from '@/interface/product';
 import { useAuth, useCart, useOrder } from '@/app/context/AppContext';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { addProductToCart, getCart } from '@/app/api/cart';
 import ClipLoader from 'react-spinners/ClipLoader';
-import { OrderData } from '@/interface/order';
+import { CreateOrder } from '@/interface/order';
 import { Rate } from 'antd';
 import Image from 'next/image';
 
@@ -26,6 +26,7 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
   const [selectedSizeIndex, setSelectedSizeIndex] = useState<number | null>(-1);
   const [quantity, setQuantity] = useState(1);
   const [quantityInStock, setQuantityInStock] = useState(0);
+  const [skuItem, setSkuItem] = useState<SkuList | null>(null);
   const [loadingAddToCart, setLoadingAddToCart] = useState(false);
   const [loadingBuyNow, setLoadingBuyNow] = useState(false);
   const [disabled, setDisabled] = useState(true);
@@ -67,17 +68,24 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
     }
 
     if (tierIndex) {
-      const skuItem = product.skuList.skuList.find(
+      const foundSkuItem = product.skuList.skuList.find(
         (item) => JSON.stringify(item.tierIndex) === JSON.stringify(tierIndex)
       );
-
-      if (skuItem) {
-        setQuantityInStock(skuItem.quantity);
-      } else {
-        setQuantityInStock(0); // fallback nếu không tìm thấy
-      }
+      setSkuItem(foundSkuItem || null);
     }
   }, [selectedColorIndex, selectedSizeIndex, product.skuList.skuList]);
+
+  useEffect(() => {
+    if (skuItem) {
+      setQuantityInStock(skuItem.quantity);
+    } else if (product.skuList.skuList.length === 0 
+      && ((selectedColorIndex !== null && selectedColorIndex !== -1) || (selectedSizeIndex !== null && selectedSizeIndex !== -1))) {
+      setQuantityInStock(product.product.quantity);
+    } else {
+      setQuantityInStock(0);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedColorIndex, selectedSizeIndex, skuItem]);
 
   const handleAddToCart = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -86,14 +94,11 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
       router.push("/auth/login");
       toast.warn("Please login to continue !");
     } else {
-      const tierIndex = [selectedColorIndex, selectedSizeIndex];
-      const skuItem = product.skuList.skuList.find(item => JSON.stringify(item.tierIndex) === JSON.stringify(tierIndex));
-
       if (userId !== "" && accessToken !== "") {
         const itemData = {
           productId: product.product.id,
           quantity: quantity,
-          variantId: skuItem ? skuItem.id : null
+          variantId: skuItem ? skuItem.id : undefined
         };
 
         try {
@@ -119,18 +124,15 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
       router.push("/auth/login");
       toast.warn("Please login to continue !");
     } else {
-      const tierIndex = [selectedColorIndex, selectedSizeIndex];
-      const skuItem = product.skuList.skuList.find(item => JSON.stringify(item.tierIndex) === JSON.stringify(tierIndex));
-
       if (userId !== "" && accessToken !== "") {
         const itemData = [{
           productId: product.product.id,
           quantity: quantity,
-          variantId: skuItem ? skuItem.id : null
+          variantId: skuItem ? skuItem.id : undefined,
         }];
 
         setOrder(prevOrder => {
-          const currentOrder: OrderData = prevOrder || {
+          const currentOrder: CreateOrder = prevOrder || {
             shippingAddress: {
               fullname: '',
               phone: '',
@@ -152,7 +154,6 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
         });
 
         setProductPrice(skuItem ? skuItem.price : 0);
-
         router.push("/order");
       }
     }

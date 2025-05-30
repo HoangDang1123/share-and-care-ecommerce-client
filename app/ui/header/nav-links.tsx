@@ -29,7 +29,9 @@ export default function NavLinks() {
   }, []);
 
   const handleOnMouseEnter = async (index: number, categoryId: string) => {
-    setIsMenu(true);
+    if (childCategories[categoryId]?.length > 0) {
+      setIsMenu(true);
+    }
 
     setIsOpenArray((prev) => {
       const newArray = [...prev];

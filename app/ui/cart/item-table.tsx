@@ -130,7 +130,7 @@ const ItemTable: React.FC<ItemTableProps> = ({ selectedAll, selectedItem, setSel
   }
 
   return (
-    <div>
+    <div className='w-full'>
       <table className='sm:hidden md:block w-full'>
         <thead className='w-full'>
           <tr>
@@ -168,7 +168,7 @@ const ItemTable: React.FC<ItemTableProps> = ({ selectedAll, selectedItem, setSel
                   className='w-auto h-auto'
                 />
                 <div className='flex flex-col justify-between w-[200px]'>
-                  <h6 className='font-bold text-left'>{item.productName}</h6>
+                  <h6 className='font-semibold text-left'>{item.productName}</h6>
                   <div className='flex flex-col text-left'>
                     <h6>Color: {item.variantSlug && splitVariantSlug(item.variantSlug)[0]}</h6>
                     <h6>Size: {item.variantSlug && splitVariantSlug(item.variantSlug)[1]}</h6>
@@ -231,90 +231,6 @@ const ItemTable: React.FC<ItemTableProps> = ({ selectedAll, selectedItem, setSel
           }
         </tbody>
       </table>
-
-      <div>
-        {cart && cart.items.map((item, index) => (
-          <div 
-            key={index} 
-            className='sm:grid md:hidden grid-cols-[1fr_8fr_1fr] w-full px-4 py-2 justify-center items-center border-t-4 border-b-4 border-gray-100'
-          >
-            <Checkbox
-              checked={selectedItem[index] !== undefined ? selectedItem[index] : false}
-              onChange={() => handleSetSelectedItem(index)}
-              className="group block sm:size-4 md:size-5 rounded border border-gray-700 bg-white data-[checked]:bg-gray-200 hover:cursor-pointer"
-            >
-              <CheckIcon className='opacity-0 group-data-[checked]:opacity-100' />
-            </Checkbox>
-
-            <div
-              className='grid grid-cols-[1fr_3fr] justify-center items-center'
-              onClick={() => handleClickItem(item.productId)}
-            >
-              <Image
-                src={item.productImage}
-                alt={item.productName}
-                width={120}
-                height={40}
-                className='w-auto h-auto row-span-3'
-              />
-
-              <div className='ml-4 space-y-4'>
-                <div className='flex flex-col justify-between w-full'>
-                  <h6 className='font-bold text-left'>{item.productName}</h6>
-                  <div className='flex flex-col text-left'>
-                    <h6>Color: {item.variantSlug && splitVariantSlug(item.variantSlug)[0]}</h6>
-                    <h6>Size: {item.variantSlug && splitVariantSlug(item.variantSlug)[1]}</h6>
-                  </div>
-                </div>
-
-                <div className='flex items-center space-x-2 rounded-md'>
-                  <button
-                    onClick={() => updateQuantity(item.productId, item.variantId, quantities[index] - 1, index)}
-                    className='flex justify-center items-center px-1 py-1 h-full rounded-md border-solid border border-gray-900'
-                  >
-                    <MinusIcon className='size-3' />
-                  </button>
-
-                  <input
-                    type="number"
-                    className="w-16 text-center border-solid border border-gray-900 rounded-md text-sm"
-                    value={quantities[index] || item.quantity}
-                    onChange={(e) => handleInputQuantity(Number(e.target.value), item.productId, item.variantId, index)}
-                    min="1"
-                  />
-
-                  <button
-                    onClick={() => updateQuantity(item.productId, item.variantId, quantities[index] + 1, index)}
-                    className='flex justify-center items-center px-1 py-1 h-full rounded-md border-solid border border-gray-900'
-                  >
-                    <PlusIcon className='size-3' />
-                  </button>
-                </div>
-
-                <div className='w-fit'>
-                  {formatPrice(item.itemTotalPrice)}
-                </div>
-              </div>
-            </div>
-
-            <button
-              onClick={() => handleDeleteItem(item.productId, item.variantId, index)}
-              className='mb-2'
-            >
-              {loadingItems[index] ? (
-                <ClipLoader
-                  size={20}
-                  color='#000000'
-                  aria-label="Loading Spinner"
-                />
-              ) : (
-                <TrashIcon className='size-5 text-red-500' />
-              )}
-            </button>
-          </div>
-        ))
-        }
-      </div>
     </div>
   );
 };

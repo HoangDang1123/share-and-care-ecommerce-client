@@ -2,9 +2,7 @@
 
 import { deleteCartItem, getCart } from '@/app/api/cart';
 import { createOrder } from '@/app/api/order';
-import { VNPAYPayment } from '@/app/api/payment';
 import { useCart, useOrder } from '@/app/context/AppContext';
-import { PaymentData } from '@/interface/payment';
 import { formatPrice } from '@/utils/helpers';
 import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
@@ -14,7 +12,6 @@ import ClipLoader from 'react-spinners/ClipLoader';
 import { toast } from 'react-toastify';
 
 export default function OrderSummary() {
-  // const [isFixed, setIsFixed] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { setCart } = useCart();
@@ -26,25 +23,6 @@ export default function OrderSummary() {
   const productPrice = Number(typeof window !== "undefined" ? localStorage.getItem("productPrice") || "" : "");
   const deliveryFee = Number(typeof window !== "undefined" ? localStorage.getItem("deliveryFee") || "" : "");
 
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     const scrollTop = window.scrollY;
-  //     const triggerPoint = 60;
-
-  //     if (scrollTop > triggerPoint) {
-  //       setIsFixed(true);
-  //     } else {
-  //       setIsFixed(false);
-  //     }
-  //   };
-
-  //   window.addEventListener('scroll', handleScroll);
-
-  //   return () => {
-  //     window.removeEventListener('scroll', handleScroll);
-  //   };
-  // }, []);
-
   const handleCreateOrder = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     setLoading(true);
@@ -54,17 +32,10 @@ export default function OrderSummary() {
         const response = await createOrder(order, userId, accessToken);
         toast.success("Create order successful.");
 
-        if (response.paymentMethod === "COD") {
-          router.push(`/order/${response.id}`);
-        }
-        else {
-          const paymentData: PaymentData = {
-            orderId: response.id,
-            language: "",
-            bankCode: "",
-          }
-          const paymentUrl = await VNPAYPayment(paymentData);
-          router.replace(paymentUrl);
+        if (response.paymentUrl !== null) {
+          router.replace(response.paymentUrl);
+        } else {
+          router.push(`/order/${response.orderId}`);
         }
 
         const cartResponse = await getCart(userId, accessToken);
@@ -111,7 +82,7 @@ export default function OrderSummary() {
       // className={`flex flex-col w-[390px] h-fit shadow-lg px-4 py-10 space-y-10 rounded-lg transition-all duration-300 ease-in-out ${isFixed ? 'fixed top-48 right-[182px]' : ''}`}
       className="flex flex-col w-full h-fit md:shadow-lg px-4 py-10 space-y-10 md:rounded-lg transition-all duration-300 ease-in-out"
     >
-      <h1 className='sm:text-2xl md:text-3xl'>Order Summary</h1>
+      <h1>Order Summary</h1>
       <div className='space-y-4'>
         <div className='flex justify-between'>
           <h4 className='font-semibold sm:text-lg md:text-xl'>Product Cost:</h4>

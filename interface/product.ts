@@ -51,6 +51,7 @@ export interface ProductDetailResponse {
         qrCode: string,
         description: string,
         video: string,
+        quantity: number,
         returnDays: number,
         category: Category[],
         variants: ProductVariant[],

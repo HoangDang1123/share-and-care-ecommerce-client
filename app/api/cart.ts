@@ -44,7 +44,7 @@ export const getCart = async (clientId: string, accessToken: string): Promise<Ca
     }
 }
 
-export const deleteCartItem = async (data: Cart.CartItemDeleted, clientId: string, accessToken: string) => {
+export const deleteCartItem = async (data: Cart.DeleteCartItem, clientId: string, accessToken: string) => {
     try {
         const response = await api.delete(`${CART_URL}/`, {
             data,

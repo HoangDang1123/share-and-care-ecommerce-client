@@ -18,15 +18,7 @@ export interface City {
     Districts: District[],
 }
 
-export interface OrderData {
-    shippingAddress: ShippingAddressData,
-    items: Cart[],
-    couponCode: string | null,
-    paymentMethod: string,
-    deliveryId: string,
-}
-
-export interface ShippingAddressData {
+export interface ShippingAddress {
     fullname: string,
     phone: string,
     street: string,
@@ -35,81 +27,109 @@ export interface ShippingAddressData {
     city: string,
 }
 
-export interface Item {
-    productId: string,
-    variantId: string | null,
-    productName: string,
-    variantSlug: string,
-    price: number,
-    image: string,
-    quantity: number,
-    discount: number,
-}
-
 export interface DeliveryMethod {
     id: string,
     name: string,
+    price: number,
+}
+
+export interface CreateOrder {
+    shippingAddress: ShippingAddress,
+    items: Cart[],
+    couponCode: string | null,
+    paymentMethod: string,
+    deliveryId: string,
+}
+
+export interface CreateOrderResponse {
+    orderId: string,
+    paymentUrl: string,
+}
+
+export interface OrderDetailResponse {
+    order: OrderResponse,
+    paymentUrl: string | null,
 }
 
 export interface OrderResponse {
     id: string,
     userId: string,
-    couponId: string | null,
-    items: Item[],
-    shippingAddress: ShippingAddressData,
-    paymentMethod: string,
-    deliveryMethod: string,
+    user: {
+        name: string,
+        email: string,
+    },
+    couponCode: string | null,
+    items: OrderItem[],
+    shippingAddress: ShippingAddress,
+    paymentMethod: PaymentMethod,
+    deliveryMethod: DeliveryMethod,
     itemsPrice: number,
-    itemsDiscount: number,
+    productDiscount: number,
+    couponDiscount: number,
     shippingPrice: number,
     shippingDiscount: number,
-    discountPrice: number,
+    totalSavings: number,
     totalPrice: number,
     isPaid: boolean,
     isDelivered: boolean,
     paidAt: string | null,
     deliveredAt: string | null,
-    status: string,
+    transactionId: string | null,
+    status: OrderStatus,
     createdAt: string,
     updatedAt: string,
 }
 
-export interface OrderDetailResponse {
-    orders: {
-        id: string,
-        userId: string,
-        couponId: string | null,
-        items: Item[],
-        shippingAddress: ShippingAddressData,
-        paymentMethod: string,
-        deliveryMethod: DeliveryMethod,
-        itemsPrice: number,
-        itemsDiscount: number,
-        shippingPrice: number,
-        shippingDiscount: number,
-        discountPrice: number,
-        totalPrice: number,
-        status: string,
-    }
-}
-
-export interface ShippingAddress {
-    fullname: string,
-    phone: string,
-}
-
-export interface Order {
-    id: string,
-    shippingAddress: ShippingAddress,
-    paymentMethod: string,
-    deliveryMethod: DeliveryMethod,
-    totalPrice: number,
-    status: string,
-}
-
-export interface OrderResponse {
+export interface AllOrderResponse {
+    total: number,
     totalPages: number,
-    totalOrders: number,
-    currentPage: number,
-    orders: Array<Order>,
+    page: number,
+    size: number,
+    hasMore: boolean,
+    items: AllOrderItem[],
+}
+
+export interface AllOrderItem {
+  id: string;
+  totalPrice: number;
+  status: OrderStatus;
+  paymentMethod: PaymentMethod;
+  paymentStatus: PaymentStatus;
+  deliveryMethod: string;
+  items: OrderItem[];
+  createdAt: string;
+}
+
+export interface OrderItem {
+  productName: string;
+  image: string;
+  quantity: number;
+}
+
+export enum OrderStatus {
+  PENDING = 'PENDING', // Đơn hàng mới tạo (COD hoặc chưa thanh toán)
+  AWAITING_PAYMENT = 'AWAITING_PAYMENT', // Chờ thanh toán (VNPay/MoMo)
+  PROCESSING = 'PROCESSING', // Đang xử lý
+  AWAITING_SHIPMENT = 'AWAITING_SHIPMENT', // Chờ vận chuyển
+  SHIPPED = 'SHIPPED', // Đã vận chuyển
+  DELIVERED = 'DELIVERED', // Đã giao
+  CANCELLED = 'CANCELLED', // Đã hủy
+  RETURN_REQUESTED = 'RETURN_REQUESTED', // Yêu cầu trả hàng
+  RETURNED = 'RETURNED', // Đã trả hàng
+  PENDING_REFUND = 'PENDING_REFUND', // Chờ hoàn tiền
+  REFUNDED = 'REFUNDED', // Đã hoàn tiền
+}
+
+export enum PaymentMethod {
+    COD = 'COD',
+    VNPAY = 'VNPAY',
+    MOMO = 'MOMO',
+}
+
+export enum PaymentStatus {
+  PENDING = 'PENDING',
+  COMPLETED = 'COMPLETED',
+  FAILED = 'FAILED',
+  PENDING_REFUND = 'PENDING_REFUND',
+  REFUNDED = 'REFUNDED',
 }

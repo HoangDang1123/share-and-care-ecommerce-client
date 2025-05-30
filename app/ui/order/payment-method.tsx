@@ -1,14 +1,15 @@
 'use client'
 
 import { useOrder } from "@/app/context/AppContext";
-import { OrderData } from "@/interface/order";
+import { CreateOrder } from "@/interface/order";
 import { Radio, RadioGroup } from "@headlessui/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const methods = [
   { name: 'COD', value: 'COD', image: '/assets/cash-payment.png', alt: 'Cash Payment Img' },
-  { name: 'VNPAY', value: 'VN_PAY', image: '/assets/vnpay.png', alt: 'VNPAY Img' },
+  { name: 'VNPAY', value: 'VNPAY', image: '/assets/vnpay.png', alt: 'VNPAY Img' },
+  { name: 'Momo', value: 'MOMO', image: '/assets/momo.png', alt: 'Momo Img' },
 ]
 
 export default function PaymentMethod() {
@@ -20,13 +21,13 @@ export default function PaymentMethod() {
       return {
         ...prevOrder,
         paymentMethod: selected.value,
-      } as OrderData;
+      } as CreateOrder;
     });
   }, [selected, setOrder]);
 
   return (
     <div className="flex flex-col w-full space-y-4 mx-auto sm:p-4 md:p-10 md:rounded-xl md:shadow-lg">
-      <h1 className="md:mb-6 sm:text-2xl md:text-3xl">Payment Method</h1>
+      <h1>Payment Method</h1>
       <RadioGroup value={selected} onChange={setSelected} aria-label="Payment Method" className="space-y-6">
         {methods.map((method) => (
           <Radio

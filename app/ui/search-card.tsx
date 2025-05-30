@@ -24,7 +24,7 @@ const SearchCard: React.FC<SearchCardProps> = ({ product }) => {
       />
       <span className="text-xl font-semibold text-start col-span-2">{product.name}</span>
       <span className="text-xl self-end text-start row-span-2 col-span-2">
-        {formatPrice(product.price)}
+        {formatPrice(typeof product.price === 'number' ? product.price : product.price.min)}
         <span className='flex items-center'>
           {product.rating}
           <StarIcon className='size-5 mb-1' />

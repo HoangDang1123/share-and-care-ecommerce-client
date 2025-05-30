@@ -6,7 +6,7 @@ import get from 'lodash/get';
 
 const ORDER_URL = '/order';
 
-export const createOrder = async (data: Order.OrderData, clientId: string, accessToken: string): Promise<Order.OrderResponse> => {
+export const createOrder = async (data: Order.CreateOrder, clientId: string, accessToken: string): Promise<Order.CreateOrderResponse> => {
     try {
         const response = await api.post(`${ORDER_URL}/`, data, {
             headers: {
@@ -25,9 +25,9 @@ export const createOrder = async (data: Order.OrderData, clientId: string, acces
     }
 }
 
-export const getAllOrder = async (clientId: string, accessToken: string): Promise<Order.OrderResponse> => {
+export const getAllOrder = async (clientId: string, accessToken: string): Promise<Order.AllOrderResponse> => {
     try {
-        const response = await api.get(`${ORDER_URL}`, {
+        const response = await api.get(`${ORDER_URL}/user`, {
             headers: {
                 'x-client-id': clientId,
                 'Authorization': accessToken
@@ -46,7 +46,7 @@ export const getAllOrder = async (clientId: string, accessToken: string): Promis
 
 export const getOrderDetail = async (id: string, clientId: string, accessToken: string): Promise<Order.OrderDetailResponse> => {
     try {
-        const response = await api.get(`${ORDER_URL}/${id}`, {
+        const response = await api.get(`${ORDER_URL}/user/${id}`, {
             headers: {
                 'x-client-id': clientId,
                 'Authorization': accessToken

@@ -122,11 +122,11 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
   }
 
   return (
-    <Disclosure as="div" defaultOpen={existAddress} className="bg-gray-100 rounded-lg sm:p-4 md:p-6">
+    <Disclosure as="div" defaultOpen={existAddress} className="bg-gray-100 rounded-lg sm:p-2 md:p-4">
       {({ open }) => (
         <>
           <DisclosureButton className='flex group justify-between items-center w-full text-lg font-semibold md:px-4'>
-            <span className='sm:text-2xl md:text-3xl'>Create Address</span>
+            <h1 className='sm:text-lg md:text-xl'>Create Address</h1>
             <ChevronDownIcon className='size-5 group-data-[open]:rotate-180' />
           </DisclosureButton>
 
@@ -141,10 +141,10 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
                     transition={{ duration: 0.2, ease: easeOut }}
                     className="mt-4 w-full"
                   >
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} className='mt-4'>
                       <div className="grid sm:gap-4 md:gap-6 sm:grid-cols-6">
                         <div className="sm:col-span-4">
-                          <label htmlFor="full-name" className="block sm:text-base md:text-lg font-semibold text-gray-700 mb-1">
+                          <label htmlFor="full-name" className="block sm:text-sm md:text-base font-semibold text-gray-700 mb-1">
                             Full Name
                           </label>
                           <input
@@ -159,7 +159,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
                         </div>
 
                         <div className="sm:col-span-2">
-                          <label htmlFor="phone" className="block sm:text-base md:text-lg font-semibold text-gray-700 mb-1">
+                          <label htmlFor="phone" className="block sm:text-sm md:text-base font-semibold text-gray-700 mb-1">
                             Phone Number
                           </label>
                           <input
@@ -174,7 +174,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
                         </div>
 
                         <div className="sm:col-span-2">
-                          <label htmlFor="region" className="block sm:text-base md:text-lg font-semibold text-gray-700 mb-1">
+                          <label htmlFor="region" className="block sm:text-sm md:text-base font-semibold text-gray-700 mb-1">
                             Province / City
                           </label>
                           <select
@@ -194,7 +194,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
                         </div>
 
                         <div className="sm:col-span-2">
-                          <label htmlFor="city" className="block sm:text-base md:text-lg font-semibold text-gray-700 mb-1">
+                          <label htmlFor="city" className="block sm:text-sm md:text-base font-semibold text-gray-700 mb-1">
                             City / District
                           </label>
                           <select
@@ -214,7 +214,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
                         </div>
 
                         <div className="sm:col-span-2">
-                          <label htmlFor="ward" className="block sm:text-base md:text-lg font-semibold text-gray-700 mb-1">
+                          <label htmlFor="ward" className="block sm:text-sm md:text-base font-semibold text-gray-700 mb-1">
                             Ward
                           </label>
                           <select
@@ -234,7 +234,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
                         </div>
 
                         <div className="col-span-full">
-                          <label htmlFor="street-address" className="block sm:text-base md:text-lg font-semibold text-gray-700 mb-1">
+                          <label htmlFor="street-address" className="block sm:text-sm md:text-base font-semibold text-gray-700 mb-1">
                             Street Address
                           </label>
                           <input

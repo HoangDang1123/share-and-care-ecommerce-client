@@ -22,3 +22,12 @@ export const capitalizeFirstLetter = (str: string) => {
 export const splitVariantSlug = (str: string) => {
     return str.split("/");
 }
+
+export const convertDateTime = (time: string) => {
+    const isoTime = time;
+    const localTime = new Date(isoTime).toLocaleString("vi-VN", {
+        timeZone: "Asia/Ho_Chi_Minh",
+        hour12: false,
+    });
+    return localTime;
+}

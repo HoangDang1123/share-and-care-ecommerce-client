@@ -11,16 +11,21 @@ import { AddressResponse } from "@/interface/address";
 import { getDefaultAddress } from "../api/address";
 import DeliveryList from "../ui/order/delivery-list";
 import { useOrder } from "../context/AppContext";
-import { OrderData, ShippingAddressData } from "@/interface/order";
+import { CreateOrder, ShippingAddress } from "@/interface/order";
+import { Col, Row } from "antd";
 
 export default function Page() {
   const [isRefresh, setIsRefresh] = useState<boolean>(false);
   const [defaultAddress, setDefaultAddress] = useState<AddressResponse>();
   const [existAddress, setExistAddress] = useState(false);
   const { setOrder } = useOrder();
+  const [userId, setUserId] = useState('');
+  const [accessToken, setAccessToken] = useState('');
 
-  const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : "";
-  const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";
+  useEffect(() => {
+    setUserId(localStorage.getItem('userId') || '');
+    setAccessToken(localStorage.getItem('accessToken') || '');
+  }, []);
 
   useEffect(() => {
     const fetchAddress = async () => {
@@ -29,7 +34,7 @@ export default function Page() {
           const response = await getDefaultAddress(userId, accessToken);
           setDefaultAddress(response);
           setOrder(prevOrder => {
-            const newShippingAddress: ShippingAddressData = {
+            const newShippingAddress: ShippingAddress = {
               fullname: response.name,
               phone: response.phone,
               street: response.street,
@@ -41,7 +46,7 @@ export default function Page() {
             return {
               ...prevOrder,
               shippingAddress: newShippingAddress,
-            } as OrderData;
+            } as CreateOrder;
           });
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) { }
@@ -80,16 +85,20 @@ export default function Page() {
         </ul>
       </div>
 
-      <div className='grid sm:grid-cols-1 md:grid-cols-3 w-full md:px-20 sm:gap-y-10 md:gap-x-20 sm:mt-4 md:mt-10'>
-        <div className="flex flex-col md:col-span-2 w-full sm:space-y-4 md:space-y-10">
+      <Row className='flex sm:mt-4 md:mt-10 md:px-20'>
+        <Col span={17} className="flex flex-col md:col-span-2 w-full sm:space-y-4 md:space-y-10">
           <AddressList isRefresh={isRefresh} setIsRefresh={setIsRefresh} defaultAddress={defaultAddress} setExistAddress={setExistAddress} />
           <AddressForm setIsRefresh={setIsRefresh} existAddress={existAddress} />
           <DeliveryList defaultAddress={defaultAddress} />
           <PaymentMethod />
-        </div>
+        </Col>
 
-        <OrderSummary />
-      </div>
+        <Col span={1} />
+
+        <Col span={6}>
+          <OrderSummary />
+        </Col>
+      </Row>
     </div>
   );
 }

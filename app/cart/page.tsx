@@ -12,20 +12,24 @@ import { clearCartItem, getCart } from '../api/cart';
 import { toast } from 'react-toastify';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { useCart, useOrder } from '../context/AppContext';
-import { OrderData } from '@/interface/order';
+import { CreateOrder } from '@/interface/order';
+import { Col, Row } from 'antd';
 
 export default function Page() {
   const [selectedAll, setSelectedAll] = useState(false);
   const [selectedItem, setSelectedItem] = useState<boolean[]>([]);
-  const [isFixed, setIsFixed] = useState(false);
   const [orderMessage, setOrderMessage] = useState('');
   const [loading, setLoading] = useState(true);
+  const { setOrder, setProductPrice } = useOrder();
+  const [userId, setUserId] = useState('');
+  const [accessToken, setAccessToken] = useState('');
   const router = useRouter();
   const { cart, setCart } = useCart();
-  const { setOrder, setProductPrice } = useOrder();
 
-  const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : "";
-  const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";
+  useEffect(() => {
+    setUserId(localStorage.getItem('userId') || '');
+    setAccessToken(localStorage.getItem('accessToken') || '');
+  }, []);
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -45,25 +49,6 @@ export default function Page() {
 
     fetchCart();
   }, [accessToken, setCart, userId]);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      const triggerPoint = 120;
-
-      if (scrollTop > triggerPoint) {
-        setIsFixed(true);
-      } else {
-        setIsFixed(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
 
   const totalCost = selectedItem.reduce((total, isSelected, index) => {
     return isSelected ? total + (cart?.items[index]?.itemTotalPrice || 0) : total;
@@ -102,14 +87,14 @@ export default function Page() {
 
     const selectedProducts = cart?.items.filter((_, index) => selectedItem[index]) || [];
 
-    const productDetails = selectedProducts.map(item => ({
+    const itemData = selectedProducts.map(item => ({
       productId: item.productId,
-      variantId: item.variantId !== undefined ? item.variantId : null,
+      variantId: item.variantId !== undefined ? item.variantId : undefined,
       quantity: item.quantity
     }));
 
     setOrder(prevOrder => {
-      const currentOrder: OrderData = prevOrder || {
+      const currentOrder: CreateOrder = prevOrder || {
         shippingAddress: {
           fullname: '',
           phone: '',
@@ -126,7 +111,7 @@ export default function Page() {
 
       return {
         ...currentOrder,
-        items: productDetails,
+        items: itemData,
       };
     });
 
@@ -150,7 +135,7 @@ export default function Page() {
   }
 
   return (
-    <div className='md:px-12 lg:px-24 my-10'>
+    <div className='md:px-12 lg:px-24 sm:my-5 md:my-20'>
       <div className='flex items-center sm:px-6 md:px-0 sm:space-x-8 md:space-x-24'>
         <BackButton />
 
@@ -164,11 +149,14 @@ export default function Page() {
         </ul>
       </div>
 
-      <div className='flex sm:mt-4 md:mt-10 md:px-20 space-x-20'>
-        <div className='flex flex-col items-start space-y-4'>
+      <Row className='flex sm:mt-4 md:mt-10 md:px-20'>
+        <Col
+          span={17}
+          className='flex flex-col items-start space-y-4'
+        >
           <div className='flex justify-between items-center w-full px-4'>
             <SelectedAllCombobox selectedAll={selectedAll} setSelectedAll={setSelectedAll} />
-            <div className='flex items-center sm:space-x-2 md:space-x-6'>
+            <div className='flex justify-center items-center sm:space-x-2 md:space-x-6'>
               <div className='flex mt-1 space-x-2'>
                 <h4 className='font-semibold sm:text-base md:text-xl'>Total:</h4>
                 <h4 className='sm:text-base md:text-xl'>{`${cart?.items?.length || 0} ${cart?.items?.length === 1 ? 'item' : 'items'}`}</h4>
@@ -193,7 +181,7 @@ export default function Page() {
           </div>
           <ItemTable selectedAll={selectedAll} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
           {cart?.items?.length === 0 && (
-            <div className='flex justify-center items-center w-[1085px] text-lg py-4'>There&apos;s no item</div>
+            <div className='flex justify-center items-center text-lg py-4'>There&apos;s no item</div>
           )}
 
           <div className='sm:flex md:hidden flex-col mt-4'>
@@ -218,10 +206,13 @@ export default function Page() {
               </button>
             </div>
           </div>
-        </div>
+        </Col>
 
-        <div
-          className={`sm:hidden md:flex flex-col w-[390px] h-fit mt-12 shadow-lg px-4 py-10 space-y-10 rounded-lg transition-all duration-300 ease-in-out ${isFixed ? 'md:fixed md:top-32 md:right-[180px]' : ''}`}
+        <Col span={1} />
+
+        <Col
+          span={6}
+          className="sm:hidden md:flex flex-col h-fit mt-12 shadow-lg px-4 py-10 space-y-10 rounded-lg transition-all duration-300 ease-in-out"
         >
           <h1>Order Summary</h1>
 
@@ -245,8 +236,8 @@ export default function Page() {
               Order
             </button>
           </div>
-        </div>
-      </div>
+        </Col>
+      </Row>
     </div>
   )
 }
