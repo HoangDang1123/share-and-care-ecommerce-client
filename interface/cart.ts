@@ -2,7 +2,7 @@ import { CartVariant } from "./variant";
 
 export interface Cart {
     productId: string,
-    variantId: string | undefined,
+    variantId?: string,
     quantity: number,
 }
 
@@ -36,5 +36,5 @@ export interface CartItem {
 
 export interface DeleteCartItem {
     productId: string,
-    variantId: string | undefined,
+    variantId?: string,
 }

@@ -53,31 +53,29 @@ export interface OrderDetailResponse {
 
 export interface OrderResponse {
     id: string,
-    userId: string,
-    user: {
-        name: string,
-        email: string,
-    },
-    couponCode: string | null,
-    items: OrderItem[],
-    shippingAddress: ShippingAddress,
-    paymentMethod: PaymentMethod,
-    deliveryMethod: DeliveryMethod,
-    itemsPrice: number,
-    productDiscount: number,
-    couponDiscount: number,
-    shippingPrice: number,
-    shippingDiscount: number,
-    totalSavings: number,
     totalPrice: number,
-    isPaid: boolean,
-    isDelivered: boolean,
-    paidAt: string | null,
-    deliveredAt: string | null,
-    transactionId: string | null,
     status: OrderStatus,
+    paymentMethod: PaymentMethod,
+    paymentStatus: PaymentStatus,
+    deliveryMethod: DeliveryMethod,
+    shippingAddress: ShippingAddress,
+    items: OrderDetailItem[],
+    deliveredAt: string | null,
     createdAt: string,
-    updatedAt: string,
+}
+
+export interface OrderDetailItem {
+    productId: string;
+    variantId: string;
+    productName: string;
+    variantSlug: string;
+    image: string;
+    price: number;
+    quantity: number;
+    productDiscount: number;
+    couponDiscount: number;
+    returnDays: number;
+    canReturn: boolean;
 }
 
 export interface AllOrderResponse {
@@ -90,34 +88,34 @@ export interface AllOrderResponse {
 }
 
 export interface AllOrderItem {
-  id: string;
-  totalPrice: number;
-  status: OrderStatus;
-  paymentMethod: PaymentMethod;
-  paymentStatus: PaymentStatus;
-  deliveryMethod: string;
-  items: OrderItem[];
-  createdAt: string;
+    id: string;
+    totalPrice: number;
+    status: OrderStatus;
+    paymentMethod: PaymentMethod;
+    paymentStatus: PaymentStatus;
+    deliveryMethod: string;
+    items: OrderItem[];
+    createdAt: string;
 }
 
 export interface OrderItem {
-  productName: string;
-  image: string;
-  quantity: number;
+    productName: string;
+    image: string;
+    quantity: number;
 }
 
 export enum OrderStatus {
-  PENDING = 'PENDING', // Đơn hàng mới tạo (COD hoặc chưa thanh toán)
-  AWAITING_PAYMENT = 'AWAITING_PAYMENT', // Chờ thanh toán (VNPay/MoMo)
-  PROCESSING = 'PROCESSING', // Đang xử lý
-  AWAITING_SHIPMENT = 'AWAITING_SHIPMENT', // Chờ vận chuyển
-  SHIPPED = 'SHIPPED', // Đã vận chuyển
-  DELIVERED = 'DELIVERED', // Đã giao
-  CANCELLED = 'CANCELLED', // Đã hủy
-  RETURN_REQUESTED = 'RETURN_REQUESTED', // Yêu cầu trả hàng
-  RETURNED = 'RETURNED', // Đã trả hàng
-  PENDING_REFUND = 'PENDING_REFUND', // Chờ hoàn tiền
-  REFUNDED = 'REFUNDED', // Đã hoàn tiền
+    PENDING = 'PENDING', // Đơn hàng mới tạo (COD hoặc chưa thanh toán)
+    AWAITING_PAYMENT = 'AWAITING_PAYMENT', // Chờ thanh toán (VNPay/MoMo)
+    PROCESSING = 'PROCESSING', // Đang xử lý
+    AWAITING_SHIPMENT = 'AWAITING_SHIPMENT', // Chờ vận chuyển
+    SHIPPED = 'SHIPPED', // Đã vận chuyển
+    DELIVERED = 'DELIVERED', // Đã giao
+    CANCELLED = 'CANCELLED', // Đã hủy
+    RETURN_REQUESTED = 'RETURN_REQUESTED', // Yêu cầu trả hàng
+    RETURNED = 'RETURNED', // Đã trả hàng
+    PENDING_REFUND = 'PENDING_REFUND', // Chờ hoàn tiền
+    REFUNDED = 'REFUNDED', // Đã hoàn tiền
 }
 
 export enum PaymentMethod {
@@ -127,9 +125,9 @@ export enum PaymentMethod {
 }
 
 export enum PaymentStatus {
-  PENDING = 'PENDING',
-  COMPLETED = 'COMPLETED',
-  FAILED = 'FAILED',
-  PENDING_REFUND = 'PENDING_REFUND',
-  REFUNDED = 'REFUNDED',
+    PENDING = 'PENDING',
+    COMPLETED = 'COMPLETED',
+    FAILED = 'FAILED',
+    PENDING_REFUND = 'PENDING_REFUND',
+    REFUNDED = 'REFUNDED',
 }

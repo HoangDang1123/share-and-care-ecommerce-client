@@ -51,7 +51,14 @@ export default function Page() {
   }, [accessToken, setCart, userId]);
 
   const totalCost = selectedItem.reduce((total, isSelected, index) => {
-    return isSelected ? total + (cart?.items[index]?.itemTotalPrice || 0) : total;
+    if (!isSelected) return total;
+
+    const item = cart?.items[index];
+    if (!item) return total;
+    
+    const price = item?.variantSlug ? item?.itemTotalPrice : item?.itemTotalOriginalPrice;
+
+    return total + (price || 0);
   }, 0);
 
   const handleClearAll = async () => {

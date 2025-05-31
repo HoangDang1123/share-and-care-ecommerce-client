@@ -67,7 +67,7 @@ const Cart: React.FC<CartProps> = ({ isLogin }) => {
                     />
                     <h1 className='sm:text-lg md:text-xl'>{cart.productName}</h1>
                     <h1 className='sm:text-lg md:text-xl'>{cart.quantity}</h1>
-                    <h1 className='sm:text-lg md:text-xl'>{formatPrice(cart.price)}</h1>
+                    <h1 className='sm:text-lg md:text-xl'>{formatPrice(cart.price ? cart.price : cart.originalPrice)}</h1>
                   </Link>
                 </MenuItem>
               ))

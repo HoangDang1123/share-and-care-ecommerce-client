@@ -7,7 +7,7 @@ import { OrderDetailResponse, OrderStatus, PaymentMethod, PaymentStatus } from '
 import { PaymentData } from '@/interface/payment';
 import { convertDateTime, formatPrice } from '@/utils/helpers';
 import { CheckCircleIcon } from '@heroicons/react/20/solid';
-import { CreditCardIcon } from '@heroicons/react/24/outline';
+import { ArrowPathIcon, CreditCardIcon } from '@heroicons/react/24/outline';
 import { Col, Row } from 'antd';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -36,6 +36,14 @@ export default function Page() {
     [OrderStatus.RETURNED]: 'bg-orange-200 text-orange-900',
     [OrderStatus.PENDING_REFUND]: 'bg-purple-100 text-purple-800',
     [OrderStatus.REFUNDED]: 'bg-emerald-100 text-emerald-800',
+  };
+
+  const paymentStatusBadge: Record<PaymentStatus, string> = {
+    [PaymentStatus.PENDING]: 'bg-gray-200 text-gray-800',
+    [PaymentStatus.COMPLETED]: 'bg-green-100 text-green-800',
+    [PaymentStatus.FAILED]: 'bg-red-100 text-red-800',
+    [PaymentStatus.PENDING_REFUND]: 'bg-yellow-100 text-yellow-800',
+    [PaymentStatus.REFUNDED]: 'bg-blue-100 text-blue-800',
   };
 
   useEffect(() => {
@@ -129,30 +137,74 @@ export default function Page() {
         <Col span={17} className='flex flex-col border-2 p-6 gap-y-4 rounded-md hover:text-gray-900'>
           <div className='flex justify-between'>
             <div className='flex flex-col'>
-              <span className='font-semibold mb-2'>{`ID: ${order.order.id}`}</span>
-              <span>{`Order Date: ${convertDateTime(order.order.createdAt)}`}</span>
+              <span className='font-semibold mb-4'>{`ID: ${order.order.id}`}</span>
+              <span>{`Ordered Date: ${convertDateTime(order.order.createdAt)}`}</span>
               <span>{`Delivery Method: ${order.order.deliveryMethod}`}</span>
+              <div className='flex gap-x-1'>
+                <span>Shipping:</span>
+                <div className='flex flex-col'>
+                  <span>{`${order.order.shippingAddress.fullname}, ${order.order.shippingAddress.phone}`}</span>
+                  <span>
+                    {[
+                      order.order.shippingAddress.street,
+                      order.order.shippingAddress.ward,
+                      order.order.shippingAddress.district,
+                      order.order.shippingAddress.city
+                    ].filter(Boolean).join(', ')}
+                  </span>
+                </div>
+              </div>
             </div>
-            <span className={`font-semibold h-fit px-3 py-1 rounded-lg ${statusBadge[order.order.status]}`}>
-              {order.order.status.replace(/_/g, ' ')}
-            </span>
+            <div className='flex flex-col items-end gap-y-2'>
+              <span className={`font-semibold w-fit h-fit px-3 py-1 rounded-lg ${statusBadge[order.order.status]}`}>
+                {order.order.status.replace(/_/g, ' ')}
+              </span>
+              {order.order.deliveredAt !== null && (
+                <span>{`Delivered Date: ${convertDateTime(order.order.deliveredAt)}`}</span>
+              )}
+            </div>
           </div>
 
           {order.order.items.map((childItem, index) => (
             <div
               key={index}
-              className='flex gap-x-4 border-t-2 border-b-2 py-4'
+              className='flex justify-between border-t-2 border-b-2 py-4'
             >
-              <Image
-                src={childItem.image}
-                alt={childItem.productName}
-                width={500}
-                height={500}
-                className='object-cover w-24'
-              />
-              <div className='flex flex-col'>
-                <span>{childItem.productName}</span>
-                <span>{`Quantity: ${childItem.quantity}`}</span>
+              <div className='flex gap-x-4'>
+                <Image
+                  src={childItem.image}
+                  alt={childItem.productName}
+                  width={500}
+                  height={500}
+                  className='object-cover w-24'
+                />
+                <div className='flex flex-col justify-between'>
+                  <div className='flex flex-col'>
+                    <span>{childItem.productName}</span>
+                    <span>{`Quantity: ${childItem.quantity}`}</span>
+                  </div>
+                  <span>{`Slug: ${childItem.variantSlug}`}</span>
+                </div>
+              </div>
+              <div className="flex flex-col items-end justify-between">
+                <span className="font-semibold">{`Price: ${formatPrice(childItem.price)}`}</span>
+                <div className='flex justify-end items-center gap-x-2'>
+                  <span
+                    className={`inline-block text-sm font-medium px-3 py-1 rounded-lg w-fit ${childItem.canReturn
+                      ? 'bg-emerald-50 text-emerald-700'
+                      : 'bg-amber-50 text-amber-700'
+                      }`}
+                  >
+                    {childItem.canReturn ? '7-Day Return' : 'Not Returnable'}
+                  </span>
+                  {childItem.canReturn && (
+                    <button
+                      className="rounded-lg p-2 bg-red-400 text-white font-semibold hover:bg-red-500 transition-colors duration-200"
+                    >
+                      <ArrowPathIcon className='size-4' />
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           ))}
@@ -160,6 +212,9 @@ export default function Page() {
           <div className='flex justify-between'>
             <div className='flex flex-col gap-y-2'>
               <span>{`Payment Method: ${order.order.paymentMethod}`}</span>
+              <span className={`font-semibold w-fit h-fit px-3 py-1 rounded-lg ${paymentStatusBadge[order.order.paymentStatus]}`}>
+                {order.order.paymentStatus.replace(/_/g, ' ')}
+              </span>
             </div>
             <span className='font-semibold'>{`Total: ${formatPrice(order.order.totalPrice)}`}</span>
           </div>

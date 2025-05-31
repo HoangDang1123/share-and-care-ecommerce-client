@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { UserIcon } from "@heroicons/react/24/outline";
+import { ClipboardDocumentIcon, MapPinIcon, UserIcon } from "@heroicons/react/24/outline";
 import BackButton from "../ui/back-button";
 import { Col, Row } from "antd";
 import Image from "next/image";
@@ -25,13 +25,13 @@ export default function Page() {
     {
       key: 2,
       label: 'Shipping Address',
-      icon: <UserIcon className="size-6" />,
+      icon: <MapPinIcon className="size-6" />,
       children: <ShippingAddress userId={userId} accessToken={accessToken} />,
     },
     {
       key: 3,
       label: 'Order List',
-      icon: <UserIcon className="size-6" />,
+      icon: <ClipboardDocumentIcon className="size-6" />,
       children: <OrderList userId={userId} accessToken={accessToken} />,
     },
   ];

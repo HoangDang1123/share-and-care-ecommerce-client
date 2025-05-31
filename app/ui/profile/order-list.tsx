@@ -53,7 +53,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, filter }) => {
             <div className='flex justify-between'>
               <div className='flex flex-col'>
                 <span className='font-semibold mb-2'>{`ID: ${order.id}`}</span>
-                <span>{`Order Date: ${convertDateTime(order.createdAt)}`}</span>
+                <span>{`Ordered Date: ${convertDateTime(order.createdAt)}`}</span>
                 <span>{`Delivery Method: ${order.deliveryMethod}`}</span>
               </div>
               <span className={`font-semibold h-fit px-3 py-1 rounded-lg ${statusBadge[order.status]}`}>
@@ -106,7 +106,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, filter }) => {
           <div className='flex justify-between'>
             <div className='flex flex-col'>
               <span className='font-semibold mb-2'>{`ID: ${order.id}`}</span>
-              <span>{`Order Date: ${convertDateTime(order.createdAt)}`}</span>
+              <span>{`Ordered Date: ${convertDateTime(order.createdAt)}`}</span>
               <span>{`Delivery Method: ${order.deliveryMethod}`}</span>
             </div>
           </div>

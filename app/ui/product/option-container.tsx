@@ -78,13 +78,13 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
   useEffect(() => {
     if (skuItem) {
       setQuantityInStock(skuItem.quantity);
-    } else if (product.skuList.skuList.length === 0 
+    } else if (product.skuList.skuList.length === 0
       && ((selectedColorIndex !== null && selectedColorIndex !== -1) || (selectedSizeIndex !== null && selectedSizeIndex !== -1))) {
       setQuantityInStock(product.product.quantity);
     } else {
       setQuantityInStock(0);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedColorIndex, selectedSizeIndex, skuItem]);
 
   const handleAddToCart = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -153,7 +153,15 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
           };
         });
 
-        setProductPrice(skuItem ? skuItem.price : 0);
+        if (skuItem) {
+          setProductPrice(skuItem.price);
+        } else if (product.skuList.skuList.length === 0
+          && typeof (product.product.price) === 'number'
+          && ((selectedColorIndex !== null && selectedColorIndex !== -1) || (selectedSizeIndex !== null && selectedSizeIndex !== -1))) {
+          setProductPrice(product.product.price);
+        } else {
+          setProductPrice(0);
+        }
         router.push("/order");
       }
     }
