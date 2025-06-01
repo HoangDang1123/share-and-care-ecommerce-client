@@ -5,6 +5,7 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import ClipLoader from 'react-spinners/ClipLoader';
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
 export default function Page() {
   const [formData, setFormData] = useState({
@@ -15,7 +16,9 @@ export default function Page() {
   });
   const [errors, setErrors] = useState('');
   const [loading, setLoading] = useState(false);
-  const [isClient, setIsClient] = useState(false)
+  const [isClient, setIsClient] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   useEffect(() => {
     setIsClient(true)
@@ -124,16 +127,28 @@ export default function Page() {
                 <label htmlFor="password" className="block text-xl font-bold text-gray-900">
                   Password
                 </label>
-                <div className="mt-1">
+                <div className="mt-1 relative">
                   <input
                     id="password"
                     name="password"
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     required
                     value={formData.password}
                     onChange={handleChange}
-                    className="block w-full rounded-lg border-0 py-1.5 pl-2 text-gray-900 sm:text-sm sm:leading-6 md:text-lg shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-700"
+                    className="block w-full rounded-lg border-0 py-1.5 pl-2 pr-10 text-gray-900 sm:text-sm sm:leading-6 md:text-lg shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-700"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(prev => !prev)}
+                    className="absolute inset-y-0 right-2 flex items-center text-gray-500 hover:text-gray-700"
+                    tabIndex={-1}
+                  >
+                    {showPassword ? (
+                      <EyeSlashIcon className="h-5 w-5" />
+                    ) : (
+                      <EyeIcon className="h-5 w-5" />
+                    )}
+                  </button>
                 </div>
               </div>
 
@@ -141,23 +156,37 @@ export default function Page() {
                 <label htmlFor="confirm-password" className="block text-xl font-bold text-gray-900">
                   Confirm Password
                 </label>
-                <div className="mt-1">
+                <div className="mt-1 relative">
                   <input
                     id="confirm-password"
                     name="confirmPassword"
-                    type="password"
+                    type={showConfirmPassword ? 'text' : 'password'}
                     required
                     value={formData.confirmPassword}
                     onChange={handleChange}
-                    className="block w-full rounded-lg border-0 py-1.5 pl-2 text-gray-900 sm:text-sm sm:leading-6 md:text-lg shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-700"
+                    className="block w-full rounded-lg border-0 py-1.5 pl-2 pr-10 text-gray-900 sm:text-sm sm:leading-6 md:text-lg shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-700"
                   />
-                  {errors && <p className="text-red-500 text-sm">{errors}</p>}
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(prev => !prev)}
+                    className="absolute inset-y-0 right-2 flex items-center text-gray-500 hover:text-gray-700"
+                    tabIndex={-1}
+                  >
+                    {showConfirmPassword ? (
+                      <EyeSlashIcon className="h-5 w-5" />
+                    ) : (
+                      <EyeIcon className="h-5 w-5" />
+                    )}
+                  </button>
+
+                  {errors && <p className="text-red-500 text-sm mt-1">{errors}</p>}
                 </div>
 
-                <div className='flex w-full justify-end'>
+                <div className="flex w-full justify-end mt-2">
                   <button
                     onClick={handleResendVerification}
-                    className="font-bold underline text-gray-900 hover:text-gray-700">
+                    className="font-bold underline text-gray-900 hover:text-gray-700"
+                  >
                     Resend email verification
                   </button>
                 </div>

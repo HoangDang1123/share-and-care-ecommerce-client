@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import ClipLoader from "react-spinners/ClipLoader";
 import useDeviceInfo from '@/hooks/useDeviceInfo';
 import { useAuth } from '@/app/context/AppContext';
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
 export default function Page() {
   const [formData, setFormData] = useState({
@@ -19,6 +20,7 @@ export default function Page() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [isClient, setIsClient] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
   const { deviceToken, deviceName, browserName } = useDeviceInfo();
   const { setIsLogin } = useAuth();
 
@@ -100,17 +102,30 @@ export default function Page() {
                 <label htmlFor="password" className="block text-xl font-bold text-gray-900">
                   Password
                 </label>
-                <div className="mt-1">
+                <div className="mt-1 relative">
                   <input
                     id="password"
                     name="password"
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     placeholder="Enter your password..."
                     required
                     onChange={handleChange}
                     autoComplete="current-password"
-                    className="block w-full rounded-lg border-0 py-1.5 pl-2 text-gray-900 sm:text-sm sm:leading-6 md:text-lg shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-700"
+                    className="block w-full rounded-lg border-0 py-1.5 pl-2 pr-10 text-gray-900 sm:text-sm sm:leading-6 md:text-lg shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-700"
                   />
+
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(prev => !prev)}
+                    className="absolute inset-y-0 right-2 flex items-center text-gray-500 hover:text-gray-700"
+                    tabIndex={-1}
+                  >
+                    {showPassword ? (
+                      <EyeSlashIcon className="h-5 w-5" />
+                    ) : (
+                      <EyeIcon className="h-5 w-5" />
+                    )}
+                  </button>
                 </div>
                 <div className='flex w-full justify-end'>
                   <Link href="/auth/forgot-password" className="font-bold underline text-gray-900 hover:text-gray-700">

@@ -22,7 +22,7 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
     }
     try {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const response = await logoutRequest(userId, accessToken);
+      await logoutRequest(userId, accessToken);
       toast.success("Logout successfull.");
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -38,6 +38,7 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
         localStorage.removeItem('productPrice');
         localStorage.removeItem('deliveryFee');
         localStorage.removeItem('isLogin');
+        localStorage.removeItem('avatarUrl');
       }
     }
   }
@@ -54,8 +55,15 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
 
   return (
     <Menu as="div" className="relative">
-      <MenuButton className="flex items-center xl:hover:bg-gray-200 p-1 rounded-md">
-        <UserIcon className="sm:size-7 xl:size-8" />
+      <MenuButton className="flex items-center p-1 rounded-md">
+        {isLogin ? (
+          <span className="inline-flex items-center gap-1 px-4 py-2 rounded-xl bg-gray-800 text-white hover:bg-gray-900 hover:border-none">
+            <i className="italic font-medium not-italic:font-normal">Welcome,</i>
+            <span className="font-semibold">{localStorage.getItem('name') ?? 'Guest'}</span>
+          </span>
+        ) : (
+          <UserIcon className="sm:size-7 xl:size-8" />
+        )}
       </MenuButton>
       <MenuItems
         transition

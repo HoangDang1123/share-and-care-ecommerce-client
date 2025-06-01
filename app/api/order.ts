@@ -62,3 +62,22 @@ export const getOrderDetail = async (id: string, clientId: string, accessToken: 
         throw new Error(errorMessage || 'An unknown error occurred.');
     }
 }
+
+export const cancelOrder = async (id: string, clientId: string, accessToken: string): Promise<Order.CancelOrder> => {
+    try {
+        const response = await api.patch(`${ORDER_URL}/user/${id}/cancel`, null, {
+            headers: {
+                'x-client-id': clientId,
+                'Authorization': accessToken
+            }
+        });
+        return response.data.metadata;
+    } catch (error) {
+        const errorMessage = get(error, 'response.data.error.message', '');
+
+        if (errorMessage) {
+            toast.error(errorMessage);
+        }
+        throw new Error(errorMessage || 'An unknown error occurred.');
+    }
+}

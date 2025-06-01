@@ -109,6 +109,9 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, filter }) => {
               <span>{`Ordered Date: ${convertDateTime(order.createdAt)}`}</span>
               <span>{`Delivery Method: ${order.deliveryMethod}`}</span>
             </div>
+            <span className={`font-semibold h-fit px-3 py-1 rounded-lg ${statusBadge[order.status]}`}>
+              {order.status.replace(/_/g, ' ')}
+            </span>
           </div>
 
           {order.items.map((childItem, index) => (
@@ -181,7 +184,7 @@ export const OrderList: React.FC<OrderListProps> = ({ userId, accessToken }) => 
         items={orderLists}
         size='large'
         defaultActiveKey='0'
-        tabBarStyle={{ backgroundColor: "#e5e7eb", borderRadius: "5px", padding: "0 20px" }}
+        tabBarStyle={{ backgroundColor: "#e5e7eb", borderRadius: "5px" }}
       />
     </div>
   );

@@ -3,13 +3,14 @@
 import { createAddress, getAutoComplete } from '@/app/api/address';
 import { City, District, Ward } from '@/interface/order';
 import axios from 'axios';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, easeOut, motion } from 'framer-motion';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { toast } from 'react-toastify';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import { AutoCompleteResponse } from '@/interface/address';
+import { debounce } from 'lodash';
 
 interface AddressFormProps {
   setIsRefresh: (isRefresh: boolean) => void;
@@ -46,6 +47,22 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
     fetchData();
   }, []);
 
+  useEffect(() => {
+      return () => {
+        debouncedFetch.cancel();
+      };
+    }, []);
+  
+    const debouncedFetch = useMemo(() =>
+      debounce(async (value: string, setAutoComplete: (data: Array<AutoCompleteResponse>) => void) => {
+        try {
+          const response = await getAutoComplete(value);
+          setAutoComplete(response);
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (error) { }
+      }, 500), []
+    );
+
   const handleCityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const cityId = e.target.value;
     setSelectedCity(cityId);
@@ -81,11 +98,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
       [name]: value.split(',')[0],
     }));
 
-    try {
-      const response = await getAutoComplete(value);
-      setAutoComplete(response);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) { }
+    debouncedFetch(value, setAutoComplete);
   }
 
   const handleSelectSuggestion = (street: string) => {

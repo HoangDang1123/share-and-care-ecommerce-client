@@ -188,7 +188,7 @@ export default function Page() {
           </div>
           <ItemTable selectedAll={selectedAll} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
           {cart?.items?.length === 0 && (
-            <div className='flex justify-center items-center text-lg py-4'>There&apos;s no item</div>
+            <div className='flex justify-center items-center w-full text-lg py-4'>There&apos;s no item</div>
           )}
 
           <div className='sm:flex md:hidden flex-col mt-4'>

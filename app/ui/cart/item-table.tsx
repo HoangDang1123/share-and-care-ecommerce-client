@@ -164,8 +164,8 @@ const ItemTable: React.FC<ItemTableProps> = ({ selectedAll, selectedItem, setSel
   return (
     <div className='w-full'>
       <table className='sm:hidden md:block w-full'>
-        <thead>
-          <tr>
+        <thead className='w-full'>
+          <tr className='w-full'>
             <th />
             <th>Product</th>
             <th>Quantity</th>
@@ -175,7 +175,7 @@ const ItemTable: React.FC<ItemTableProps> = ({ selectedAll, selectedItem, setSel
           </tr>
         </thead>
 
-        <tbody>
+        <tbody className='w-full'>
           {cart && cart.items.map((item, index) => (
             <tr key={index}>
               <td>

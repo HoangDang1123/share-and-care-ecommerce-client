@@ -91,7 +91,7 @@ const AddressList: React.FC<AddressListProps> = ({ isRefresh, setIsRefresh, defa
 
   const handleDeleteAddress = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string, index: number) => {
     e.stopPropagation();
-    const fetchDeleteCartItem = async () => {
+    const fetchDeleteItem = async () => {
       const newLoadingItems = [...loadingItems];
       newLoadingItems[index] = true;
       setLoadingItems(newLoadingItems);
@@ -116,7 +116,7 @@ const AddressList: React.FC<AddressListProps> = ({ isRefresh, setIsRefresh, defa
       }
     };
 
-    fetchDeleteCartItem();
+    fetchDeleteItem();
   };
 
   return (
@@ -137,9 +137,8 @@ const AddressList: React.FC<AddressListProps> = ({ isRefresh, setIsRefresh, defa
                   <div className="invisible bg-gray-700 sm:size-1 md:size-2 rounded-full group-data-[checked]:visible" />
                 </span>
 
-                <div className='grid grid-cols-3 w-full'>
-                  <h4 className='col-span-2 sm:text-sm md:text-base'>{address.name}</h4>
-                  <h4 className='col-span-1 sm:text-sm md:text-base'>{address.phone}</h4>
+                <div className='flex flex-col w-full'>
+                  <h4 className='sm:text-sm md:text-base'>{`${address.name}, ${address.phone}`}</h4>
                   <h4 className='font-normal col-span-3 sm:text-sm md:text-base'>{`${address.street}, ${address.ward}, ${address.district}, ${address.city}`}</h4>
                 </div>
 

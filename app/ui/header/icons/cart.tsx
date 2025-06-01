@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { ArrowRightIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
+import { ArrowRightIcon, ShoppingCartIcon } from '@heroicons/react/20/solid';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getCart } from '@/app/api/cart';

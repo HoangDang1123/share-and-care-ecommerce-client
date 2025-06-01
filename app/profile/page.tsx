@@ -1,26 +1,39 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ClipboardDocumentIcon, MapPinIcon, UserIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowLeftStartOnRectangleIcon,
+  ClipboardDocumentIcon,
+  MapPinIcon,
+  UserIcon
+} from "@heroicons/react/24/outline";
 import BackButton from "../ui/back-button";
 import { Col, Row } from "antd";
 import Image from "next/image";
 import { ShippingAddress } from "../ui/profile/shipping-address";
 import { OrderList } from "../ui/profile/order-list";
+import { ChangePassword } from "../ui/profile/change-password";
+import { toast } from "react-toastify";
+import { logoutRequest, uploadAvatar } from "../api/auth";
+import { useRouter } from "next/navigation";
+import ClipLoader from "react-spinners/ClipLoader";
 
 export default function Page() {
   const [userId, setUserId] = useState('');
   const [accessToken, setAccessToken] = useState('');
   const [avatar, setAvatar] = useState('');
-  const [tabActive, setTabActive] = useState(3);
+  const [tabActive, setTabActive] = useState(1);
+  const [uploadAvatarLoading, setUploadAvatarLoading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const router = useRouter();
 
   const tabItems = [
     {
       key: 1,
-      label: 'Change Password',
-      icon: <UserIcon className="size-6" />,
-      children: <ShippingAddress userId={userId} accessToken={accessToken} />,
+      label: 'Order List',
+      icon: <ClipboardDocumentIcon className="size-6" />,
+      children: <OrderList userId={userId} accessToken={accessToken} />,
     },
     {
       key: 2,
@@ -30,17 +43,74 @@ export default function Page() {
     },
     {
       key: 3,
-      label: 'Order List',
-      icon: <ClipboardDocumentIcon className="size-6" />,
-      children: <OrderList userId={userId} accessToken={accessToken} />,
+      label: 'Change Password',
+      icon: <UserIcon className="size-6" />,
+      children: <ChangePassword userId={userId} accessToken={accessToken} />,
     },
   ];
 
   useEffect(() => {
     setUserId(localStorage.getItem('userId') || '');
     setAccessToken(localStorage.getItem('accessToken') || '');
-    setAvatar(localStorage.getItem('avatar') || '/assets/default-avatar-icon.jpg');
+    setAvatar(localStorage.getItem('avatarUrl') ?? '/assets/default-avatar-icon.jpg');
   }, []);
+
+  const handleClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setUploadAvatarLoading(true);
+      const response = await uploadAvatar(file, userId, accessToken);
+
+      setAvatar(response.image_url);
+      localStorage.setItem('avatarUrl', response.image_url);
+
+      setUploadAvatarLoading(false);
+      toast.success("Upload avatar successful!");
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) { }
+    finally {
+      setUploadAvatarLoading(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    if (!accessToken) {
+      toast.error("Access token is not available.");
+      return;
+    }
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      await logoutRequest(userId, accessToken);
+
+      router.push("/auth/login");
+      toast.success("Logout successfull.");
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      toast.error("An error occurred during logout.");
+    } finally {
+      if (typeof window !== "undefined") {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('tokenTimestamp');
+        localStorage.removeItem('order');
+        localStorage.removeItem('productPrice');
+        localStorage.removeItem('deliveryFee');
+        localStorage.removeItem('isLogin');
+        localStorage.removeItem('avatarUrl');
+      }
+    }
+  }
 
   if (userId === "" || accessToken === "") {
     return (
@@ -72,7 +142,7 @@ export default function Page() {
       <Row className='flex sm:mt-4 md:mt-10 md:px-20'>
         <Col xs={24} md={5} className="flex flex-col items-center h-fit px-6 py-8 md:shadow-lg rounded-lg">
           <div className="flex flex-col items-center mb-8 pb-8 border-b-2">
-            <div className="relative group sm:w-32 md:w-24 lg:w-24 xl:w-36 sm:h-32 md:h-24 lg:h-24 xl:h-36 rounded-full mb-4">
+            <div className="relative group sm:w-32 md:w-24 lg:w-24 xl:w-36 sm:h-32 md:h-24 lg:h-24 xl:h-36 rounded-full border-2 border-gray-400 mb-4">
               <Image
                 src={avatar}
                 alt="Avatar"
@@ -81,10 +151,25 @@ export default function Page() {
                 className="w-full h-full rounded-full object-cover transition-opacity duration-300 group-hover:opacity-40"
               />
               <button
-
+                onClick={handleClick}
                 className="absolute inset-0 flex items-center justify-center w-full h-full top-1/4 bg-transparent text-blue-500 border-none text-sm font-bold opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100 group-hover:border-none"
               >
-                Change Avatar
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleChange}
+                  ref={fileInputRef}
+                  className="hidden"
+                />
+                {uploadAvatarLoading ? (
+                  <ClipLoader
+                    size={30}
+                    color='#ffffff'
+                    aria-label="Loading Spinner"
+                  />
+                ) : (
+                  'Change Avatar'
+                )}
               </button>
             </div>
             <span className="sm:text-2xl md:text-lg xl:text-2xl font-semibold">{localStorage.getItem('name')}</span>
@@ -103,8 +188,20 @@ export default function Page() {
               </button>
             ))}
           </div>
+
+          <div className="mt-8 border-t-2 w-full pt-4">
+            <button
+              onClick={handleLogout}
+              className="flex items-center w-full gap-x-2 sm:text-lg md:text-base xl:text-lg px-4 py-2 font-semibold rounded-md hover:bg-gray-100"
+            >
+              <ArrowLeftStartOnRectangleIcon className="size-6" />
+              <span>Logout</span>
+            </button>
+          </div>
         </Col>
+
         <Col xs={0} md={1} />
+
         <Col xs={24} md={18} className="flex flex-col items-center">
           {tabItems.map((tab) => (
             <div key={tab.key} className={tab.key === tabActive ? 'w-full block' : 'hidden'}>

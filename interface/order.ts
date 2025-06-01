@@ -131,3 +131,7 @@ export enum PaymentStatus {
     PENDING_REFUND = 'PENDING_REFUND',
     REFUNDED = 'REFUNDED',
 }
+
+export interface CancelOrder {
+    status: string;
+}

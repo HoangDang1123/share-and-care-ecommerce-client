@@ -56,6 +56,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
             localStorage.removeItem('productPrice');
             localStorage.removeItem('deliveryFee');
             localStorage.removeItem('isLogin');
+            localStorage.removeItem('avatarUrl');
             return false;
         }
 

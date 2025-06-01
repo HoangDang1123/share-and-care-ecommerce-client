@@ -90,3 +90,29 @@ export const resetPassword = async (data: Auth.ResetPassword) => {
         throw new Error(errorMessage || 'An unknown error occurred.');
     }
 };
+
+export const uploadAvatar = async (
+    data: File,
+    userId: string,
+    accessToken: string
+): Promise<{ image_url: string }> => {
+    try {
+        const formData = new FormData();
+        if (data) {
+            formData.append("avatar", data);
+        }
+
+        const response = await api.patch(`${AUTH_URL}/avatar`, formData, {
+            headers: {
+                "x-client-id": userId,
+                Authorization: accessToken,
+            },
+        });
+
+        return response.data.metadata;
+    } catch (error) {
+        const errorMessage = get(error, "response.data.error.message", "Unknown error occurred.");
+        toast.error(errorMessage);
+        throw new Error(errorMessage);
+    }
+};
