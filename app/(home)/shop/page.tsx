@@ -6,6 +6,7 @@ import Card from "@/app/ui/card";
 import SortSelected from "@/app/ui/shop/sort-selected";
 import { FetchProductsParams, ProductResponse } from "@/interface/product";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { Pagination } from "antd";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -14,6 +15,8 @@ export default function Page() {
   const [productList, setProductList] = useState<ProductResponse[]>([]);
   const [searchData, setSearchData] = useState('');
   const [sort, setSort] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -100,10 +103,27 @@ export default function Page() {
           There&apos;s no product.
         </div>
       ) : (
-        <div className="w-full grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-10 sm:gap-y-8 md:gap-y-16 items-stretch">
-          {productList.map((product, index) => (
-            <Card key={index} product={product} />
-          ))}
+        <div className="flex flex-col gap-y-20">
+          <div className="w-full grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-10 sm:gap-y-8 md:gap-y-16 items-stretch">
+            {productList.map((product, index) => (
+              <Card key={index} product={product} />
+            ))}
+          </div>
+
+          <Pagination
+            align='center'
+            defaultCurrent={1}
+            current={currentPage}
+            pageSize={pageSize}
+            total={productList.length}
+            onChange={(page) => setCurrentPage(page)}
+            showSizeChanger
+            onShowSizeChange={(current, size) => {
+              setPageSize(size);
+              setCurrentPage(1);
+            }}
+            pageSizeOptions={[5, 10, 15, 20]}
+          />
         </div>
       )}
     </div>

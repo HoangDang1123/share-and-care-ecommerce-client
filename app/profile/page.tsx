@@ -18,6 +18,8 @@ import { toast } from "react-toastify";
 import { logoutRequest, uploadAvatar } from "../api/auth";
 import { useRouter } from "next/navigation";
 import ClipLoader from "react-spinners/ClipLoader";
+import { AllOrderResponse } from "@/interface/order";
+import { getAllOrder } from "../api/order";
 
 export default function Page() {
   const [userId, setUserId] = useState('');
@@ -25,6 +27,7 @@ export default function Page() {
   const [avatar, setAvatar] = useState('');
   const [tabActive, setTabActive] = useState(1);
   const [uploadAvatarLoading, setUploadAvatarLoading] = useState(false);
+  const [orders, setOrders] = useState<AllOrderResponse>();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
 
@@ -54,6 +57,17 @@ export default function Page() {
     setAccessToken(localStorage.getItem('accessToken') || '');
     setAvatar(localStorage.getItem('avatarUrl') ?? '/assets/default-avatar-icon.jpg');
   }, []);
+
+  useEffect(() => {
+    if (userId && accessToken) {
+      const fetchOrder = async () => {
+        const response = await getAllOrder(userId, accessToken);
+        setOrders(response);
+      }
+
+      fetchOrder();
+    }
+  }, [accessToken, userId]);
 
   const handleClick = () => {
     if (fileInputRef.current) {
@@ -181,10 +195,16 @@ export default function Page() {
               <button
                 key={tab.key}
                 onClick={() => setTabActive(tab.key)}
-                className={`flex items-center gap-x-2 sm:text-lg md:text-base xl:text-lg px-4 py-2 font-semibold rounded-md hover:bg-gray-100 ${tab.key === tabActive ? 'bg-gray-200' : ''}`}
+                className={`flex items-center justify-between sm:text-lg md:text-base xl:text-lg px-4 py-2 font-semibold rounded-md hover:bg-gray-100 ${tab.key === tabActive ? 'bg-gray-200' : ''}`}
               >
-                {tab.icon}
-                <span>{tab.label}</span>
+                <div className="flex gap-x-2">
+                  {tab.icon}
+                  <span>{tab.label}</span>
+                </div>
+
+                {tab.label === 'Order List' && (
+                  <span>{`(${orders ? orders.total : 0})`}</span>
+                )}
               </button>
             ))}
           </div>

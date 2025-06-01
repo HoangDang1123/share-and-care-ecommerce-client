@@ -4,6 +4,11 @@ import Link from 'next/link';
 import { logoutRequest } from '@/app/api/auth';
 import { toast } from 'react-toastify';
 import { motion } from 'framer-motion';
+import { 
+  ArrowRightStartOnRectangleIcon, 
+  ArrowLeftStartOnRectangleIcon,
+  CursorArrowRippleIcon 
+} from '@heroicons/react/24/outline';
 
 interface UserProps {
   isLogin: boolean;
@@ -44,20 +49,20 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
   }
 
   const guest = [
-    { name: 'Login', href: '/auth/login' },
-    { name: 'Sign Up', href: '/auth/sign-up' },
+    { name: 'Login', icon: <ArrowRightStartOnRectangleIcon className='size-6' />,href: '/auth/login' },
+    { name: 'Sign Up', icon: <CursorArrowRippleIcon className='size-6' />,href: '/auth/sign-up' },
   ];
 
   const customer = [
-    { name: 'Profile', click: handleGoToProfile, href: '/profile' },
-    { name: 'Logout', click: handleLogout, href: '/auth/login' },
+    { name: 'Profile', icon: <UserIcon className='size-6' />, click: handleGoToProfile, href: '/profile' },
+    { name: 'Logout', icon: <ArrowLeftStartOnRectangleIcon className='size-6' />, click: handleLogout, href: '/auth/login' },
   ];
 
   return (
     <Menu as="div" className="relative">
       <MenuButton className="flex items-center p-1 rounded-md">
         {isLogin ? (
-          <span className="inline-flex items-center gap-1 px-4 py-2 rounded-xl bg-gray-800 text-white hover:bg-gray-900 hover:border-none">
+          <span className="inline-flex items-center gap-1 px-4 py-2 rounded-xl text-sm bg-gray-800 text-white hover:bg-gray-900 hover:border-none">
             <i className="italic font-medium not-italic:font-normal">Welcome,</i>
             <span className="font-semibold">{localStorage.getItem('name') ?? 'Guest'}</span>
           </span>
@@ -72,7 +77,7 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
         animate={{ y: 0 }}
         exit={{ y: '-100%' }}
         anchor="bottom end"
-        className="relative z-10 mt-2 sm:w-36 md:w-48 rounded-lg bg-white shadow-lg"
+        className="relative z-10 mt-2 sm:w-32 md:w-44 rounded-lg bg-white shadow-lg"
       >
         {isLogin ? (
           customer.map((item, index) => (
@@ -82,8 +87,9 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
                 onClick={() => {
                   item.click();
                 }}
-                className="block w-full rounded-lg sm:text-md xl:text-lg py-2 px-3 transition hover:bg-gray-200"
+                className="flex items-center gap-x-2 w-full rounded-lg sm:text-md xl:text-lg py-2 px-3 transition hover:bg-gray-200"
               >
+                {item.icon}
                 {item.name}
               </Link>
             </MenuItem>
@@ -91,7 +97,11 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
         ) : (
           guest.map((item, index) => (
             <MenuItem key={index}>
-              <Link href={item.href} className="block rounded-lg sm:text-md xl:text-lg py-2 px-3 transition hover:bg-gray-200">
+              <Link 
+                href={item.href} 
+                className="flex items-center gap-x-2 rounded-lg sm:text-md xl:text-lg py-2 px-3 transition hover:bg-gray-200"
+              >
+                {item.icon}
                 {item.name}
               </Link>
             </MenuItem>

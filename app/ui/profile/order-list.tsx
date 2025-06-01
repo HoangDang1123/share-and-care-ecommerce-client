@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { getAllOrder } from "../../api/order";
 import { AllOrderResponse, OrderStatus, PaymentStatus } from "@/interface/order";
-import { Tabs } from 'antd';
+import { Pagination, Tabs } from 'antd';
 import Link from 'next/link';
 import { convertDateTime, formatPrice } from '@/utils/helpers';
 import Image from 'next/image';
@@ -14,11 +14,14 @@ interface OrderListProps {
 }
 
 interface OrderItemProps {
-  order: AllOrderResponse,
+  orders: AllOrderResponse,
   filter?: string | undefined,
 }
 
-const OrderItem: React.FC<OrderItemProps> = ({ order, filter }) => {
+const OrderItem: React.FC<OrderItemProps> = ({ orders, filter }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
+
   const statusBadge: Record<OrderStatus, string> = {
     [OrderStatus.PENDING]: 'bg-gray-200 text-gray-800',
     [OrderStatus.AWAITING_PAYMENT]: 'bg-yellow-100 text-yellow-800',
@@ -42,9 +45,11 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, filter }) => {
   };
 
   if (!filter) {
+    const paginatedItems = orders.items.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
     return (
       <div className='flex flex-col gap-y-6'>
-        {order.items.map((order) => (
+        {paginatedItems.map((order) => (
           <Link
             key={order.id}
             href={`/order/${order.id}`}
@@ -91,13 +96,30 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, filter }) => {
             </div>
           </Link>
         ))}
+
+        <Pagination
+          align='center'
+          defaultCurrent={1}
+          current={currentPage}
+          pageSize={pageSize}
+          total={orders.total}
+          onChange={(page) => setCurrentPage(page)}
+          showSizeChanger
+          onShowSizeChange={(current, size) => {
+            setPageSize(size);
+            setCurrentPage(1);
+          }}
+          pageSizeOptions={[5, 10, 15, 20]}
+        />
       </div>
     );
   }
 
+  const paginatedItems = orders.items.filter(o => o.status === filter).slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
   return (
     <div className='flex flex-col gap-y-6'>
-      {order.items.filter(o => o.status === filter).map((order) => (
+      {paginatedItems.map((order) => (
         <Link
           key={order.id}
           href={`/order/${order.id}`}
@@ -144,38 +166,53 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, filter }) => {
           </div>
         </Link>
       ))}
+
+      <Pagination
+        align='center'
+        defaultCurrent={1}
+        current={currentPage}
+        pageSize={pageSize}
+        total={paginatedItems.length}
+        onChange={(page) => setCurrentPage(page)}
+        showSizeChanger
+        onShowSizeChange={(current, size) => {
+          setPageSize(size);
+          setCurrentPage(1);
+        }}
+        pageSizeOptions={[5, 10, 15, 20]}
+      />
     </div>
   );
 }
 
 export const OrderList: React.FC<OrderListProps> = ({ userId, accessToken }) => {
-  const [order, setOrder] = useState<AllOrderResponse>();
+  const [orders, setOrders] = useState<AllOrderResponse>();
 
   useEffect(() => {
     const fetchOrder = async () => {
       const response = await getAllOrder(userId, accessToken);
-      setOrder(response);
+      setOrders(response);
     }
 
     fetchOrder();
   }, [accessToken, userId]);
 
-  if (!order) {
+  if (!orders) {
     return <span>Loading...</span>
-  } else if (order.items.length === 0) {
+  } else if (orders.items.length === 0) {
     return <span>There&apos;s no order.</span>
   }
 
   const orderLists = Object.entries(OrderStatus).map(([value], index) => ({
     key: String(index + 1),
     label: value.replace(/_/g, ' ').toLowerCase().replace(/^\w/, c => c.toUpperCase()),
-    children: <OrderItem order={order} filter={value} />,
+    children: <OrderItem orders={orders} filter={value} />,
   }));
 
   orderLists.unshift({
     key: '0',
     label: 'All',
-    children: <OrderItem order={order} />,
+    children: <OrderItem orders={orders} />,
   });
 
   return (
