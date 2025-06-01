@@ -21,6 +21,7 @@ export default function Page() {
   const [order, setOrder] = useState<OrderDetailResponse>();
   const [paymentLoading, setPaymentLoading] = useState(false);
   const [cancelLoading, setCancelLoading] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [returnLoading, setReturnLoading] = useState(false);
   const router = useRouter();
   const param = useParams();
