@@ -43,10 +43,6 @@ const ItemTable: React.FC<ItemTableProps> = ({ selectedAll, selectedItem, setSel
     }
   }, [cart]);
 
-  useEffect(() => {
-    console.log(quantities);
-  }, [quantities])
-
   const handleSetSelectedItem = (index: number) => {
     const newItems = [...selectedItem];
     newItems[index] = !selectedItem[index];

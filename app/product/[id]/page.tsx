@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import ImageList from '@/app/ui/product/image-list';
 import OptionContainer from '@/app/ui/product/option-container';
-// import FeedbackContainer from '@/app/ui/product/feedback-container';
+import ReviewContainer from '@/app/ui/product/review-container';
 import BackButton from '@/app/ui/back-button';
 import { useParams } from 'next/navigation';
 import { ProductDetailResponse } from '@/interface/product';
@@ -33,13 +33,13 @@ export default function Page() {
     };
 
     fetchProducts();
-  }, [id, setProduct]);
+  }, [id]);
 
   useEffect(() => {
     if (product) {
       setImages([product.product.mainImage, ...product.product.subImages]);
     }
-  }, [product, setImages]);
+  }, [product]);
 
   if (!product) {
     return <div className='flex justify-center items-center w-full h-[720px] text-lg'>
@@ -54,10 +54,10 @@ export default function Page() {
 
         <ul className="flex space-x-1 sm:text-md md:text-xl whitespace-nowrap text-ellipsis">
           <li>
-            <Link href="/" className='text-gray-400 hover:text-gray-900'>Home / </Link>
+            <Link href="/" className='text-gray-400 text-base hover:text-gray-900'>Home / </Link>
           </li>
           <li>
-            {product.product.name}
+            <span className="text-base">{product.product.name}</span>
           </li>
         </ul>
       </div>
@@ -76,9 +76,9 @@ export default function Page() {
           <Description description={product.product.description} />
         </div>
 
-        {/* <div className='w-full'>
-          <FeedbackContainer product={product} />
-        </div> */}
+        <div className='w-full'>
+          <ReviewContainer productId={product.product.id} />
+        </div>
       </div>
     </div>
   );

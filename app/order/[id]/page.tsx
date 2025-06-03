@@ -5,10 +5,12 @@ import { VNPAYPayment } from '@/app/api/payment';
 import BackButton from '@/app/ui/back-button';
 import { OrderItem } from '@/app/ui/order/detail/order-item';
 import OrderTimeline from '@/app/ui/order/detail/order-status';
-import { OrderDetailResponse, OrderStatus, PaymentStatus } from '@/interface/order';
+import { OrderDetailResponse, OrderStatus, PaymentMethod } from '@/interface/order';
 import { PaymentData } from '@/interface/payment';
 import { convertDateTime, formatPrice } from '@/utils/helpers';
-import { ArrowPathIcon, CreditCardIcon } from '@heroicons/react/24/outline';
+import { CreditCardIcon } from '@heroicons/react/24/outline';
+import { Col, Row } from 'antd';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
@@ -27,12 +29,18 @@ export default function Page() {
   const param = useParams();
   const id = param.id;
 
-  const paymentStatusBadge: Record<PaymentStatus, string> = {
-    [PaymentStatus.PENDING]: 'bg-gray-200 text-gray-800',
-    [PaymentStatus.COMPLETED]: 'bg-green-100 text-green-800',
-    [PaymentStatus.FAILED]: 'bg-red-100 text-red-800',
-    [PaymentStatus.PENDING_REFUND]: 'bg-yellow-100 text-yellow-800',
-    [PaymentStatus.REFUNDED]: 'bg-blue-100 text-blue-800',
+  const statusBadge: Record<OrderStatus, string> = {
+    [OrderStatus.PENDING]: 'bg-gray-200 text-gray-800',
+    [OrderStatus.AWAITING_PAYMENT]: 'bg-yellow-100 text-yellow-800',
+    [OrderStatus.PROCESSING]: 'bg-blue-100 text-blue-800',
+    [OrderStatus.AWAITING_SHIPMENT]: 'bg-indigo-100 text-indigo-800',
+    [OrderStatus.SHIPPED]: 'bg-sky-100 text-sky-800',
+    [OrderStatus.DELIVERED]: 'bg-green-100 text-green-800',
+    [OrderStatus.CANCELLED]: 'bg-red-100 text-red-800',
+    [OrderStatus.RETURN_REQUESTED]: 'bg-orange-100 text-orange-800',
+    [OrderStatus.RETURNED]: 'bg-orange-200 text-orange-900',
+    [OrderStatus.PENDING_REFUND]: 'bg-purple-100 text-purple-800',
+    [OrderStatus.REFUNDED]: 'bg-emerald-100 text-emerald-800',
   };
 
   const canCancel = order
@@ -107,7 +115,7 @@ export default function Page() {
 
   if (userId === "" || accessToken === "") {
     return (
-      <div className="flex justify-center items-center h-[735px] bg-black gap-x-4">
+      <div className="flex justify-center items-center h-[750px] bg-black gap-x-4">
         <h6 className="text-white">Please log in to continue</h6>
         <Link
           href="/auth/login"
@@ -132,120 +140,169 @@ export default function Page() {
 
         <ul className="flex space-x-1 sm:text-md md:text-xl text-ellipsis text-nowrap">
           <li>
-            <Link href="/" className='text-gray-400 hover:text-gray-900'>Home / </Link>
+            <Link href="/" className='text-gray-400 text-base hover:text-gray-900'>Home / </Link>
           </li>
           <li>
-            <Link href="/profile" className='text-gray-400 hover:text-gray-900'>Profile / </Link>
+            <Link href="/profile" className='text-gray-400 text-base hover:text-gray-900'>Profile / </Link>
           </li>
           <li>
-            {order.order.id}
+            <span className="text-base">{order.order.id}</span>
           </li>
         </ul>
       </div>
 
-      <div className='flex flex-col gap-y-4 sm:mt-4 md:mt-10 md:px-20'>
-        <OrderTimeline
-          paymentMethod={order.order.paymentMethod}
-          currentStatus={order.order.status.toUpperCase()}
-        />
-        <div className='flex flex-col border-2 p-6 gap-y-4 font-medium rounded-md hover:text-gray-900'>
-          <div className='flex justify-between'>
-            <div className='flex flex-col gap-y-1'>
-              <span className='font-semibold mb-4'>{`ID: ${order.order.id}`}</span>
-              <span>{`Ordered Date: ${convertDateTime(order.order.createdAt)}`}</span>
-              <span>{`Delivery Method: ${order.order.deliveryMethod}`}</span>
-              <div className='flex gap-x-1'>
-                <span>Shipping:</span>
-                <span>{`${order.order.shippingAddress.fullname} - ${order.order.shippingAddress.phone} -`}</span>
-                <span>
-                  {[
-                    order.order.shippingAddress.street,
-                    order.order.shippingAddress.ward,
-                    order.order.shippingAddress.district,
-                    order.order.shippingAddress.city
-                  ].filter(Boolean).join(', ')}
+      <Row className='sm:mt-4 md:mt-10 md:px-20'>
+        <Col span={17} className='flex flex-col gap-y-4'>
+          <OrderTimeline
+            paymentMethod={order.order.paymentMethod}
+            currentStatus={order.order.status.toUpperCase()}
+          />
+          <div className='flex flex-col border-2 p-6 gap-y-4 rounded-md hover:text-gray-900'>
+            <div className='flex justify-between'>
+              <div className='flex flex-col gap-y-1'>
+                <span className='font-semibold mb-4'>{`ID: ${order.order.id}`}</span>
+                <span>{`Ordered Date: ${convertDateTime(order.order.timestamps.createdAt)}`}</span>
+                <span>{`Delivery Method: ${order.order.deliveryMethod}`}</span>
+                <div className='flex gap-x-1'>
+                  <span>Shipping:</span>
+                  <span>{`${order.order.shippingAddress.fullname} - ${order.order.shippingAddress.phone} -`}</span>
+                  <span>
+                    {[
+                      order.order.shippingAddress.street,
+                      order.order.shippingAddress.ward,
+                      order.order.shippingAddress.district,
+                      order.order.shippingAddress.city
+                    ].filter(Boolean).join(', ')}
+                  </span>
+                </div>
+              </div>
+
+              <div className='flex flex-col items-end gap-y-4'>
+                <span className={`font-semibold h-fit px-3 py-1 rounded-lg ${statusBadge[order.order.status]}`}>
+                  {order.order.status.replace(/_/g, ' ')}
                 </span>
+
+                {order.order.timestamps.deliveredAt !== null && (
+                  <span>{`Delivered Date: ${convertDateTime(order.order.timestamps.deliveredAt)}`}</span>
+                )}
               </div>
             </div>
-            {order.order.deliveredAt !== null && (
-              <span>{`Delivered Date: ${convertDateTime(order.order.deliveredAt)}`}</span>
+
+            {order.order.items.map((childItem, index) => (
+              <OrderItem key={index} item={childItem} orderId={order.order.id} />
+            ))}
+
+            <div className='flex justify-end'>
+              {order.order.paymentMethod === PaymentMethod.COD ? (
+                <Image
+                  src={'/assets/cash-payment.png'}
+                  alt='COD'
+                  width={100}
+                  height={100}
+                  className='w-16'
+                />
+              ) : order.order.paymentMethod === PaymentMethod.VNPAY ? (
+                <Image
+                  src={'/assets/vnpay.png'}
+                  alt='VNPAY'
+                  width={100}
+                  height={100}
+                  className='w-16'
+                />
+              ) : (
+                <Image
+                  src={'/assets/momo.png'}
+                  alt='MOMO'
+                  width={100}
+                  height={100}
+                  className='w-16'
+                />
+              )}
+            </div>
+          </div>
+        </Col>
+
+        <Col span={1} />
+
+        <Col
+          span={6}
+          className="flex flex-col w-full h-fit md:shadow-lg px-4 pt-10 gap-y-10 md:rounded-lg transition-all duration-300 ease-in-out"
+        >
+          <h1>Order Summary</h1>
+          <div className='flex flex-col gap-y-4'>
+            <div className='flex justify-between'>
+              <h4 className='font-semibold sm:text-lg md:text-xl'>Product Cost:</h4>
+              <h4 className='sm:text-lg md:text-xl'>{formatPrice(order.order.pricing.itemsPrice)}</h4>
+            </div>
+
+            <div className='flex justify-between'>
+              <h4 className='font-semibold sm:text-lg md:text-xl'>Shipping Fee:</h4>
+              <h4 className='sm:text-lg md:text-xl'>{`+ ${formatPrice(order.order.pricing.shippingPrice)}`}</h4>
+            </div>
+
+            <div className='flex justify-between'>
+              <h4 className='font-semibold sm:text-lg md:text-xl'>Product Discount:</h4>
+              <h4 className='sm:text-lg md:text-xl'>{`- ${formatPrice(order.order.pricing.productDiscount)}`}</h4>
+            </div>
+
+            <div className='flex justify-between'>
+              <h4 className='font-semibold sm:text-lg md:text-xl'>Coupon Discount:</h4>
+              <h4 className='sm:text-lg md:text-xl'>{`- ${formatPrice(order.order.pricing.couponDiscount)}`}</h4>
+            </div>
+
+            <div className='flex justify-between'>
+              <h4 className='font-semibold sm:text-lg md:text-xl'>Shipping Discount:</h4>
+              <h4 className='sm:text-lg md:text-xl'>{`- ${formatPrice(order.order.pricing.shippingDiscount)}`}</h4>
+            </div>
+
+            <div className='w-full h-0.5 bg-gray-200' />
+
+            <div className='flex justify-between'>
+              <h4 className='font-semibold sm:text-lg md:text-xl'>Total Cost:</h4>
+              <h4 className='sm:text-lg md:text-xl'>{formatPrice(order.order.pricing.totalPrice)}</h4>
+            </div>
+          </div>
+
+          <div className='flex flex-col w-full gap-y-4'>
+            {order.order.status === OrderStatus.AWAITING_PAYMENT && (
+              <button
+                onClick={handlePayment}
+                className='flex justify-center items-center h-12 bg-gray-800 hover:bg-gray-900 text-white text-xl font-bold rounded-lg'
+              >
+                {paymentLoading ? (
+                  <ClipLoader
+                    size={20}
+                    color='#ffffff'
+                    aria-label="Loading Spinner"
+                  />
+                ) : (
+                  <div className='flex justify-center items-center gap-x-2'>
+                    <CreditCardIcon className='size-7' />
+                    <span>Payment</span>
+                  </div>
+                )}
+              </button>
+            )}
+
+            {canCancel && (
+              <button
+                onClick={handleCanceling}
+                className='flex justify-center items-center mb-10 h-12 bg-red-500 hover:bg-red-600 text-white text-xl font-bold rounded-lg'
+              >
+                {cancelLoading ? (
+                  <ClipLoader
+                    size={20}
+                    color='#ffffff'
+                    aria-label="Loading Spinner"
+                  />
+                ) : (
+                  <span>Cancel</span>
+                )}
+              </button>
             )}
           </div>
-
-          {order.order.items.map((childItem, index) => (
-            <OrderItem key={index} item={childItem} />
-          ))}
-
-          <div className='flex justify-between'>
-            <div className='flex flex-col gap-y-2'>
-              <span>{`Payment Method: ${order.order.paymentMethod}`}</span>
-              <span className={`font-semibold w-fit h-fit px-3 py-1 rounded-lg ${paymentStatusBadge[order.order.paymentStatus]}`}>
-                {order.order.paymentStatus.replace(/_/g, ' ')}
-              </span>
-            </div>
-            <span className='font-semibold'>{`Total: ${formatPrice(order.order.totalPrice)}`}</span>
-          </div>
-        </div>
-
-        <div className='flex justify-end gap-x-4'>
-          {order.order.status === OrderStatus.AWAITING_PAYMENT && (
-            <button
-              onClick={handlePayment}
-              className='flex justify-center items-center w-56 h-12 bg-gray-800 hover:bg-gray-900 text-white text-xl font-bold rounded-lg'
-            >
-              {paymentLoading ? (
-                <ClipLoader
-                  size={20}
-                  color='#ffffff'
-                  aria-label="Loading Spinner"
-                />
-              ) : (
-                <div className='flex justify-center items-center gap-x-2'>
-                  <CreditCardIcon className='size-7' />
-                  <span>Payment</span>
-                </div>
-              )}
-            </button>
-          )}
-
-          {canCancel && (
-            <button
-              onClick={handleCanceling}
-              className='flex justify-center items-center w-32 h-12 bg-red-500 hover:bg-red-600 text-white text-xl font-bold rounded-lg'
-            >
-              {cancelLoading ? (
-                <ClipLoader
-                  size={20}
-                  color='#ffffff'
-                  aria-label="Loading Spinner"
-                />
-              ) : (
-                <span>Cancel</span>
-              )}
-            </button>
-          )}
-
-          {order.order.status === OrderStatus.DELIVERED && (
-            <button
-              onClick={handlePayment}
-              className='flex justify-center items-center w-60 h-12 bg-gray-800 hover:bg-gray-900 text-white text-xl font-bold rounded-lg'
-            >
-              {returnLoading ? (
-                <ClipLoader
-                  size={20}
-                  color='#ffffff'
-                  aria-label="Loading Spinner"
-                />
-              ) : (
-                <div className='flex justify-center items-center gap-x-2'>
-                  <ArrowPathIcon className='size-7' />
-                  <span>Request Return</span>
-                </div>
-              )}
-            </button>
-          )}
-        </div>
-      </div>
+        </Col>
+      </Row>
     </div>
   );
 }

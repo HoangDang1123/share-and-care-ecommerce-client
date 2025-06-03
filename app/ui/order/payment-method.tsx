@@ -38,7 +38,7 @@ export default function PaymentMethod() {
             <div className="flex w-full items-center justify-between px-4 py-2 rounded-xl hover:bg-gray-100 group-data-[checked]:bg-gray-100 group-data-[checked]:border-gray-100">
               <div className="flex justify-between items-center space-x-4">
                 <Image
-                  alt="Cash Payment img"
+                  alt={method.alt}
                   src={method.image}
                   width={40}
                   height={40}

@@ -204,7 +204,9 @@ export const ShippingAddress: React.FC<ShippingAddressProps> = ({ userId, access
     <div className='flex flex-col items-end gap-y-4'>
       <button
         onClick={() => setOpenDialog(true)}
-        className='w-fit px-3 py-1 bg-teal-600 text-white font-medium text-base rounded-lg hover:bg-teal-700'>New Address
+        className='w-fit px-3 py-1 bg-teal-600 text-white font-medium text-base rounded-lg hover:bg-teal-700'
+      >
+        New Address
       </button>
 
       <div className='w-full'>

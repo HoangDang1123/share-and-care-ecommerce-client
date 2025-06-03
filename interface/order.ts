@@ -43,7 +43,7 @@ export interface CreateOrder {
 
 export interface CreateOrderResponse {
     orderId: string,
-    paymentUrl: string,
+    paymentUrl: string | null,
 }
 
 export interface OrderDetailResponse {
@@ -53,29 +53,49 @@ export interface OrderDetailResponse {
 
 export interface OrderResponse {
     id: string,
-    totalPrice: number,
     status: OrderStatus,
     paymentMethod: PaymentMethod,
-    paymentStatus: PaymentStatus,
+    canCancel: boolean,
+    pricing: Pricing,
+    timestamps: Timestamps,
     deliveryMethod: DeliveryMethod,
     shippingAddress: ShippingAddress,
     items: OrderDetailItem[],
-    deliveredAt: string | null,
-    createdAt: string,
+}
+
+export interface Pricing {
+  itemsPrice: number,
+  productDiscount: number,
+  couponDiscount: number,
+  shippingPrice: number,
+  shippingDiscount: number,
+  totalSavings: number,
+  totalPrice: number,
+}
+
+export interface Timestamps {
+  createdAt: string,
+  updatedAt: string,
+  paidAt: string | null,
+  deliveredAt: string | null,
+  requestedAt: string | null,
+  approvedAt: string | null,
 }
 
 export interface OrderDetailItem {
-    productId: string;
-    variantId: string;
-    productName: string;
-    variantSlug: string;
-    image: string;
-    price: number;
-    quantity: number;
-    productDiscount: number;
-    couponDiscount: number;
-    returnDays: number;
-    canReturn: boolean;
+    productId: string,
+    variantId: string | null,
+    productName: string,
+    variantSlug: string,
+    image: string,
+    price: number,
+    quantity: number,
+    productDiscount: number,
+    couponDiscount: number,
+    returnDays: number,
+    total: number,
+    canReturn: boolean,
+    canReview: boolean,
 }
 
 export interface AllOrderResponse {
@@ -88,20 +108,28 @@ export interface AllOrderResponse {
 }
 
 export interface AllOrderItem {
-    id: string;
-    totalPrice: number;
-    status: OrderStatus;
-    paymentMethod: PaymentMethod;
-    paymentStatus: PaymentStatus;
-    deliveryMethod: string;
-    items: OrderItem[];
-    createdAt: string;
+    id: string,
+    totalPrice: number,
+    status: OrderStatus,
+    canCancel: boolean,
+    deliveryMethod: string,
+    deliveredAt: string | null
+    returnAt: string | null,
+    updateAt: string | null,
+    items: OrderItem[],
+    createAt: string,
 }
 
 export interface OrderItem {
-    productName: string;
-    image: string;
-    quantity: number;
+    productId: string,
+    variantId?: string,
+    productName: string,
+    variantSlug: string,
+    image: string,
+    price: number,
+    quantity: number,
+    canReturn: boolean,
+    canReview: boolean,
 }
 
 export enum OrderStatus {
@@ -133,5 +161,5 @@ export enum PaymentStatus {
 }
 
 export interface CancelOrder {
-    status: string;
+    status: string,
 }

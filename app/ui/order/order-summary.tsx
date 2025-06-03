@@ -38,32 +38,37 @@ export default function OrderSummary() {
           router.push(`/order/${response.orderId}`);
         }
 
-        const cartResponse = await getCart(userId, accessToken);
-        const cartItems = cartResponse.items || [];
+        // Delete product if it in cart
+        if (localStorage.getItem('productInCart') === 'true') {
+          const cartResponse = await getCart(userId, accessToken);
+          const cartItems = cartResponse.items || [];
 
-        for (const item of order.items) {
-          const cartItem = {
-            productId: item.productId,
-            variantId: item.variantId,
-          };
+          for (const item of order.items) {
+            const cartItem = {
+              productId: item.productId,
+              variantId: item.variantId,
+            };
 
-          const existsInCart = cartItems.some(cartItem =>
-            cartItem.productId === item.productId && cartItem.variantId === item.variantId
-          );
+            const existsInCart = cartItems.some(cartItem =>
+              cartItem.productId === item.productId && cartItem.variantId === item.variantId
+            );
 
-          if (existsInCart) {
-            try {
-              await deleteCartItem(cartItem, userId, accessToken);
+            if (existsInCart) {
               try {
-                const response = await getCart(userId, accessToken);
-                setCart(response);
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-              } catch (error) { }
-            } catch (error) {
-              console.error("Error deleting cart item:", error);
+                await deleteCartItem(cartItem, userId, accessToken);
+                try {
+                  const response = await getCart(userId, accessToken);
+                  setCart(response);
+                  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                } catch (error) { }
+              } catch (error) {
+                console.error("Error deleting cart item:", error);
+              }
             }
           }
         }
+
+        localStorage.removeItem('productInCart');
 
         setOrder(null);
         if (typeof window !== "undefined") {
@@ -79,7 +84,6 @@ export default function OrderSummary() {
 
   return (
     <div
-      // className={`flex flex-col w-[390px] h-fit shadow-lg px-4 py-10 space-y-10 rounded-lg transition-all duration-300 ease-in-out ${isFixed ? 'fixed top-48 right-[182px]' : ''}`}
       className="flex flex-col w-full h-fit md:shadow-lg px-4 py-10 space-y-10 md:rounded-lg transition-all duration-300 ease-in-out"
     >
       <h1>Order Summary</h1>

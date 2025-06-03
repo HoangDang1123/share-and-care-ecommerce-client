@@ -1,26 +1,44 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import { getAllOrder } from "../../api/order";
-import { AllOrderResponse, OrderStatus, PaymentStatus } from "@/interface/order";
-import { Pagination, Tabs } from 'antd';
+import { getAllOrderWithSize } from "../../api/order";
+import { AllOrderResponse, OrderStatus } from "@/interface/order";
+import { Tabs } from 'antd';
 import Link from 'next/link';
 import { convertDateTime, formatPrice } from '@/utils/helpers';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import Pagination from '../pagination';
 
 interface OrderListProps {
   userId: string,
   accessToken: string,
+  total?: number,
 }
 
 interface OrderItemProps {
-  orders: AllOrderResponse,
+  userId: string,
+  accessToken: string,
   filter?: string | undefined,
+  total?: number,
 }
 
-const OrderItem: React.FC<OrderItemProps> = ({ orders, filter }) => {
+const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, total }) => {
+  const [orders, setOrders] = useState<AllOrderResponse>();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (total) {
+      const fetchOrder = async () => {
+        const response = await getAllOrderWithSize(userId, accessToken, total);
+        setOrders(response);
+      }
+
+      fetchOrder();
+    }
+  }, [accessToken, userId, total]);
 
   const statusBadge: Record<OrderStatus, string> = {
     [OrderStatus.PENDING]: 'bg-gray-200 text-gray-800',
@@ -36,13 +54,11 @@ const OrderItem: React.FC<OrderItemProps> = ({ orders, filter }) => {
     [OrderStatus.REFUNDED]: 'bg-emerald-100 text-emerald-800',
   };
 
-  const paymentStatusBadge: Record<PaymentStatus, string> = {
-    [PaymentStatus.PENDING]: 'bg-gray-200 text-gray-800',
-    [PaymentStatus.COMPLETED]: 'bg-green-100 text-green-800',
-    [PaymentStatus.FAILED]: 'bg-red-100 text-red-800',
-    [PaymentStatus.PENDING_REFUND]: 'bg-yellow-100 text-yellow-800',
-    [PaymentStatus.REFUNDED]: 'bg-blue-100 text-blue-800',
-  };
+  if (!orders) {
+    return <span>Loading...</span>
+  } else if (orders.items.length === 0) {
+    return <span>There&apos;s no order.</span>
+  }
 
   if (!filter) {
     const paginatedItems = orders.items.slice((currentPage - 1) * pageSize, currentPage * pageSize);
@@ -58,7 +74,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ orders, filter }) => {
             <div className='flex justify-between'>
               <div className='flex flex-col'>
                 <span className='font-semibold mb-2'>{`ID: ${order.id}`}</span>
-                <span>{`Ordered Date: ${convertDateTime(order.createdAt)}`}</span>
+                <span>{`Ordered Date: ${convertDateTime(order.createAt)}`}</span>
                 <span>{`Delivery Method: ${order.deliveryMethod}`}</span>
               </div>
               <span className={`font-semibold h-fit px-3 py-1 rounded-lg ${statusBadge[order.status]}`}>
@@ -69,7 +85,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ orders, filter }) => {
             {order.items.map((childItem, index) => (
               <div
                 key={index}
-                className='flex gap-x-4 border-t-2 border-b-2 py-4'
+                className='flex gap-x-4 border-t-2 border-b-2 border-gray-100 py-4'
               >
                 <Image
                   src={childItem.image}
@@ -78,39 +94,74 @@ const OrderItem: React.FC<OrderItemProps> = ({ orders, filter }) => {
                   height={500}
                   className='object-cover w-24'
                 />
-                <div className='flex flex-col'>
-                  <span>{childItem.productName}</span>
-                  <span>{`Quantity: ${childItem.quantity}`}</span>
+                <div className='flex flex-col justify-between w-full'>
+                  <div className='flex justify-between'>
+                    <div className='flex flex-col'>
+                      <span>{childItem.productName}</span>
+                      <span>{`Slug: ${childItem.variantSlug}`}</span>
+                    </div>
+                    <span>{`Price: ${formatPrice(childItem.price)}`}</span>
+                  </div>
+
+                  <div className='flex justify-between'>
+                    <span>{`Quantity: ${childItem.quantity}`}</span>
+                    <div className='flex gap-x-2'>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+
+                          router.push(`/review/${order.id}-${childItem.productId}-${childItem.variantId}`)
+                        }}
+                        disabled={!childItem.canReview}
+                        className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
+                      >
+                        Review
+                      </button>
+                      <button
+                        disabled={!childItem.canReturn}
+                        className={`inline-block text-sm font-medium px-3 py-1 text-white rounded-lg w-fit ${childItem.canReturn
+                          ? 'bg-gray-800 hover:bg-gray-900'
+                          : 'bg-gray-300'
+                          }`}
+                      >
+                        {childItem.canReturn ? 'Request Return' : 'Not Returnable'}
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             ))}
 
-            <div className='flex justify-between'>
-              <div className='flex flex-col gap-y-2'>
-                <span>{`Payment Method: ${order.paymentMethod}`}</span>
-                <span className={`font-semibold w-fit h-fit px-3 py-1 rounded-lg ${paymentStatusBadge[order.paymentStatus]}`}>
-                  {order.paymentStatus.replace(/_/g, ' ')}
-                </span>
-              </div>
-              <span className='font-semibold'>{`Total: ${formatPrice(order.totalPrice)}`}</span>
-            </div>
+            <span className='block text-right w-full font-semibold'>
+              {`Total: ${formatPrice(order.totalPrice)}`}
+            </span>
           </Link>
         ))}
 
-        <Pagination
-          align='center'
-          defaultCurrent={1}
-          current={currentPage}
-          pageSize={pageSize}
-          total={orders.total}
-          onChange={(page) => setCurrentPage(page)}
-          showSizeChanger
-          onShowSizeChange={(current, size) => {
-            setPageSize(size);
-            setCurrentPage(1);
-          }}
-          pageSizeOptions={[5, 10, 15, 20]}
-        />
+        <div className='flex justify-center items-center gap-x-4 mt-4'>
+          <Pagination
+            currentPage={currentPage}
+            totalItems={orders.total}
+            itemsPerPage={pageSize}
+            onPageChange={setCurrentPage}
+          />
+
+          <div className='flex justify-center items-center gap-x-2'>
+            <select
+              onChange={(e) => {
+                setPageSize(Number(e.target.value))
+                setCurrentPage(1)
+              }}
+              className="border rounded-md p-1 text-base"
+            >
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
+            </select>
+            <span>items per page</span>
+          </div>
+        </div>
       </div>
     );
   }
@@ -128,18 +179,25 @@ const OrderItem: React.FC<OrderItemProps> = ({ orders, filter }) => {
           <div className='flex justify-between'>
             <div className='flex flex-col'>
               <span className='font-semibold mb-2'>{`ID: ${order.id}`}</span>
-              <span>{`Ordered Date: ${convertDateTime(order.createdAt)}`}</span>
+              <span>{`Ordered Date: ${convertDateTime(order.createAt)}`}</span>
               <span>{`Delivery Method: ${order.deliveryMethod}`}</span>
             </div>
-            <span className={`font-semibold h-fit px-3 py-1 rounded-lg ${statusBadge[order.status]}`}>
-              {order.status.replace(/_/g, ' ')}
-            </span>
+
+            <div className='flex flex-col items-end gap-y-5'>
+              <span className={`font-semibold h-fit px-3 py-1 rounded-lg ${statusBadge[order.status]}`}>
+                {order.status.replace(/_/g, ' ')}
+              </span>
+
+              {order.deliveredAt !== null && (
+                <span>{`Delivered Date: ${convertDateTime(order.deliveredAt)}`}</span>
+              )}
+            </div>
           </div>
 
           {order.items.map((childItem, index) => (
             <div
               key={index}
-              className='flex gap-x-4 border-t-2 border-b-2 py-4'
+              className='flex gap-x-4 border-t-2 border-b-2 border-gray-100 py-4'
             >
               <Image
                 src={childItem.image}
@@ -148,71 +206,99 @@ const OrderItem: React.FC<OrderItemProps> = ({ orders, filter }) => {
                 height={500}
                 className='object-cover w-24'
               />
-              <div className='flex flex-col'>
-                <span>{childItem.productName}</span>
-                <span>{`Quantity: ${childItem.quantity}`}</span>
+              <div className='flex flex-col justify-between w-full'>
+                <div className='flex justify-between'>
+                  <div className='flex flex-col'>
+                    <span>{childItem.productName}</span>
+                    <span>{`Slug: ${childItem.variantSlug}`}</span>
+                  </div>
+                  <span>{`Price: ${formatPrice(childItem.price)}`}</span>
+                </div>
+                <div className='flex justify-between'>
+                  <span>{`Quantity: ${childItem.quantity}`}</span>
+                  <div className='flex gap-x-2'>
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+
+                        router.push(`/review/${order.id}-${childItem.productId}-${childItem.variantId}`)
+                      }}
+                      disabled={!childItem.canReview}
+                      className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
+                    >
+                      Review
+                    </button>
+                    <button
+                      disabled={!childItem.canReturn}
+                      className={`inline-block text-sm font-medium px-3 py-1 text-white rounded-lg w-fit ${childItem.canReturn
+                        ? 'bg-gray-800 hover:bg-gray-900'
+                        : 'bg-gray-300'
+                        }`}
+                    >
+                      {childItem.canReturn ? 'Request Return' : 'Not Returnable'}
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           ))}
 
-          <div className='flex justify-between'>
-            <div className='flex flex-col gap-y-2'>
-              <span>{`Payment Method: ${order.paymentMethod}`}</span>
-              <span className={`font-semibold w-fit h-fit px-3 py-1 rounded-lg ${paymentStatusBadge[order.paymentStatus]}`}>
-                {order.paymentStatus.replace(/_/g, ' ')}
-              </span>
-            </div>
-            <span className='font-semibold'>{`Total: ${formatPrice(order.totalPrice)}`}</span>
-          </div>
+          <span className='block text-right w-full font-semibold'>
+            {`Total: ${formatPrice(order.totalPrice)}`}
+          </span>
         </Link>
       ))}
 
-      <Pagination
-        align='center'
-        defaultCurrent={1}
-        current={currentPage}
-        pageSize={pageSize}
-        total={paginatedItems.length}
-        onChange={(page) => setCurrentPage(page)}
-        showSizeChanger
-        onShowSizeChange={(current, size) => {
-          setPageSize(size);
-          setCurrentPage(1);
-        }}
-        pageSizeOptions={[5, 10, 15, 20]}
-      />
+      <div className='flex justify-center items-center gap-x-4 mt-4'>
+        <Pagination
+          currentPage={currentPage}
+          totalItems={orders.items.filter(o => o.status === filter).length}
+          itemsPerPage={pageSize}
+          onPageChange={setCurrentPage}
+        />
+
+        <div className='flex justify-center items-center gap-x-2'>
+          <select
+            onChange={(e) => {
+              setPageSize(Number(e.target.value))
+              setCurrentPage(1)
+            }}
+            className="border rounded-md p-1 text-base"
+          >
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+          </select>
+          <span>items per page</span>
+        </div>
+      </div>
     </div>
   );
 }
 
-export const OrderList: React.FC<OrderListProps> = ({ userId, accessToken }) => {
-  const [orders, setOrders] = useState<AllOrderResponse>();
-
-  useEffect(() => {
-    const fetchOrder = async () => {
-      const response = await getAllOrder(userId, accessToken);
-      setOrders(response);
-    }
-
-    fetchOrder();
-  }, [accessToken, userId]);
-
-  if (!orders) {
-    return <span>Loading...</span>
-  } else if (orders.items.length === 0) {
-    return <span>There&apos;s no order.</span>
-  }
-
+export const OrderList: React.FC<OrderListProps> = ({ userId, accessToken, total }) => {
   const orderLists = Object.entries(OrderStatus).map(([value], index) => ({
     key: String(index + 1),
     label: value.replace(/_/g, ' ').toLowerCase().replace(/^\w/, c => c.toUpperCase()),
-    children: <OrderItem orders={orders} filter={value} />,
+    children: <OrderItem
+      key={`${value}-${userId}`}
+      userId={userId}
+      accessToken={accessToken}
+      filter={value}
+      {...(total ? { total: total } : {})}
+    />,
   }));
 
   orderLists.unshift({
     key: '0',
     label: 'All',
-    children: <OrderItem orders={orders} />,
+    children: <OrderItem
+      key={`all-${userId}`}
+      userId={userId}
+      accessToken={accessToken}
+      {...(total ? { total: total } : {})}
+    />,
   });
 
   return (

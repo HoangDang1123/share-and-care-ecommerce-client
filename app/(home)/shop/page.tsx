@@ -3,10 +3,10 @@
 import { getAllProduct, getShopProducts } from "@/app/api/product";
 import { useFilter } from "@/app/context/FilterContext";
 import Card from "@/app/ui/card";
+import Pagination from "@/app/ui/pagination";
 import SortSelected from "@/app/ui/shop/sort-selected";
 import { FetchProductsParams, ProductResponse } from "@/interface/product";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { Pagination } from "antd";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -110,20 +110,30 @@ export default function Page() {
             ))}
           </div>
 
-          <Pagination
-            align='center'
-            defaultCurrent={1}
-            current={currentPage}
-            pageSize={pageSize}
-            total={productList.length}
-            onChange={(page) => setCurrentPage(page)}
-            showSizeChanger
-            onShowSizeChange={(current, size) => {
-              setPageSize(size);
-              setCurrentPage(1);
-            }}
-            pageSizeOptions={[5, 10, 15, 20]}
-          />
+          <div className='flex justify-center items-center gap-x-4 mt-4'>
+            <Pagination
+              currentPage={currentPage}
+              totalItems={productList.length}
+              itemsPerPage={pageSize}
+              onPageChange={setCurrentPage}
+            />
+
+            <div className='flex justify-center items-center gap-x-2'>
+              <select
+                onChange={(e) => {
+                  setPageSize(Number(e.target.value))
+                  setCurrentPage(1)
+                }}
+                className="border rounded-md p-1 text-base"
+              >
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+              </select>
+              <span>items per page</span>
+            </div>
+          </div>
         </div>
       )}
     </div>

@@ -55,7 +55,7 @@ export default function Page() {
 
     const item = cart?.items[index];
     if (!item) return total;
-    
+
     const price = item?.variantSlug ? item?.itemTotalPrice : item?.itemTotalOriginalPrice;
 
     return total + (price || 0);
@@ -124,12 +124,14 @@ export default function Page() {
 
     setProductPrice(totalCost);
 
+    localStorage.setItem('productInCart', 'true');
+
     router.push("/order");
   }
 
   if (userId === "" || accessToken === "") {
     return (
-      <div className="flex justify-center items-center h-[735px] bg-black gap-x-4">
+      <div className="flex justify-center items-center h-[750px] bg-black gap-x-4">
         <h6 className="text-white">Please log in to continue</h6>
         <Link
           href="/auth/login"
@@ -148,10 +150,10 @@ export default function Page() {
 
         <ul className="flex space-x-1 sm:text-md md:text-xl">
           <li>
-            <Link href="/" className='text-gray-400 hover:text-gray-900'>Home / </Link>
+            <Link href="/" className='text-gray-400 text-base hover:text-gray-900'>Home / </Link>
           </li>
           <li>
-            My Cart
+            <span className="text-base">My Cart</span>
           </li>
         </ul>
       </div>

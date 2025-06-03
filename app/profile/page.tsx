@@ -36,7 +36,12 @@ export default function Page() {
       key: 1,
       label: 'Order List',
       icon: <ClipboardDocumentIcon className="size-6" />,
-      children: <OrderList userId={userId} accessToken={accessToken} />,
+      children: 
+        <OrderList 
+          userId={userId} 
+          accessToken={accessToken} 
+          {...(orders && orders.total > 0 ? { total: orders.total } : {})} 
+        />,
     },
     {
       key: 2,
@@ -128,7 +133,7 @@ export default function Page() {
 
   if (userId === "" || accessToken === "") {
     return (
-      <div className="flex justify-center items-center h-[735px] bg-black gap-x-4">
+      <div className="flex justify-center items-center h-[750px] bg-black gap-x-4">
         <h6 className="text-white">Please log in to continue</h6>
         <Link
           href="/auth/login"
@@ -147,9 +152,11 @@ export default function Page() {
 
         <ul className="flex space-x-1 text-xl">
           <li>
-            <Link href="/" className='text-gray-400 hover:text-gray-900'>Home / </Link>
+            <Link href="/" className='text-gray-400 text-base hover:text-gray-900'>Home / </Link>
           </li>
-          <li>Profile</li>
+          <li>
+            <span className="text-base">Profile</span>
+          </li>
         </ul>
       </div>
 

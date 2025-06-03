@@ -162,6 +162,9 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
         } else {
           setProductPrice(0);
         }
+
+        localStorage.setItem('productInCart', 'false');
+
         router.push("/order");
       }
     }

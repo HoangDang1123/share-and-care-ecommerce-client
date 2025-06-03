@@ -58,7 +58,7 @@ export default function Page() {
 
   if (userId === "" || accessToken === "") {
     return (
-      <div className="flex justify-center items-center h-[735px] bg-black gap-x-4">
+      <div className="flex justify-center items-center h-[750px] bg-black gap-x-4">
         <h6 className="text-white">Please log in to continue</h6>
         <Link
           href="/auth/login"
@@ -77,10 +77,10 @@ export default function Page() {
 
         <ul className="flex space-x-1 sm:text-md md:text-xl">
           <li>
-            <Link href="/" className='text-gray-400 hover:text-gray-900'>Home / </Link>
+            <Link href="/" className='text-gray-400 text-base hover:text-gray-900'>Home / </Link>
           </li>
           <li>
-            Order
+            <span className="text-base">Order</span>
           </li>
         </ul>
       </div>
