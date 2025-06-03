@@ -108,13 +108,14 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
 
     const city = cities?.find(city => city.Id === selectedCity);
     const district = districts?.find(district => district.Id === selectedDistrict);
     const ward = wards?.find(ward => ward.Id === selectedWard);
     if (userId !== "" && accessToken !== "" && city && district && ward) {
       try {
+        setLoading(true);
+        
         await createAddress({
           name: inputData.name,
           phone: inputData.phone,
