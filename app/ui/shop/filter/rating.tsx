@@ -1,7 +1,6 @@
 'use client'
 
 import { Radio, RadioGroup } from '@headlessui/react';
-import '@smastrom/react-rating/style.css';
 import { Rate } from 'antd';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
