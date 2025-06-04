@@ -1,7 +1,7 @@
 'use client'
 
 import { resetPassword } from "@/app/api/auth";
-import { usePathname, useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 import { toast } from "react-toastify";
@@ -13,12 +13,19 @@ export default function Page() {
   });
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const pathName = usePathname();
-  const resetToken = pathName?.split('/').pop() ?? '';
+  const param = useParams();
+  const id = param.id;
 
   useEffect(() => {
-    setFormData((prev) => ({ ...prev, resetToken }));
-  }, [resetToken]);
+    const fetchToken = async () => {
+      if (typeof id !== 'string') {
+        return;
+      }
+      setFormData(prev => ({ ...prev, resetToken: id }));
+    }
+
+    fetchToken();
+  }, [id]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -42,7 +49,7 @@ export default function Page() {
   };
 
   return (
-    <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+    <div className="mt-20 sm:mx-auto sm:w-full sm:max-w-sm">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="email" className="block text-xl font-bold text-gray-900">

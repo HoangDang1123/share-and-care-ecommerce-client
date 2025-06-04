@@ -102,7 +102,7 @@ export default function Page() {
       }
 
       await cancelOrder(id, userId, accessToken);
-      toast.success("Cancel order sucessful!");
+      toast.success("Cancel order successful!");
 
       router.push("/profile");
 

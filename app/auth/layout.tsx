@@ -13,11 +13,11 @@ export default function AuthLayout({
     >
       <Image
         alt="auth-thumb"
-        src="/assets/Auth-thumb.png"
+        src="/assets/auth-thumb.jpg"
         priority
         width={1920}
         height={1080}
-        className="sm:hidden md:block w-full h-full"
+        className="sm:hidden md:block object-cover"
       />
 
       <div className='w-[600px] h-full flex flex-col justify-center shadow-xl px-16'>
