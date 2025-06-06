@@ -32,11 +32,11 @@ export default function Banner() {
       <div className="flex whitespace-nowrap overflow-hidden items-center gap-x-4 gap-y-2">
         <div className="whitespace-nowrap overflow-hidden">
           <p className="sm:text-xs md:text-sm leading-6 text-gray-900 animate-marquee">
-            <strong className="font-semibold">Share And Care 2024</strong>
+            <strong className="font-semibold">Share And Care 2025</strong>
             <span className="mx-2">|</span>
             <span className="ml-2 mr-40">Join us in Denver from June 7 – 9 to see what’s coming next.</span>
 
-            <strong className="font-semibold">Share And Care 2024</strong>
+            <strong className="font-semibold">Share And Care 2025</strong>
             <span className="mx-2">|</span>
             <span className="mx-2">Join us in Denver from June 7 – 9 to see what’s coming next.</span>
           </p>

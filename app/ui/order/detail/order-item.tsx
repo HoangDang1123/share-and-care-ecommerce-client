@@ -2,9 +2,15 @@
 
 import { OrderDetailItem } from '@/interface/order'
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { formatPrice } from '@/utils/helpers';
 import { useRouter } from 'next/navigation';
+import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
+import { CreateRefund } from '@/interface/refund';
+import { PaperAirplaneIcon } from '@heroicons/react/24/outline';
+import ClipLoader from 'react-spinners/ClipLoader';
+import { createRefundRequest } from '@/app/api/refund';
+import { toast } from 'react-toastify';
 
 interface OrderItemProps {
   item: OrderDetailItem,
@@ -12,7 +18,46 @@ interface OrderItemProps {
 }
 
 export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId }) => {
+  const [userId, setUserId] = useState('');
+  const [accessToken, setAccessToken] = useState('');
+  const [openDialog, setOpenDialog] = useState(false);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  const [request, setRequest] = useState<CreateRefund>({
+    productId: item.productId,
+    ...(item.variantId
+      ? { variantId: item.variantId }
+      : {}
+    ),
+    reason: '',
+    description: '',
+  });
+
+  useEffect(() => {
+    setUserId(localStorage.getItem('userId') || '');
+    setAccessToken(localStorage.getItem('accessToken') || '');
+  }, []);
+
+  const handleSendRequest = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    if (userId !== "" && accessToken !== "") {
+      try {
+        setLoading(true);
+
+        await createRefundRequest(orderId, request, userId, accessToken);
+        setOpenDialog(false);
+
+        toast.success("Request refund successful!");
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (error) { }
+      finally {
+        setLoading(false);
+      }
+    }
+  }
 
   return (
     <div
@@ -61,6 +106,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId }) => {
 
             <button
               disabled={!item.canReturn}
+              onClick={() => setOpenDialog(true)}
               className={`inline-block text-sm font-medium px-3 py-1 text-white rounded-lg w-fit ${item.canReturn
                 ? 'bg-gray-800 hover:bg-gray-900'
                 : 'bg-gray-300'
@@ -71,6 +117,63 @@ export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId }) => {
           </div>
         </div>
       </div>
+
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} className="relative z-50">
+        <DialogBackdrop transition
+          className="fixed inset-0 bg-gray-400/50 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
+        />
+        <div className="fixed inset-0 flex items-center justify-center p-4">
+          <DialogPanel className="space-y-4 border bg-white p-12 rounded-xl">
+            <DialogTitle className="font-bold">Why do you request refund this product?</DialogTitle>
+
+            <div className='flex flex-col gap-y-1'>
+              <label className='font-semibold'>Reason</label>
+              <textarea
+                rows={4}
+                value={request.reason}
+                onChange={(e) => setRequest((prev) => ({
+                  ...prev,
+                  reason: e.target.value,
+                }))}
+                placeholder="Write your reason..."
+                className='border-2 w-full p-2 rounded-md flex-1 overflow-y-auto ring-offset placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:text-sm flex-grow resize-none outline-none break-words box-border text-inherit'
+              />
+            </div>
+
+            <div className='flex flex-col gap-y-1'>
+              <label className='font-semibold'>Description</label>
+              <textarea
+                rows={4}
+                value={request.description}
+                onChange={(e) => setRequest((prev) => ({
+                  ...prev,
+                  description: e.target.value,
+                }))}
+                placeholder="Write your description..."
+                className='border-2 w-full p-2 rounded-md flex-1 overflow-y-auto ring-offset placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:text-sm flex-grow resize-none outline-none break-words box-border text-inherit'
+              />
+            </div>
+
+            <button
+              onClick={handleSendRequest}
+              className='px-3 py-1 w-full bg-gray-800 text-white font-medium text-base rounded-lg hover:bg-gray-900'
+            >
+              {loading ? (
+                <ClipLoader
+                  size={20}
+                  color='#ffffff'
+                  aria-label="Loading Spinner"
+                />
+              ) : (
+                <div className='flex justify-center items-center gap-x-2'>
+                  <span className='font-semibold text-lg'>Send</span>
+                  <PaperAirplaneIcon className='size-6' />
+                </div>
+              )}
+            </button>
+          </DialogPanel>
+        </div>
+      </Dialog>
     </div>
   )
 }

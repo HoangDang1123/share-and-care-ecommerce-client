@@ -196,7 +196,7 @@ export default function Page() {
                 <button
                   disabled={loading}
                   type="submit"
-                  className="flex w-full h-10 justify-center rounded-lg bg-gray-900 mt-10 px-3 py-1.5 text-lg font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                  className="flex items-center w-full h-10 justify-center rounded-lg bg-gray-900 mt-10 px-3 py-1.5 text-lg font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                 >
                   {loading ? (
                     <ClipLoader

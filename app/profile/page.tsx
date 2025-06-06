@@ -36,11 +36,11 @@ export default function Page() {
       key: 1,
       label: 'Order List',
       icon: <ClipboardDocumentIcon className="size-6" />,
-      children: 
-        <OrderList 
-          userId={userId} 
-          accessToken={accessToken} 
-          {...(orders && orders.total > 0 ? { total: orders.total } : {})} 
+      children:
+        <OrderList
+          userId={userId}
+          accessToken={accessToken}
+          {...(orders && orders.total > 0 ? { total: orders.total } : {})}
         />,
     },
     {
@@ -60,7 +60,12 @@ export default function Page() {
   useEffect(() => {
     setUserId(localStorage.getItem('userId') || '');
     setAccessToken(localStorage.getItem('accessToken') || '');
-    setAvatar(localStorage.getItem('avatarUrl') ?? '/assets/default-avatar-icon.jpg');
+    const avatar = localStorage.getItem('avatarUrl');
+    setAvatar(
+      avatar === 'https://via.placeholder.com/400x400.png' || !avatar
+        ? '/assets/default-avatar-icon.jpg'
+        : avatar
+    );
   }, []);
 
   useEffect(() => {

@@ -10,8 +10,8 @@ import { CreateReview } from '@/interface/review';
 import ClipLoader from 'react-spinners/ClipLoader';
 import Image from 'next/image';
 import { PhotoIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { uploadAvatar } from '@/app/api/auth';
 import { toast } from 'react-toastify';
+import { uploadReviewImage } from '@/app/api/upload';
 
 export default function Page() {
   const [userId, setUserId] = useState('');
@@ -87,8 +87,8 @@ export default function Page() {
         if (fileImages && fileImages.length > 0) {
           const uploadedImages = await Promise.all(
             fileImages.map(async (file) => {
-              const response = await uploadAvatar(file, userId, accessToken);
-              return response.image_url;
+              const response = await uploadReviewImage(file, userId, accessToken);
+              return response;
             })
           );
 

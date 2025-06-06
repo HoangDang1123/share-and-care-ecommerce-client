@@ -140,20 +140,21 @@ export enum OrderStatus {
     SHIPPED = 'SHIPPED', // Đã vận chuyển
     DELIVERED = 'DELIVERED', // Đã giao
     CANCELLED = 'CANCELLED', // Đã hủy
+    NOT_DELIVERED = 'NOT_DELIVERED', // Không giao được
     RETURN_REQUESTED = 'RETURN_REQUESTED', // Yêu cầu trả hàng
     RETURNED = 'RETURNED', // Đã trả hàng
-    PENDING_REFUND = 'PENDING_REFUND', // Chờ hoàn tiền
-    REFUNDED = 'REFUNDED', // Đã hoàn tiền
 }
 
 export enum PaymentMethod {
     COD = 'COD',
     VNPAY = 'VNPAY',
     MOMO = 'MOMO',
+    MANUAL = 'MANUAL',
 }
 
 export enum PaymentStatus {
     PENDING = 'PENDING',
+    CANCELLED = 'CANCELLED',
     COMPLETED = 'COMPLETED',
     FAILED = 'FAILED',
     PENDING_REFUND = 'PENDING_REFUND',

@@ -6,7 +6,11 @@ import get from 'lodash/get';
 
 const REVIEW_URL = '/review';
 
-export const createReview = async (data: Review.CreateReview, clientId: string, accessToken: string): Promise<Review.CreateReviewResponse> => {
+export const createReview = async (
+    data: Review.CreateReview, 
+    clientId: string, 
+    accessToken: string
+): Promise<Review.CreateReviewResponse> => {
     try {
         const response = await api.post(`${REVIEW_URL}/`, data, {
             headers: {

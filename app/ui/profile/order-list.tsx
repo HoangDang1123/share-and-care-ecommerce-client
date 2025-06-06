@@ -48,16 +48,13 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
     [OrderStatus.SHIPPED]: 'bg-sky-100 text-sky-800',
     [OrderStatus.DELIVERED]: 'bg-green-100 text-green-800',
     [OrderStatus.CANCELLED]: 'bg-red-100 text-red-800',
+    [OrderStatus.NOT_DELIVERED]: 'bg-emerald-100 text-emerald-800',
     [OrderStatus.RETURN_REQUESTED]: 'bg-orange-100 text-orange-800',
     [OrderStatus.RETURNED]: 'bg-orange-200 text-orange-900',
-    [OrderStatus.PENDING_REFUND]: 'bg-purple-100 text-purple-800',
-    [OrderStatus.REFUNDED]: 'bg-emerald-100 text-emerald-800',
-  };
+  };  
 
-  if (!orders) {
-    return <span>Loading...</span>
-  } else if (orders.items.length === 0) {
-    return <span>There&apos;s no order.</span>
+  if (!orders || (orders && orders.total === 0)) {
+    return <div className='flex justify-center items-center w-full text-lg py-4'>There&apos;s no address.</div>
   }
 
   if (!filter) {

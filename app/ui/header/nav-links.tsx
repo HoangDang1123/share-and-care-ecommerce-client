@@ -83,13 +83,13 @@ export default function NavLinks() {
         >
           <Link
             href="/shop"
-            className='flex grow items-center justify-center gap-2 rounded-xl md:text-xl xl:text-2xl text-gray-900 font-bold hover:bg-gray-200 flex-none px-6 py-4'
+            className='flex grow items-center justify-center gap-2 rounded-xl md:text-base xl:text-xl text-gray-900 font-bold hover:bg-gray-200 flex-none px-4 py-2'
           >
             {category.name.toUpperCase()}
           </Link>
 
           {isOpenArray[index] && childCategories[category.id]?.length > 0 && (
-            <div className="absolute grid grid-cols-6 border top-14 inset-x-60 mt-2 px-6 bg-white shadow-lg rounded-md p-2">
+            <div className="absolute grid grid-cols-6 border top-14 inset-x-60 mt-2 px-6 bg-white shadow-lg rounded-md p-8">
               {childCategories[category.id].map((child) => (
                 <div key={child.id} className="relative group">
                   <Link
