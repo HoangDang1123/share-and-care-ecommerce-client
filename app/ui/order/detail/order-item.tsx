@@ -49,7 +49,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId }) => {
         await createReturnRequest(orderId, request, userId, accessToken);
         setOpenDialog(false);
 
-        toast.success("Request refund successful!");
+        toast.success("Request return successful!");
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) { }
@@ -124,7 +124,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId }) => {
         />
         <div className="fixed inset-0 flex items-center justify-center p-4">
           <DialogPanel className="space-y-4 border bg-white p-12 rounded-xl">
-            <DialogTitle className="font-bold">Why do you request refund this product?</DialogTitle>
+            <DialogTitle className="font-bold">Why do you request to return this product?</DialogTitle>
 
             <div className='flex flex-col gap-y-1'>
               <label className='font-semibold'>Reason</label>
