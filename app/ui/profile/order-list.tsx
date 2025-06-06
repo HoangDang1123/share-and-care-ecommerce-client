@@ -49,12 +49,11 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
     [OrderStatus.DELIVERED]: 'bg-green-100 text-green-800',
     [OrderStatus.CANCELLED]: 'bg-red-100 text-red-800',
     [OrderStatus.NOT_DELIVERED]: 'bg-emerald-100 text-emerald-800',
-    [OrderStatus.RETURN_REQUESTED]: 'bg-orange-100 text-orange-800',
-    [OrderStatus.RETURNED]: 'bg-orange-200 text-orange-900',
-  };  
+    [OrderStatus.RETURN]: 'bg-orange-200 text-orange-900',
+  };
 
   if (!orders || (orders && orders.total === 0)) {
-    return <div className='flex justify-center items-center w-full text-lg py-4'>There&apos;s no address.</div>
+    return <div className='flex justify-center items-center w-full text-lg py-4'>There&apos;s no order.</div>
   }
 
   if (!filter) {
@@ -103,17 +102,31 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
                   <div className='flex justify-between'>
                     <span>{`Quantity: ${childItem.quantity}`}</span>
                     <div className='flex gap-x-2'>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
+                      {childItem.isReviewed ? (
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
 
-                          router.push(`/review/${order.id}-${childItem.productId}-${childItem.variantId}`)
-                        }}
-                        disabled={!childItem.canReview}
-                        className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
-                      >
-                        Review
-                      </button>
+                            router.push(`/review/${order.id}-${childItem.productId}-${childItem.variantId}`)
+                          }}
+                          className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
+                        >
+                          View Review Detail
+                        </button>
+                      ) : (
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+
+                            router.push(`/review/${order.id}-${childItem.productId}-${childItem.variantId}`)
+                          }}
+                          disabled={!childItem.canReview || order.status !== OrderStatus.DELIVERED}
+                          className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
+                        >
+                          Review
+                        </button>
+                      )}
+
                       <button
                         disabled={!childItem.canReturn}
                         className={`inline-block text-sm font-medium px-3 py-1 text-white rounded-lg w-fit ${childItem.canReturn
@@ -165,6 +178,10 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
 
   const paginatedItems = orders.items.filter(o => o.status === filter).slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
+  if (paginatedItems.length === 0) {
+    return <div className='flex justify-center items-center w-full text-lg py-4'>There&apos;s no order.</div>
+  }
+
   return (
     <div className='flex flex-col gap-y-6'>
       {paginatedItems.map((order) => (
@@ -214,17 +231,31 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
                 <div className='flex justify-between'>
                   <span>{`Quantity: ${childItem.quantity}`}</span>
                   <div className='flex gap-x-2'>
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
+                    {childItem.isReviewed ? (
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
 
-                        router.push(`/review/${order.id}-${childItem.productId}-${childItem.variantId}`)
-                      }}
-                      disabled={!childItem.canReview}
-                      className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
-                    >
-                      Review
-                    </button>
+                          router.push(`/review/${order.id}-${childItem.productId}-${childItem.variantId}`)
+                        }}
+                        className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
+                      >
+                        View Review Detail
+                      </button>
+                    ) : (
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+
+                          router.push(`/review/${order.id}-${childItem.productId}-${childItem.variantId}`)
+                        }}
+                        disabled={!childItem.canReview || order.status !== OrderStatus.DELIVERED}
+                        className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
+                      >
+                        Review
+                      </button>
+                    )}
+
                     <button
                       disabled={!childItem.canReturn}
                       className={`inline-block text-sm font-medium px-3 py-1 text-white rounded-lg w-fit ${childItem.canReturn

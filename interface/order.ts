@@ -94,8 +94,10 @@ export interface OrderDetailItem {
     couponDiscount: number,
     returnDays: number,
     total: number,
+    isReviewed: boolean,
     canReturn: boolean,
     canReview: boolean,
+    returnStatus: ReturnInfo | null,
 }
 
 export interface AllOrderResponse {
@@ -122,14 +124,30 @@ export interface AllOrderItem {
 
 export interface OrderItem {
     productId: string,
-    variantId?: string,
+    variantId: string | null,
     productName: string,
     variantSlug: string,
     image: string,
     price: number,
     quantity: number,
+    isReviewed: boolean,
     canReturn: boolean,
     canReview: boolean,
+    returnStatus: ReturnInfo | null,
+}
+
+export interface ReturnInfo {
+    id: string,
+    paymentTransactionId: string | null,
+    amount: number,
+    status: ReturnStatus,
+    reason: string,
+    description: string,
+    manualRequired: boolean,
+    requestedAt: string,
+    approvedAt: string | null,
+    rejectedAt: string | null,
+    completedAt: string | null,
 }
 
 export enum OrderStatus {
@@ -141,8 +159,7 @@ export enum OrderStatus {
     DELIVERED = 'DELIVERED', // Đã giao
     CANCELLED = 'CANCELLED', // Đã hủy
     NOT_DELIVERED = 'NOT_DELIVERED', // Không giao được
-    RETURN_REQUESTED = 'RETURN_REQUESTED', // Yêu cầu trả hàng
-    RETURNED = 'RETURNED', // Đã trả hàng
+    RETURN = 'RETURN', // Bao gồm mọi bước liên quan return
 }
 
 export enum PaymentMethod {
@@ -159,6 +176,15 @@ export enum PaymentStatus {
     FAILED = 'FAILED',
     PENDING_REFUND = 'PENDING_REFUND',
     REFUNDED = 'REFUNDED',
+}
+
+export enum ReturnStatus {
+  PENDING = 'PENDING',
+  COMPLETED = 'COMPLETED',
+  APPROVED = 'APPROVED',
+  FAILED = 'FAILED',
+  REJECTED = 'REJECTED',
+  NOT_RETURNED = 'NOT_RETURNED',
 }
 
 export interface CancelOrder {

@@ -12,10 +12,10 @@ export const uploadReviewImage = async (
     try {
         const formData = new FormData();
         if (data) {
-            formData.append("avatar", data);
+            formData.append("review", data);
         }
 
-        const response = await api.patch(`${UPLOAD_URL}/reviews`, formData, {
+        const response = await api.post(`${UPLOAD_URL}/reviews`, formData, {
             headers: {
                 "x-client-id": userId,
                 Authorization: accessToken,

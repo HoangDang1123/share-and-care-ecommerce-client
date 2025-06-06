@@ -55,7 +55,10 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ item }) => {
       <div className='flex justify-between items-center w-full'>
         <div className='flex justify-center items-center gap-x-4'>
           <Image
-            src={item.user.avatar}
+            src={
+              item.user.avatar === 'https://via.placeholder.com/400x400.png'
+                ? '/assets/default-image-icon.jpg'
+                : item.user.avatar}
             alt={item.user.avatar}
             width={100}
             height={100}

@@ -1,12 +1,10 @@
 'use client';
 
 import { cancelOrder, getOrderDetail } from '@/app/api/order';
-import { VNPAYPayment } from '@/app/api/payment';
 import BackButton from '@/app/ui/back-button';
 import { OrderItem } from '@/app/ui/order/detail/order-item';
 import OrderTimeline from '@/app/ui/order/detail/order-status';
 import { OrderDetailResponse, OrderStatus, PaymentMethod } from '@/interface/order';
-import { PaymentData } from '@/interface/payment';
 import { convertDateTime, formatPrice } from '@/utils/helpers';
 import { CreditCardIcon } from '@heroicons/react/24/outline';
 import { Col, Row } from 'antd';
@@ -38,8 +36,7 @@ export default function Page() {
     [OrderStatus.DELIVERED]: 'bg-green-100 text-green-800',
     [OrderStatus.CANCELLED]: 'bg-red-100 text-red-800',
     [OrderStatus.NOT_DELIVERED]: 'bg-emerald-100 text-emerald-800',
-    [OrderStatus.RETURN_REQUESTED]: 'bg-orange-100 text-orange-800',
-    [OrderStatus.RETURNED]: 'bg-orange-200 text-orange-900',
+    [OrderStatus.RETURN]: 'bg-orange-200 text-orange-900',
   };
 
   const canCancel = order
@@ -76,19 +73,14 @@ export default function Page() {
 
     setPaymentLoading(true);
     try {
-      if (typeof id !== 'string') {
-        return;
+      if (order && order.paymentUrl) {
+        router.replace(order.paymentUrl);
       }
-
-      const paymentData: PaymentData = {
-        orderId: id,
-        language: "",
-        bankCode: "",
-      }
-      const response = await VNPAYPayment(paymentData);
-      router.replace(response);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) { }
+    finally {
+      setPaymentLoading(false);
+    }
   }
 
   const handleCanceling = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -188,7 +180,7 @@ export default function Page() {
             </div>
 
             {order.order.items.map((childItem, index) => (
-              <OrderItem key={index} item={childItem} orderId={order.order.id} />
+              <OrderItem key={index} item={childItem} orderId={order.order.id} status={order.order.status} />
             ))}
 
             <div className='flex justify-end'>

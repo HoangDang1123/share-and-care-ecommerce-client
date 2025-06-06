@@ -1,6 +1,6 @@
 'use client'
 
-import { OrderDetailItem } from '@/interface/order'
+import { OrderDetailItem, OrderStatus } from '@/interface/order'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { formatPrice } from '@/utils/helpers';
@@ -15,9 +15,10 @@ import { toast } from 'react-toastify';
 interface OrderItemProps {
   item: OrderDetailItem,
   orderId: string,
+  status: OrderStatus,
 }
 
-export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId }) => {
+export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId, status }) => {
   const [userId, setUserId] = useState('');
   const [accessToken, setAccessToken] = useState('');
   const [openDialog, setOpenDialog] = useState(false);
@@ -94,15 +95,26 @@ export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId }) => {
           </span>
 
           <div className='flex gap-x-2'>
-            <button
-              onClick={() => {
-                router.push(`/review/${orderId}-${item.productId}-${item.variantId}`)
-              }}
-              disabled={!item.canReview}
-              className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
-            >
-              Review
-            </button>
+            {item.isReviewed ? (
+              <button
+                onClick={() => {
+                  router.push(`/review/${orderId}-${item.productId}-${item.variantId}`)
+                }}
+                className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
+              >
+                View Review Detail
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  router.push(`/review/${orderId}-${item.productId}-${item.variantId}`)
+                }}
+                disabled={!item.canReview || status !== OrderStatus.DELIVERED}
+                className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
+              >
+                Review
+              </button>
+            )}
 
             <button
               disabled={!item.canReturn}

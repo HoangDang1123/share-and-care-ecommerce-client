@@ -1,10 +1,10 @@
 export interface CreateReview {
     orderId: string,
     productId: string,
-    variantId?: string,
+    variantId: string | null,
     star: number,
     content: string,
-    images?: string[],
+    images: string[],
 }
 
 export interface CreateReviewResponse {

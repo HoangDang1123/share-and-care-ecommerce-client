@@ -33,16 +33,20 @@ export default function Page() {
   const [review, setReview] = useState<CreateReview>({
     orderId,
     productId,
-    ...(variantId ? { variantId } : {}),
+    variantId: variantId === 'null' ? null : variantId,
     star: 0,
     content: '',
-    ...(images.length > 0 ? { images } : {}),
+    images,
   });
 
   useEffect(() => {
     setUserId(localStorage.getItem('userId') || '');
     setAccessToken(localStorage.getItem('accessToken') || '');
   }, []);
+
+  useEffect(() => {
+    console.log(review);
+  }, [review]);
 
   if (!isValidId) return null;
 
@@ -97,7 +101,7 @@ export default function Page() {
             images: uploadedImages,
           };
         }
-
+        
         await createReview(updatedReview, userId, accessToken);
         toast.success("Create review successful!");
         
@@ -124,7 +128,7 @@ export default function Page() {
             <Link href="/profile" className='text-gray-400 text-base hover:text-gray-900'>Profile / </Link>
           </li>
           <li>
-            <Link href={`/profile/${orderId}`} className='text-gray-400 text-base hover:text-gray-900'>{`${orderId} / `}</Link>
+            <Link href={`/order/${orderId}`} className='text-gray-400 text-base hover:text-gray-900'>{`${orderId} / `}</Link>
           </li>
           <li>
             <span className="text-base">Review</span>
