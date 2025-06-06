@@ -6,10 +6,10 @@ import React, { useEffect, useState } from 'react'
 import { formatPrice } from '@/utils/helpers';
 import { useRouter } from 'next/navigation';
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
-import { CreateRefund } from '@/interface/refund';
+import { CreateReturn } from '@/interface/return';
 import { PaperAirplaneIcon } from '@heroicons/react/24/outline';
 import ClipLoader from 'react-spinners/ClipLoader';
-import { createRefundRequest } from '@/app/api/refund';
+import { createReturnRequest } from '@/app/api/return';
 import { toast } from 'react-toastify';
 
 interface OrderItemProps {
@@ -24,7 +24,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId }) => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const [request, setRequest] = useState<CreateRefund>({
+  const [request, setRequest] = useState<CreateReturn>({
     productId: item.productId,
     ...(item.variantId
       ? { variantId: item.variantId }
@@ -46,7 +46,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId }) => {
       try {
         setLoading(true);
 
-        await createRefundRequest(orderId, request, userId, accessToken);
+        await createReturnRequest(orderId, request, userId, accessToken);
         setOpenDialog(false);
 
         toast.success("Request refund successful!");

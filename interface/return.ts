@@ -1,13 +1,13 @@
 import { OrderStatus, PaymentMethod } from "./order"
 
-export interface CreateRefund {
+export interface CreateReturn {
     productId: string,
     variantId?: string,
     reason: string,
     description: string,
 }
 
-export interface CreateRefundResponse {
+export interface CreateReturnResponse {
     refundLog: {
         id: string,
         orderId: string,
