@@ -29,7 +29,7 @@ const SelectedColor: React.FC<SelectedColorProps> = ({ product, selectedColorInd
   return (
     <div className='flex flex-col space-y-2'>
       <h6 className='sm:text-base md:text-xl font-semibold'>
-        {`Selected Color: ${selectedColorIndex && selectedColorIndex !== -1 ? colors.values[selectedColorIndex].value : ''}`}
+        {`Selected Color: ${selectedColorIndex !== null && selectedColorIndex !== -1 ? colors.values[selectedColorIndex].value : ''}`}
       </h6>
       <ul className='grid sm:grid-cols-10 md:grid-cols-12'>
         {colors.values.map((value, index) => (

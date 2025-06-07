@@ -35,7 +35,7 @@ const SelectedSize: React.FC<SelectedSizeProps> = ({ product, selectedSizeIndex,
     <div className='flex flex-col space-y-2'>
       <div className='flex justify-between'>
         <h6 className='sm:text-base md:text-xl font-semibold'>
-          {`Selected Size: ${selectedSizeIndex && selectedSizeIndex !== -1 ? sizes.values[selectedSizeIndex].descriptionUrl : ''}`}
+          {`Selected Size: ${selectedSizeIndex !== null && selectedSizeIndex !== -1 ? sizes.values[selectedSizeIndex].descriptionUrl : ''}`}
         </h6>
 
         <button
