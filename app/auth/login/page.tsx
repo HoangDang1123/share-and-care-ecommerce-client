@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image';
 import { toast } from 'react-toastify';
@@ -128,9 +127,13 @@ export default function Page() {
                   </button>
                 </div>
                 <div className='flex w-full justify-end'>
-                  <Link href="/auth/forgot-password" className="font-bold underline text-gray-900 hover:text-gray-700">
+                  <button
+                    type='button'
+                    onClick={() => router.push('/auth/forgot-password')}
+                    className="font-bold underline text-gray-900 hover:text-gray-700 hover:underline"
+                  >
                     Forgot password?
-                  </Link>
+                  </button>
                 </div>
               </div>
 
@@ -193,12 +196,13 @@ export default function Page() {
 
             <p className="mt-10 text-center text-md text-gray-500">
               Doesn&apos;t have any account yet ? {' '}
-              <Link
-                href="/auth/sign-up"
+              <button
+                type="button"
+                onClick={() => router.push('/auth/sign-up')}
                 className="font-bold underline text-gray-900 hover:text-gray-700"
               >
                 Sign Up
-              </Link>
+              </button>
             </p>
           </div>
         </div>

@@ -105,7 +105,7 @@ export default function Page() {
         await createReview(updatedReview, userId, accessToken);
         toast.success("Create review successful!");
         
-        router.push("/");
+        router.push(`/order/${orderId}`);
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) { }

@@ -1,12 +1,12 @@
 'use client';
 
 import { cancelOrder, getOrderDetail } from '@/app/api/order';
-import BackButton from '@/app/ui/back-button';
 import { OrderItem } from '@/app/ui/order/detail/order-item';
 import OrderTimeline from '@/app/ui/order/detail/order-status';
 import { OrderDetailResponse, OrderStatus, PaymentMethod } from '@/interface/order';
 import { convertDateTime, formatPrice } from '@/utils/helpers';
-import { CreditCardIcon } from '@heroicons/react/24/outline';
+import { Button } from '@headlessui/react';
+import { ArrowTurnDownLeftIcon, CalendarIcon, CreditCardIcon, MapPinIcon, PhoneIcon, TruckIcon, UserIcon } from '@heroicons/react/24/outline';
 import { Col, Row } from 'antd';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -66,7 +66,7 @@ export default function Page() {
     };
 
     fetchOrder();
-  }, [accessToken, id, userId]);
+  }, [accessToken, id, userId, order?.order.status]);
 
   const handlePayment = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
@@ -127,7 +127,12 @@ export default function Page() {
   return (
     <div className='md:px-12 lg:px-24 sm:my-5 md:my-20'>
       <div className='flex items-center sm:px-6 md:px-0 sm:space-x-8 md:space-x-24'>
-        <BackButton />
+        <Button
+          onClick={() => router.replace("/profile")}
+          className='hover:bg-gray-300 hover:rounded-md px-1 py-1'
+        >
+          <ArrowTurnDownLeftIcon className='sm:size-6 xl:size-8' />
+        </Button>
 
         <ul className="flex space-x-1 sm:text-md md:text-xl text-ellipsis text-nowrap">
           <li>
@@ -150,21 +155,24 @@ export default function Page() {
           />
           <div className='flex flex-col border-2 p-6 gap-y-4 rounded-md hover:text-gray-900'>
             <div className='flex justify-between'>
-              <div className='flex flex-col gap-y-1'>
+              <div className='flex flex-col gap-y-4'>
                 <span className='font-semibold mb-4'>{`ID: ${order.order.id}`}</span>
-                <span>{`Ordered Date: ${convertDateTime(order.order.timestamps.createdAt)}`}</span>
-                <span>{`Delivery Method: ${order.order.deliveryMethod}`}</span>
-                <div className='flex gap-x-1'>
-                  <span>Shipping:</span>
-                  <span>{`${order.order.shippingAddress.fullname} - ${order.order.shippingAddress.phone} -`}</span>
-                  <span>
-                    {[
-                      order.order.shippingAddress.street,
-                      order.order.shippingAddress.ward,
-                      order.order.shippingAddress.district,
-                      order.order.shippingAddress.city
-                    ].filter(Boolean).join(', ')}
-                  </span>
+                <div className="flex items-start gap-2">
+                  <CalendarIcon className="w-4 h-4 mt-1 text-primary" />
+                  <div>
+                    <p className="text-muted-foreground">Ordered Date</p>
+                    <p className="font-medium text-foreground">
+                      {convertDateTime(order.order.timestamps.createdAt)}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-2">
+                  <TruckIcon className="w-4 h-4 mt-1 text-primary" />
+                  <div>
+                    <p className="text-muted-foreground">Delivery Method</p>
+                    <p className="font-medium text-foreground">{order.order.deliveryMethod}</p>
+                  </div>
                 </div>
               </div>
 
@@ -174,10 +182,53 @@ export default function Page() {
                 </span>
 
                 {order.order.timestamps.deliveredAt !== null && (
-                  <span>{`Delivered Date: ${convertDateTime(order.order.timestamps.deliveredAt)}`}</span>
+
+                  <div className="flex items-start gap-2">
+                    <CalendarIcon className="w-4 h-4 mt-1 text-primary" />
+                    <div>
+                      <p className="text-muted-foreground">Delivered Date</p>
+                      <p className="font-medium text-foreground">
+                        {convertDateTime(order.order.timestamps.deliveredAt)}
+                      </p>
+                    </div>
+                  </div>
                 )}
               </div>
             </div>
+
+            <Row gutter={16} className='w-full'>
+              <Col span={6}>
+                <div className="flex items-start gap-2">
+                  <UserIcon className="w-4 h-4 mt-1 text-primary" />
+                  <div>
+                    <p className="text-muted-foreground">Full Name</p>
+                    <p className="font-medium text-foreground">{order.order.shippingAddress.fullname}</p>
+                  </div>
+                </div>
+              </Col>
+
+              <Col span={4}>
+                <div className="flex items-start gap-2">
+                  <PhoneIcon className="w-4 h-4 mt-1 text-primary" />
+                  <div>
+                    <p className="text-muted-foreground">Phone</p>
+                    <p className="font-medium text-foreground">{order.order.shippingAddress.phone}</p>
+                  </div>
+                </div>
+              </Col>
+
+              <Col span={14}>
+                <div className="flex items-start gap-2">
+                  <MapPinIcon className="w-4 h-4 mt-1 text-primary" />
+                  <div>
+                    <p className="text-muted-foreground">Address</p>
+                    <p className="font-medium text-foreground">
+                      {`${order.order.shippingAddress.street}, ${order.order.shippingAddress.ward}, ${order.order.shippingAddress.district}, ${order.order.shippingAddress.city}`}
+                    </p>
+                  </div>
+                </div>
+              </Col>
+            </Row>
 
             {order.order.items.map((childItem, index) => (
               <OrderItem key={index} item={childItem} orderId={order.order.id} status={order.order.status} />
@@ -222,35 +273,42 @@ export default function Page() {
           <h1>Order Summary</h1>
           <div className='flex flex-col gap-y-4'>
             <div className='flex justify-between'>
-              <h4 className='font-semibold sm:text-lg md:text-xl'>Product Cost:</h4>
-              <h4 className='sm:text-lg md:text-xl'>{formatPrice(order.order.pricing.itemsPrice)}</h4>
+              <h4 className='font-semibold sm:text-base md:text-lg'>Product Cost:</h4>
+              <h4 className='sm:text-base md:text-lg'>{formatPrice(order.order.pricing.itemsPrice)}</h4>
             </div>
 
             <div className='flex justify-between'>
-              <h4 className='font-semibold sm:text-lg md:text-xl'>Shipping Fee:</h4>
-              <h4 className='sm:text-lg md:text-xl'>{`+ ${formatPrice(order.order.pricing.shippingPrice)}`}</h4>
+              <h4 className='font-semibold sm:text-base md:text-lg'>Shipping Fee:</h4>
+              <h4 className='sm:text-base md:text-lg'>{`+ ${formatPrice(order.order.pricing.shippingPrice)}`}</h4>
             </div>
 
             <div className='flex justify-between'>
-              <h4 className='font-semibold sm:text-lg md:text-xl'>Product Discount:</h4>
-              <h4 className='sm:text-lg md:text-xl'>{`- ${formatPrice(order.order.pricing.productDiscount)}`}</h4>
+              <h4 className='font-semibold sm:text-base md:text-lg'>Product Discount:</h4>
+              <h4 className='sm:text-base md:text-lg'>{`- ${formatPrice(order.order.pricing.productDiscount)}`}</h4>
             </div>
 
             <div className='flex justify-between'>
-              <h4 className='font-semibold sm:text-lg md:text-xl'>Coupon Discount:</h4>
-              <h4 className='sm:text-lg md:text-xl'>{`- ${formatPrice(order.order.pricing.couponDiscount)}`}</h4>
+              <h4 className='font-semibold sm:text-base md:text-lg'>Coupon Discount:</h4>
+              <h4 className='sm:text-base md:text-lg'>{`- ${formatPrice(order.order.pricing.couponDiscount)}`}</h4>
             </div>
 
             <div className='flex justify-between'>
-              <h4 className='font-semibold sm:text-lg md:text-xl'>Shipping Discount:</h4>
-              <h4 className='sm:text-lg md:text-xl'>{`- ${formatPrice(order.order.pricing.shippingDiscount)}`}</h4>
+              <h4 className='font-semibold sm:text-base md:text-lg'>Shipping Discount:</h4>
+              <h4 className='sm:text-base md:text-lg'>{`- ${formatPrice(order.order.pricing.shippingDiscount)}`}</h4>
             </div>
 
             <div className='w-full h-0.5 bg-gray-200' />
 
             <div className='flex justify-between'>
-              <h4 className='font-semibold sm:text-lg md:text-xl'>Total Cost:</h4>
-              <h4 className='sm:text-lg md:text-xl'>{formatPrice(order.order.pricing.totalPrice)}</h4>
+              <h4 className='font-semibold sm:text-base md:text-lg'>Total Saving:</h4>
+              <h4 className='sm:text-base md:text-lg'>{`- ${formatPrice(order.order.pricing.totalSavings)}`}</h4>
+            </div>
+
+            <div className='w-full h-0.5 bg-gray-200' />
+
+            <div className='flex justify-between'>
+              <h4 className='font-semibold sm:text-base md:text-lg'>Total Cost:</h4>
+              <h4 className='sm:text-base md:text-lg'>{formatPrice(order.order.pricing.totalPrice)}</h4>
             </div>
           </div>
 

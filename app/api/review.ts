@@ -7,8 +7,8 @@ import get from 'lodash/get';
 const REVIEW_URL = '/review';
 
 export const createReview = async (
-    data: Review.CreateReview, 
-    clientId: string, 
+    data: Review.CreateReview,
+    clientId: string,
     accessToken: string
 ): Promise<Review.CreateReviewResponse> => {
     try {
@@ -62,9 +62,9 @@ export const getProductReview = async (
 };
 
 export const reportReview = async (
-    reason: { reason: string }, 
-    reviewId: string, 
-    clientId: string, 
+    reason: { reason: string },
+    reviewId: string,
+    clientId: string,
     accessToken: string
 ): Promise<Review.ReportReviewResponse> => {
     try {
@@ -84,3 +84,27 @@ export const reportReview = async (
         throw new Error(errorMessage || 'An unknown error occurred.');
     }
 }
+
+export const getReviewDetail = async (
+    orderId: string,
+    productId: string,
+    variantId: string | null,
+    clientId: string,
+    accessToken: string
+): Promise<Review.ReviewDetailResponse> => {
+    try {
+        const response = await api.get(`${REVIEW_URL}/user?orderId=${orderId}&productId=${productId}&variantId=${variantId}`, {
+            headers: {
+                'x-client-id': clientId,
+                'Authorization': accessToken
+            }
+        });
+        return response.data.metadata;
+    } catch (error) {
+        const errorMessage = get(error, 'response.data.error.message', '');
+        if (errorMessage) {
+            toast.error(errorMessage);
+        }
+        throw new Error(errorMessage || 'An unknown error occurred.');
+    }
+};

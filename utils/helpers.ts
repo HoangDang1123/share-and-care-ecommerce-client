@@ -31,3 +31,12 @@ export const convertDateTime = (time: string) => {
     });
     return localTime;
 }
+
+export const formatReason = (reason: string) => {
+    if (!reason) return "N/A";
+    return reason
+        .toLowerCase()
+        .split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+}

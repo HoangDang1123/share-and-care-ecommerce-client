@@ -9,6 +9,9 @@ import { convertDateTime, formatPrice } from '@/utils/helpers';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Pagination from '../pagination';
+import { CalendarIcon, TruckIcon } from '@heroicons/react/24/outline';
+import { ReturnStatusCard } from '../order/detail/return-detail';
+import { ReviewCard } from '../order/detail/review-detail';
 
 interface OrderListProps {
   userId: string,
@@ -27,6 +30,8 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
   const [orders, setOrders] = useState<AllOrderResponse>();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
+  const [openReviewMap, setOpenReviewMap] = useState<Record<string, boolean>>({});
+  const [openReturnMap, setOpenReturnMap] = useState<Record<string, boolean>>({});
   const router = useRouter();
 
   useEffect(() => {
@@ -52,6 +57,14 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
     [OrderStatus.RETURN]: 'bg-orange-200 text-orange-900',
   };
 
+  const toggleReviewDetail = (key: string) => {
+    setOpenReviewMap((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const toggleReturnDetail = (key: string) => {
+    setOpenReturnMap((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
   if (!orders || (orders && orders.total === 0)) {
     return <div className='flex justify-center items-center w-full text-lg py-4'>There&apos;s no order.</div>
   }
@@ -68,77 +81,123 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
             className='flex flex-col border-2 p-6 gap-y-4 rounded-md hover:text-gray-900'
           >
             <div className='flex justify-between'>
-              <div className='flex flex-col'>
+              <div className='flex flex-col gap-y-4'>
                 <span className='font-semibold mb-2'>{`ID: ${order.id}`}</span>
-                <span>{`Ordered Date: ${convertDateTime(order.createAt)}`}</span>
-                <span>{`Delivery Method: ${order.deliveryMethod}`}</span>
+                <div className="flex items-start gap-2">
+                  <CalendarIcon className="w-4 h-4 mt-1 text-primary" />
+                  <div>
+                    <p className="text-muted-foreground">Ordered Date</p>
+                    <p className="font-medium text-foreground">
+                      {convertDateTime(order.createAt)}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-2">
+                  <TruckIcon className="w-4 h-4 mt-1 text-primary" />
+                  <div>
+                    <p className="text-muted-foreground">Delivery Method</p>
+                    <p className="font-medium text-foreground">{order.deliveryMethod}</p>
+                  </div>
+                </div>
               </div>
-              <span className={`font-semibold h-fit px-3 py-1 rounded-lg ${statusBadge[order.status]}`}>
-                {order.status.replace(/_/g, ' ')}
-              </span>
+              <div className='flex flex-col items-end gap-y-4'>
+                <span className={`font-semibold h-fit px-3 py-1 rounded-lg ${statusBadge[order.status]}`}>
+                  {order.status.replace(/_/g, ' ')}
+                </span>
+
+                {order.deliveredAt !== null && (
+
+                  <div className="flex items-start gap-2">
+                    <CalendarIcon className="w-4 h-4 mt-1 text-primary" />
+                    <div>
+                      <p className="text-muted-foreground">Delivered Date</p>
+                      <p className="font-medium text-foreground">
+                        {convertDateTime(order.deliveredAt)}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
             {order.items.map((childItem, index) => (
               <div
                 key={index}
-                className='flex gap-x-4 border-t-2 border-b-2 border-gray-100 py-4'
+                className='flex flex-col border-t-2 border-b-2 border-gray-100 py-4'
               >
-                <Image
-                  src={childItem.image}
-                  alt={childItem.productName}
-                  width={500}
-                  height={500}
-                  className='object-cover w-24'
-                />
-                <div className='flex flex-col justify-between w-full'>
-                  <div className='flex justify-between'>
-                    <div className='flex flex-col'>
-                      <span>{childItem.productName}</span>
-                      <span>{`Slug: ${childItem.variantSlug}`}</span>
+                <div className='flex gap-x-4 py-4'>
+                  <Image
+                    src={childItem.image}
+                    alt={childItem.productName}
+                    width={500}
+                    height={500}
+                    className='object-cover w-24'
+                  />
+                  <div className='flex flex-col justify-between w-full'>
+                    <div className='flex justify-between'>
+                      <div className='flex flex-col'>
+                        <span>{childItem.productName}</span>
+                        <span>{`Slug: ${childItem.variantSlug}`}</span>
+                      </div>
+                      <span>{`Price: ${formatPrice(childItem.price)}`}</span>
                     </div>
-                    <span>{`Price: ${formatPrice(childItem.price)}`}</span>
-                  </div>
 
-                  <div className='flex justify-between'>
-                    <span>{`Quantity: ${childItem.quantity}`}</span>
-                    <div className='flex gap-x-2'>
-                      {childItem.isReviewed ? (
-                        <button
-                          onClick={(e) => {
-                            e.preventDefault();
+                    <div className='flex justify-between'>
+                      <span>{`Quantity: ${childItem.quantity}`}</span>
+                      <div className='flex gap-x-2'>
+                        {childItem.isReviewed ? (
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              toggleReviewDetail(`${order.id}-${index}`);
+                            }}
+                            disabled={!childItem.canReview || order.status !== OrderStatus.DELIVERED}
+                            className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
+                          >
+                            View Review Detail
+                          </button>
+                        ) : (
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
 
-                            router.push(`/review/${order.id}-${childItem.productId}-${childItem.variantId}`)
-                          }}
-                          className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
-                        >
-                          View Review Detail
-                        </button>
-                      ) : (
-                        <button
-                          onClick={(e) => {
-                            e.preventDefault();
+                              router.push(`/review/${order.id}-${childItem.productId}-${childItem.variantId}`)
+                            }}
+                            disabled={!childItem.canReview || order.status !== OrderStatus.DELIVERED}
+                            className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
+                          >
+                            Review
+                          </button>
+                        )}
 
-                            router.push(`/review/${order.id}-${childItem.productId}-${childItem.variantId}`)
-                          }}
-                          disabled={!childItem.canReview || order.status !== OrderStatus.DELIVERED}
-                          className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
-                        >
-                          Review
-                        </button>
-                      )}
-
-                      <button
-                        disabled={!childItem.canReturn}
-                        className={`inline-block text-sm font-medium px-3 py-1 text-white rounded-lg w-fit ${childItem.canReturn
-                          ? 'bg-gray-800 hover:bg-gray-900'
-                          : 'bg-gray-300'
-                          }`}
-                      >
-                        {childItem.canReturn ? 'Request Return' : 'Not Returnable'}
-                      </button>
+                        {childItem.returnStatus && (
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              toggleReturnDetail(`${order.id}-${index}`);
+                            }}
+                            className='inline-block text-sm font-medium px-3 py-1 text-white rounded-lg w-fit bg-gray-800 hover:bg-gray-900'
+                          >
+                            View Return Detail
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
+
+                {openReviewMap[`${order.id}-${index}`] && (
+                  <ReviewCard
+                    orderId={order.id}
+                    productId={childItem.productId}
+                    variantId={childItem.variantId}
+                  />
+                )}
+
+                {openReturnMap[`${order.id}-${index}`] && childItem.returnStatus && (
+                  <ReturnStatusCard returnStatus={childItem.returnStatus} />
+                )}
               </div>
             ))}
 
@@ -191,19 +250,42 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
           className='flex flex-col border-2 p-6 gap-y-4 rounded-md hover:text-gray-900'
         >
           <div className='flex justify-between'>
-            <div className='flex flex-col'>
+            <div className='flex flex-col gap-y-4'>
               <span className='font-semibold mb-2'>{`ID: ${order.id}`}</span>
-              <span>{`Ordered Date: ${convertDateTime(order.createAt)}`}</span>
-              <span>{`Delivery Method: ${order.deliveryMethod}`}</span>
-            </div>
+              <div className="flex items-start gap-2">
+                <CalendarIcon className="w-4 h-4 mt-1 text-primary" />
+                <div>
+                  <p className="text-muted-foreground">Ordered Date</p>
+                  <p className="font-medium text-foreground">
+                    {convertDateTime(order.createAt)}
+                  </p>
+                </div>
+              </div>
 
-            <div className='flex flex-col items-end gap-y-5'>
+              <div className="flex items-start gap-2">
+                <TruckIcon className="w-4 h-4 mt-1 text-primary" />
+                <div>
+                  <p className="text-muted-foreground">Delivery Method</p>
+                  <p className="font-medium text-foreground">{order.deliveryMethod}</p>
+                </div>
+              </div>
+            </div>
+            <div className='flex flex-col items-end gap-y-4'>
               <span className={`font-semibold h-fit px-3 py-1 rounded-lg ${statusBadge[order.status]}`}>
                 {order.status.replace(/_/g, ' ')}
               </span>
 
               {order.deliveredAt !== null && (
-                <span>{`Delivered Date: ${convertDateTime(order.deliveredAt)}`}</span>
+
+                <div className="flex items-start gap-2">
+                  <CalendarIcon className="w-4 h-4 mt-1 text-primary" />
+                  <div>
+                    <p className="text-muted-foreground">Delivered Date</p>
+                    <p className="font-medium text-foreground">
+                      {convertDateTime(order.deliveredAt)}
+                    </p>
+                  </div>
+                </div>
               )}
             </div>
           </div>
@@ -211,63 +293,79 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
           {order.items.map((childItem, index) => (
             <div
               key={index}
-              className='flex gap-x-4 border-t-2 border-b-2 border-gray-100 py-4'
+              className='flex flex-col border-t-2 border-b-2 border-gray-100 py-4'
             >
-              <Image
-                src={childItem.image}
-                alt={childItem.productName}
-                width={500}
-                height={500}
-                className='object-cover w-24'
-              />
-              <div className='flex flex-col justify-between w-full'>
-                <div className='flex justify-between'>
-                  <div className='flex flex-col'>
-                    <span>{childItem.productName}</span>
-                    <span>{`Slug: ${childItem.variantSlug}`}</span>
+              <div className='flex gap-x-4 py-4'>
+                <Image
+                  src={childItem.image}
+                  alt={childItem.productName}
+                  width={500}
+                  height={500}
+                  className='object-cover w-24'
+                />
+                <div className='flex flex-col justify-between w-full'>
+                  <div className='flex justify-between'>
+                    <div className='flex flex-col'>
+                      <span>{childItem.productName}</span>
+                      <span>{`Slug: ${childItem.variantSlug}`}</span>
+                    </div>
+                    <span>{`Price: ${formatPrice(childItem.price)}`}</span>
                   </div>
-                  <span>{`Price: ${formatPrice(childItem.price)}`}</span>
-                </div>
-                <div className='flex justify-between'>
-                  <span>{`Quantity: ${childItem.quantity}`}</span>
-                  <div className='flex gap-x-2'>
-                    {childItem.isReviewed ? (
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
+                  <div className='flex justify-between'>
+                    <span>{`Quantity: ${childItem.quantity}`}</span>
+                    <div className='flex gap-x-2'>
+                      {childItem.isReviewed ? (
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            toggleReviewDetail(`${order.id}-${index}`);
+                          }}
+                          disabled={!childItem.canReview || order.status !== OrderStatus.DELIVERED}
+                          className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
+                        >
+                          View Review Detail
+                        </button>
+                      ) : (
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
 
-                          router.push(`/review/${order.id}-${childItem.productId}-${childItem.variantId}`)
-                        }}
-                        className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
-                      >
-                        View Review Detail
-                      </button>
-                    ) : (
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
+                            router.push(`/review/${order.id}-${childItem.productId}-${childItem.variantId}`)
+                          }}
+                          disabled={!childItem.canReview || order.status !== OrderStatus.DELIVERED}
+                          className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
+                        >
+                          Review
+                        </button>
+                      )}
 
-                          router.push(`/review/${order.id}-${childItem.productId}-${childItem.variantId}`)
-                        }}
-                        disabled={!childItem.canReview || order.status !== OrderStatus.DELIVERED}
-                        className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
-                      >
-                        Review
-                      </button>
-                    )}
-
-                    <button
-                      disabled={!childItem.canReturn}
-                      className={`inline-block text-sm font-medium px-3 py-1 text-white rounded-lg w-fit ${childItem.canReturn
-                        ? 'bg-gray-800 hover:bg-gray-900'
-                        : 'bg-gray-300'
-                        }`}
-                    >
-                      {childItem.canReturn ? 'Request Return' : 'Not Returnable'}
-                    </button>
+                      {childItem.returnStatus && (
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            toggleReturnDetail(`${order.id}-${index}`);
+                          }}
+                          className='inline-block text-sm font-medium px-3 py-1 text-white rounded-lg w-fit bg-gray-800 hover:bg-gray-900'
+                        >
+                          View Return Detail
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
+
+              {openReviewMap[`${order.id}-${index}`] && (
+                <ReviewCard
+                  orderId={order.id}
+                  productId={childItem.productId}
+                  variantId={childItem.variantId}
+                />
+              )}
+
+              {openReturnMap[`${order.id}-${index}`] && childItem.returnStatus && (
+                <ReturnStatusCard returnStatus={childItem.returnStatus} />
+              )}
             </div>
           ))}
 

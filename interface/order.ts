@@ -1,4 +1,5 @@
 import { Cart } from "./cart"
+import { ReturnStatus } from "./return"
 
 export interface Ward {
     Id: string,
@@ -27,12 +28,6 @@ export interface ShippingAddress {
     city: string,
 }
 
-export interface DeliveryMethod {
-    id: string,
-    name: string,
-    price: number,
-}
-
 export interface CreateOrder {
     shippingAddress: ShippingAddress,
     items: Cart[],
@@ -58,7 +53,7 @@ export interface OrderResponse {
     canCancel: boolean,
     pricing: Pricing,
     timestamps: Timestamps,
-    deliveryMethod: DeliveryMethod,
+    deliveryMethod: string,
     shippingAddress: ShippingAddress,
     items: OrderDetailItem[],
 }
@@ -176,15 +171,6 @@ export enum PaymentStatus {
     FAILED = 'FAILED',
     PENDING_REFUND = 'PENDING_REFUND',
     REFUNDED = 'REFUNDED',
-}
-
-export enum ReturnStatus {
-  PENDING = 'PENDING',
-  COMPLETED = 'COMPLETED',
-  APPROVED = 'APPROVED',
-  FAILED = 'FAILED',
-  REJECTED = 'REJECTED',
-  NOT_RETURNED = 'NOT_RETURNED',
 }
 
 export interface CancelOrder {

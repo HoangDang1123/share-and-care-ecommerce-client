@@ -60,3 +60,25 @@ export interface ReportDetail {
     reason: string,
     createdAt: string,
 }
+
+export interface OrderInfo {
+  productId: string;
+  variantId: string;
+  productName: string;
+  variantSlug: string;
+  image: string;
+}
+
+export interface Review {
+  id: string;
+  content: string;
+  star: number;
+  images: string[];
+  createdAt: string;
+  reply: string | null;
+}
+
+export interface ReviewDetailResponse {
+  order: OrderInfo;
+  review: Review;
+}

@@ -1,11 +1,11 @@
 'use client'
 
 import { resendEmailVerification, signUpRequest } from '@/app/api/auth';
-import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+import { useRouter } from 'next/navigation';
 
 export default function Page() {
   const [formData, setFormData] = useState({
@@ -19,6 +19,8 @@ export default function Page() {
   const [isClient, setIsClient] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const router = useRouter();
 
   useEffect(() => {
     setIsClient(true)
@@ -213,12 +215,13 @@ export default function Page() {
 
             <p className="mt-10 text-left text-md text-gray-500">
               Already have an account? {' '}
-              <Link
-                href="/auth/login"
+              <button
+                type="button"
+                onClick={() => router.push('/auth/login')}
                 className="font-bold underline text-gray-900 hover:text-gray-700"
               >
                 Login
-              </Link>
+              </button>
             </p>
           </div>
         </div>

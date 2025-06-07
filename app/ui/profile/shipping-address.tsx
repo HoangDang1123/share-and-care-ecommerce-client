@@ -205,7 +205,7 @@ export const ShippingAddress: React.FC<ShippingAddressProps> = ({ userId, access
     <div className='flex flex-col items-end gap-y-4'>
       <button
         onClick={() => setOpenDialog(true)}
-        className='w-fit px-3 py-1 bg-teal-600 text-white font-medium text-base rounded-lg hover:bg-teal-700'
+        className='w-fit px-3 py-1 bg-gray-600 text-white font-medium text-base rounded-lg hover:bg-gray-700'
       >
         New Address
       </button>
@@ -386,7 +386,7 @@ export const ShippingAddress: React.FC<ShippingAddressProps> = ({ userId, access
                 <button
                   disabled={loading}
                   type="submit"
-                  className="flex w-full h-10 justify-center items-center rounded-lg bg-teal-600 sm:px-2 md:px-3 py-1.5 text-lg font-semibold text-white shadow-sm hover:bg-teal-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                  className="flex w-full h-10 justify-center items-center rounded-lg bg-gray-800 sm:px-2 md:px-3 py-1.5 text-lg font-semibold text-white shadow-sm hover:bg-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                 >
                   {loading ? (
                     <ClipLoader
