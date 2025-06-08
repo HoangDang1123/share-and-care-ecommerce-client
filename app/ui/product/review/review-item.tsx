@@ -57,7 +57,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ item }) => {
           <Image
             src={
               item.user.avatar === 'https://via.placeholder.com/400x400.png'
-                ? '/assets/default-image-icon.jpg'
+                ? '/assets/default-avatar-icon.jpg'
                 : item.user.avatar}
             alt={item.user.avatar}
             width={100}

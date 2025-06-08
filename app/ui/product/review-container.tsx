@@ -33,6 +33,10 @@ const ReviewContainer: React.FC<ReviewContainerProps> = ({ productId }) => {
     fetchReviews();
   }, [currentPage, hasImageFilter, pageSize, productId, ratingFilter]);
 
+  useEffect(() => {
+    console.log(reviews);
+  }, [reviews]);
+
   return (
     <Row
       className='flex justify-between bg-gray-100 rounded-md p-10'
