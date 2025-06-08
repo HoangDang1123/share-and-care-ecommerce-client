@@ -114,7 +114,6 @@ export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId, status }) =
               {item.isReviewed ? (
                 <button
                   onClick={() => setOpenReviewDetail(!openReviewDetail)}
-                  disabled={!item.canReview || status !== OrderStatus.DELIVERED}
                   className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
                 >
                   View Review Detail
