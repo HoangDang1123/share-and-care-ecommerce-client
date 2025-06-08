@@ -8,7 +8,7 @@ import { AnimatePresence, easeOut, motion } from 'framer-motion';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { toast } from 'react-toastify';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
-import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import { ChevronDownIcon, MapPinIcon } from '@heroicons/react/24/outline';
 import { AutoCompleteResponse } from '@/interface/address';
 import { debounce } from 'lodash';
 
@@ -48,20 +48,20 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
   }, []);
 
   useEffect(() => {
-      return () => {
-        debouncedFetch.cancel();
-      };
-    }, []);
-  
-    const debouncedFetch = useMemo(() =>
-      debounce(async (value: string, setAutoComplete: (data: Array<AutoCompleteResponse>) => void) => {
-        try {
-          const response = await getAutoComplete(value);
-          setAutoComplete(response);
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        } catch (error) { }
-      }, 500), []
-    );
+    return () => {
+      debouncedFetch.cancel();
+    };
+  }, []);
+
+  const debouncedFetch = useMemo(() =>
+    debounce(async (value: string, setAutoComplete: (data: Array<AutoCompleteResponse>) => void) => {
+      try {
+        const response = await getAutoComplete(value);
+        setAutoComplete(response);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (error) { }
+    }, 500), []
+  );
 
   const handleCityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const cityId = e.target.value;
@@ -115,7 +115,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
     if (userId !== "" && accessToken !== "" && city && district && ward) {
       try {
         setLoading(true);
-        
+
         await createAddress({
           name: inputData.name,
           phone: inputData.phone,
@@ -136,11 +136,14 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
   }
 
   return (
-    <Disclosure as="div" defaultOpen={existAddress} className="bg-gray-100 rounded-lg sm:p-2 md:p-4">
+    <Disclosure as="div" defaultOpen={existAddress} className="shadow-lg rounded-lg sm:p-2 md:p-4">
       {({ open }) => (
         <>
           <DisclosureButton className='flex group justify-between items-center w-full text-lg font-semibold md:px-4'>
-            <h1 className='sm:text-lg md:text-xl'>Create Address</h1>
+            <h1 className="flex items-center gap-2 sm:text-lg md:text-xl font-bold text-gray-800">
+              <MapPinIcon className="w-7 h-7" />
+              Create Address
+            </h1>
             <ChevronDownIcon className='size-5 group-data-[open]:rotate-180' />
           </DisclosureButton>
 
@@ -276,7 +279,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
                         </div>
                       </div>
 
-                      <div className='flex justify-end mt-8'>
+                      <div className='flex justify-end mt-8 mb-4'>
                         <button
                           disabled={loading}
                           type="submit"

@@ -31,8 +31,8 @@ export default function Page() {
     [OrderStatus.PENDING]: 'bg-gray-200 text-gray-800',
     [OrderStatus.AWAITING_PAYMENT]: 'bg-yellow-100 text-yellow-800',
     [OrderStatus.PROCESSING]: 'bg-blue-100 text-blue-800',
-    [OrderStatus.AWAITING_SHIPMENT]: 'bg-indigo-100 text-indigo-800',
-    [OrderStatus.SHIPPED]: 'bg-sky-100 text-sky-800',
+    [OrderStatus.READY_TO_SHIP]: 'bg-indigo-100 text-indigo-800',
+    [OrderStatus.IN_TRANSIT]: 'bg-sky-100 text-sky-800',
     [OrderStatus.DELIVERED]: 'bg-green-100 text-green-800',
     [OrderStatus.CANCELLED]: 'bg-red-100 text-red-800',
     [OrderStatus.NOT_DELIVERED]: 'bg-emerald-100 text-emerald-800',
@@ -43,7 +43,7 @@ export default function Page() {
     && (order.order.status === OrderStatus.PENDING
       || order.order.status === OrderStatus.AWAITING_PAYMENT
       || order.order.status === OrderStatus.PROCESSING
-      || order.order.status === OrderStatus.AWAITING_SHIPMENT)
+      || order.order.status === OrderStatus.READY_TO_SHIP)
 
   useEffect(() => {
     setUserId(localStorage.getItem('userId') || '');

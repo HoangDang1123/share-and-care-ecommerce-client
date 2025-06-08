@@ -86,7 +86,7 @@ export default function Page() {
       </div>
 
       <Row className='flex sm:mt-4 md:mt-10 md:px-20'>
-        <Col span={17} className="flex flex-col md:col-span-2 w-full sm:space-y-4 md:space-y-10">
+        <Col span={16} className="flex flex-col md:col-span-2 w-full sm:space-y-4 md:space-y-10">
           <AddressList isRefresh={isRefresh} setIsRefresh={setIsRefresh} defaultAddress={defaultAddress} setExistAddress={setExistAddress} />
           <AddressForm setIsRefresh={setIsRefresh} existAddress={existAddress} />
           <DeliveryList defaultAddress={defaultAddress} />
@@ -95,7 +95,7 @@ export default function Page() {
 
         <Col span={1} />
 
-        <Col span={6}>
+        <Col span={7}>
           <OrderSummary />
         </Col>
       </Row>

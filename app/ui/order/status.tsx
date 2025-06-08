@@ -32,16 +32,16 @@ const stepStyles: StepStyleDTO = {
 const CODStatus = [
   { index: 0, name: 'PENDING', label: 'Pending', icon: <UserIcon className='size-7' /> },
   { index: 1, name: 'PROCESSING', label: 'Processing', icon: <EllipsisHorizontalIcon className='size-7' /> },
-  { index: 2, name: 'AWAITING_SHIPMENT', label: 'Awaiting Shipment', icon: <TruckIcon className='size-7' /> },
-  { index: 3, name: 'SHIPPED', label: 'Shipped', icon: <ClipboardDocumentListIcon className='size-7' /> },
+  { index: 2, name: 'READY_TO_SHIP', label: 'Awaiting Shipment', icon: <TruckIcon className='size-7' /> },
+  { index: 3, name: 'IN_TRANSIT', label: 'IN_TRANSIT', icon: <ClipboardDocumentListIcon className='size-7' /> },
   { index: 4, name: 'DELIVERED', label: 'Delivered', icon: <ClipboardDocumentCheckIcon className='size-7' /> },
 ];
 const VNPayStatus = [
   { index: 0, name: 'AWAITING_PAYMENT', label: 'Awaiting Payment', icon: <CreditCardIcon className='size-7' /> },
   { index: 1, name: 'PAID', label: 'Paid', icon: <CheckBadgeIcon className='size-7' /> },
   { index: 2, name: 'PROCESSING', label: 'Processing', icon: <EllipsisHorizontalIcon className='size-7' /> },
-  { index: 3, name: 'AWAITING_SHIPMENT', label: 'Awaiting Shipment', icon: <TruckIcon className='size-7' /> },
-  { index: 4, name: 'SHIPPED', label: 'Shipped', icon: <ClipboardDocumentListIcon className='size-7' /> },
+  { index: 3, name: 'READY_TO_SHIP', label: 'Awaiting Shipment', icon: <TruckIcon className='size-7' /> },
+  { index: 4, name: 'IN_TRANSIT', label: 'IN_TRANSIT', icon: <ClipboardDocumentListIcon className='size-7' /> },
   { index: 5, name: 'DELIVERED', label: 'Delivered', icon: <ClipboardDocumentCheckIcon className='size-7' /> },
 ];
 
