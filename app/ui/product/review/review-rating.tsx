@@ -12,19 +12,19 @@ interface ReviewRatingProps {
 
 const ReviewRating: React.FC<ReviewRatingProps> = ({ productId, total }) => {
   const [reviews, setReviews] = useState<GetReviewResponse>();
-  
-    useEffect(() => {
-      const fetchReviews = async () => {
-        try {
-          const response = await getProductReview(productId, total, undefined, undefined, undefined);
-          setReviews(response);
-        } catch (error) {
-          console.error("Error fetching products:", error);
-        }
-      };
-  
-      fetchReviews();
-    }, [productId, total]);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await getProductReview(productId, total, undefined, undefined, undefined);
+        setReviews(response);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchReviews();
+  }, [productId, total]);
 
   const ratingList = Array.from({ length: 5 }, (_, index) => ({
     star: index + 1,
@@ -39,14 +39,19 @@ const ReviewRating: React.FC<ReviewRatingProps> = ({ productId, total }) => {
     )
   }
 
-  reviews.items.forEach(review => {
-    ratingList[review.star - 1].count += 1;
-    totalStars += review.star;
+  reviews.items.forEach((review) => {
+    const roundedStar = Math.round(review.star);
+    if (roundedStar >= 1 && roundedStar <= 5) {
+      ratingList[roundedStar - 1].count += 1;
+      totalStars += review.star;
+    }
   });
 
   ratingList.reverse();
 
-  const averageRating = reviews.total > 0 ? totalStars / reviews.total : 0;
+  const averageRating = reviews.total > 0
+    ? parseFloat((totalStars / reviews.total).toFixed(1))
+    : 0;
 
   return (
     <div className='flex justify-center items-center w-full bg-white rounded-2xl p-6 transition-all duration-300 ease-in-out'>
@@ -69,8 +74,8 @@ const ReviewRating: React.FC<ReviewRatingProps> = ({ productId, total }) => {
                 defaultValue={item.star}
                 className="text-lg w-72"
               />
-              <Progress 
-                percent={item.count / reviews.total * 100} 
+              <Progress
+                percent={item.count / reviews.total * 100}
                 showInfo={false}
                 strokeColor='#fadb14'
               />

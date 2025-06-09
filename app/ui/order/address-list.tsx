@@ -143,17 +143,17 @@ const AddressList: React.FC<AddressListProps> = ({ isRefresh, setIsRefresh, defa
 
                 <div className="flex flex-col w-full space-y-2">
                   <div className="flex items-center space-x-2">
-                    <UserIcon className="w-5 h-5 text-orange-500" />
+                    <UserIcon className="w-5 h-5" />
                     <h4 className="sm:text-sm md:text-base font-semibold text-gray-800">{address.name}</h4>
                   </div>
 
                   <div className="flex items-center space-x-2">
-                    <PhoneIcon className="w-5 h-5 text-green-500" />
+                    <PhoneIcon className="w-5 h-5" />
                     <h4 className="sm:text-sm md:text-base text-gray-700">{address.phone}</h4>
                   </div>
 
                   <div className="flex items-center space-x-2">
-                    <MapPinIcon className="w-5 h-5 text-blue-500" />
+                    <MapPinIcon className="w-5 h-5" />
                     <h4 className="sm:text-sm md:text-base text-gray-700">
                       {`${address.street}, ${address.ward}, ${address.district}, ${address.city}`}
                     </h4>

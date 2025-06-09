@@ -97,17 +97,17 @@ export default function OrderSummary() {
         Order Summary
       </h1>
       <div className='flex flex-col gap-y-6'>
-        <div className='flex justify-between items-center text-green-600'>
+        <div className='flex justify-between items-center'>
           <div className='flex items-center gap-2'>
-            <BanknotesIcon className='w-5 h-5' />
+            <BanknotesIcon className='w-5 h-5 text-blue-600' />
             <h4 className='font-semibold sm:text-lg md:text-xl'>Product Cost:</h4>
           </div>
           <h4 className='sm:text-lg md:text-xl'>{formatPrice(productPrice)}</h4>
         </div>
 
-        <div className='flex justify-between items-center text-green-600'>
+        <div className='flex justify-between items-center'>
           <div className='flex items-center gap-2'>
-            <TruckIcon className='w-5 h-5' />
+            <TruckIcon className='w-5 h-5 text-green-600' />
             <h4 className='font-semibold sm:text-lg md:text-xl'>Shipping Fee:</h4>
           </div>
           <h4 className='sm:text-lg md:text-xl'>{`+ ${formatPrice(deliveryFee)}`}</h4>
@@ -116,8 +116,8 @@ export default function OrderSummary() {
         <div className='w-full h-0.5 bg-gray-200' />
 
         <div className='flex justify-between items-center'>
-          <div className='flex items-center gap-2 text-orange-600'>
-            <TagIcon className='w-5 h-5' />
+          <div className='flex items-center gap-2'>
+            <TagIcon className='w-5 h-5 text-orange-600' />
             <h4 className='font-semibold sm:text-lg md:text-xl'>Discount Code:</h4>
           </div>
           <input

@@ -36,7 +36,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId, status }) =
     [RefundReason.CHANGE_MIND]: "Change Mind",
     [RefundReason.NOT_SUITABLE_SIZE]: "Not Suitable Size",
     [RefundReason.NOT_SUITABLE_STYLE]: "Not Suitable Style",
-    [RefundReason.BOM_HANG]: "BOM HANG",
+    [RefundReason.BOM_HANG]: "Bom Hang",
     [RefundReason.OTHER]: "Other",
   };
 
@@ -114,6 +114,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId, status }) =
               {item.isReviewed ? (
                 <button
                   onClick={() => setOpenReviewDetail(!openReviewDetail)}
+                  disabled={status !== OrderStatus.DELIVERED}
                   className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
                 >
                   View Review Detail

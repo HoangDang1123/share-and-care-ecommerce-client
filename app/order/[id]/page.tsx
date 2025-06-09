@@ -6,7 +6,22 @@ import OrderTimeline from '@/app/ui/order/detail/order-status';
 import { OrderDetailResponse, OrderStatus, PaymentMethod } from '@/interface/order';
 import { convertDateTime, formatPrice } from '@/utils/helpers';
 import { Button } from '@headlessui/react';
-import { ArrowTurnDownLeftIcon, CalendarIcon, CreditCardIcon, MapPinIcon, PhoneIcon, TruckIcon, UserIcon } from '@heroicons/react/24/outline';
+import {
+  ArrowTurnDownLeftIcon,
+  CalendarIcon,
+  CreditCardIcon,
+  MapPinIcon,
+  PhoneIcon,
+  ReceiptPercentIcon,
+  TruckIcon,
+  UserIcon,
+  ShoppingBagIcon,
+  TagIcon,
+  TicketIcon,
+  GiftIcon,
+  BanknotesIcon,
+  CurrencyDollarIcon
+} from '@heroicons/react/24/outline';
 import { Col, Row } from 'antd';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -270,44 +285,70 @@ export default function Page() {
           span={6}
           className="flex flex-col w-full h-fit md:shadow-lg px-4 pt-10 gap-y-10 md:rounded-lg transition-all duration-300 ease-in-out"
         >
-          <h1>Order Summary</h1>
+          <h1 className='flex items-center gap-2 font-bold'>
+            <ReceiptPercentIcon className='w-10 h-10 text-gray-700' />
+            Order Summary
+          </h1>
+
           <div className='flex flex-col gap-y-4'>
-            <div className='flex justify-between'>
-              <h4 className='font-semibold sm:text-base md:text-lg'>Product Cost:</h4>
+
+            <div className='flex justify-between items-center text-gray-800'>
+              <div className='flex items-center gap-2'>
+                <ShoppingBagIcon className='w-5 h-5 text-blue-500' />
+                <h4 className='font-semibold sm:text-base md:text-lg'>Product Cost:</h4>
+              </div>
               <h4 className='sm:text-base md:text-lg'>{formatPrice(order.order.pricing.itemsPrice)}</h4>
             </div>
 
-            <div className='flex justify-between'>
-              <h4 className='font-semibold sm:text-base md:text-lg'>Shipping Fee:</h4>
+            <div className='flex justify-between items-center text-gray-800'>
+              <div className='flex items-center gap-2'>
+                <TruckIcon className='w-5 h-5 text-orange-500' />
+                <h4 className='font-semibold sm:text-base md:text-lg'>Shipping Fee:</h4>
+              </div>
               <h4 className='sm:text-base md:text-lg'>{`+ ${formatPrice(order.order.pricing.shippingPrice)}`}</h4>
             </div>
 
-            <div className='flex justify-between'>
-              <h4 className='font-semibold sm:text-base md:text-lg'>Product Discount:</h4>
+            <div className='flex justify-between items-center text-gray-800'>
+              <div className='flex items-center gap-2'>
+                <TagIcon className='w-5 h-5 text-green-600' />
+                <h4 className='font-semibold sm:text-base md:text-lg'>Product Discount:</h4>
+              </div>
               <h4 className='sm:text-base md:text-lg'>{`- ${formatPrice(order.order.pricing.productDiscount)}`}</h4>
             </div>
 
-            <div className='flex justify-between'>
-              <h4 className='font-semibold sm:text-base md:text-lg'>Coupon Discount:</h4>
+            <div className='flex justify-between items-center text-gray-800'>
+              <div className='flex items-center gap-2'>
+                <TicketIcon className='w-5 h-5 text-green-600' />
+                <h4 className='font-semibold sm:text-base md:text-lg'>Coupon Discount:</h4>
+              </div>
               <h4 className='sm:text-base md:text-lg'>{`- ${formatPrice(order.order.pricing.couponDiscount)}`}</h4>
             </div>
 
-            <div className='flex justify-between'>
-              <h4 className='font-semibold sm:text-base md:text-lg'>Shipping Discount:</h4>
+            <div className='flex justify-between items-center text-gray-800'>
+              <div className='flex items-center gap-2'>
+                <GiftIcon className='w-5 h-5 text-green-600' />
+                <h4 className='font-semibold sm:text-base md:text-lg'>Shipping Discount:</h4>
+              </div>
               <h4 className='sm:text-base md:text-lg'>{`- ${formatPrice(order.order.pricing.shippingDiscount)}`}</h4>
             </div>
 
             <div className='w-full h-0.5 bg-gray-200' />
 
-            <div className='flex justify-between'>
-              <h4 className='font-semibold sm:text-base md:text-lg'>Total Saving:</h4>
+            <div className='flex justify-between items-center text-green-700 font-medium'>
+              <div className='flex items-center gap-2'>
+                <BanknotesIcon className='w-5 h-5' />
+                <h4 className='sm:text-base md:text-lg'>Total Saving:</h4>
+              </div>
               <h4 className='sm:text-base md:text-lg'>{`- ${formatPrice(order.order.pricing.totalSavings)}`}</h4>
             </div>
 
             <div className='w-full h-0.5 bg-gray-200' />
 
-            <div className='flex justify-between'>
-              <h4 className='font-semibold sm:text-base md:text-lg'>Total Cost:</h4>
+            <div className='flex justify-between items-center text-black font-bold'>
+              <div className='flex items-center gap-2'>
+                <CurrencyDollarIcon className='w-6 h-6 text-gray-800' />
+                <h4 className='sm:text-base md:text-lg'>Total Cost:</h4>
+              </div>
               <h4 className='sm:text-base md:text-lg'>{formatPrice(order.order.pricing.totalPrice)}</h4>
             </div>
           </div>
@@ -351,6 +392,7 @@ export default function Page() {
             )}
           </div>
         </Col>
+
       </Row>
     </div>
   );

@@ -10,7 +10,8 @@ module.exports = {
       'res.cloudinary.com',
       'www.youtube.com',
       'img.youtube.com',
-      'via.placeholder.com'
+      'via.placeholder.com',
+      'example.com'
     ],
   },
   devIndicators: {

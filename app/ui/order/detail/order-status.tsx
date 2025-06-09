@@ -60,7 +60,7 @@ const CODStatus: StatusStep[] = [
   {
     index: 3,
     name: "IN_TRANSIT",
-    label: "IN_TRANSIT",
+    label: "In Transit",
     icon: TruckIcon,
     description: "Your order is on the way",
   },

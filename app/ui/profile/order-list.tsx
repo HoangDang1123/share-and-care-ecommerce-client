@@ -152,6 +152,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
                               e.preventDefault();
                               toggleReviewDetail(`${order.id}-${index}`);
                             }}
+                            disabled={order.status !== OrderStatus.DELIVERED}
                             className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
                           >
                             View Review Detail
@@ -319,6 +320,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
                             e.preventDefault();
                             toggleReviewDetail(`${order.id}-${index}`);
                           }}
+                          disabled={order.status !== OrderStatus.DELIVERED}
                           className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
                         >
                           View Review Detail
@@ -432,6 +434,7 @@ export const OrderList: React.FC<OrderListProps> = ({ userId, accessToken, total
         size='large'
         defaultActiveKey='0'
         tabBarStyle={{ backgroundColor: "#e5e7eb", borderRadius: "5px" }}
+        className="custom-order-tabs"
       />
     </div>
   );
