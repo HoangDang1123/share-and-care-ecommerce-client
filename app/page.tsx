@@ -10,12 +10,15 @@ import { getAccessToken } from "./api/token";
 import { toast } from "react-toastify";
 import { Suspense } from 'react';
 import { CategoryResponse } from "@/interface/category";
+import { reconnectSocket } from "@/utils/socket";
+import { useSocket } from "./context/SocketContext";
 
 export default function Home() {
   const [categories, setCategories] = useState<CategoryResponse[]>([]);
   const searchParams = useSearchParams();
   const router = useRouter();
   const { isLogin, setIsLogin } = useAuth();
+  const { setSocket } = useSocket();
   const hasFetched = useRef(false);
   const hasLoggedIn = useRef(false);
 
@@ -48,7 +51,13 @@ export default function Home() {
             localStorage.setItem('refreshToken', response.tokens.refreshToken);
             localStorage.setItem('userId', userId);
             localStorage.setItem('tokenTimestamp', currentTime.toString());
-            localStorage.setItem('isLogin', 'true');;
+            localStorage.setItem('isLogin', 'true');
+            const socket = reconnectSocket();
+            setSocket(socket);
+
+            socket.on('connect', () => {
+              console.log('🔄 Reconnected as anonymous');
+            });
           }
 
           router.push('/');

@@ -4,11 +4,13 @@ import Link from 'next/link';
 import { logoutRequest } from '@/app/api/auth';
 import { toast } from 'react-toastify';
 import { motion } from 'framer-motion';
-import { 
-  ArrowRightStartOnRectangleIcon, 
+import {
+  ArrowRightStartOnRectangleIcon,
   ArrowLeftStartOnRectangleIcon,
-  CursorArrowRippleIcon 
+  CursorArrowRippleIcon
 } from '@heroicons/react/24/outline';
+import { reconnectSocket } from '@/utils/socket';
+import { useSocket } from '@/app/context/SocketContext';
 
 interface UserProps {
   isLogin: boolean;
@@ -17,6 +19,7 @@ interface UserProps {
 const User: React.FC<UserProps> = ({ isLogin }) => {
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : "";
+  const { setSocket } = useSocket();
 
   const handleGoToProfile = () => { }
 
@@ -44,13 +47,21 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
         localStorage.removeItem('deliveryFee');
         localStorage.removeItem('isLogin');
         localStorage.removeItem('avatarUrl');
+        localStorage.removeItem('email');
+        localStorage.removeItem('name');
+        const socket = reconnectSocket();
+        setSocket(socket);
+
+        socket.on('connect', () => {
+          console.log('🔄 Reconnected as anonymous');
+        });
       }
     }
   }
 
   const guest = [
-    { name: 'Login', icon: <ArrowRightStartOnRectangleIcon className='size-6' />,href: '/auth/login' },
-    { name: 'Sign Up', icon: <CursorArrowRippleIcon className='size-6' />,href: '/auth/sign-up' },
+    { name: 'Login', icon: <ArrowRightStartOnRectangleIcon className='size-6' />, href: '/auth/login' },
+    { name: 'Sign Up', icon: <CursorArrowRippleIcon className='size-6' />, href: '/auth/sign-up' },
   ];
 
   const customer = [
@@ -97,8 +108,8 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
         ) : (
           guest.map((item, index) => (
             <MenuItem key={index}>
-              <Link 
-                href={item.href} 
+              <Link
+                href={item.href}
                 className="flex items-center gap-x-2 rounded-lg sm:text-md xl:text-lg py-2 px-3 transition hover:bg-gray-200"
               >
                 {item.icon}

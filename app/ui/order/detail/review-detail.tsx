@@ -26,7 +26,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({ orderId, productId, vari
     const fetchOrder = async () => {
       if (userId !== "" && accessToken !== "") {
         try {
-          const response = await getReviewDetail(orderId, productId, variantId, userId, accessToken);
+          const response = await getReviewDetail(orderId, productId, userId, accessToken, variantId);
           setReviewDetail(response);
         } catch (error) {
           console.error("Error fetching products:", error);

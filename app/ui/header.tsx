@@ -7,9 +7,11 @@ import NavLinks from './header/nav-links';
 import NavIcons from './header/nav-icons';
 import Sidebar from './sidebar';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Header() {
   const [isHidden, setIsHidden] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,7 +40,11 @@ export default function Header() {
         </div>
 
         <div className="sm:hidden md:flex items-center">
-          <Link href="/" passHref>
+          <button
+            onClick={() => router.push("/")}
+            className="p-0 border-none bg-transparent"
+            aria-label="Go to homepage"
+          >
             <Image
               alt="Share And Care"
               src="/assets/logo.png"
@@ -46,7 +52,7 @@ export default function Header() {
               height={100}
               style={{ width: "100%", height: "100%" }}
             />
-          </Link>
+          </button>
         </div>
 
         <div className="sm:flex md:hidden items-center">

@@ -20,6 +20,8 @@ import { useRouter } from "next/navigation";
 import ClipLoader from "react-spinners/ClipLoader";
 import { AllOrderResponse } from "@/interface/order";
 import { getAllOrder } from "../api/order";
+import { reconnectSocket } from "@/utils/socket";
+import { useSocket } from "../context/SocketContext";
 
 export default function Page() {
   const [userId, setUserId] = useState('');
@@ -30,6 +32,7 @@ export default function Page() {
   const [orders, setOrders] = useState<AllOrderResponse>();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
+  const { setSocket } = useSocket();
 
   const tabItems = [
     {
@@ -132,6 +135,14 @@ export default function Page() {
         localStorage.removeItem('deliveryFee');
         localStorage.removeItem('isLogin');
         localStorage.removeItem('avatarUrl');
+        localStorage.removeItem('email');
+        localStorage.removeItem('name');
+        const socket = reconnectSocket();
+        setSocket(socket);
+
+        socket.on('connect', () => {
+          console.log('🔄 Reconnected as anonymous');
+        });
       }
     }
   }

@@ -88,17 +88,27 @@ export const reportReview = async (
 export const getReviewDetail = async (
     orderId: string,
     productId: string,
-    variantId: string | null,
     clientId: string,
-    accessToken: string
+    accessToken: string,
+    variantId: string
 ): Promise<Review.ReviewDetailResponse> => {
     try {
-        const response = await api.get(`${REVIEW_URL}/user?orderId=${orderId}&productId=${productId}&variantId=${variantId}`, {
-            headers: {
-                'x-client-id': clientId,
-                'Authorization': accessToken
-            }
-        });
+        let response;
+        if (variantId) {
+            response = await api.get(`${REVIEW_URL}/user?orderId=${orderId}&productId=${productId}&variantId=${variantId}`, {
+                headers: {
+                    'x-client-id': clientId,
+                    'Authorization': accessToken
+                }
+            });
+        } else {
+            response = await api.get(`${REVIEW_URL}/user?orderId=${orderId}&productId=${productId}`, {
+                headers: {
+                    'x-client-id': clientId,
+                    'Authorization': accessToken
+                }
+            });
+        }
         return response.data.metadata;
     } catch (error) {
         const errorMessage = get(error, 'response.data.error.message', '');

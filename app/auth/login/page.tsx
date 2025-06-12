@@ -9,6 +9,8 @@ import ClipLoader from "react-spinners/ClipLoader";
 import useDeviceInfo from '@/hooks/useDeviceInfo';
 import { useAuth } from '@/app/context/AppContext';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+import { reconnectSocket } from '@/utils/socket';
+import { useSocket } from '@/app/context/SocketContext';
 
 export default function Page() {
   const [formData, setFormData] = useState({
@@ -22,6 +24,7 @@ export default function Page() {
   const [showPassword, setShowPassword] = useState(false);
   const { deviceToken, deviceName, browserName } = useDeviceInfo();
   const { setIsLogin } = useAuth();
+  const { setSocket } = useSocket();
 
   useEffect(() => {
     setIsClient(true)
@@ -60,6 +63,12 @@ export default function Page() {
       localStorage.setItem('avatarUrl', response.user.avatar);
       localStorage.setItem('email', response.user.email);
       localStorage.setItem('name', response.user.name);
+      const socket = reconnectSocket();
+      setSocket(socket);
+
+      socket.on('connect', () => {
+        console.log('🔄 Reconnected as user');
+      });
 
       router.push('/');
 

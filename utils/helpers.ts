@@ -32,6 +32,26 @@ export const convertDateTime = (time: string) => {
     return localTime;
 }
 
+export function formatTimestamp(isoDate: string): string {
+    const inputDate = new Date(isoDate);
+    const now = new Date();
+
+    const isSameDay =
+        inputDate.getDate() === now.getDate() &&
+        inputDate.getMonth() === now.getMonth() &&
+        inputDate.getFullYear() === now.getFullYear();
+
+    if (isSameDay) {
+        const hours = inputDate.getHours().toString().padStart(2, '0');
+        const minutes = inputDate.getMinutes().toString().padStart(2, '0');
+        return `${hours}:${minutes}`;
+    } else {
+        const day = inputDate.getDate().toString().padStart(2, '0');
+        const month = (inputDate.getMonth() + 1).toString().padStart(2, '0');
+        return `${day}/${month}`;
+    }
+}
+
 export const formatReason = (reason: string) => {
     if (!reason) return "N/A";
     return reason

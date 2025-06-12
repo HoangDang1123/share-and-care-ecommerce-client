@@ -3,6 +3,7 @@
 import { CartResponse } from '@/interface/cart';
 import { CreateOrder } from '@/interface/order';
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { SocketProvider } from './SocketContext';
 
 interface MenuContextType {
     isMenu: boolean,
@@ -57,6 +58,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
             localStorage.removeItem('deliveryFee');
             localStorage.removeItem('isLogin');
             localStorage.removeItem('avatarUrl');
+            localStorage.removeItem('email');
+            localStorage.removeItem('name');
             return false;
         }
 
@@ -93,15 +96,17 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }, [order, productPrice]);
 
     return (
-        <MenuContext.Provider value={{ isMenu, setIsMenu }}>
-            <AuthContext.Provider value={{ isLogin, setIsLogin, checkAccessToken }}>
-                <CartContext.Provider value={{ cart, setCart }}>
-                    <OrderContext.Provider value={{ order, setOrder, productPrice, setProductPrice }}>
-                        {children}
-                    </OrderContext.Provider>
-                </CartContext.Provider>
-            </AuthContext.Provider>
-        </MenuContext.Provider>
+        <SocketProvider>
+            <MenuContext.Provider value={{ isMenu, setIsMenu }}>
+                <AuthContext.Provider value={{ isLogin, setIsLogin, checkAccessToken }}>
+                    <CartContext.Provider value={{ cart, setCart }}>
+                        <OrderContext.Provider value={{ order, setOrder, productPrice, setProductPrice }}>
+                            {children}
+                        </OrderContext.Provider>
+                    </CartContext.Provider>
+                </AuthContext.Provider>
+            </MenuContext.Provider>
+        </SocketProvider>
     );
 };
 
