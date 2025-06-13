@@ -73,7 +73,7 @@ export default function NavLinks() {
   };
 
   return (
-    <div className="sm:hidden md:flex">
+    <div className="sm:hidden md:grid md:grid-cols-2 xl:grid-cols-4">
       {categories.map((category, index) => (
         <div
           key={category.id}

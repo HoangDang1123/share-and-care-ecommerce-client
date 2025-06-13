@@ -7,6 +7,7 @@ import {
 } from "@heroicons/react/20/solid";
 import {
   ArrowPathIcon,
+  ChatBubbleLeftEllipsisIcon,
   FaceSmileIcon,
   GifIcon,
   PhotoIcon
@@ -19,6 +20,7 @@ import { formatTimestamp } from "@/utils/helpers";
 import { initSocket } from "@/utils/socket";
 import { getAllConversation, getConversation } from "../api/chat";
 import { useSocket } from "../context/SocketContext";
+import ClipLoader from "react-spinners/ClipLoader";
 
 export default function Chat() {
   const [userId, setUserId] = useState('');
@@ -29,6 +31,8 @@ export default function Chat() {
   const [openChatFrame, setOpenChatFrame] = useState(true);
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<MessageItem[]>([]);
+  const [loadingConversation, setLoadingConversation] = useState(false);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const messTextareaRef = useRef<HTMLTextAreaElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const messageContainerRef = useRef<HTMLDivElement | null>(null);
@@ -60,6 +64,10 @@ export default function Chat() {
 
     setSocket(socketInstance);
   }, [deviceToken, accessToken]);
+
+  useEffect(() => {
+    console.log("conversationId:", conversationId);
+  }, [conversationId]);
 
   useEffect(() => {
     if (!socket) return;
@@ -128,16 +136,14 @@ export default function Chat() {
   }, [accessToken, userId, socket]);
 
   useEffect(() => {
-    console.log("conversationId:", conversationId);
-  }, [conversationId]);
-
-  useEffect(() => {
     if (!conversationId || !userId || !accessToken) {
       return;
     }
 
     const fetchConversation = async () => {
       try {
+        setLoadingConversation(true);
+
         const response = await getConversation(conversationId, userId, accessToken);
         setMessages(
           response.items.map((item) => ({
@@ -147,6 +153,8 @@ export default function Chat() {
         );
       } catch (error) {
         console.error("Error fetching conversation:", error);
+      } finally {
+        setLoadingConversation(false);
       }
     };
 
@@ -203,6 +211,12 @@ export default function Chat() {
     }
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    const newPreviews = files.map(file => URL.createObjectURL(file));
+    setImagePreviews(prev => [...prev, ...newPreviews]);
+  };
+
   return (
     <div>
       <button
@@ -217,7 +231,7 @@ export default function Chat() {
         animate={{ scale: openChatFrame ? 1 : 0.2, opacity: openChatFrame ? 1 : 0 }}
         exit={{ scale: 0.2, opacity: 0 }}
         transition={{ duration: 0.3, ease: "easeOut" }}
-        className="fixed flex-col bottom-0 right-[90px] w-[20vw] h-[60vh] shadow-2xl shadow-gray-400 bg-white rounded-tl-lg rounded-tr-lg"
+        className="fixed flex-col bottom-0 md:right-[90px] sm:w-full md:w-96 md:h-[60vh] shadow-2xl shadow-gray-400 bg-white rounded-tl-lg rounded-tr-lg"
         style={{ display: openChatFrame ? "flex" : "hidden", transformOrigin: "bottom right" }}
       >
         <div className="flex justify-between w-full items-center px-4 py-2 bg-gray-900 rounded-tl-lg rounded-tr-lg">
@@ -255,40 +269,52 @@ export default function Chat() {
           </div>
 
           <div className="flex flex-col gap-y-2 overflow-y-auto flex-grow p-2" ref={messageContainerRef}>
-            {messages.map((msg, index) => {
-              const isUser = msg.position === true;
+            {loadingConversation ? (
+              <div className="flex flex-col w-full h-full justify-center items-center">
+                <ClipLoader className="size-20" />
+              </div>
+            ) : messages.length === 0 ? (
+              <div className="flex flex-col w-full h-full justify-center items-center gap-y-2">
+                <ChatBubbleLeftEllipsisIcon className="w-10 h-10 text-gray-400" />
+                <p className="text-lg font-medium">No messages yet</p>
+                <p className="text-sm text-gray-400">Start the conversation now!</p>
+              </div>
+            ) : (
+              messages.map((msg, index) => {
+                const isUser = msg.position === true;
 
-              return (
-                <div
-                  key={index}
-                  className={`flex items-start gap-x-2 ${isUser ? 'justify-end' : 'justify-start'}`}
-                >
-                  <div className={`flex items-start gap-x-2 ${isUser ? 'flex-row-reverse' : ''}`}>
-                    <Image
-                      src={
-                        msg.userId?.avatar === 'https://via.placeholder.com/400x400.png'
-                          ? '/assets/default-avatar-icon.jpg'
-                          : msg.userId?.avatar || '/assets/default-avatar-icon.jpg'
-                      }
-                      alt="avatar"
-                      width={32}
-                      height={32}
-                      className="w-8 h-8 rounded-full"
-                    />
+                return (
+                  <div
+                    key={index}
+                    className={`flex items-start gap-x-2 ${isUser ? 'justify-end' : 'justify-start'}`}
+                  >
+                    <div className={`flex items-start gap-x-2 ${isUser ? 'flex-row-reverse' : ''}`}>
+                      <Image
+                        src={
+                          msg.userId?.avatar === 'https://via.placeholder.com/400x400.png'
+                            ? '/assets/default-avatar-icon.jpg'
+                            : msg.userId?.avatar || '/assets/default-avatar-icon.jpg'
+                        }
+                        alt="avatar"
+                        width={32}
+                        height={32}
+                        className="w-8 h-8 rounded-full"
+                      />
 
-                    <div
-                      className={`flex flex-col gap-y-2 max-w-52 p-2 rounded-lg shadow text-sm break-words whitespace-pre-wrap ${isUser ? 'bg-blue-100' : 'bg-white'
-                        }`}
-                    >
-                      <p className="text-gray-800">{msg.content}</p>
-                      <p className="text-xs text-gray-500 text-right">
-                        {formatTimestamp(msg.createdAt)}
-                      </p>
+                      <div
+                        className={`flex flex-col gap-y-2 max-w-52 p-2 rounded-lg shadow text-sm break-words whitespace-pre-wrap ${isUser ? 'bg-blue-100' : 'bg-white'
+                          }`}
+                      >
+                        <p className="text-gray-800">{msg.content}</p>
+                        <p className="text-xs text-gray-500 text-right">
+                          {formatTimestamp(msg.createdAt)}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })
+            )}
           </div>
         </div>
 
@@ -305,19 +331,46 @@ export default function Chat() {
           />
         </div>
 
+        {imagePreviews.length > 0 && (
+          <div className="w-full px-2 py-1 border-t border-b bg-gray-50 flex gap-2 overflow-x-auto overflow-y-hidden">
+            {imagePreviews.map((url, idx) => (
+              <div key={idx} className="relative h-24 overflow-hidden">
+                <Image
+                  src={url}
+                  alt={`preview-${idx}`}
+                  width={1000}
+                  height={1000}
+                  className="object-cover w-14 h-14"
+                />
+                <button
+                  onClick={() =>
+                    setImagePreviews(prev => prev.filter((_, i) => i !== idx))
+                  }
+                  className="absolute top-0 right-0 bg-white bg-opacity-70 text-red-500 px-1 rounded-full text-xs hover:bg-gray-200 hover:text-red-700"
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+
+
         <div className="flex justify-between items-center w-full h-[10%] p-2">
           <div className="flex justify-start space-x-2">
             <button
               onClick={handleClick}
             >
               <PhotoIcon className="size-6" />
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                className="hidden"
+              />
             </button>
-            <input
-              type="file"
-              accept="image/*"
-              ref={fileInputRef}
-              className="hidden"
-            />
 
             <button>
               <FaceSmileIcon className="size-6" />

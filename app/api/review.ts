@@ -90,7 +90,7 @@ export const getReviewDetail = async (
     productId: string,
     clientId: string,
     accessToken: string,
-    variantId: string
+    variantId?: string
 ): Promise<Review.ReviewDetailResponse> => {
     try {
         let response;

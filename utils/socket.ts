@@ -4,13 +4,14 @@ let socket: Socket | null = null;
 
 export const initSocket = (deviceToken: string, role: string, token?: string): Socket => {
   if (!socket) {
-    socket = io('http://localhost:3000', {
+    socket = io(process.env.NEXT_PUBLIC_BACKEND_URL, {
       auth: {
         token: token || null,
         deviceToken: deviceToken,
         role,
       },
       autoConnect: false,
+      withCredentials: true,
     });
   }
 
