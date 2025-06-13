@@ -42,17 +42,24 @@ export const disconnectSocket = () => {
   socket = null;
 };
 
-export const reconnectSocket = (): Socket => {
-  const token = localStorage.getItem('accessToken') || '';
-  const deviceToken = localStorage.getItem('deviceToken') || '';
-
-  if (socket) {
-    socket.disconnect();
-    socket = null;
+export const reconnectSocket = (newAuth: {
+  token: string;
+  deviceToken: string;
+  role: string;
+}): Socket => {
+  if (!socket) {
+    socket = initSocket(newAuth.deviceToken, newAuth.role, newAuth.token);
+    return socket;
   }
 
-  const newSocket = initSocket(deviceToken, "user", token);
-  socket = newSocket;
+  socket.auth = {
+    token: newAuth.token,
+    deviceToken: newAuth.deviceToken,
+    role: newAuth.role,
+  };
+
+  socket.disconnect();
+  socket.connect();
 
   return socket;
 };

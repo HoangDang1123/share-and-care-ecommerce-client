@@ -63,11 +63,17 @@ export default function Page() {
       localStorage.setItem('avatarUrl', response.user.avatar);
       localStorage.setItem('email', response.user.email);
       localStorage.setItem('name', response.user.name);
-      const socket = reconnectSocket();
+
+      const socket = reconnectSocket({
+        token: localStorage.getItem('accessToken') || '',
+        deviceToken: localStorage.getItem('deviceToken') || '',
+        role: 'user',
+      });
+
       setSocket(socket);
 
       socket.on('connect', () => {
-        console.log('🔄 Reconnected as user');
+        console.log('🔄 Reconnected with user');
       });
 
       router.push('/');

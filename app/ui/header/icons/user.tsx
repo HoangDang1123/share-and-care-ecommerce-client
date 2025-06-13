@@ -49,11 +49,17 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
         localStorage.removeItem('avatarUrl');
         localStorage.removeItem('email');
         localStorage.removeItem('name');
-        const socket = reconnectSocket();
+
+        const socket = reconnectSocket({
+          token: localStorage.getItem('accessToken') || '',
+          deviceToken: localStorage.getItem('deviceToken') || '',
+          role: 'user',
+        });
+
         setSocket(socket);
 
         socket.on('connect', () => {
-          console.log('🔄 Reconnected as anonymous');
+          console.log('🔄 Reconnected with anonymous');
         });
       }
     }

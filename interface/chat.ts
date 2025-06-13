@@ -83,7 +83,7 @@ export interface ChatUser {
 export interface ConversationResponse {
     conversationId: string, 
     userMessages: MessageItem[] | null,
-    aiResponse: MessageItem[] | null,
+    aiResponse: MessageItem | null,
 }
 
 export enum Role {

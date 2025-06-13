@@ -52,11 +52,17 @@ export default function Home() {
             localStorage.setItem('userId', userId);
             localStorage.setItem('tokenTimestamp', currentTime.toString());
             localStorage.setItem('isLogin', 'true');
-            const socket = reconnectSocket();
+
+            const socket = reconnectSocket({
+              token: localStorage.getItem('accessToken') || '',
+              deviceToken: localStorage.getItem('deviceToken') || '',
+              role: 'user',
+            });
+
             setSocket(socket);
 
             socket.on('connect', () => {
-              console.log('🔄 Reconnected as anonymous');
+              console.log('🔄 Reconnected with user');
             });
           }
 

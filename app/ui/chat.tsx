@@ -17,7 +17,7 @@ import { ConversationResponse, MessageItem } from "@/interface/chat";
 import Image from "next/image";
 import { formatTimestamp } from "@/utils/helpers";
 import { initSocket } from "@/utils/socket";
-import { getConversation } from "../api/chat";
+import { getAllConversation, getConversation } from "../api/chat";
 import { useSocket } from "../context/SocketContext";
 
 export default function Chat() {
@@ -35,11 +35,31 @@ export default function Chat() {
   const { socket, setSocket } = useSocket();
 
   useEffect(() => {
+    const handleStorageChange = () => {
+      setUserId(localStorage.getItem('userId') || '');
+      setAccessToken(localStorage.getItem('accessToken') || '');
+      setDeviceToken(localStorage.getItem('deviceToken') || '');
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    handleStorageChange();
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
+
+  useEffect(() => {
     if (!deviceToken) return;
 
-    const socketInstance = initSocket(deviceToken, 'user');
+    const role = 'user';
+    const socketInstance = accessToken
+      ? initSocket(deviceToken, role, accessToken)
+      : initSocket(deviceToken, role);
+
     setSocket(socketInstance);
-  }, [deviceToken]);
+  }, [deviceToken, accessToken]);
 
   useEffect(() => {
     if (!socket) return;
@@ -47,29 +67,32 @@ export default function Chat() {
     const handleNewMessage = (data: ConversationResponse) => {
       console.log('📩 Received new_message:', data);
 
-      setConversationId(data.conversationId);
+      if (!conversationId && data.conversationId) {
+        setConversationId(data.conversationId);
+      }
 
-      setMessages(prev => {
-        const newMessages: MessageItem[] = [];
+      if (data.conversationId === conversationId) {
+        setMessages(prev => {
+          const newMessages: MessageItem[] = [];
 
-        if (data.userMessages && Array.isArray(data.userMessages)) {
-          const userMsgsWithPosition = data.userMessages.map(msg => ({
-            ...msg,
-            position: true,
-          }));
-          newMessages.push(...userMsgsWithPosition);
-        }
+          if (data.userMessages && Array.isArray(data.userMessages)) {
+            const userMsgsWithPosition = data.userMessages.map(msg => ({
+              ...msg,
+              position: true,
+            }));
+            newMessages.push(...userMsgsWithPosition);
+          }
 
-        if (data.aiResponse) {
-          const aiMsgsWithPosition = data.aiResponse.map(msg => ({
-            ...msg,
-            position: false,
-          }));
-          newMessages.push(...aiMsgsWithPosition);
-        }
+          if (data.aiResponse) {
+            newMessages.push({
+              ...data.aiResponse,
+              position: false,
+            });
+          }
 
-        return [...prev, ...newMessages];
-      });
+          return [...prev, ...newMessages];
+        });
+      }
     };
 
     socket.on('new_message', handleNewMessage);
@@ -77,38 +100,58 @@ export default function Chat() {
     return () => {
       socket.off('new_message', handleNewMessage);
     };
-  }, [socket]);
+  }, [conversationId, socket]);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      if (!conversationId) {
-        return;
+    if (!userId || !accessToken) {
+      setConversationId(null);
+      setMessages([]);
+      return;
+    };
+
+    const fetchAllConversation = async () => {
+      try {
+        const response = await getAllConversation(userId, accessToken);
+        const firstConversation = response?.items?.[0];
+
+        if (firstConversation) {
+          setConversationId(firstConversation.id);
+        } else {
+          setConversationId(null);
+        }
+      } catch (error) {
+        console.error('Error fetching conversations:', error);
       }
+    };
+
+    fetchAllConversation();
+  }, [accessToken, userId, socket]);
+
+  useEffect(() => {
+    console.log("conversationId:", conversationId);
+  }, [conversationId]);
+
+  useEffect(() => {
+    if (!conversationId || !userId || !accessToken) {
+      return;
+    }
+
+    const fetchConversation = async () => {
       try {
         const response = await getConversation(conversationId, userId, accessToken);
         setMessages(
           response.items.map((item) => ({
             ...item,
-            position: item.sender !== 'Share And Care Admin',
+            position: item.sender !== 'Share And Care Admin' && item.sender !== 'AI_Assistant',
           })).reverse()
         );
       } catch (error) {
-        console.error("Error fetching products:", error);
+        console.error("Error fetching conversation:", error);
       }
     };
 
-    fetchProducts();
-  }, [accessToken, conversationId, userId, useAI]);
-
-  useEffect(() => {
-    console.log(messages);
-  }, [messages])
-
-  useEffect(() => {
-    setUserId(localStorage.getItem('userId') || '');
-    setAccessToken(localStorage.getItem('accessToken') || '');
-    setDeviceToken(localStorage.getItem('deviceToken') || '');
-  }, []);
+    fetchConversation();
+  }, [conversationId, socket?.id, userId, accessToken]);
 
   useEffect(() => {
     if (messTextareaRef.current) {
@@ -139,6 +182,16 @@ export default function Chat() {
         imageUrls: [],
         useAI: useAI,
       });
+
+      if (!conversationId) {
+        setTimeout(async () => {
+          const response = await getAllConversation(userId, accessToken);
+          const firstConversation = response?.items?.[0];
+          if (firstConversation) {
+            setConversationId(firstConversation.id);
+          }
+        }, 10);
+      }
     }
 
     setMessage('');
@@ -164,7 +217,7 @@ export default function Chat() {
         animate={{ scale: openChatFrame ? 1 : 0.2, opacity: openChatFrame ? 1 : 0 }}
         exit={{ scale: 0.2, opacity: 0 }}
         transition={{ duration: 0.3, ease: "easeOut" }}
-        className="fixed flex-col bottom-0 right-[90px] w-[20vw] h-[55vh] shadow-2xl shadow-gray-400 bg-white rounded-lg"
+        className="fixed flex-col bottom-0 right-[90px] w-[20vw] h-[60vh] shadow-2xl shadow-gray-400 bg-white rounded-tl-lg rounded-tr-lg"
         style={{ display: openChatFrame ? "flex" : "hidden", transformOrigin: "bottom right" }}
       >
         <div className="flex justify-between w-full items-center px-4 py-2 bg-gray-900 rounded-tl-lg rounded-tr-lg">
@@ -178,14 +231,14 @@ export default function Chat() {
         </div>
 
         <div className="flex flex-col justify-between w-full h-full overflow-hidden border bg-white">
-          <div className="flex justify-between gap-x-2 border-b-2 p-2 bg-white">
+          <div className="flex justify-between gap-x-2 border-b-2 shadow-md p-2 bg-white">
             <div className="flex items-center gap-x-2">
               <Image
                 src="/assets/favicon.png"
                 alt="avatar"
                 width={32}
                 height={32}
-                className="w-8 h-8 rounded-full"
+                className="w-10 h-10 rounded-full"
               />
               <span className="text-base font-semibold">
                 {useAI ? 'Share And Care AI' : 'Share And Care Admin'}
@@ -224,7 +277,7 @@ export default function Chat() {
                     />
 
                     <div
-                      className={`flex flex-col gap-y-2 max-w-60 p-2 rounded-lg shadow text-sm break-words whitespace-pre-wrap ${isUser ? 'bg-blue-100' : 'bg-white'
+                      className={`flex flex-col gap-y-2 max-w-52 p-2 rounded-lg shadow text-sm break-words whitespace-pre-wrap ${isUser ? 'bg-blue-100' : 'bg-white'
                         }`}
                     >
                       <p className="text-gray-800">{msg.content}</p>
