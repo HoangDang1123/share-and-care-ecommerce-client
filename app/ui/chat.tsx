@@ -21,6 +21,7 @@ import { initSocket } from "@/utils/socket";
 import { getAllConversation, getConversation } from "../api/chat";
 import { useSocket } from "../context/SocketContext";
 import ClipLoader from "react-spinners/ClipLoader";
+import { useAuth } from "../context/AppContext";
 
 export default function Chat() {
   const [userId, setUserId] = useState('');
@@ -37,6 +38,7 @@ export default function Chat() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const messageContainerRef = useRef<HTMLDivElement | null>(null);
   const { socket, setSocket } = useSocket();
+  const { isLogin } = useAuth();
 
   useEffect(() => {
     const handleStorageChange = () => {
@@ -66,10 +68,6 @@ export default function Chat() {
   }, [deviceToken, accessToken]);
 
   useEffect(() => {
-    console.log("conversationId:", conversationId);
-  }, [conversationId]);
-
-  useEffect(() => {
     if (!socket) return;
 
     const handleNewMessage = (data: ConversationResponse) => {
@@ -79,7 +77,7 @@ export default function Chat() {
         setConversationId(data.conversationId);
       }
 
-      if (data.conversationId === conversationId) {
+      if (data.conversationId === conversationId || conversationId === null) {
         setMessages(prev => {
           const newMessages: MessageItem[] = [];
 
@@ -111,55 +109,49 @@ export default function Chat() {
   }, [conversationId, socket]);
 
   useEffect(() => {
-    if (!userId || !accessToken) {
-      setConversationId(null);
-      setMessages([]);
-      return;
-    };
+    if (userId !== '' && accessToken !== '') {
+      const fetchAllConversation = async () => {
+        try {
+          const response = await getAllConversation(userId, accessToken);
+          const firstConversation = response?.items?.[0];
 
-    const fetchAllConversation = async () => {
-      try {
-        const response = await getAllConversation(userId, accessToken);
-        const firstConversation = response?.items?.[0];
-
-        if (firstConversation) {
-          setConversationId(firstConversation.id);
-        } else {
-          setConversationId(null);
+          if (firstConversation) {
+            setConversationId(firstConversation.id);
+          } else {
+            setConversationId(null);
+          }
+        } catch (error) {
+          console.error('Error fetching conversations:', error);
         }
-      } catch (error) {
-        console.error('Error fetching conversations:', error);
-      }
-    };
+      };
 
-    fetchAllConversation();
-  }, [accessToken, userId, socket]);
+      fetchAllConversation();
+    }
+  }, [accessToken, userId]);
 
   useEffect(() => {
-    if (!conversationId || !userId || !accessToken) {
-      return;
+    if (conversationId && userId && accessToken) {
+      const fetchConversation = async () => {
+        try {
+          setLoadingConversation(true);
+
+          const response = await getConversation(conversationId, userId, accessToken);
+          setMessages(
+            response.items.map((item) => ({
+              ...item,
+              position: item.sender !== 'Share And Care Admin' && item.sender !== 'AI_Assistant',
+            })).reverse()
+          );
+        } catch (error) {
+          console.error("Error fetching conversation:", error);
+        } finally {
+          setLoadingConversation(false);
+        }
+      };
+
+      fetchConversation();
     }
-
-    const fetchConversation = async () => {
-      try {
-        setLoadingConversation(true);
-
-        const response = await getConversation(conversationId, userId, accessToken);
-        setMessages(
-          response.items.map((item) => ({
-            ...item,
-            position: item.sender !== 'Share And Care Admin' && item.sender !== 'AI_Assistant',
-          })).reverse()
-        );
-      } catch (error) {
-        console.error("Error fetching conversation:", error);
-      } finally {
-        setLoadingConversation(false);
-      }
-    };
-
-    fetchConversation();
-  }, [conversationId, socket?.id, userId, accessToken]);
+  }, [accessToken, conversationId, isLogin, userId]);
 
   useEffect(() => {
     if (messTextareaRef.current) {
@@ -191,7 +183,7 @@ export default function Chat() {
         useAI: useAI,
       });
 
-      if (!conversationId) {
+      if (!conversationId && userId && accessToken) {
         setTimeout(async () => {
           const response = await getAllConversation(userId, accessToken);
           const firstConversation = response?.items?.[0];
