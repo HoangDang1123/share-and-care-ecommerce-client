@@ -27,6 +27,7 @@ export interface AddressResponse {
 export interface AutoCompleteResponse {
     placeId: string,
     description: string,
+    street: string,
     compound: {
         ward: string,
         district: string,

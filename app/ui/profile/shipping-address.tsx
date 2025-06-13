@@ -89,12 +89,17 @@ export const ShippingAddress: React.FC<ShippingAddressProps> = ({ userId, access
 
   const debouncedFetch = useMemo(() =>
     debounce(async (value: string, setAutoComplete: (data: Array<AutoCompleteResponse>) => void) => {
+      const city = cities?.find(city => city.Id === selectedCity);
+      const district = districts?.find(district => district.Id === selectedDistrict);
+      const ward = wards?.find(ward => ward.Id === selectedWard);
+
       try {
-        const response = await getAutoComplete(value);
+        const response = await getAutoComplete(`${value}, ${ward?.Name}, ${district?.Name}, ${city?.Name}`);
+        console.log(`${value}, ${ward?.Name}, ${district?.Name}, ${city?.Name}`)
         setAutoComplete(response);
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) { }
-    }, 500), []
+    }, 500), [selectedCity, selectedDistrict, selectedWard]
   );
 
   const handleDeleteAddress = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string, index: number) => {
@@ -180,7 +185,7 @@ export const ShippingAddress: React.FC<ShippingAddressProps> = ({ userId, access
     if (userId !== "" && accessToken !== "" && city && district && ward) {
       try {
         setLoading(true);
-        
+
         await createAddress({
           name: inputData.name,
           phone: inputData.phone,
@@ -372,10 +377,10 @@ export const ShippingAddress: React.FC<ShippingAddressProps> = ({ userId, access
                     {autoComplete.map((item, index) => (
                       <span
                         key={index}
-                        onClick={() => handleSelectSuggestion(item.description)}
+                        onClick={() => handleSelectSuggestion(item.street)}
                         className='sm:text-sm md:text-base p-2 hover:bg-gray-100 hover:cursor-pointer'
                       >
-                        {item.description}
+                        {item.street}
                       </span>
                     ))}
                   </div>
