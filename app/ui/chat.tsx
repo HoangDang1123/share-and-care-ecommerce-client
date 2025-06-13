@@ -86,7 +86,7 @@ export default function Chat() {
           if (data.userMessages && Array.isArray(data.userMessages)) {
             const userMsgsWithPosition = data.userMessages.map(msg => ({
               ...msg,
-              position: true,
+              position: !(msg.sender = 'Share And Care Admin'),
             }));
             newMessages.push(...userMsgsWithPosition);
           }
