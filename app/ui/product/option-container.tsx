@@ -154,11 +154,11 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
         });
 
         if (skuItem) {
-          setProductPrice(skuItem.price);
+          setProductPrice(skuItem.price * quantity);
         } else if (product.skuList.skuList.length === 0
           && typeof (product.product.price) === 'number'
           && ((selectedColorIndex !== null && selectedColorIndex !== -1) || (selectedSizeIndex !== null && selectedSizeIndex !== -1))) {
-          setProductPrice(product.product.price);
+          setProductPrice(product.product.price * quantity);
         } else {
           setProductPrice(0);
         }

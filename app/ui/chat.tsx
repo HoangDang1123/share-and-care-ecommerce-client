@@ -29,7 +29,7 @@ export default function Chat() {
   const [deviceToken, setDeviceToken] = useState('');
   const [useAI, setUseAI] = useState(false);
   const [conversationId, setConversationId] = useState<string | null>(null);
-  const [openChatFrame, setOpenChatFrame] = useState(true);
+  const [openChatFrame, setOpenChatFrame] = useState(false);
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<MessageItem[]>([]);
   const [loadingConversation, setLoadingConversation] = useState(false);
