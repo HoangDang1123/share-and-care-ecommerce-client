@@ -105,7 +105,7 @@ const VNPayStatus: StatusStep[] = [
   {
     index: 4,
     name: "IN_TRANSIT",
-    label: "IN_TRANSIT",
+    label: "In Transit",
     icon: TruckIcon,
     description: "Your order is in transit",
   },
