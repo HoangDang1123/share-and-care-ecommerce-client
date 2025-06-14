@@ -81,7 +81,7 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
         {isLogin ? (
           <span className="inline-flex items-center gap-1 px-4 py-2 rounded-xl text-sm bg-gray-800 text-white hover:bg-gray-900 hover:border-none">
             <i className="italic font-medium not-italic:font-normal">Welcome,</i>
-            <span className="font-semibold">{localStorage.getItem('name') ?? 'Guest'}</span>
+            <span className="font-semibold">{localStorage.getItem('name')}</span>
           </span>
         ) : (
           <UserIcon className="sm:size-7 xl:size-8" />
