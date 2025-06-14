@@ -77,30 +77,28 @@ export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId, status }) =
 
   return (
     <div className='flex flex-col border-t-2 border-b-2 py-4'>
-      <div
-        className='flex justify-between'
-      >
+      <div className='flex flex-col md:flex-row justify-between gap-4'>
         <div className='flex gap-x-4'>
           <Image
             src={item.image}
             alt={item.productName}
             width={500}
             height={500}
-            className='object-cover w-28'
+            className='object-cover w-24 sm:w-28'
           />
           <div className='flex flex-col justify-between'>
             <div className='flex flex-col'>
               <span className='text-base font-medium'>{item.productName}</span>
               <span className='text-base'>{item.variantSlug}</span>
             </div>
-
             <span className='text-base'>{`Số lượng: ${item.quantity}`}</span>
           </div>
         </div>
-        <div className="flex flex-col items-end justify-between">
-          <span className="font-semibold text-base">{`Giá: ${formatPrice(item.price)}`}</span>
 
-          <div className='flex flex-col items-end gap-y-2'>
+        <div className='flex flex-col items-start md:items-end justify-between gap-4'>
+          <span className='font-semibold text-base'>{`Giá: ${formatPrice(item.price)}`}</span>
+
+          <div className='flex flex-col items-start md:items-end gap-y-2'>
             <span
               className={`inline-block text-sm font-medium px-3 py-1 rounded-lg w-fit ${item.canReturn
                 ? 'bg-emerald-50 text-emerald-700'
@@ -110,7 +108,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId, status }) =
               {item.canReturn ? `Hoàn trả trong ${item.returnDays}` : 'Không thể hoàn trả'}
             </span>
 
-            <div className='flex gap-x-2'>
+            <div className='flex flex-wrap gap-2'>
               {item.isReviewed ? (
                 <button
                   onClick={() => setOpenReviewDetail(!openReviewDetail)}
@@ -154,30 +152,26 @@ export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId, status }) =
           </div>
         </div>
 
-        <Dialog open={openDialog} onClose={() => setOpenDialog(false)} className="relative z-50">
-          <DialogBackdrop transition
-            className="fixed inset-0 bg-gray-400/50 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
-          />
-          <div className="fixed inset-0 flex items-center justify-center p-4">
-            <DialogPanel className="space-y-4 border bg-white p-12 rounded-xl">
-              <DialogTitle className="font-bold">Tại sao bạn muốn hoàn trả sản phẩm này?</DialogTitle>
+        <Dialog open={openDialog} onClose={() => setOpenDialog(false)} className='relative z-50'>
+          <DialogBackdrop transition className='fixed inset-0 bg-gray-400/50 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in' />
+          <div className='fixed inset-0 flex items-center justify-center p-4'>
+            <DialogPanel className='space-y-4 border bg-white p-8 md:p-12 rounded-xl w-full max-w-md'>
+              <DialogTitle className='font-bold'>Tại sao bạn muốn hoàn trả sản phẩm này?</DialogTitle>
 
-              <div className="flex flex-col gap-y-1">
-                <label className="font-semibold" htmlFor="reason-select">Lý do hoàn trả</label>
+              <div className='flex flex-col gap-y-1'>
+                <label className='font-semibold' htmlFor='reason-select'>Lý do hoàn trả</label>
                 <select
-                  id="reason-select"
+                  id='reason-select'
                   value={request.reason}
                   onChange={(e) => setRequest(prev => ({
                     ...prev,
                     reason: e.target.value as RefundReason
                   }))}
-                  className="border-2 w-full p-2 rounded-md flex-1 ring-offset placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:text-sm"
+                  className='border-2 w-full p-2 rounded-md flex-1 ring-offset placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:text-sm'
                 >
-                  <option value="">Chọn lý do hoàn trả</option>
+                  <option value=''>Chọn lý do hoàn trả</option>
                   {Object.entries(reasonLabels).map(([key, label]) => (
-                    <option key={key} value={key}>
-                      {label}
-                    </option>
+                    <option key={key} value={key}>{label}</option>
                   ))}
                 </select>
               </div>
@@ -191,21 +185,17 @@ export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId, status }) =
                     ...prev,
                     description: e.target.value,
                   }))}
-                  placeholder="Nhập mô tả..."
-                  className='border-2 w-full p-2 rounded-md flex-1 overflow-y-auto ring-offset placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:text-sm flex-grow resize-none outline-none break-words box-border text-inherit'
+                  placeholder='Nhập mô tả...'
+                  className='border-2 w-full p-2 rounded-md flex-1 overflow-y-auto ring-offset placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:text-sm resize-none outline-none break-words box-border text-inherit'
                 />
               </div>
 
               <button
                 onClick={handleSendRequest}
-                className='px-3 py-1 w-full bg-gray-800 text-white font-medium text-base rounded-lg hover:bg-gray-900'
+                className='px-3 py-2 w-full bg-gray-800 text-white font-medium text-base rounded-lg hover:bg-gray-900'
               >
                 {loading ? (
-                  <ClipLoader
-                    size={20}
-                    color='#ffffff'
-                    aria-label="Loading Spinner"
-                  />
+                  <ClipLoader size={20} color='#ffffff' aria-label='Loading Spinner' />
                 ) : (
                   <div className='flex justify-center items-center gap-x-2'>
                     <span className='font-semibold text-lg'>Gửi</span>

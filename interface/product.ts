@@ -1,4 +1,4 @@
-import { Attribute } from "./attribute";
+import { Attribute, AttributeParams } from "./attribute";
 import { Category } from "./category";
 import { ProductVariant } from "./variant";
 
@@ -76,8 +76,9 @@ export interface ProductDetailResponse {
 
 export interface FetchProductsParams {
     search?: string,
-    categoryId?: string;
-    minPrice?: number;
-    maxPrice?: number;
-    sort?: string;
+    categoryId?: string,
+    attributeId?: AttributeParams[],
+    minPrice?: number,
+    maxPrice?: number,
+    sort?: string,
 }

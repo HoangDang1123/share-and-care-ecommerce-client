@@ -1,5 +1,4 @@
 import BackButton from "@/app/ui/back-button";
-import FilterContainer from "@/app/ui/shop/filter-container";
 import Link from "next/link";
 import { FilterProvider } from "@/app/context/FilterContext";
 import { Suspense } from "react";
@@ -25,8 +24,7 @@ export default function ShopLayout({
           </ul>
         </div>
 
-        <div className='grid md:grid-cols-[1fr_5fr] md:mt-10 sm:gap-4 md:gap-10'>
-          <FilterContainer />
+        <div className='mt-10'>
           <Suspense>{children}</Suspense>
         </div>
       </div>

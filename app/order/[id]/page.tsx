@@ -4,7 +4,7 @@ import { cancelOrder, getOrderDetail } from '@/app/api/order';
 import { OrderItem } from '@/app/ui/order/detail/order-item';
 import OrderTimeline from '@/app/ui/order/detail/order-status';
 import { OrderDetailResponse, OrderStatus, PaymentMethod } from '@/interface/order';
-import { convertDateTime, formatPrice } from '@/utils/helpers';
+import { convertDateTime, formatPrice, getOrderStatusLabel } from '@/utils/helpers';
 import { Button } from '@headlessui/react';
 import {
   ArrowTurnDownLeftIcon,
@@ -163,15 +163,15 @@ export default function Page() {
       </div>
 
       <Row className='sm:mt-4 md:mt-10 md:px-20'>
-        <Col span={17} className='flex flex-col gap-y-4'>
+        <Col xs={24} md={17} className='flex flex-col gap-y-4'>
           <OrderTimeline
             paymentMethod={order.order.paymentMethod}
             currentStatus={order.order.status.toUpperCase()}
           />
-          <div className='flex flex-col border-2 p-6 gap-y-4 rounded-md hover:text-gray-900'>
-            <div className='flex justify-between'>
+          <div className='flex flex-col border-2 p-4 sm:p-6 gap-y-4 rounded-md hover:text-gray-900'>
+            <div className='flex flex-col md:flex-row justify-between gap-4'>
               <div className='flex flex-col gap-y-4'>
-                <span className='font-semibold mb-4'>{`Mã đơn hàng: ${order.order.id}`}</span>
+                <span className='font-semibold'>{`Mã đơn hàng: ${order.order.id}`}</span>
                 <div className="flex items-start gap-2">
                   <CalendarIcon className="w-4 h-4 mt-1 text-primary" />
                   <div>
@@ -191,9 +191,9 @@ export default function Page() {
                 </div>
               </div>
 
-              <div className='flex flex-col items-end gap-y-4'>
-                <span className={`font-semibold h-fit px-3 py-1 rounded-lg ${statusBadge[order.order.status]}`}>
-                  {order.order.status.replace(/_/g, ' ')}
+              <div className='flex flex-col items-start md:items-end gap-y-4'>
+                <span className={`font-semibold px-3 py-1 rounded-lg ${statusBadge[order.order.status]}`}>
+                  {getOrderStatusLabel(order.order.status).replace(/_/g, ' ')}
                 </span>
 
                 {order.order.timestamps.deliveredAt !== null && (
@@ -210,8 +210,8 @@ export default function Page() {
               </div>
             </div>
 
-            <Row gutter={16} className='w-full'>
-              <Col span={6}>
+            <Row gutter={[16, 16]} className='w-full'>
+              <Col xs={24} sm={12} md={6}>
                 <div className="flex items-start gap-2">
                   <UserIcon className="w-4 h-4 mt-1 text-primary" />
                   <div>
@@ -221,7 +221,7 @@ export default function Page() {
                 </div>
               </Col>
 
-              <Col span={4}>
+              <Col xs={24} sm={12} md={4}>
                 <div className="flex items-start gap-2">
                   <PhoneIcon className="w-4 h-4 mt-1 text-primary" />
                   <div>
@@ -231,7 +231,7 @@ export default function Page() {
                 </div>
               </Col>
 
-              <Col span={14}>
+              <Col xs={24} md={14}>
                 <div className="flex items-start gap-2">
                   <MapPinIcon className="w-4 h-4 mt-1 text-primary" />
                   <div>
@@ -260,9 +260,9 @@ export default function Page() {
           </div>
         </Col>
 
-        <Col span={1} />
+        <Col lg={1} />
 
-        <Col span={6} className="flex flex-col w-full h-fit md:shadow-lg px-4 pt-10 gap-y-10 md:rounded-lg transition-all duration-300 ease-in-out">
+        <Col xs={24} md={6} className="flex flex-col w-full h-fit md:shadow-lg px-4 pt-10 gap-y-10 md:rounded-lg transition-all duration-300 ease-in-out">
           <span className='flex items-center gap-2 font-bold text-3xl'>
             <ReceiptPercentIcon className='w-10 h-10 text-gray-700' />
             Thông tin đơn hàng
@@ -272,41 +272,41 @@ export default function Page() {
             <div className='flex justify-between items-center text-gray-800'>
               <div className='flex items-center gap-2'>
                 <ShoppingBagIcon className='w-5 h-5 text-blue-500' />
-                <h4 className='font-semibold sm:text-base md:text-lg'>Tổng tiền hàng:</h4>
+                <span className='font-semibold sm:text-base md:text-lg'>Tổng tiền hàng:</span>
               </div>
-              <h4 className='sm:text-base md:text-lg'>{formatPrice(order.order.pricing.itemsPrice)}</h4>
+              <span className='sm:text-base md:text-lg'>{formatPrice(order.order.pricing.itemsPrice)}</span>
             </div>
 
             <div className='flex justify-between items-center text-gray-800'>
               <div className='flex items-center gap-2'>
                 <TruckIcon className='w-5 h-5 text-orange-500' />
-                <h4 className='font-semibold sm:text-base md:text-lg'>Phí vận chuyển:</h4>
+                <span className='font-semibold sm:text-base md:text-lg'>Phí vận chuyển:</span>
               </div>
-              <h4 className='sm:text-base md:text-lg'>{`+ ${formatPrice(order.order.pricing.shippingPrice)}`}</h4>
+              <span className='sm:text-base md:text-lg'>{`+ ${formatPrice(order.order.pricing.shippingPrice)}`}</span>
             </div>
 
             <div className='flex justify-between items-center text-gray-800'>
               <div className='flex items-center gap-2'>
                 <TagIcon className='w-5 h-5 text-green-600' />
-                <h4 className='font-semibold sm:text-base md:text-lg'>Giảm giá sản phẩm:</h4>
+                <span className='font-semibold sm:text-base md:text-lg'>Giảm giá sản phẩm:</span>
               </div>
-              <h4 className='sm:text-base md:text-lg'>{`- ${formatPrice(order.order.pricing.productDiscount)}`}</h4>
+              <span className='sm:text-base md:text-lg'>{`- ${formatPrice(order.order.pricing.productDiscount)}`}</span>
             </div>
 
             <div className='flex justify-between items-center text-gray-800'>
               <div className='flex items-center gap-2'>
                 <TicketIcon className='w-5 h-5 text-green-600' />
-                <h4 className='font-semibold sm:text-base md:text-lg'>Giảm giá mã khuyến mãi:</h4>
+                <span className='font-semibold sm:text-base md:text-lg'>Giảm giá mã khuyến mãi:</span>
               </div>
-              <h4 className='sm:text-base md:text-lg'>{`- ${formatPrice(order.order.pricing.couponDiscount)}`}</h4>
+              <span className='sm:text-base md:text-lg'>{`- ${formatPrice(order.order.pricing.couponDiscount)}`}</span>
             </div>
 
             <div className='flex justify-between items-center text-gray-800'>
               <div className='flex items-center gap-2'>
                 <GiftIcon className='w-5 h-5 text-green-600' />
-                <h4 className='font-semibold sm:text-base md:text-lg'>Giảm giá vận chuyển:</h4>
+                <span className='font-semibold sm:text-base md:text-lg'>Giảm giá vận chuyển:</span>
               </div>
-              <h4 className='sm:text-base md:text-lg'>{`- ${formatPrice(order.order.pricing.shippingDiscount)}`}</h4>
+              <span className='sm:text-base md:text-lg'>{`- ${formatPrice(order.order.pricing.shippingDiscount)}`}</span>
             </div>
 
             <div className='w-full h-0.5 bg-gray-200' />
@@ -314,9 +314,9 @@ export default function Page() {
             <div className='flex justify-between items-center font-medium'>
               <div className='flex items-center gap-2'>
                 <BanknotesIcon className='w-5 h-5 text-green-700' />
-                <h4 className='sm:text-base md:text-lg'>Tổng tiết kiệm:</h4>
+                <span className='sm:text-base md:text-lg'>Tổng tiết kiệm:</span>
               </div>
-              <h4 className='sm:text-base md:text-lg'>{`- ${formatPrice(order.order.pricing.totalSavings)}`}</h4>
+              <span className='sm:text-base md:text-lg'>{`- ${formatPrice(order.order.pricing.totalSavings)}`}</span>
             </div>
 
             <div className='w-full h-0.5 bg-gray-200' />
@@ -324,9 +324,9 @@ export default function Page() {
             <div className='flex justify-between items-center text-black font-bold'>
               <div className='flex items-center gap-2'>
                 <CurrencyDollarIcon className='w-6 h-6 text-gray-800' />
-                <h4 className='sm:text-base md:text-lg'>Tổng cộng:</h4>
+                <span className='sm:text-base md:text-lg'>Tổng cộng:</span>
               </div>
-              <h4 className='sm:text-base md:text-lg'>{formatPrice(order.order.pricing.totalPrice)}</h4>
+              <span className='sm:text-base md:text-lg'>{formatPrice(order.order.pricing.totalPrice)}</span>
             </div>
           </div>
 

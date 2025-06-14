@@ -1,6 +1,6 @@
 'use client'
 
-import { getAllCategories, getChildCategories } from "@/app/api/category";
+import { getAllCategories } from "@/app/api/category";
 import { CategoryResponse } from "@/interface/category";
 import { Radio, RadioGroup } from "@headlessui/react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 
 export default function CategoryFilter() {
   const [categories, setCategories] = useState<CategoryResponse[]>([]);
-  const [childMap, setChildMap] = useState<Record<string, CategoryResponse[]>>({});
   const [selected, setSelected] = useState('');
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -18,32 +17,13 @@ export default function CategoryFilter() {
       try {
         const response = await getAllCategories();
         setCategories(response);
-        for (const category of response) {
-          await fetchChildRecursive(category.id);
-        }
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
     };
 
     fetchCategories();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const fetchChildRecursive = async (categoryId: string) => {
-    try {
-      if (!childMap[categoryId]) {
-        const response = await getChildCategories(categoryId);
-        setChildMap(prev => ({ ...prev, [categoryId]: response }));
-
-        for (const child of response) {
-          await fetchChildRecursive(child.id);
-        }
-      }
-    } catch (error) {
-      console.error(`Error fetching children for ${categoryId}:`, error);
-    }
-  };
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
@@ -67,12 +47,17 @@ export default function CategoryFilter() {
   };
 
   const renderCategoryRecursive = (category: CategoryResponse, level = 0) => {
-    const baseClass = level === 0 ? 'font-bold text-lg' : level === 1 ? 'font-semibold text-md' : 'text-sm text-gray-600';
+    const baseClass =
+      level === 0
+        ? 'font-bold text-lg'
+        : level === 1
+          ? 'font-semibold text-md'
+          : 'text-sm text-gray-600';
     const containerClass = level === 0 ? '' : 'ml-6';
 
     return (
       <div key={category.id} className={`mt-1 ${containerClass}`}>
-        <div className="flex items-center gap-x-2 py-1 px-2">
+        <div className="flex items-center gap-x-2 py-1 px-1">
           <Radio
             value={category.id}
             className="group flex justify-center items-center size-4 rounded-full border border-gray-700 bg-white hover:cursor-pointer"
@@ -81,7 +66,7 @@ export default function CategoryFilter() {
           </Radio>
           <span className={baseClass}>{category.name}</span>
         </div>
-        {childMap[category.id]?.map(child => renderCategoryRecursive(child, level + 1))}
+        {category.children?.map(child => renderCategoryRecursive(child, level + 1))}
       </div>
     );
   };
@@ -93,17 +78,19 @@ export default function CategoryFilter() {
         onChange={setSelected}
         className='flex flex-col select-none'
       >
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center mb-2">
           <h2 className='font-bold'>Loại</h2>
           <button
             onClick={handleClearAll}
-            className="flex h-fit px-3 py-1 rounded-xl bg-gray-200 hover:bg-gray-300"
+            className="flex h-fit px-3 py-1 rounded-xl bg-gray-200 hover:bg-gray-300 text-sm"
           >
             Xóa tất cả
           </button>
         </div>
 
-        {categories.map(category => renderCategoryRecursive(category))}
+        <div className="grid grid-cols-2">
+          {categories.map(category => renderCategoryRecursive(category))}
+        </div>
       </RadioGroup>
     </div>
   );

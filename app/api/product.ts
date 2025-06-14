@@ -49,7 +49,7 @@ export const getTopCategoriesProduct = async (categoryId: string): Promise<Produ
 }
 
 export const getShopProducts = async (params: Product.FetchProductsParams = {}): Promise<Product.Product> => {
-    const { search, categoryId, minPrice, maxPrice, sort } = params;
+    const { search, categoryId, attributeId, minPrice, maxPrice, sort } = params;
 
     try {
         let url = `${PRODUCT_URL}?size=20`;
@@ -58,6 +58,10 @@ export const getShopProducts = async (params: Product.FetchProductsParams = {}):
             url += `&search=${search}`;
         } if (categoryId) {
             url += `&category=${categoryId}`;
+        } if (attributeId && Array.isArray(attributeId)) {
+            const encodedAttributes = encodeURIComponent(JSON.stringify(attributeId));
+            console.log(encodedAttributes)
+            url += `&attributeId=${encodedAttributes}`;
         } if (minPrice) {
             url += `&minPrice=${minPrice}`;
         } if (maxPrice) {

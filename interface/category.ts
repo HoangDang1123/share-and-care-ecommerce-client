@@ -4,7 +4,8 @@ export interface Category {
 }
 
 export interface CategoryResponse {
-    id: string,
-    name: string,
-    parentId: null,
+  id: string;
+  name: string;
+  parentId: string | null;
+  children: CategoryResponse[];
 }

@@ -4,9 +4,10 @@ import { getAllProduct, getShopProducts } from "@/app/api/product";
 import { useFilter } from "@/app/context/FilterContext";
 import Card from "@/app/ui/card";
 import Pagination from "@/app/ui/pagination";
+import FilterContainer from "@/app/ui/shop/filter-container";
 import SortSelected from "@/app/ui/shop/sort-selected";
 import { FetchProductsParams, ProductResponse } from "@/interface/product";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { FunnelIcon, MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -17,6 +18,7 @@ export default function Page() {
   const [sort, setSort] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
+  const [isOpen, setIsOpen] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -25,33 +27,31 @@ export default function Page() {
     const categoryData = searchParams.get('category');
     const minPriceData = searchParams.get('minPrice');
     const maxPriceData = searchParams.get('maxPrice');
+    const attributeParam = searchParams.get('attribute');
 
     let response;
 
     try {
       const filters: FetchProductsParams = {};
 
-      if (searchData) {
-        filters.search = searchData;
-      }
-      if (categoryData) {
-        filters.categoryId = categoryData;
-      }
-      if (minPriceData) {
-        filters.minPrice = Number(minPriceData);
-      }
-      if (maxPriceData) {
-        filters.maxPrice = Number(maxPriceData);
-      }
-      if (sort) {
-        filters.sort = sort;
+      if (searchData) filters.search = searchData;
+      if (categoryData) filters.categoryId = categoryData;
+      if (minPriceData) filters.minPrice = Number(minPriceData);
+      if (maxPriceData) filters.maxPrice = Number(maxPriceData);
+      if (sort) filters.sort = sort;
+
+      if (attributeParam) {
+        try {
+          const decoded = decodeURIComponent(attributeParam);
+          filters.attributeId = JSON.parse(decoded);
+        } catch (err) {
+          console.error("Invalid attribute filter:", err);
+        }
       }
 
-      if (Object.keys(filters).length > 0) {
-        response = await getShopProducts(filters);
-      } else {
-        response = await getAllProduct();
-      }
+      response = Object.keys(filters).length > 0
+        ? await getShopProducts(filters)
+        : await getAllProduct();
 
       setProductList(response.items);
     } catch (error) {
@@ -66,18 +66,25 @@ export default function Page() {
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
-    if (searchData) {
-      params.set('search', searchData);
-    } else {
-      params.delete('search');
-    }
+    if (searchData) params.set('search', searchData);
+    else params.delete('search');
+
     router.push(`/shop?${params.toString()}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchData]);
 
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+    if (sort) params.set('sort', sort);
+    else params.delete('sort');
+
+    router.push(`/shop?${params.toString()}`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sort]);
+
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchData(e.target.value);
-  }
+  };
 
   return (
     <div className="flex flex-col space-y-8">
@@ -91,7 +98,6 @@ export default function Page() {
             onChange={handleChangeInput}
             className="block w-full rounded-lg border-0 py-1.5 pl-5 text-gray-900 sm:text-sm sm:leading-6 md:text-lg placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-400"
           />
-
           <MagnifyingGlassIcon className="absolute right-3 top-2 size-6 text-gray-400" />
         </div>
 
@@ -122,7 +128,7 @@ export default function Page() {
               <select
                 onChange={(e) => {
                   setPageSize(Number(e.target.value))
-                  setCurrentPage(1)
+                  setCurrentPage(1);
                 }}
                 className="border rounded-md p-1 text-base"
               >
@@ -136,6 +142,37 @@ export default function Page() {
           </div>
         </div>
       )}
+
+      <div className="relative">
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="fixed top-1/2 right-0 transform -translate-y-1/2 bg-indigo-600 text-white p-2 rounded-l-xl shadow-lg z-50 hover:bg-indigo-700"
+        >
+          <FunnelIcon className="w-6 h-6" />
+        </button>
+
+        <div
+          className={`
+          fixed top-0 right-0 h-full w-1/3 bg-white shadow-xl z-40 p-4 transition-transform duration-300 overflow-scroll
+          ${isOpen ? 'translate-x-0' : 'translate-x-full'}
+        `}
+        >
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-lg font-semibold">Lọc sản phẩm</h2>
+            <button onClick={() => setIsOpen(false)}>
+              <XMarkIcon className="w-6 h-6 text-gray-600 hover:text-black" />
+            </button>
+          </div>
+          <FilterContainer />
+        </div>
+
+        {isOpen && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-30 z-30"
+            onClick={() => setIsOpen(false)}
+          />
+        )}
+      </div>
     </div>
   );
 }

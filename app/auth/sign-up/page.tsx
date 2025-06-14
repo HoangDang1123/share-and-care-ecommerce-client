@@ -34,7 +34,7 @@ export default function Page() {
   const validatePassword = () => {
     let newErrors = '';
     if (formData.password !== formData.confirmPassword) {
-      newErrors = 'Passwords do not match';
+      newErrors = 'Mật khẩu không khớp';
     }
     setErrors(newErrors);
 

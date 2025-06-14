@@ -160,7 +160,7 @@ export default function Page() {
 
       <Row className='flex sm:mt-4 md:mt-10 md:px-20'>
         <Col
-          span={17}
+          xs={24} lg={17}
           className='flex flex-col items-start space-y-4'
         >
           <div className='flex justify-between items-center w-full px-4'>
@@ -174,7 +174,7 @@ export default function Page() {
               <button
                 onClick={handleClearAll}
                 disabled={loading}
-                className="flex justify-center h-fit sm:w-16 md:w-20 py-1 rounded-md border border-gray-700 sm:text-sm md:text-md"
+                className="flex justify-center h-fit sm:w-16 md:w-20 py-1 rounded-md border border-gray-700 sm:text-xs md:text-md"
               >
                 {loading ? (
                   <ClipLoader
@@ -192,36 +192,13 @@ export default function Page() {
           {cart?.items?.length === 0 && (
             <div className='flex justify-center items-center w-full text-lg py-4'>Bạn chưa thêm sản phẩm nào</div>
           )}
-
-          <div className='sm:flex md:hidden flex-col mt-4'>
-            <div className='flex justify-end space-x-2 px-2'>
-              <span className='text-xl font-semibold'>Tổng tiền:</span>
-              <span className='text-xl'>{formatPrice(totalCost)}</span>
-            </div>
-
-            <div className='flex flex-col w-screen space-y-4'>
-              {orderMessage && (
-                <div className='text-red-500 font-semibold text-lg'>
-                  {orderMessage}
-                </div>
-              )}
-
-              <button
-                onClick={goToOrder}
-                className='flex justify-center items-center text-xl font-semibold bg-gray-900 px-6 py-2 rounded-md text-white'
-              >
-                <ShoppingCartIcon className='size-8 mr-3' />
-                Tiến hành đặt hàng
-              </button>
-            </div>
-          </div>
         </Col>
 
-        <Col span={1} />
+        <Col lg={1} />
 
         <Col
-          span={6}
-          className="sm:hidden md:flex flex-col h-fit mt-12 shadow-lg px-4 py-10 space-y-10 rounded-lg transition-all duration-300 ease-in-out"
+          xs={24} lg={6}
+          className="flex flex-col h-fit mt-12 shadow-lg px-4 py-10 space-y-10 rounded-lg transition-all duration-300 ease-in-out"
         >
           <span className='text-3xl font-bold'>Thông tin đơn hàng</span>
 

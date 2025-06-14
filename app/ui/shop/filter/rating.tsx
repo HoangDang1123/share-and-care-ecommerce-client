@@ -16,9 +16,9 @@ export default function RatingFilter() {
     const params = new URLSearchParams(searchParams);
 
     if (selected) {
-      params.set('category', selected);
+      params.set('rating', selected);
     } else {
-      params.delete('category');
+      params.delete('rating');
     }
 
     const newUrl = `${window.location.pathname}?${params.toString()}`;

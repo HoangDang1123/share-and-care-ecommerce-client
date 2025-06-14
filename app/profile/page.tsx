@@ -182,10 +182,10 @@ export default function Page() {
         </ul>
       </div>
 
-      <Row className='flex sm:mt-4 md:mt-10 md:px-20'>
-        <Col xs={24} md={5} className="flex flex-col items-center h-fit px-6 py-8 md:shadow-lg rounded-lg">
+      <Row className="flex sm:mt-4 md:mt-10 md:px-20">
+        <Col xs={0} md={5} className="hidden md:flex flex-col items-center h-fit px-6 py-8 shadow-lg rounded-lg">
           <div className="flex flex-col items-center mb-8 pb-8 border-b-2">
-            <div className="relative group sm:w-32 md:w-24 lg:w-24 xl:w-36 sm:h-32 md:h-24 lg:h-24 xl:h-36 rounded-full border-2 border-gray-400 mb-4">
+            <div className="relative group w-24 h-24 xl:w-36 xl:h-36 rounded-full border-2 border-gray-400 mb-4">
               <Image
                 src={avatar}
                 alt="Avatar"
@@ -195,7 +195,7 @@ export default function Page() {
               />
               <button
                 onClick={handleClick}
-                className="absolute inset-0 flex items-center justify-center w-full h-full top-1/4 bg-transparent text-blue-500 border-none text-sm font-bold opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100 group-hover:border-none"
+                className="absolute inset-0 flex items-center justify-center w-full h-full bg-transparent text-blue-500 text-sm font-bold opacity-0 group-hover:opacity-100"
               >
                 <input
                   type="file"
@@ -205,18 +205,14 @@ export default function Page() {
                   className="hidden"
                 />
                 {uploadAvatarLoading ? (
-                  <ClipLoader
-                    size={30}
-                    color='#ffffff'
-                    aria-label="Loading Spinner"
-                  />
+                  <ClipLoader size={30} color="#ffffff" aria-label="Loading Spinner" />
                 ) : (
                   'Đổi ảnh đại diện'
                 )}
               </button>
             </div>
-            <span className="sm:text-2xl md:text-lg xl:text-2xl font-semibold">{localStorage.getItem('name')}</span>
-            <span className="sm:text-md md:text-sm xl:text-md">{localStorage.getItem('email')}</span>
+            <span className="text-lg xl:text-2xl font-semibold">{localStorage.getItem('name')}</span>
+            <span className="text-sm xl:text-md">{localStorage.getItem('email')}</span>
           </div>
 
           <div className="w-full flex flex-col gap-y-2">
@@ -224,13 +220,12 @@ export default function Page() {
               <button
                 key={tab.key}
                 onClick={() => setTabActive(tab.key)}
-                className={`flex items-center justify-between sm:text-lg md:text-base xl:text-lg px-4 py-2 font-semibold rounded-md hover:bg-gray-100 ${tab.key === tabActive ? 'bg-gray-200' : ''}`}
+                className={`flex items-center justify-between text-base xl:text-lg px-4 py-2 font-semibold rounded-md hover:bg-gray-100 ${tab.key === tabActive ? 'bg-gray-200' : ''}`}
               >
                 <div className="flex gap-x-2">
                   {tab.icon}
                   <span>{tab.label}</span>
                 </div>
-
                 {tab.label === 'Order List' && (
                   <span>{`(${orders ? orders.total : 0})`}</span>
                 )}
@@ -241,7 +236,7 @@ export default function Page() {
           <div className="mt-8 border-t-2 w-full pt-4">
             <button
               onClick={handleLogout}
-              className="flex items-center w-full gap-x-2 sm:text-lg md:text-base xl:text-lg px-4 py-2 font-semibold rounded-md hover:bg-gray-100"
+              className="flex items-center w-full gap-x-2 text-base xl:text-lg px-4 py-2 font-semibold rounded-md hover:bg-gray-100"
             >
               <ArrowLeftStartOnRectangleIcon className="size-6" />
               <span>Đăng xuất</span>
@@ -249,14 +244,74 @@ export default function Page() {
           </div>
         </Col>
 
-        <Col xs={0} md={1} />
+        <Col lg={1}/>
 
-        <Col xs={24} md={18} className="flex flex-col items-center">
-          {tabItems.map((tab) => (
-            <div key={tab.key} className={tab.key === tabActive ? 'w-full block' : 'hidden'}>
-              {tab.children}
-            </div>
-          ))}
+        <div className="flex flex-col items-center w-full px-4 py-6 border-b md:hidden">
+          <div className="relative group w-24 h-24 rounded-full border-2 border-gray-400 mb-4">
+            <Image
+              src={avatar}
+              alt="Avatar"
+              width={500}
+              height={500}
+              className="w-full h-full rounded-full object-cover transition-opacity duration-300 group-hover:opacity-40"
+            />
+            <button
+              onClick={handleClick}
+              className="absolute inset-0 flex items-center justify-center w-full h-full bg-transparent text-blue-500 text-sm font-bold opacity-0 group-hover:opacity-100"
+            >
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleChange}
+                ref={fileInputRef}
+                className="hidden"
+              />
+              {uploadAvatarLoading ? (
+                <ClipLoader size={30} color="#ffffff" aria-label="Loading Spinner" />
+              ) : (
+                'Đổi ảnh'
+              )}
+            </button>
+          </div>
+
+          <span className="text-lg font-semibold">{localStorage.getItem('name')}</span>
+          <span className="text-sm text-gray-600">{localStorage.getItem('email')}</span>
+
+          <button
+            onClick={handleLogout}
+            className="mt-4 flex items-center gap-x-2 text-base font-medium px-4 py-2 rounded-md border hover:bg-gray-100"
+          >
+            <ArrowLeftStartOnRectangleIcon className="size-5" />
+            <span>Đăng xuất</span>
+          </button>
+        </div>
+
+        <Col xs={24} md={18} className="flex flex-col items-center gap-y-4">
+          <div className="w-full px-4 md:hidden">
+            <label htmlFor="mobile-tab-select" className="block mb-1 font-semibold">
+              Chọn mục
+            </label>
+            <select
+              id="mobile-tab-select"
+              value={tabActive}
+              onChange={(e) => setTabActive(Number(e.target.value))}
+              className="w-full border border-gray-300 rounded-md px-3 py-2 text-base"
+            >
+              {tabItems.map((tab) => (
+                <option key={tab.key} value={tab.key}>
+                  {tab.label} {tab.label === 'Order List' ? `(${orders ? orders.total : 0})` : ''}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="w-full">
+            {tabItems.map((tab) => (
+              <div key={tab.key} className={tab.key === tabActive ? 'block' : 'hidden'}>
+                {tab.children}
+              </div>
+            ))}
+          </div>
         </Col>
       </Row>
     </div>

@@ -1,19 +1,14 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { getAllCategories, getChildCategories } from '@/app/api/category';
+import { getAllCategories } from '@/app/api/category';
 import { CategoryResponse } from '@/interface/category';
 import { useMenu } from '@/app/context/AppContext';
 
 export default function NavLinks() {
   const [categories, setCategories] = useState<CategoryResponse[]>([]);
-  const [childCategories, setChildCategories] = useState<{ [key: string]: CategoryResponse[] }>({});
-  const [isOpenArray, setIsOpenArray] = useState<boolean[]>([]);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const { setIsMenu } = useMenu();
-
-  useEffect(() => {
-    setIsOpenArray(new Array(categories.length).fill(false));
-  }, [categories]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -28,48 +23,14 @@ export default function NavLinks() {
     fetchCategories();
   }, []);
 
-  const handleOnMouseEnter = async (index: number, categoryId: string) => {
-    if (childCategories[categoryId]?.length > 0) {
-      setIsMenu(true);
-    }
-
-    setIsOpenArray((prev) => {
-      const newArray = [...prev];
-      newArray[index] = true;
-      return newArray;
-    });
-
-    // Fetch child categories and their children
-    await fetchChildCategoriesRecursive(categoryId);
+  const handleOnMouseEnter = (index: number) => {
+    setIsMenu(true);
+    setHoveredIndex(index);
   };
 
-  const fetchChildCategoriesRecursive = async (categoryId: string) => {
-    try {
-      if (!childCategories[categoryId]) {
-        const response = await getChildCategories(categoryId);
-        setChildCategories((prev) => ({
-          ...prev,
-          [categoryId]: response,
-        }));
-
-        // Recursive call to fetch child of child
-        for (const child of response) {
-          await fetchChildCategoriesRecursive(child.id);
-        }
-      }
-    } catch (error) {
-      console.error(`Error fetching child categories recursively for ${categoryId}:`, error);
-    }
-  };
-
-  const handleOnMouseLeave = (index: number) => {
+  const handleOnMouseLeave = () => {
     setIsMenu(false);
-
-    setIsOpenArray((prev) => {
-      const newArray = [...prev];
-      newArray[index] = false;
-      return newArray;
-    });
+    setHoveredIndex(null);
   };
 
   return (
@@ -78,8 +39,8 @@ export default function NavLinks() {
         <div
           key={category.id}
           className="inline-flex group"
-          onMouseEnter={() => handleOnMouseEnter(index, category.id)}
-          onMouseLeave={() => handleOnMouseLeave(index)}
+          onMouseEnter={() => handleOnMouseEnter(index)}
+          onMouseLeave={() => handleOnMouseLeave()}
         >
           <Link
             href="/shop"
@@ -88,9 +49,9 @@ export default function NavLinks() {
             {category.name.toUpperCase()}
           </Link>
 
-          {isOpenArray[index] && childCategories[category.id]?.length > 0 && (
-            <div className="absolute grid grid-cols-6 border top-14 inset-x-60 mt-2 px-6 bg-white shadow-lg rounded-md p-8">
-              {childCategories[category.id].map((child) => (
+          {hoveredIndex === index && category.children?.length > 0 && (
+            <div className="absolute grid grid-cols-6 border top-14 inset-x-60 mt-2 px-6 bg-white shadow-lg rounded-md p-8 z-50">
+              {category.children.map((child) => (
                 <div key={child.id} className="relative group">
                   <Link
                     href={`/shop?category=${child.id}`}
@@ -99,9 +60,9 @@ export default function NavLinks() {
                     {child.name}
                   </Link>
 
-                  {childCategories[child.id]?.length > 0 && (
+                  {child.children?.length > 0 && (
                     <div className='border-l-2 ml-2 pl-1'>
-                      {childCategories[child.id].map((subChild) => (
+                      {child.children.map((subChild) => (
                         <Link
                           key={subChild.id}
                           href={`/shop?category=${subChild.id}`}

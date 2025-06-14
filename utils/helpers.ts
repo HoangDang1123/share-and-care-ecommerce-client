@@ -1,3 +1,5 @@
+import { OrderStatus } from "@/interface/order";
+
 export const formatPrice = (value: number | { min: number, max: number }): string => {
     return value.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 };
@@ -60,3 +62,28 @@ export const formatReason = (reason: string) => {
         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
         .join(' ');
 }
+
+export const getOrderStatusLabel = (status: OrderStatus): string => {
+    switch (status) {
+        case OrderStatus.PENDING:
+            return 'Chờ xác nhận';
+        case OrderStatus.AWAITING_PAYMENT:
+            return 'Chờ thanh toán';
+        case OrderStatus.PROCESSING:
+            return 'Đang xử lý';
+        case OrderStatus.READY_TO_SHIP:
+            return 'Sẵn sàng giao';
+        case OrderStatus.IN_TRANSIT:
+            return 'Đang giao';
+        case OrderStatus.DELIVERED:
+            return 'Đã giao';
+        case OrderStatus.CANCELLED:
+            return 'Đã hủy';
+        case OrderStatus.NOT_DELIVERED:
+            return 'Không giao được';
+        case OrderStatus.RETURN:
+            return 'Hoàn trả';
+        default:
+            return 'Không xác định';
+    }
+};

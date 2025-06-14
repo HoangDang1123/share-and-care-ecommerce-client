@@ -5,7 +5,7 @@ import { getAllOrderWithSize } from "../../api/order";
 import { AllOrderResponse, OrderStatus } from "@/interface/order";
 import { Tabs } from 'antd';
 import Link from 'next/link';
-import { convertDateTime, formatPrice } from '@/utils/helpers';
+import { convertDateTime, formatPrice, getOrderStatusLabel } from '@/utils/helpers';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Pagination from '../pagination';
@@ -103,7 +103,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
               </div>
               <div className='flex flex-col items-end gap-y-4'>
                 <span className={`font-semibold h-fit px-3 py-1 rounded-lg ${statusBadge[order.status]}`}>
-                  {order.status.replace(/_/g, ' ')}
+                  {getOrderStatusLabel(order.status).replace(/_/g, ' ')}
                 </span>
 
                 {order.deliveredAt !== null && (
@@ -126,25 +126,33 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
                 key={index}
                 className='flex flex-col border-t-2 border-b-2 border-gray-100 py-4'
               >
-                <div className='flex gap-x-4 py-4'>
+                <div className='flex flex-col md:flex-row gap-x-4 py-4'>
                   <Image
                     src={childItem.image}
                     alt={childItem.productName}
                     width={500}
                     height={500}
-                    className='object-cover w-24'
+                    className='object-cover w-24 sm:w-28 md:w-24'
                   />
-                  <div className='flex flex-col justify-between w-full'>
-                    <div className='flex justify-between'>
+                  <div className='flex flex-col justify-between w-full gap-y-2'>
+                    <div className='flex flex-col md:flex-row justify-between gap-y-1'>
                       <div className='flex flex-col'>
-                        <span>{childItem.productName}</span>
-                        <span>{`Phân loại: ${childItem.variantSlug}`}</span>
+                        <span className='text-base font-medium'>{childItem.productName}</span>
+                        <span className='text-sm text-gray-600'>{`Phân loại: ${childItem.variantSlug}`}</span>
                       </div>
-                      <span>{`Giá: ${formatPrice(childItem.price)}`}</span>
+
+                      <span className='hidden md:inline-block text-base font-semibold'>
+                        {`Giá: ${formatPrice(childItem.price)}`}
+                      </span>
                     </div>
 
-                    <div className='flex justify-between'>
+                    <div className='flex justify-between md:hidden text-base'>
+                      <span>{`Giá: ${formatPrice(childItem.price)}`}</span>
                       <span>{`Số lượng: ${childItem.quantity}`}</span>
+                    </div>
+
+                    <div className='hidden md:flex justify-between'>
+                      <span className='text-base'>{`Số lượng: ${childItem.quantity}`}</span>
                       <div className='flex gap-x-2'>
                         {childItem.isReviewed ? (
                           <button
@@ -161,8 +169,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
                           <button
                             onClick={(e) => {
                               e.preventDefault();
-
-                              router.push(`/review/${order.id}-${childItem.productId}-${childItem.variantId}`)
+                              router.push(`/review/${order.id}-${childItem.productId}-${childItem.variantId}`);
                             }}
                             disabled={!childItem.canReview || order.status !== OrderStatus.DELIVERED}
                             className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
@@ -183,6 +190,44 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
                           </button>
                         )}
                       </div>
+                    </div>
+
+                    <div className='flex md:hidden flex-wrap gap-2'>
+                      {childItem.isReviewed ? (
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            toggleReviewDetail(`${order.id}-${index}`);
+                          }}
+                          disabled={order.status !== OrderStatus.DELIVERED}
+                          className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300 text-sm'
+                        >
+                          Xem đánh giá
+                        </button>
+                      ) : (
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            router.push(`/review/${order.id}-${childItem.productId}-${childItem.variantId}`);
+                          }}
+                          disabled={!childItem.canReview || order.status !== OrderStatus.DELIVERED}
+                          className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300 text-sm'
+                        >
+                          Đánh giá
+                        </button>
+                      )}
+
+                      {childItem.returnStatus && (
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            toggleReturnDetail(`${order.id}-${index}`);
+                          }}
+                          className='inline-block text-sm font-medium px-3 py-1 text-white rounded-lg w-fit bg-gray-800 hover:bg-gray-900'
+                        >
+                          Xem tình trạng hoàn trả
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -272,7 +317,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
             </div>
             <div className='flex flex-col items-end gap-y-4'>
               <span className={`font-semibold h-fit px-3 py-1 rounded-lg ${statusBadge[order.status]}`}>
-                {order.status.replace(/_/g, ' ')}
+                {getOrderStatusLabel(order.status).replace(/_/g, ' ')}
               </span>
 
               {order.deliveredAt !== null && (
@@ -295,24 +340,33 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
               key={index}
               className='flex flex-col border-t-2 border-b-2 border-gray-100 py-4'
             >
-              <div className='flex gap-x-4 py-4'>
+              <div className='flex flex-col md:flex-row gap-x-4 py-4'>
                 <Image
                   src={childItem.image}
                   alt={childItem.productName}
                   width={500}
                   height={500}
-                  className='object-cover w-24'
+                  className='object-cover w-24 sm:w-28 md:w-24'
                 />
-                <div className='flex flex-col justify-between w-full'>
-                  <div className='flex justify-between'>
+                <div className='flex flex-col justify-between w-full gap-y-2'>
+                  <div className='flex flex-col md:flex-row justify-between gap-y-1'>
                     <div className='flex flex-col'>
-                      <span>{childItem.productName}</span>
-                      <span>{`Phân loại: ${childItem.variantSlug}`}</span>
+                      <span className='text-base font-medium'>{childItem.productName}</span>
+                      <span className='text-sm text-gray-600'>{`Phân loại: ${childItem.variantSlug}`}</span>
                     </div>
-                    <span>{`Giá: ${formatPrice(childItem.price)}`}</span>
+
+                    <span className='hidden md:inline-block text-base font-semibold'>
+                      {`Giá: ${formatPrice(childItem.price)}`}
+                    </span>
                   </div>
-                  <div className='flex justify-between'>
+
+                  <div className='flex justify-between md:hidden text-base'>
+                    <span>{`Giá: ${formatPrice(childItem.price)}`}</span>
                     <span>{`Số lượng: ${childItem.quantity}`}</span>
+                  </div>
+
+                  <div className='hidden md:flex justify-between'>
+                    <span className='text-base'>{`Số lượng: ${childItem.quantity}`}</span>
                     <div className='flex gap-x-2'>
                       {childItem.isReviewed ? (
                         <button
@@ -329,8 +383,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
                         <button
                           onClick={(e) => {
                             e.preventDefault();
-
-                            router.push(`/review/${order.id}-${childItem.productId}-${childItem.variantId}`)
+                            router.push(`/review/${order.id}-${childItem.productId}-${childItem.variantId}`);
                           }}
                           disabled={!childItem.canReview || order.status !== OrderStatus.DELIVERED}
                           className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
@@ -351,6 +404,44 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
                         </button>
                       )}
                     </div>
+                  </div>
+
+                  <div className='flex md:hidden flex-wrap gap-2'>
+                    {childItem.isReviewed ? (
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          toggleReviewDetail(`${order.id}-${index}`);
+                        }}
+                        disabled={order.status !== OrderStatus.DELIVERED}
+                        className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300 text-sm'
+                      >
+                        Xem đánh giá
+                      </button>
+                    ) : (
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          router.push(`/review/${order.id}-${childItem.productId}-${childItem.variantId}`);
+                        }}
+                        disabled={!childItem.canReview || order.status !== OrderStatus.DELIVERED}
+                        className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300 text-sm'
+                      >
+                        Đánh giá
+                      </button>
+                    )}
+
+                    {childItem.returnStatus && (
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          toggleReturnDetail(`${order.id}-${index}`);
+                        }}
+                        className='inline-block text-sm font-medium px-3 py-1 text-white rounded-lg w-fit bg-gray-800 hover:bg-gray-900'
+                      >
+                        Xem tình trạng hoàn trả
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -404,21 +495,21 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
 }
 
 export const OrderList: React.FC<OrderListProps> = ({ userId, accessToken, total }) => {
-  const orderLists = Object.entries(OrderStatus).map(([value], index) => ({
+  const orderLists = Object.values(OrderStatus).map((status, index) => ({
     key: String(index + 1),
-    label: value.replace(/_/g, ' ').toLowerCase().replace(/^\w/, c => c.toUpperCase()),
+    label: getOrderStatusLabel(status),
     children: <OrderItem
-      key={`${value}-${userId}`}
+      key={`${status}-${userId}`}
       userId={userId}
       accessToken={accessToken}
-      filter={value}
+      filter={status}
       {...(total ? { total: total } : {})}
     />,
   }));
 
   orderLists.unshift({
     key: '0',
-    label: 'All',
+    label: 'Tất cả',
     children: <OrderItem
       key={`all-${userId}`}
       userId={userId}
