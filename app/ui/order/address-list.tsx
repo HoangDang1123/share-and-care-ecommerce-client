@@ -106,10 +106,10 @@ const AddressList: React.FC<AddressListProps> = ({ isRefresh, setIsRefresh, defa
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
           } catch (error) { }
 
-          toast.success("Delete address successful.");
+          toast.success("Xóa địa chỉ thành công.");
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
-          toast.error("Failed to delete address.");
+          toast.error("Đã có lỗi xảy ra trong quá trình xóa địa chỉ.");
         } finally {
           newLoadingItems[index] = false;
           setLoadingItems(newLoadingItems);
@@ -122,12 +122,12 @@ const AddressList: React.FC<AddressListProps> = ({ isRefresh, setIsRefresh, defa
 
   return (
     <div className="flex flex-col w-full space-y-4 mx-auto sm:p-4 md:p-10 md:rounded-xl md:shadow-lg">
-      <h1 className="flex items-center gap-2 text-2xl font-bold mb-4 text-gray-800">
+      <span className="flex items-center gap-2 text-2xl font-bold mb-4 text-gray-800">
         <HomeIcon className="w-7 h-7" />
-        Address Information
-      </h1>
+        Địa chỉ giao hàng
+      </span>
       {addressList.length === 0 ? (
-        <div className='flex justify-center items-center w-full text-lg py-4'>There&apos;s no address.</div>
+        <div className='flex justify-center items-center w-full text-lg py-4'>Bạn chưa có địa chỉ nào.</div>
       ) : (
         <RadioGroup className="grid gap-y-4" value={selected} onChange={setSelected} aria-label="Address">
           {addressList.map((address, index) => (
@@ -144,19 +144,19 @@ const AddressList: React.FC<AddressListProps> = ({ isRefresh, setIsRefresh, defa
                 <div className="flex flex-col w-full space-y-2">
                   <div className="flex items-center space-x-2">
                     <UserIcon className="w-5 h-5" />
-                    <h4 className="sm:text-sm md:text-base font-semibold text-gray-800">{address.name}</h4>
+                    <span className="sm:text-sm md:text-base font-semibold text-gray-800">{address.name}</span>
                   </div>
 
                   <div className="flex items-center space-x-2">
                     <PhoneIcon className="w-5 h-5" />
-                    <h4 className="sm:text-sm md:text-base text-gray-700">{address.phone}</h4>
+                    <span className="sm:text-sm md:text-base text-gray-700">{address.phone}</span>
                   </div>
 
                   <div className="flex items-center space-x-2">
                     <MapPinIcon className="w-5 h-5" />
-                    <h4 className="sm:text-sm md:text-base text-gray-700">
+                    <span className="sm:text-sm md:text-base text-gray-700">
                       {`${address.street}, ${address.ward}, ${address.district}, ${address.city}`}
-                    </h4>
+                    </span>
                   </div>
                 </div>
 

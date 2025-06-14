@@ -35,7 +35,7 @@ const ReviewRating: React.FC<ReviewRatingProps> = ({ productId, total }) => {
 
   if (!reviews) {
     return (
-      <span>Loading...</span>
+      <span>Đang tải...</span>
     )
   }
 
@@ -57,7 +57,7 @@ const ReviewRating: React.FC<ReviewRatingProps> = ({ productId, total }) => {
     <div className='flex justify-center items-center w-full bg-white rounded-2xl p-6 transition-all duration-300 ease-in-out'>
       <div className='flex flex-col justify-center items-center gap-y-10'>
         <div className='flex justify-center items-center gap-x-4'>
-          <h6 className='text-5xl font-semibold'>{`${averageRating}`}</h6>
+          <h3 className='text-5xl font-semibold'>{`${averageRating}`}</h3>
           <Rate
             disabled
             allowHalf

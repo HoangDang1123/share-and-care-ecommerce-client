@@ -17,10 +17,10 @@ export default function ShopLayout({
 
           <ul className="flex space-x-1 sm:text-md md:text-xl">
             <li>
-              <Link href="/" className='text-gray-400 text-base hover:text-gray-900'>Home / </Link>
+              <Link href="/" className='text-gray-400 text-base hover:text-gray-900'>Trang chủ / </Link>
             </li>
             <li>
-              <span className="text-base">Shop</span>
+              <span className="text-base">Cửa hàng</span>
             </li>
           </ul>
         </div>

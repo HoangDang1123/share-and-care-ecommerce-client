@@ -268,8 +268,8 @@ export default function Chat() {
             ) : messages.length === 0 ? (
               <div className="flex flex-col w-full h-full justify-center items-center gap-y-2">
                 <ChatBubbleLeftEllipsisIcon className="w-10 h-10 text-gray-400" />
-                <p className="text-lg font-medium">No messages yet</p>
-                <p className="text-sm text-gray-400">Start the conversation now!</p>
+                <p className="text-lg font-medium">Chưa có tin nhắn nào.</p>
+                <p className="text-sm text-gray-400">Bắt đầu cuộc trò chuyện ngay nhé!</p>
               </div>
             ) : (
               messages.map((msg, index) => {

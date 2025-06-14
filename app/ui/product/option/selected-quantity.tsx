@@ -33,7 +33,7 @@ const SelectedQuantity: React.FC<SelectedQuantityProps> = ({ product, quantityIn
 
   return (
     <div className='flex items-center space-x-4'>
-      <h6 className='sm:text-base md:text-xl font-semibold'>Quantity</h6>
+      <h3 className='sm:text-base md:text-xl font-semibold'>Số lượng</h3>
       <div className='flex items-center justify-between space-x-2 rounded-md'>
         <button
           onClick={decQuantity}
@@ -61,7 +61,7 @@ const SelectedQuantity: React.FC<SelectedQuantityProps> = ({ product, quantityIn
           <PlusIcon className='sm:size-4 md:size-5' />
         </button>
       </div>
-      <h6 className='sm:text-xl md:text-2xl'>{`( ${quantityInStock} left )`}</h6>
+      <h3 className='sm:text-xl md:text-2xl font-medium'>{`( Còn lại ${quantityInStock} )`}</h3>
     </div>
   )
 }

@@ -24,16 +24,16 @@ const SelectedSize: React.FC<SelectedSizeProps> = ({ product, selectedSizeIndex,
 
   if (!sizes) {
     return (
-      <div>There&apos;s no size</div>
+      <div className='italic'>Kích thước không khả dụng.</div>
     )
   }
 
   return (
     <div className='flex flex-col space-y-2'>
       <div className='flex justify-between'>
-        <h6 className='sm:text-base md:text-xl font-semibold'>
-          {`Selected Size: ${selectedSizeIndex !== null && selectedSizeIndex !== -1 ? sizes.values[selectedSizeIndex].descriptionUrl : ''}`}
-        </h6>
+        <h3 className='sm:text-base md:text-xl font-semibold'>
+          {`Kích thước đã chọn: ${selectedSizeIndex !== null && selectedSizeIndex !== -1 ? sizes.values[selectedSizeIndex].descriptionUrl : ''}`}
+        </h3>
       </div>
       <ul className='sm:grid md:flex sm:grid-cols-6 sm:gap-4 md:gap-0 md:space-x-4'>
         {sizes.values.map((item, index) => (

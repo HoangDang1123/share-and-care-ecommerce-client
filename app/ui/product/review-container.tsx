@@ -39,7 +39,7 @@ const ReviewContainer: React.FC<ReviewContainerProps> = ({ productId }) => {
     >
       {!reviews ? (
         <div className='flex justify-center items-center w-full text-lg'>
-          Loading...
+          Đang tải...
         </div>
       ) : (
         <div className='flex w-full'>
@@ -55,7 +55,7 @@ const ReviewContainer: React.FC<ReviewContainerProps> = ({ productId }) => {
 
               <div className='flex flex-col justify-center items-center w-full mt-10 gap-y-8'>
                 {reviews.total === 0 ? (
-                  <div>There&apos;s no reviews.</div>
+                  <div>Chưa có đánh giá nào.</div>
                 ) : (
                   reviews.items.map((item) => (
                     <ReviewItem key={item.id} item={item} />
@@ -85,7 +85,7 @@ const ReviewContainer: React.FC<ReviewContainerProps> = ({ productId }) => {
                   <option value="15">15</option>
                   <option value="20">20</option>
                 </select>
-                <span>items per page</span>
+                <span>sản phẩm mỗi trang</span>
               </div>
             </div>
           </Col>

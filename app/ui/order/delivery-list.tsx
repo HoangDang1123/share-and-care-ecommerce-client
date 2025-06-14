@@ -53,14 +53,14 @@ const DeliveryList: React.FC<DeliveryListProps> = ({ defaultAddress }) => {
 
   return (
     <div className="flex flex-col w-full space-y-4 mx-auto sm:p-4 md:p-10 md:rounded-xl md:shadow-lg">
-      <h1 className="flex items-center gap-2 text-2xl font-bold mb-4 text-gray-800">
+      <span className="flex items-center gap-2 text-2xl font-bold mb-4 text-gray-800">
         <PaperAirplaneIcon className="w-7 h-7" />
-        Delivery Method
-      </h1>
+        Dịch vụ giao hàng
+      </span>
 
       {deliveryList.length === 0 ? (
         <div className="flex justify-center items-center w-full text-base py-4 text-gray-500">
-          There&apos;s no delivery available.
+          Hiện không có dịch vụ giao hàng.
         </div>
       ) : (
         <RadioGroup value={selected} onChange={setSelected} aria-label="Delivery Method" className="space-y-3">
@@ -74,7 +74,7 @@ const DeliveryList: React.FC<DeliveryListProps> = ({ defaultAddress }) => {
                 <div className="flex items-start space-x-3">
                   <TruckIcon className="w-5 h-5 text-gray-600 mt-1" />
                   <div className="flex flex-col">
-                    <h4 className="text-sm md:text-base font-semibold text-gray-800">{delivery.name}</h4>
+                    <span className="text-sm md:text-base font-semibold text-gray-800">{delivery.name}</span>
                     <p className="text-sm text-gray-600">{delivery.description}</p>
                   </div>
                 </div>

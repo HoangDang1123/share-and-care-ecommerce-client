@@ -66,7 +66,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
   };
 
   if (!orders || (orders && orders.total === 0)) {
-    return <div className='flex justify-center items-center w-full text-lg py-4'>There&apos;s no order.</div>
+    return <div className='flex justify-center items-center w-full text-lg py-4'>Bạn chưa có đơn hàng nào.</div>
   }
 
   if (!filter) {
@@ -86,7 +86,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
                 <div className="flex items-start gap-2">
                   <CalendarIcon className="w-4 h-4 mt-1 text-primary" />
                   <div>
-                    <p className="text-muted-foreground">Ordered Date</p>
+                    <p className="text-muted-foreground">Ngày đặt hàng</p>
                     <p className="font-medium text-foreground">
                       {convertDateTime(order.createAt)}
                     </p>
@@ -96,7 +96,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
                 <div className="flex items-start gap-2">
                   <TruckIcon className="w-4 h-4 mt-1 text-primary" />
                   <div>
-                    <p className="text-muted-foreground">Delivery Method</p>
+                    <p className="text-muted-foreground">Dịch vụ giao hàng</p>
                     <p className="font-medium text-foreground">{order.deliveryMethod}</p>
                   </div>
                 </div>
@@ -111,7 +111,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
                   <div className="flex items-start gap-2">
                     <CalendarIcon className="w-4 h-4 mt-1 text-primary" />
                     <div>
-                      <p className="text-muted-foreground">Delivered Date</p>
+                      <p className="text-muted-foreground">Ngày nhận hàng</p>
                       <p className="font-medium text-foreground">
                         {convertDateTime(order.deliveredAt)}
                       </p>
@@ -138,13 +138,13 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
                     <div className='flex justify-between'>
                       <div className='flex flex-col'>
                         <span>{childItem.productName}</span>
-                        <span>{`Slug: ${childItem.variantSlug}`}</span>
+                        <span>{`Phân loại: ${childItem.variantSlug}`}</span>
                       </div>
-                      <span>{`Price: ${formatPrice(childItem.price)}`}</span>
+                      <span>{`Giá: ${formatPrice(childItem.price)}`}</span>
                     </div>
 
                     <div className='flex justify-between'>
-                      <span>{`Quantity: ${childItem.quantity}`}</span>
+                      <span>{`Số lượng: ${childItem.quantity}`}</span>
                       <div className='flex gap-x-2'>
                         {childItem.isReviewed ? (
                           <button
@@ -155,7 +155,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
                             disabled={order.status !== OrderStatus.DELIVERED}
                             className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
                           >
-                            View Review Detail
+                            Xem đánh giá
                           </button>
                         ) : (
                           <button
@@ -167,7 +167,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
                             disabled={!childItem.canReview || order.status !== OrderStatus.DELIVERED}
                             className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
                           >
-                            Review
+                            Đánh giá
                           </button>
                         )}
 
@@ -179,7 +179,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
                             }}
                             className='inline-block text-sm font-medium px-3 py-1 text-white rounded-lg w-fit bg-gray-800 hover:bg-gray-900'
                           >
-                            View Return Detail
+                            Xem tình trạng hoàn trả
                           </button>
                         )}
                       </div>
@@ -202,7 +202,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
             ))}
 
             <span className='block text-right w-full font-semibold'>
-              {`Total: ${formatPrice(order.totalPrice)}`}
+              {`Tổng tiền: ${formatPrice(order.totalPrice)}`}
             </span>
           </Link>
         ))}
@@ -228,7 +228,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
               <option value="15">15</option>
               <option value="20">20</option>
             </select>
-            <span>items per page</span>
+            <span>sản phẩm mỗi trang</span>
           </div>
         </div>
       </div>
@@ -238,7 +238,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
   const paginatedItems = orders.items.filter(o => o.status === filter).slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
   if (paginatedItems.length === 0) {
-    return <div className='flex justify-center items-center w-full text-lg py-4'>There&apos;s no order.</div>
+    return <div className='flex justify-center items-center w-full text-lg py-4'>Bạn chưa có đơn hàng nào.</div>
   }
 
   return (
@@ -255,7 +255,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
               <div className="flex items-start gap-2">
                 <CalendarIcon className="w-4 h-4 mt-1 text-primary" />
                 <div>
-                  <p className="text-muted-foreground">Ordered Date</p>
+                  <p className="text-muted-foreground">Ngày đặt hàng</p>
                   <p className="font-medium text-foreground">
                     {convertDateTime(order.createAt)}
                   </p>
@@ -265,7 +265,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
               <div className="flex items-start gap-2">
                 <TruckIcon className="w-4 h-4 mt-1 text-primary" />
                 <div>
-                  <p className="text-muted-foreground">Delivery Method</p>
+                  <p className="text-muted-foreground">Dịch vụ giao hàng</p>
                   <p className="font-medium text-foreground">{order.deliveryMethod}</p>
                 </div>
               </div>
@@ -280,7 +280,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
                 <div className="flex items-start gap-2">
                   <CalendarIcon className="w-4 h-4 mt-1 text-primary" />
                   <div>
-                    <p className="text-muted-foreground">Delivered Date</p>
+                    <p className="text-muted-foreground">Ngày nhận hàng</p>
                     <p className="font-medium text-foreground">
                       {convertDateTime(order.deliveredAt)}
                     </p>
@@ -307,12 +307,12 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
                   <div className='flex justify-between'>
                     <div className='flex flex-col'>
                       <span>{childItem.productName}</span>
-                      <span>{`Slug: ${childItem.variantSlug}`}</span>
+                      <span>{`Phân loại: ${childItem.variantSlug}`}</span>
                     </div>
-                    <span>{`Price: ${formatPrice(childItem.price)}`}</span>
+                    <span>{`Giá: ${formatPrice(childItem.price)}`}</span>
                   </div>
                   <div className='flex justify-between'>
-                    <span>{`Quantity: ${childItem.quantity}`}</span>
+                    <span>{`Số lượng: ${childItem.quantity}`}</span>
                     <div className='flex gap-x-2'>
                       {childItem.isReviewed ? (
                         <button
@@ -323,7 +323,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
                           disabled={order.status !== OrderStatus.DELIVERED}
                           className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
                         >
-                          View Review Detail
+                          Xem đánh giá
                         </button>
                       ) : (
                         <button
@@ -335,7 +335,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
                           disabled={!childItem.canReview || order.status !== OrderStatus.DELIVERED}
                           className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
                         >
-                          Review
+                          Đánh giá
                         </button>
                       )}
 
@@ -347,7 +347,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
                           }}
                           className='inline-block text-sm font-medium px-3 py-1 text-white rounded-lg w-fit bg-gray-800 hover:bg-gray-900'
                         >
-                          View Return Detail
+                          Xem tình trạng hoàn trả
                         </button>
                       )}
                     </div>
@@ -370,7 +370,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
           ))}
 
           <span className='block text-right w-full font-semibold'>
-            {`Total: ${formatPrice(order.totalPrice)}`}
+            {`Tổng tiền: ${formatPrice(order.totalPrice)}`}
           </span>
         </Link>
       ))}
@@ -396,7 +396,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
             <option value="15">15</option>
             <option value="20">20</option>
           </select>
-          <span>items per page</span>
+          <span>sản phẩm mỗi trang</span>
         </div>
       </div>
     </div>

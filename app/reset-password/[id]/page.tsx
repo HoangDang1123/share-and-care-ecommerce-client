@@ -38,7 +38,7 @@ export default function Page() {
     try {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       await resetPassword(formData);
-      toast.success("Your password has been updated successfully. Please log in again.");
+      toast.success("Mật khẩu của bạn đã được cập nhật thành công. Vui lòng đăng nhập lại.");
 
       router.push("/auth/login");
 
@@ -53,14 +53,14 @@ export default function Page() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="email" className="block text-xl font-bold text-gray-900">
-            Password
+            Mật khẩu
           </label>
           <div className="mt-1">
             <input
               id="newPassword"
               name="newPassword"
               type="password"
-              placeholder="Enter your new password..."
+              placeholder="Nhập mật khẩu mới..."
               required
               onChange={handleChange}
               className="block w-full rounded-lg border-0 py-1.5 pl-2 text-gray-900 sm:text-sm sm:leading-6 md:text-lg shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-700"
@@ -81,7 +81,7 @@ export default function Page() {
                 aria-label="Loading Spinner"
               />
             ) : (
-              'RESET PASSWORD'
+              'ĐẶT LẠI MẬT KHẨU'
             )}
           </button>
         </div>

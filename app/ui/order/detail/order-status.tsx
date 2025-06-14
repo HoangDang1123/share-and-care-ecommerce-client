@@ -39,37 +39,37 @@ const CODStatus: StatusStep[] = [
   {
     index: 0,
     name: "PENDING",
-    label: "Order Placed",
+    label: "Đã đặt hàng",
     icon: ClipboardDocumentListIcon,
-    description: "We have received your order",
+    description: "Chúng tôi đã nhận được đơn hàng của bạn",
   },
   {
     index: 1,
     name: "PROCESSING",
-    label: "Processing",
+    label: "Đang xử lý",
     icon: CubeIcon,
-    description: "Your items are being prepared",
+    description: "Sản phẩm đang được chuẩn bị",
   },
   {
     index: 2,
     name: "READY_TO_SHIP",
-    label: "Awaiting Shipment",
+    label: "Chờ giao hàng",
     icon: ClockIcon,
-    description: "Waiting for the courier to collect",
+    description: "Đang chờ đơn vị vận chuyển đến lấy hàng",
   },
   {
     index: 3,
     name: "IN_TRANSIT",
-    label: "In Transit",
+    label: "Đang giao hàng",
     icon: TruckIcon,
-    description: "Your order is on the way",
+    description: "Đơn hàng đang trên đường đến với bạn",
   },
   {
     index: 4,
     name: "DELIVERED",
-    label: "Delivered",
+    label: "Đã giao hàng",
     icon: CheckCircleIcon,
-    description: "The package was delivered successfully",
+    description: "Đơn hàng đã được giao thành công",
   },
 ];
 
@@ -77,44 +77,44 @@ const VNPayStatus: StatusStep[] = [
   {
     index: 0,
     name: "AWAITING_PAYMENT",
-    label: "Awaiting Payment",
+    label: "Chờ thanh toán",
     icon: ClockIcon,
-    description: "Please complete your payment to continue",
+    description: "Vui lòng hoàn tất thanh toán để tiếp tục",
   },
   {
     index: 1,
     name: "PAID",
-    label: "Payment Confirmed",
+    label: "Đã thanh toán",
     icon: CheckCircleIcon,
-    description: "Payment received successfully",
+    description: "Chúng tôi đã nhận được thanh toán của bạn",
   },
   {
     index: 2,
     name: "PROCESSING",
-    label: "Processing",
+    label: "Đang xử lý",
     icon: CubeIcon,
-    description: "We are preparing your order",
+    description: "Đơn hàng đang được chuẩn bị",
   },
   {
     index: 3,
     name: "READY_TO_SHIP",
-    label: "Awaiting Shipment",
+    label: "Chờ giao hàng",
     icon: ClockIcon,
-    description: "Waiting for dispatch",
+    description: "Đang chờ vận chuyển",
   },
   {
     index: 4,
     name: "IN_TRANSIT",
-    label: "In Transit",
+    label: "Đang giao hàng",
     icon: TruckIcon,
-    description: "Your order is in transit",
+    description: "Đơn hàng đang trên đường giao đến bạn",
   },
   {
     index: 5,
     name: "DELIVERED",
-    label: "Delivered",
+    label: "Đã giao hàng",
     icon: CheckCircleIcon,
-    description: "Delivered to your address",
+    description: "Đơn hàng đã được giao thành công",
   },
 ];
 
@@ -179,7 +179,7 @@ export default function OrderTimeline({ paymentMethod, currentStatus }: Props) {
     <div className="w-full bg-white rounded-lg shadow-sm border border-gray-200 col-span-3">
       <div className="p-6">
         <div className="mb-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Order Status</h3>
+          <span className="text-lg font-semibold text-gray-900 mb-2">Trạng thái đơn hàng</span>
         </div>
 
         {!isCancelled && (
@@ -229,7 +229,7 @@ export default function OrderTimeline({ paymentMethod, currentStatus }: Props) {
             <div className="flex justify-between items-center mt-2 text-xs text-gray-500">
               <span>Progress</span>
               <span>
-                {currentIndex >= 0 ? currentIndex + 1 : 0}/{visibleSteps.length} steps completed
+                {currentIndex >= 0 ? currentIndex + 1 : 0}/{visibleSteps.length} bước đã hoàn thành
               </span>
             </div>
           </>

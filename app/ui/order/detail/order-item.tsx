@@ -65,7 +65,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId, status }) =
         await createReturnRequest(orderId, request, userId, accessToken);
         setOpenDialog(false);
 
-        toast.success("Request return successful!");
+        toast.success("Đã yêu cầu hoàn trả");
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) { }
@@ -94,11 +94,11 @@ export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId, status }) =
               <span className='text-base'>{item.variantSlug}</span>
             </div>
 
-            <span className='text-base'>{`Quantity: ${item.quantity}`}</span>
+            <span className='text-base'>{`Số lượng: ${item.quantity}`}</span>
           </div>
         </div>
         <div className="flex flex-col items-end justify-between">
-          <span className="font-semibold text-base">{`Price: ${formatPrice(item.price)}`}</span>
+          <span className="font-semibold text-base">{`Giá: ${formatPrice(item.price)}`}</span>
 
           <div className='flex flex-col items-end gap-y-2'>
             <span
@@ -107,7 +107,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId, status }) =
                 : 'bg-amber-50 text-amber-700'
                 }`}
             >
-              {item.canReturn ? `${item.returnDays}-Day Return` : 'Not Returnable'}
+              {item.canReturn ? `Hoàn trả trong ${item.returnDays}` : 'Không thể hoàn trả'}
             </span>
 
             <div className='flex gap-x-2'>
@@ -117,7 +117,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId, status }) =
                   disabled={status !== OrderStatus.DELIVERED}
                   className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
                 >
-                  View Review Detail
+                  Xem đánh giá
                 </button>
               ) : (
                 <button
@@ -127,7 +127,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId, status }) =
                   disabled={!item.canReview || status !== OrderStatus.DELIVERED}
                   className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
                 >
-                  Review
+                  Đánh giá
                 </button>
               )}
 
@@ -136,7 +136,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId, status }) =
                   onClick={() => setOpenReturnDetail(!openReturnDetail)}
                   className='inline-block text-sm font-medium px-3 py-1 text-white rounded-lg w-fit bg-gray-800 hover:bg-gray-900'
                 >
-                  View Return Detail
+                  Xem tình trạng hoàn trả
                 </button>
               ) : (
                 <button
@@ -147,7 +147,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId, status }) =
                     : 'bg-gray-300'
                     }`}
                 >
-                  Request Return
+                  Yêu cầu hoàn trả
                 </button>
               )}
             </div>
@@ -160,10 +160,10 @@ export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId, status }) =
           />
           <div className="fixed inset-0 flex items-center justify-center p-4">
             <DialogPanel className="space-y-4 border bg-white p-12 rounded-xl">
-              <DialogTitle className="font-bold">Why do you request to return this product?</DialogTitle>
+              <DialogTitle className="font-bold">Tại sao bạn muốn hoàn trả sản phẩm này?</DialogTitle>
 
               <div className="flex flex-col gap-y-1">
-                <label className="font-semibold" htmlFor="reason-select">Reason</label>
+                <label className="font-semibold" htmlFor="reason-select">Lý do hoàn trả</label>
                 <select
                   id="reason-select"
                   value={request.reason}
@@ -173,7 +173,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId, status }) =
                   }))}
                   className="border-2 w-full p-2 rounded-md flex-1 ring-offset placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:text-sm"
                 >
-                  <option value="">Choose reason</option>
+                  <option value="">Chọn lý do hoàn trả</option>
                   {Object.entries(reasonLabels).map(([key, label]) => (
                     <option key={key} value={key}>
                       {label}
@@ -183,7 +183,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId, status }) =
               </div>
 
               <div className='flex flex-col gap-y-1'>
-                <label className='font-semibold'>Description</label>
+                <label className='font-semibold'>Mô tả</label>
                 <textarea
                   rows={4}
                   value={request.description}
@@ -191,7 +191,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId, status }) =
                     ...prev,
                     description: e.target.value,
                   }))}
-                  placeholder="Write your description..."
+                  placeholder="Nhập mô tả..."
                   className='border-2 w-full p-2 rounded-md flex-1 overflow-y-auto ring-offset placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:text-sm flex-grow resize-none outline-none break-words box-border text-inherit'
                 />
               </div>
@@ -208,7 +208,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId, status }) =
                   />
                 ) : (
                   <div className='flex justify-center items-center gap-x-2'>
-                    <span className='font-semibold text-lg'>Send</span>
+                    <span className='font-semibold text-lg'>Gửi</span>
                     <PaperAirplaneIcon className='size-6' />
                   </div>
                 )}

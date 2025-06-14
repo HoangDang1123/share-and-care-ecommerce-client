@@ -31,25 +31,25 @@ export const ReturnStatusCard: React.FC<ReturnStatusCardProps> = ({ returnStatus
   // Timeline items array for easier rendering
   const timelineItems = [
     {
-      label: "Requested At",
+      label: "Thời gian yêu cầu",
       date: returnStatus.requestedAt,
       icon: <ClockIcon className="w-6 h-6 text-blue-500" />,
       show: !!returnStatus.requestedAt,
     },
     {
-      label: "Approved At",
+      label: "Thời gian chấp nhận",
       date: returnStatus.approvedAt,
       icon: <CheckCircleIcon className="w-6 h-6 text-green-500" />,
       show: !!returnStatus.approvedAt,
     },
     {
-      label: "Rejected At",
+      label: "Thời gian từ chối",
       date: returnStatus.rejectedAt,
       icon: <XCircleIcon className="w-6 h-6 text-red-500" />,
       show: !!returnStatus.rejectedAt,
     },
     {
-      label: "Completed At",
+      label: "Thời gian hoàn tất",
       date: returnStatus.completedAt,
       icon: <CheckCircleIcon className="w-6 h-6 text-green-700" />,
       show: !!returnStatus.completedAt,
@@ -61,7 +61,7 @@ export const ReturnStatusCard: React.FC<ReturnStatusCardProps> = ({ returnStatus
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <ClipboardDocumentIcon className="w-7 h-7" />
-        <h2 className="text-xl font-semibold">Return Request Status</h2>
+        <span className="text-xl font-semibold">Trạng thái yêu cầu hoàn trả</span>
       </div>
 
       <div className="flex flex-col md:flex-row md:gap-10">
@@ -70,7 +70,7 @@ export const ReturnStatusCard: React.FC<ReturnStatusCardProps> = ({ returnStatus
           <div className="flex items-center gap-2">
             <CurrencyDollarIcon className="w-5 h-5 text-gray-500" />
             <div>
-              <p className="text-gray-500">Amount</p>
+              <p className="text-gray-500">Số tiền</p>
               <p className="font-medium">{formatPrice(returnStatus.amount)}</p>
             </div>
           </div>
@@ -78,7 +78,7 @@ export const ReturnStatusCard: React.FC<ReturnStatusCardProps> = ({ returnStatus
           <div className="flex items-center gap-2">
             <InformationCircleIcon className="w-5 h-5 text-gray-500" />
             <div>
-              <p className="text-gray-500">Reason</p>
+              <p className="text-gray-500">Lý do hoàn trả</p>
               <p className="inline-block px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 font-medium">
                 {formatReason(returnStatus.reason)}
               </p>
@@ -88,7 +88,7 @@ export const ReturnStatusCard: React.FC<ReturnStatusCardProps> = ({ returnStatus
           <div className="flex items-center gap-2">
             <UserIcon className="w-5 h-5 text-gray-500" />
             <div>
-              <p className="text-gray-500">Manual Review</p>
+              <p className="text-gray-500">Xem xét thủ công</p>
               <p className="font-medium">{returnStatus.manualRequired ? "Yes" : "No"}</p>
             </div>
           </div>
@@ -97,7 +97,7 @@ export const ReturnStatusCard: React.FC<ReturnStatusCardProps> = ({ returnStatus
           <div className="flex items-center gap-3 md:col-span-3">
             <ExclamationTriangleIcon className="w-5 h-5 text-gray-500" />
             <div>
-              <p className="text-gray-500">Description</p>
+              <p className="text-gray-500">Mô tả</p>
               <p className="font-medium">{returnStatus.description || "N/A"}</p>
             </div>
           </div>

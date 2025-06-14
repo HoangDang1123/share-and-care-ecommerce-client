@@ -82,13 +82,13 @@ const TopProduct: React.FC<TopProductProps> = ({ category }) => {
   return (
     <div className='md:mt-8 px-20'>
       <div className="flex justify-between items-center md:mb-2">
-        <h1 className='sm:text-xl md:text-3xl'>{category.name.toUpperCase()}</h1>
+        <span className='sm:text-xl md:text-3xl font-semibold'>{category.name.toUpperCase()}</span>
         <Link
           href={{ pathname: "/shop", query: { category: category.id } }}
           className="flex justify-center items-center sm:space-x-1 md:space-x-2 bg-gray-700 text-white sm:text-sm md:text-base xl:text-lg h-fit sm:px-3 md:px-4 py-1 rounded-full hover:bg-gray-800"
         >
           <span>
-            View All
+            Xem tất cả
           </span>
           <ChevronDoubleRightIcon className='size-4' />
         </Link>
@@ -96,7 +96,7 @@ const TopProduct: React.FC<TopProductProps> = ({ category }) => {
 
       {topProduct.length === 0 ? (
         <div className='w-88vw h-[360px] flex justify-center items-center bg-gray-200 rounded-xl'>
-          There&apos;s no product.
+          Sản phẩm không tồn tại.
         </div>
       ) : (
         <Carousel

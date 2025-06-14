@@ -38,7 +38,7 @@ export default function Home() {
       hasFetched.current = true;
       const fetchToken = async () => {
         try {
-          toast.success("Login successful.");
+          toast.success("Đăng nhập thành công.");
           const response = await getAccessToken(userId, refreshToken);
 
           setIsLogin(true);

@@ -13,20 +13,20 @@ export default function Page() {
   return (
     <div className="flex flex-col items-center justify-center h-[80vh] text-center px-4 space-y-6">
       <div className="text-red-600 text-4xl">❌</div>
-      <h1 className="text-2xl font-bold text-gray-800">Payment failure</h1>
+      <h1 className="text-2xl font-bold text-gray-800">Thanh toán thất bại</h1>
       <p className="text-gray-600 max-w-md">
-        The payment for order{" "}
+        Thanh toán cho đơn hàng{" "}
         <button
           onClick={() => router.push(`/order/${id}`)}
           className="text-blue-600 underline hover:text-blue-800 font-semibold"
         >
           {id}
         </button>{" "}
-        could not be processed. Please try again or contact support for assistance.
+        không thành công. Vui lòng thử lại hoặc liên hệ bộ phận hỗ trợ để được trợ giúp.
       </p>
       <div className="flex space-x-4 mt-4">
         <Link href="/" className="bg-gray-200 px-4 py-2 font-medium rounded hover:bg-gray-300">
-          Back to Home
+          Quay về trang chủ
         </Link>
       </div>
     </div>

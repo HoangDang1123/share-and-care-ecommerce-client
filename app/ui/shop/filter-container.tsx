@@ -11,7 +11,7 @@ export default function FilterContainer() {
     <div
       className="sm:hidden lg:flex flex-col h-fit gap-y-8 md:px-8 py-4 md:shadow-xl transition-all duration-300 ease-in-out"
     >
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div>Đang tải...</div>}>
         <CategoryFilter />
         <PriceFilter />
         <RatingFilter />

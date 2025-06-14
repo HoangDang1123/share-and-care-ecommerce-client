@@ -23,20 +23,20 @@ const ReviewFilter: React.FC<ReviewFilterProps> = ({ setRatingFilter, setHasImag
         onChange={handleRatingChange}
         className="border rounded-md p-1 text-base w-40"
       >
-        <option value="">Rating </option>
-        <option value="1">1 Star</option>
-        <option value="2">2 Star</option>
-        <option value="3">3 Star</option>
-        <option value="4">4 Star</option>
-        <option value="5">5 Star</option>
+        <option value="">Đánh giá </option>
+        <option value="1">1 sao</option>
+        <option value="2">2 sao</option>
+        <option value="3">3 sao</option>
+        <option value="4">4 sao</option>
+        <option value="5">5 sao</option>
       </select>
 
       <select
         onChange={handleHasImageChange}
         className="border rounded-md p-1 text-base w-40">
-        <option value="">Image </option>
-        <option value="image">Has image</option>
-        <option value="no-image">No image</option>
+        <option value="">Hình ảnh </option>
+        <option value="image">Có hình ảnh</option>
+        <option value="no-image">Không có hình ảnh</option>
       </select>
     </div>
   )

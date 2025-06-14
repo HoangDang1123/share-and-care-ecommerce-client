@@ -36,12 +36,12 @@ export default function RatingFilter() {
   return (
     <RadioGroup className='flex flex-col'>
       <div className="flex justify-between items-center mb-4">
-        <h2 className='font-bold'>Rating</h2>
+        <h2 className='font-bold'>Đánh giá</h2>
         <button
           onClick={handleClearAll}
           className="flex h-fit px-3 py-1 rounded-xl bg-gray-200 hover:bg-gray-300"
         >
-          Clear
+          Xóa tất cả
         </button>
       </div>
 

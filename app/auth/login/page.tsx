@@ -49,7 +49,7 @@ export default function Page() {
         deviceToken: deviceToken,
         deviceName: deviceName,
       });
-      toast.success("Login successful.");
+      toast.success("Đăng nhập thành công.");
 
       setIsLogin(true);
 
@@ -90,12 +90,12 @@ export default function Page() {
         <div
           className='flex flex-col justify-center'
         >
-          <h3>Login</h3>
+          <span className='text-5xl font-bold'>Đăng nhập</span>
 
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label htmlFor="email" className="block text-xl font-bold text-gray-900">
+                <label htmlFor="email" className="block text-xl font-semibold text-gray-900">
                   Email
                 </label>
                 <div className="mt-1">
@@ -103,7 +103,7 @@ export default function Page() {
                     id="email"
                     name="email"
                     type="email"
-                    placeholder="Enter your email..."
+                    placeholder="Nhập email..."
                     required
                     onChange={handleChange}
                     autoComplete="email"
@@ -113,15 +113,15 @@ export default function Page() {
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-xl font-bold text-gray-900">
-                  Password
+                <label htmlFor="password" className="block text-xl font-semibold text-gray-900">
+                  Mật khẩu
                 </label>
                 <div className="mt-1 relative">
                   <input
                     id="password"
                     name="password"
                     type={showPassword ? 'text' : 'password'}
-                    placeholder="Enter your password..."
+                    placeholder="Nhập mật khẩu..."
                     required
                     onChange={handleChange}
                     autoComplete="current-password"
@@ -145,9 +145,9 @@ export default function Page() {
                   <button
                     type='button'
                     onClick={() => router.push('/auth/forgot-password')}
-                    className="font-bold underline text-gray-900 hover:text-gray-700 hover:underline"
+                    className="font-semibold underline text-gray-900 hover:text-gray-700 hover:underline"
                   >
-                    Forgot password?
+                    Quên mật khẩu?
                   </button>
                 </div>
               </div>
@@ -165,13 +165,13 @@ export default function Page() {
                       aria-label="Loading Spinner"
                     />
                   ) : (
-                    'LOGIN'
+                    'ĐĂNG NHẬP'
                   )}
                 </button>
 
                 <div className='flex justify-center items-center space-x-4 px-10'>
                   <hr className='w-full h-0.5 bg-gray-900' />
-                  <h4>OR</h4>
+                  <h4>Hoặc</h4>
                   <hr className='w-full h-0.5 bg-gray-900' />
                 </div>
 
@@ -188,7 +188,7 @@ export default function Page() {
                     height={30}
                     className="w-auto h-auto mr-2"
                   />
-                  Sign in with Google
+                  Đăng nhập bằng Google
                 </button>
 
                 {/* Nút đăng nhập bằng Facebook */}
@@ -210,13 +210,13 @@ export default function Page() {
             </form>
 
             <p className="mt-10 text-center text-md text-gray-500">
-              Doesn&apos;t have any account yet ? {' '}
+              Bạn chưa có tài khoản? {' '}
               <button
                 type="button"
                 onClick={() => router.push('/auth/sign-up')}
                 className="font-bold underline text-gray-900 hover:text-gray-700"
               >
-                Sign Up
+                Đăng ký ngay
               </button>
             </p>
           </div>

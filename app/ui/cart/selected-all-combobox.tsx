@@ -20,7 +20,7 @@ const SelectedAllCombobox: React.FC<SelectedAllComboboxProps> = ({ selectedAll, 
       >
         <CheckIcon className='opacity-0 group-data-[checked]:opacity-100' />
       </Checkbox>
-      <h4 className='mt-1 select-none sm:text-base md:text-xl'>Select All</h4>
+      <span className='select-none sm:text-base md:text-xl'>Chọn tất cả</span>
     </div>
   )
 }

@@ -37,7 +37,7 @@ export default function Page() {
   const tabItems = [
     {
       key: 1,
-      label: 'Order List',
+      label: 'Danh sách đơn hàng',
       icon: <ClipboardDocumentIcon className="size-6" />,
       children:
         <OrderList
@@ -48,13 +48,13 @@ export default function Page() {
     },
     {
       key: 2,
-      label: 'Shipping Address',
+      label: 'Địa chỉ giao hàng',
       icon: <MapPinIcon className="size-6" />,
       children: <ShippingAddress userId={userId} accessToken={accessToken} />,
     },
     {
       key: 3,
-      label: 'Change Password',
+      label: 'Đổi mật khẩu',
       icon: <UserIcon className="size-6" />,
       children: <ChangePassword userId={userId} accessToken={accessToken} />,
     },
@@ -100,7 +100,7 @@ export default function Page() {
       localStorage.setItem('avatarUrl', response.image_url);
 
       setUploadAvatarLoading(false);
-      toast.success("Upload avatar successful!");
+      toast.success("Tải ảnh đại diện thành công.");
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) { }
@@ -111,7 +111,7 @@ export default function Page() {
 
   const handleLogout = async () => {
     if (!accessToken) {
-      toast.error("Access token is not available.");
+      toast.error("Access token không khả dụng.");
       return;
     }
     try {
@@ -119,11 +119,11 @@ export default function Page() {
       await logoutRequest(userId, accessToken);
 
       router.push("/auth/login");
-      toast.success("Logout successfull.");
+      toast.success("Đăng xuất thành công.");
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      toast.error("An error occurred during logout.");
+      toast.error("Đã có lỗi xảy ra trong quá trình đăng xuất.");
     } finally {
       if (typeof window !== "undefined") {
         localStorage.removeItem('accessToken');
@@ -156,12 +156,12 @@ export default function Page() {
   if (userId === "" || accessToken === "") {
     return (
       <div className="flex justify-center items-center h-[750px] bg-black gap-x-4">
-        <h6 className="text-white">Please log in to continue</h6>
+        <span className="text-white">Bạn cần đăng nhập để tiếp tục</span>
         <Link
           href="/auth/login"
           className="flex-none rounded-full bg-white px-3 py-1 sm:text-xs md:text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
         >
-          Go to Login <span aria-hidden="true">&rarr;</span>
+          Đi tới trang đăng nhập <span aria-hidden="true">&rarr;</span>
         </Link>
       </div>
     )
@@ -174,10 +174,10 @@ export default function Page() {
 
         <ul className="flex space-x-1 text-xl">
           <li>
-            <Link href="/" className='text-gray-400 text-base hover:text-gray-900'>Home / </Link>
+            <Link href="/" className='text-gray-400 text-base hover:text-gray-900'>Trang chủ / </Link>
           </li>
           <li>
-            <span className="text-base">Profile</span>
+            <span className="text-base">Tài khoản</span>
           </li>
         </ul>
       </div>
@@ -211,7 +211,7 @@ export default function Page() {
                     aria-label="Loading Spinner"
                   />
                 ) : (
-                  'Change Avatar'
+                  'Đổi ảnh đại diện'
                 )}
               </button>
             </div>
@@ -244,7 +244,7 @@ export default function Page() {
               className="flex items-center w-full gap-x-2 sm:text-lg md:text-base xl:text-lg px-4 py-2 font-semibold rounded-md hover:bg-gray-100"
             >
               <ArrowLeftStartOnRectangleIcon className="size-6" />
-              <span>Logout</span>
+              <span>Đăng xuất</span>
             </button>
           </div>
         </Col>

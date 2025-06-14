@@ -24,7 +24,7 @@ export default function Page() {
     try {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const response = await forgotPassword(formData);
-      toast.success("A reset password email has been sent to your inbox. Please check your email to receive password reset instructions.");
+      toast.success("Email đặt lại mật khẩu đã được gửi đến hộp thư của bạn. Vui lòng kiểm tra email để nhận hướng dẫn đặt lại mật khẩu.");
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) { } finally {
@@ -41,8 +41,8 @@ export default function Page() {
           <BackButton />
         </div>
         <div className='space-y-4'>
-          <h3>Forgot Password</h3>
-          <h4>Enter your email to receive password reset instructions.</h4>
+          <span className='text-5xl font-bold'>Quên mật khẩu</span>
+          <span className='text-xl'>Nhập email của bạn để nhận hướng dẫn đặt lại mật khẩu.</span>
         </div>
       </div>
 
@@ -57,7 +57,7 @@ export default function Page() {
                 id="email"
                 name="email"
                 type="email"
-                placeholder="Enter your email..."
+                placeholder="Nhập email..."
                 required
                 onChange={handleChange}
                 autoComplete="email"
@@ -79,7 +79,7 @@ export default function Page() {
                   aria-label="Loading Spinner"
                 />
               ) : (
-                'SEND'
+                'GỨI'
               )}
             </button>
           </div>

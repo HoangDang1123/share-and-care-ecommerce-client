@@ -129,7 +129,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
           district: district.Name,
           city: city.Name,
         }, userId, accessToken);
-        toast.success("Create address successful.");
+        toast.success("Thêm địa chỉ thành công.");
 
         setIsRefresh(true);
 
@@ -145,10 +145,10 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
       {({ open }) => (
         <>
           <DisclosureButton className='flex group justify-between items-center w-full text-lg font-semibold md:px-4'>
-            <h1 className="flex items-center gap-2 sm:text-lg md:text-xl font-bold text-gray-800">
+            <span className="flex items-center gap-2 sm:text-lg md:text-xl font-bold text-gray-800">
               <MapPinIcon className="w-7 h-7" />
-              Create Address
-            </h1>
+              Thêm địa chỉ mới
+            </span>
             <ChevronDownIcon className='size-5 group-data-[open]:rotate-180' />
           </DisclosureButton>
 
@@ -167,7 +167,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
                       <div className="grid sm:gap-4 md:gap-6 sm:grid-cols-6">
                         <div className="sm:col-span-4">
                           <label htmlFor="full-name" className="block sm:text-sm md:text-base font-semibold text-gray-700 mb-1">
-                            Full Name
+                            Họ và tên
                           </label>
                           <input
                             id="name"
@@ -175,14 +175,14 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
                             type="text"
                             autoComplete="name"
                             className="block w-full rounded-xl border border-gray-300 py-2 sm:px-2 md:px-3 sm:text-sm md:text-base text-gray-900 shadow-sm placeholder:text-gray-400"
-                            placeholder="Enter your full name"
+                            placeholder="Nhập họ và tên"
                             onChange={(e) => { handleInputChange(e) }}
                           />
                         </div>
 
                         <div className="sm:col-span-2">
                           <label htmlFor="phone" className="block sm:text-sm md:text-base font-semibold text-gray-700 mb-1">
-                            Phone Number
+                            Số điện thoại
                           </label>
                           <input
                             id="phone"
@@ -190,14 +190,14 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
                             type="text"
                             autoComplete="tel"
                             className="block w-full rounded-xl border border-gray-300 py-2 sm:px-2 md:px-3 sm:text-sm md:text-base text-gray-900 shadow-sm placeholder:text-gray-400"
-                            placeholder="Enter your phone number"
+                            placeholder="Nhập số điện thoại"
                             onChange={(e) => { handleInputChange(e) }}
                           />
                         </div>
 
                         <div className="sm:col-span-2">
                           <label htmlFor="region" className="block sm:text-sm md:text-base font-semibold text-gray-700 mb-1">
-                            Province / City
+                            Tỉnh / Thành phố
                           </label>
                           <select
                             id="city"
@@ -207,7 +207,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
                             className="block w-full rounded-xl border border-gray-300 py-2 sm:px-2 md:px-3 sm:text-sm md:text-base text-gray-900 shadow-sm placeholder:text-gray-400"
                           >
                             <option value="">
-                              Select your province or city
+                              Chọn tỉnh / thành phố
                             </option>
                             {cities?.map(city => (
                               <option key={city.Id} value={city.Id}>{city.Name}</option>
@@ -217,7 +217,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
 
                         <div className="sm:col-span-2">
                           <label htmlFor="city" className="block sm:text-sm md:text-base font-semibold text-gray-700 mb-1">
-                            City / District
+                            Quận / Huyện
                           </label>
                           <select
                             id="district"
@@ -227,7 +227,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
                             className="block w-full rounded-xl border border-gray-300 py-2 sm:px-2 md:px-3 sm:text-sm md:text-base text-gray-900 shadow-sm placeholder:text-gray-400"
                           >
                             <option value="">
-                              Select your city or district
+                              Chọn quận / huyện
                             </option>
                             {districts?.map(district => (
                               <option key={district.Id} value={district.Id}>{district.Name}</option>
@@ -237,7 +237,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
 
                         <div className="sm:col-span-2">
                           <label htmlFor="ward" className="block sm:text-sm md:text-base font-semibold text-gray-700 mb-1">
-                            Ward
+                            Phường / xã
                           </label>
                           <select
                             id="ward"
@@ -247,7 +247,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
                             className="block w-full rounded-xl border border-gray-300 py-2 sm:px-2 md:px-3 sm:text-sm md:text-base text-gray-900 shadow-sm placeholder:text-gray-400"
                           >
                             <option value="">
-                              Select your ward
+                              Chọn phường / xã
                             </option>
                             {wards?.map(ward => (
                               <option key={ward.Id} value={ward.Id}>{ward.Name}</option>
@@ -257,7 +257,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
 
                         <div className="col-span-full">
                           <label htmlFor="street-address" className="block sm:text-sm md:text-base font-semibold text-gray-700 mb-1">
-                            Street Address
+                            Địa chỉ
                           </label>
                           <input
                             id="street"
@@ -266,7 +266,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
                             autoComplete="street"
                             value={street}
                             className="block w-full rounded-xl border border-gray-300 py-2 sm:px-2 md:px-3 sm:text-sm md:text-base text-gray-900 shadow-sm placeholder:text-gray-400"
-                            placeholder="Enter your street address"
+                            placeholder="Nhập địa chỉ"
                             onChange={(e) => { handleStreetInputChange(e) }}
                           />
 
@@ -297,7 +297,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
                               aria-label="Loading Spinner"
                             />
                           ) : (
-                            'Save'
+                            'Thêm'
                           )}
                         </button>
                       </div>
@@ -309,7 +309,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
           </div>
         </>
       )}
-    </Disclosure >
+    </Disclosure>
   );
 }
 

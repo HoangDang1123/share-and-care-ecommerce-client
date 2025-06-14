@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { BanknotesIcon } from "@heroicons/react/24/outline";
 
 const methods = [
-  { name: 'COD', value: 'COD', image: '/assets/cash-payment.png', alt: 'Cash Payment Img' },
+  { name: 'Thanh toán khi nhận hàng', value: 'COD', image: '/assets/cash-payment.png', alt: 'Cash Payment Img' },
   { name: 'VNPAY', value: 'VNPAY', image: '/assets/vnpay.png', alt: 'VNPAY Img' },
   { name: 'Momo', value: 'MOMO', image: '/assets/momo.png', alt: 'Momo Img' },
 ]
@@ -26,10 +26,10 @@ export default function PaymentMethod() {
 
   return (
     <div className="flex flex-col w-full space-y-6 mx-auto sm:p-4 md:p-10 md:rounded-xl md:shadow-lg">
-      <h1 className="flex items-center gap-2 text-2xl font-bold mb-4 text-gray-800">
+      <span className="flex items-center gap-2 text-2xl font-bold mb-4 text-gray-800">
         <BanknotesIcon className="w-7 h-7" />
-        Payment Method
-      </h1>
+        Phương thức thanh toán
+      </span>
 
       <RadioGroup value={selected} onChange={setSelected} aria-label="Payment Method" className="space-y-4">
         {methods.map((method) => (
@@ -48,7 +48,7 @@ export default function PaymentMethod() {
                   height={40}
                   className="object-contain"
                 />
-                <h6 className="text-base md:text-lg font-medium text-gray-800">{method.name}</h6>
+                <span className="text-base md:text-lg font-medium text-gray-800">{method.name}</span>
               </div>
               <span role="radio" aria-checked className="w-5 h-5 rounded-full flex justify-center items-center border border-gray-700 bg-white">
                 <div className="invisible w-2 h-2 rounded-full bg-gray-700 group-data-[checked]:visible" />

@@ -108,7 +108,7 @@ export default function Page() {
       }
 
       await cancelOrder(id, userId, accessToken);
-      toast.success("Cancel order successful!");
+      toast.success("Hủy đơn hàng thành công.");
 
       router.push("/profile");
 
@@ -122,12 +122,12 @@ export default function Page() {
   if (userId === "" || accessToken === "") {
     return (
       <div className="flex justify-center items-center h-[750px] bg-black gap-x-4">
-        <h6 className="text-white">Please log in to continue</h6>
+        <span className="text-white">Bạn cần đăng nhập để tiếp tục</span>
         <Link
           href="/auth/login"
           className="flex-none rounded-full bg-white px-3 py-1 sm:text-xs md:text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
         >
-          Go to Login <span aria-hidden="true">&rarr;</span>
+          Đi tới trang đăng nhập <span aria-hidden="true">&rarr;</span>
         </Link>
       </div>
     )
@@ -135,7 +135,7 @@ export default function Page() {
 
   if (!order) {
     return (
-      <div>Loading...</div>
+      <div>Đang tải...</div>
     )
   }
 
@@ -151,10 +151,10 @@ export default function Page() {
 
         <ul className="flex space-x-1 sm:text-md md:text-xl text-ellipsis text-nowrap">
           <li>
-            <Link href="/" className='text-gray-400 text-base hover:text-gray-900'>Home / </Link>
+            <Link href="/" className='text-gray-400 text-base hover:text-gray-900'>Trang chủ / </Link>
           </li>
           <li>
-            <Link href="/profile" className='text-gray-400 text-base hover:text-gray-900'>Profile / </Link>
+            <Link href="/profile" className='text-gray-400 text-base hover:text-gray-900'>Đơn hàng / </Link>
           </li>
           <li>
             <span className="text-base">{order.order.id}</span>
@@ -171,11 +171,11 @@ export default function Page() {
           <div className='flex flex-col border-2 p-6 gap-y-4 rounded-md hover:text-gray-900'>
             <div className='flex justify-between'>
               <div className='flex flex-col gap-y-4'>
-                <span className='font-semibold mb-4'>{`ID: ${order.order.id}`}</span>
+                <span className='font-semibold mb-4'>{`Mã đơn hàng: ${order.order.id}`}</span>
                 <div className="flex items-start gap-2">
                   <CalendarIcon className="w-4 h-4 mt-1 text-primary" />
                   <div>
-                    <p className="text-muted-foreground">Ordered Date</p>
+                    <p className="text-muted-foreground">Ngày đặt hàng</p>
                     <p className="font-medium text-foreground">
                       {convertDateTime(order.order.timestamps.createdAt)}
                     </p>
@@ -185,7 +185,7 @@ export default function Page() {
                 <div className="flex items-start gap-2">
                   <TruckIcon className="w-4 h-4 mt-1 text-primary" />
                   <div>
-                    <p className="text-muted-foreground">Delivery Method</p>
+                    <p className="text-muted-foreground">Dịch vụ giao hàng</p>
                     <p className="font-medium text-foreground">{order.order.deliveryMethod}</p>
                   </div>
                 </div>
@@ -197,11 +197,10 @@ export default function Page() {
                 </span>
 
                 {order.order.timestamps.deliveredAt !== null && (
-
                   <div className="flex items-start gap-2">
                     <CalendarIcon className="w-4 h-4 mt-1 text-primary" />
                     <div>
-                      <p className="text-muted-foreground">Delivered Date</p>
+                      <p className="text-muted-foreground">Ngày giao hàng</p>
                       <p className="font-medium text-foreground">
                         {convertDateTime(order.order.timestamps.deliveredAt)}
                       </p>
@@ -216,7 +215,7 @@ export default function Page() {
                 <div className="flex items-start gap-2">
                   <UserIcon className="w-4 h-4 mt-1 text-primary" />
                   <div>
-                    <p className="text-muted-foreground">Full Name</p>
+                    <p className="text-muted-foreground">Họ tên</p>
                     <p className="font-medium text-foreground">{order.order.shippingAddress.fullname}</p>
                   </div>
                 </div>
@@ -226,7 +225,7 @@ export default function Page() {
                 <div className="flex items-start gap-2">
                   <PhoneIcon className="w-4 h-4 mt-1 text-primary" />
                   <div>
-                    <p className="text-muted-foreground">Phone</p>
+                    <p className="text-muted-foreground">Số điện thoại</p>
                     <p className="font-medium text-foreground">{order.order.shippingAddress.phone}</p>
                   </div>
                 </div>
@@ -236,7 +235,7 @@ export default function Page() {
                 <div className="flex items-start gap-2">
                   <MapPinIcon className="w-4 h-4 mt-1 text-primary" />
                   <div>
-                    <p className="text-muted-foreground">Address</p>
+                    <p className="text-muted-foreground">Địa chỉ</p>
                     <p className="font-medium text-foreground">
                       {`${order.order.shippingAddress.street}, ${order.order.shippingAddress.ward}, ${order.order.shippingAddress.district}, ${order.order.shippingAddress.city}`}
                     </p>
@@ -251,29 +250,11 @@ export default function Page() {
 
             <div className='flex justify-end'>
               {order.order.paymentMethod === PaymentMethod.COD ? (
-                <Image
-                  src={'/assets/cash-payment.png'}
-                  alt='COD'
-                  width={100}
-                  height={100}
-                  className='w-16'
-                />
+                <Image src={'/assets/cash-payment.png'} alt='Thanh toán khi nhận hàng' width={100} height={100} className='w-16' />
               ) : order.order.paymentMethod === PaymentMethod.VNPAY ? (
-                <Image
-                  src={'/assets/vnpay.png'}
-                  alt='VNPAY'
-                  width={100}
-                  height={100}
-                  className='w-16'
-                />
+                <Image src={'/assets/vnpay.png'} alt='VNPAY' width={100} height={100} className='w-16' />
               ) : (
-                <Image
-                  src={'/assets/momo.png'}
-                  alt='MOMO'
-                  width={100}
-                  height={100}
-                  className='w-16'
-                />
+                <Image src={'/assets/momo.png'} alt='MOMO' width={100} height={100} className='w-16' />
               )}
             </div>
           </div>
@@ -281,21 +262,17 @@ export default function Page() {
 
         <Col span={1} />
 
-        <Col
-          span={6}
-          className="flex flex-col w-full h-fit md:shadow-lg px-4 pt-10 gap-y-10 md:rounded-lg transition-all duration-300 ease-in-out"
-        >
-          <h1 className='flex items-center gap-2 font-bold'>
+        <Col span={6} className="flex flex-col w-full h-fit md:shadow-lg px-4 pt-10 gap-y-10 md:rounded-lg transition-all duration-300 ease-in-out">
+          <span className='flex items-center gap-2 font-bold text-3xl'>
             <ReceiptPercentIcon className='w-10 h-10 text-gray-700' />
-            Order Summary
-          </h1>
+            Thông tin đơn hàng
+          </span>
 
           <div className='flex flex-col gap-y-4'>
-
             <div className='flex justify-between items-center text-gray-800'>
               <div className='flex items-center gap-2'>
                 <ShoppingBagIcon className='w-5 h-5 text-blue-500' />
-                <h4 className='font-semibold sm:text-base md:text-lg'>Product Cost:</h4>
+                <h4 className='font-semibold sm:text-base md:text-lg'>Tổng tiền hàng:</h4>
               </div>
               <h4 className='sm:text-base md:text-lg'>{formatPrice(order.order.pricing.itemsPrice)}</h4>
             </div>
@@ -303,7 +280,7 @@ export default function Page() {
             <div className='flex justify-between items-center text-gray-800'>
               <div className='flex items-center gap-2'>
                 <TruckIcon className='w-5 h-5 text-orange-500' />
-                <h4 className='font-semibold sm:text-base md:text-lg'>Shipping Fee:</h4>
+                <h4 className='font-semibold sm:text-base md:text-lg'>Phí vận chuyển:</h4>
               </div>
               <h4 className='sm:text-base md:text-lg'>{`+ ${formatPrice(order.order.pricing.shippingPrice)}`}</h4>
             </div>
@@ -311,7 +288,7 @@ export default function Page() {
             <div className='flex justify-between items-center text-gray-800'>
               <div className='flex items-center gap-2'>
                 <TagIcon className='w-5 h-5 text-green-600' />
-                <h4 className='font-semibold sm:text-base md:text-lg'>Product Discount:</h4>
+                <h4 className='font-semibold sm:text-base md:text-lg'>Giảm giá sản phẩm:</h4>
               </div>
               <h4 className='sm:text-base md:text-lg'>{`- ${formatPrice(order.order.pricing.productDiscount)}`}</h4>
             </div>
@@ -319,7 +296,7 @@ export default function Page() {
             <div className='flex justify-between items-center text-gray-800'>
               <div className='flex items-center gap-2'>
                 <TicketIcon className='w-5 h-5 text-green-600' />
-                <h4 className='font-semibold sm:text-base md:text-lg'>Coupon Discount:</h4>
+                <h4 className='font-semibold sm:text-base md:text-lg'>Giảm giá mã khuyến mãi:</h4>
               </div>
               <h4 className='sm:text-base md:text-lg'>{`- ${formatPrice(order.order.pricing.couponDiscount)}`}</h4>
             </div>
@@ -327,17 +304,17 @@ export default function Page() {
             <div className='flex justify-between items-center text-gray-800'>
               <div className='flex items-center gap-2'>
                 <GiftIcon className='w-5 h-5 text-green-600' />
-                <h4 className='font-semibold sm:text-base md:text-lg'>Shipping Discount:</h4>
+                <h4 className='font-semibold sm:text-base md:text-lg'>Giảm giá vận chuyển:</h4>
               </div>
               <h4 className='sm:text-base md:text-lg'>{`- ${formatPrice(order.order.pricing.shippingDiscount)}`}</h4>
             </div>
 
             <div className='w-full h-0.5 bg-gray-200' />
 
-            <div className='flex justify-between items-center text-green-700 font-medium'>
+            <div className='flex justify-between items-center font-medium'>
               <div className='flex items-center gap-2'>
-                <BanknotesIcon className='w-5 h-5' />
-                <h4 className='sm:text-base md:text-lg'>Total Saving:</h4>
+                <BanknotesIcon className='w-5 h-5 text-green-700' />
+                <h4 className='sm:text-base md:text-lg'>Tổng tiết kiệm:</h4>
               </div>
               <h4 className='sm:text-base md:text-lg'>{`- ${formatPrice(order.order.pricing.totalSavings)}`}</h4>
             </div>
@@ -347,7 +324,7 @@ export default function Page() {
             <div className='flex justify-between items-center text-black font-bold'>
               <div className='flex items-center gap-2'>
                 <CurrencyDollarIcon className='w-6 h-6 text-gray-800' />
-                <h4 className='sm:text-base md:text-lg'>Total Cost:</h4>
+                <h4 className='sm:text-base md:text-lg'>Tổng cộng:</h4>
               </div>
               <h4 className='sm:text-base md:text-lg'>{formatPrice(order.order.pricing.totalPrice)}</h4>
             </div>
@@ -360,15 +337,11 @@ export default function Page() {
                 className='flex justify-center items-center h-12 bg-gray-800 hover:bg-gray-900 text-white text-xl font-bold rounded-lg'
               >
                 {paymentLoading ? (
-                  <ClipLoader
-                    size={20}
-                    color='#ffffff'
-                    aria-label="Loading Spinner"
-                  />
+                  <ClipLoader size={20} color='#ffffff' aria-label="Loading Spinner" />
                 ) : (
                   <div className='flex justify-center items-center gap-x-2'>
                     <CreditCardIcon className='size-7' />
-                    <span>Payment</span>
+                    <span>Thanh toán</span>
                   </div>
                 )}
               </button>
@@ -380,19 +353,14 @@ export default function Page() {
                 className='flex justify-center items-center mb-10 h-12 bg-red-500 hover:bg-red-600 text-white text-xl font-bold rounded-lg'
               >
                 {cancelLoading ? (
-                  <ClipLoader
-                    size={20}
-                    color='#ffffff'
-                    aria-label="Loading Spinner"
-                  />
+                  <ClipLoader size={20} color='#ffffff' aria-label="Loading Spinner" />
                 ) : (
-                  <span>Cancel</span>
+                  <span>Hủy đơn</span>
                 )}
               </button>
             )}
           </div>
         </Col>
-
       </Row>
     </div>
   );

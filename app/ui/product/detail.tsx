@@ -10,11 +10,11 @@ interface DetailProps {
 const Detail: React.FC<DetailProps> = ({ categories, attributes }) => {
   return (
     <div className='flex flex-col px-6 py-4 bg-gray-100 rounded-lg'>
-      <h6 className='sm:text-md md:text-xl font-semibold'>Detail</h6>
+      <h3 className='sm:text-md md:text-xl font-semibold'>Thông tin chi tiết</h3>
 
       <div className='grid grid-cols-12 w-full sm:mt-6 md:mt-10'>
         <div className='sm:col-span-4 lg:col-span-2 flex flex-col sm:gap-y-2 md:gap-y-4'>
-          <label className='sm:text-sm md:text-base'>Categories</label>
+          <label className='sm:text-sm md:text-base'>Phân loại sản phẩm</label>
           {attributes.map((attribute) => (
             <label
               key={attribute.name}

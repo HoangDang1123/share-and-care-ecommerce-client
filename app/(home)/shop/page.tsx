@@ -87,7 +87,7 @@ export default function Page() {
             id="search"
             name="search"
             type="text"
-            placeholder="Search..."
+            placeholder="Tìm kiếm..."
             onChange={handleChangeInput}
             className="block w-full rounded-lg border-0 py-1.5 pl-5 text-gray-900 sm:text-sm sm:leading-6 md:text-lg placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-400"
           />
@@ -100,7 +100,7 @@ export default function Page() {
 
       {productList.length === 0 ? (
         <div className='h-[480px] flex justify-center items-center'>
-          There&apos;s no product.
+          Sản phẩm không tồn tại.
         </div>
       ) : (
         <div className="flex flex-col gap-y-20">
@@ -131,7 +131,7 @@ export default function Page() {
                 <option value="15">15</option>
                 <option value="20">20</option>
               </select>
-              <span>items per page</span>
+              <span>sản phẩm mỗi trang</span>
             </div>
           </div>
         </div>

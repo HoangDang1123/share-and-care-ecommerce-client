@@ -51,7 +51,7 @@ const Cart: React.FC<CartProps> = ({ isLogin }) => {
         {isLogin ? (
           <>
             {cart?.items.length === 0 ? (
-              <div className='flex justify-center items-center text-lg py-4'>There&apos;s no item.</div>
+              <div className='flex justify-center items-center text-lg py-4'>Bạn chưa thêm sản phẩm nào.</div>
             ) : (
               cart?.items.slice(0, 3).map((cart, index) => (
                 <MenuItem key={index}>
@@ -77,7 +77,7 @@ const Cart: React.FC<CartProps> = ({ isLogin }) => {
                 href={"/cart"}
                 className='flex justify-center items-center my-2 sm:text-md xl:text-lg w-full hover:text-blue-900 font-bold text-blue-700 underline'
               >
-                Go to my cart
+                Đi tới giỏ hàng
                 <ArrowRightIcon className='size-4 ml-1' />
               </Link>
             </MenuItem>
@@ -87,7 +87,7 @@ const Cart: React.FC<CartProps> = ({ isLogin }) => {
             href="/auth/login"
             className='flex justify-center items-center sm:h-4 xl:h-20 mx-5 my-10 sm:text-md xl:text-lg hover:text-blue-900 font-bold text-blue-700 underline'
           >
-            Go to login
+            Đi tới trang đăng nhập
             <ArrowRightIcon className='size-4 ml-1' />
           </Link>
         )}

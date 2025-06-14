@@ -40,7 +40,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ item }) => {
         await reportReview(reportReason, item.id, userId, accessToken);
         setOpenDialog(false);
 
-        toast.success("Report review successful!");
+        toast.success("Báo cáo đánh giá thành công.");
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) { }
@@ -128,7 +128,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ item }) => {
         />
         <div className="fixed inset-0 flex items-center justify-center p-4">
           <DialogPanel className="space-y-4 border bg-white p-12 rounded-xl">
-            <DialogTitle className="font-bold">Why do you report this review?</DialogTitle>
+            <DialogTitle className="font-bold">Tại sao bạn muốn báo cáo đánh giá này?</DialogTitle>
 
             <textarea
               rows={4}
@@ -152,7 +152,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ item }) => {
                 />
               ) : (
                 <div className='flex justify-center items-center gap-x-2'>
-                  <span className='font-semibold text-lg'>Send</span>
+                  <span className='font-semibold text-lg'>Gửi</span>
                   <PaperAirplaneIcon className='size-6' />
                 </div>
               )}

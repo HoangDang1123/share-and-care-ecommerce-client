@@ -36,7 +36,7 @@ export default function OrderSummary() {
     if (order !== null && userId !== "" && accessToken !== "") {
       try {
         const response = await createOrder(order, userId, accessToken);
-        toast.success("Create order successful.");
+        toast.success("Đặt hàng thành công.");
 
         if (response.paymentUrl !== null) {
           router.replace(response.paymentUrl);
@@ -92,25 +92,25 @@ export default function OrderSummary() {
     <div
       className="flex flex-col w-full h-fit md:shadow-lg px-4 py-10 space-y-10 md:rounded-lg transition-all duration-300 ease-in-out"
     >
-      <h1 className='flex items-center gap-2 font-bold'>
+      <span className='flex items-center gap-2 font-bold text-3xl'>
         <ReceiptPercentIcon className='w-10 h-10 text-gray-700' />
-        Order Summary
-      </h1>
+        Thông tin đơn hàng
+      </span>
       <div className='flex flex-col gap-y-6'>
         <div className='flex justify-between items-center'>
           <div className='flex items-center gap-2'>
             <BanknotesIcon className='w-5 h-5 text-blue-600' />
-            <h4 className='font-semibold sm:text-lg md:text-xl'>Product Cost:</h4>
+            <span className='font-semibold sm:text-lg md:text-xl'>Giá sản phẩm:</span>
           </div>
-          <h4 className='sm:text-lg md:text-xl'>{formatPrice(productPrice)}</h4>
+          <span className='sm:text-lg md:text-xl'>{formatPrice(productPrice)}</span>
         </div>
 
         <div className='flex justify-between items-center'>
           <div className='flex items-center gap-2'>
             <TruckIcon className='w-5 h-5 text-green-600' />
-            <h4 className='font-semibold sm:text-lg md:text-xl'>Shipping Fee:</h4>
+            <span className='font-semibold sm:text-lg md:text-xl'>Phí giao hàng:</span>
           </div>
-          <h4 className='sm:text-lg md:text-xl'>{`+ ${formatPrice(deliveryFee)}`}</h4>
+          <span className='sm:text-lg md:text-xl'>{`+ ${formatPrice(deliveryFee)}`}</span>
         </div>
 
         <div className='w-full h-0.5 bg-gray-200' />
@@ -118,11 +118,11 @@ export default function OrderSummary() {
         <div className='flex justify-between items-center'>
           <div className='flex items-center gap-2'>
             <TagIcon className='w-5 h-5 text-orange-600' />
-            <h4 className='font-semibold sm:text-lg md:text-xl'>Discount Code:</h4>
+            <span className='font-semibold sm:text-lg md:text-xl'>Mã giảm giá:</span>
           </div>
           <input
             type='text'
-            placeholder='Enter discount code'
+            placeholder='Nhập mã giảm giá'
             value={order?.couponCode || ''}
             onChange={(e) =>
               setOrder((prev) => prev ? { ...prev, couponCode: e.target.value } : null)
@@ -138,9 +138,9 @@ export default function OrderSummary() {
         <div className='flex justify-between items-center'>
           <div className='flex items-center gap-2'>
             <CurrencyDollarIcon className='w-5 h-5 text-gray-800' />
-            <h4 className='font-semibold sm:text-lg md:text-xl'>Total Cost:</h4>
+            <span className='font-semibold sm:text-lg md:text-xl'>Tổng tiền:</span>
           </div>
-          <h4 className='sm:text-lg md:text-xl'>{formatPrice(productPrice + deliveryFee)}</h4>
+          <span className='sm:text-lg md:text-xl'>{formatPrice(productPrice + deliveryFee)}</span>
         </div>
       </div>
 
@@ -159,7 +159,7 @@ export default function OrderSummary() {
           ) : (
             <div className='flex justify-center items-center'>
               <ShoppingCartIcon className='size-8 mr-3 text-white' />
-              <h6 className='text-xl font-semibold text-white'>Order</h6>
+              <span className='text-xl font-semibold text-white'>Đặt hàng</span>
             </div>
           )}
         </button>

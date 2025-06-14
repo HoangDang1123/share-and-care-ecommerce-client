@@ -103,7 +103,7 @@ export default function Page() {
         }
         
         await createReview(updatedReview, userId, accessToken);
-        toast.success("Create review successful!");
+        toast.success("Tạo đánh giá thành công.");
         
         router.push(`/order/${orderId}`);
 
@@ -122,25 +122,25 @@ export default function Page() {
 
         <ul className="flex space-x-1 sm:text-md md:text-xl text-ellipsis text-nowrap">
           <li>
-            <Link href="/" className='text-gray-400 text-base hover:text-gray-900'>Home / </Link>
+            <Link href="/" className='text-gray-400 text-base hover:text-gray-900'>Trang chủ / </Link>
           </li>
           <li>
-            <Link href="/profile" className='text-gray-400 text-base hover:text-gray-900'>Profile / </Link>
+            <Link href="/profile" className='text-gray-400 text-base hover:text-gray-900'>Tài khoản / </Link>
           </li>
           <li>
             <Link href={`/order/${orderId}`} className='text-gray-400 text-base hover:text-gray-900'>{`${orderId} / `}</Link>
           </li>
           <li>
-            <span className="text-base">Review</span>
+            <span className="text-base">Đánh giá</span>
           </li>
         </ul>
       </div>
 
       <div className='w-full flex flex-col justify-center items-center mt-10'>
-        <h1 className="mb-4">Write a Review</h1>
+        <h1 className="mb-4">Viết đánh giá</h1>
         <div className="flex flex-col items-center gap-4 p-8 w-1/2">
           <div className='flex flex-col gap-y-2 w-full'>
-            <label className="block font-semibold text-lg">Star Rating</label>
+            <label className="block font-semibold text-lg">Số sao đánh giá</label>
             <Rate
               allowHalf
               onChange={(value) => setReview((prev) => ({
@@ -153,7 +153,7 @@ export default function Page() {
           </div>
 
           <div className='flex flex-col gap-y-2 w-full'>
-            <label className="block font-semibold text-lg">Your Review</label>
+            <label className="block font-semibold text-lg">Đánh giá</label>
             <textarea
               rows={4}
               value={review.content}
@@ -220,7 +220,7 @@ export default function Page() {
                 aria-label="Loading Spinner"
               />
             ) : (
-              'Submit review'
+              'Gửi đánh giá'
             )}
           </button>
         </div>

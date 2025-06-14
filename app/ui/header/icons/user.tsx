@@ -25,17 +25,17 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
 
   const handleLogout = async () => {
     if (!accessToken) {
-      toast.error("Access token is not available.");
+      toast.error("Access token không khả dụng.");
       return;
     }
     try {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       await logoutRequest(userId, accessToken);
-      toast.success("Logout successfull.");
+      toast.success("Đăng xuất thành công.");
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      toast.error("An error occurred during logout.");
+      toast.error("Đã có lỗi xảy ra trong quá trình đăng xuất.");
     } finally {
       if (typeof window !== "undefined") {
         localStorage.removeItem('accessToken');
@@ -66,13 +66,13 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
   }
 
   const guest = [
-    { name: 'Login', icon: <ArrowRightStartOnRectangleIcon className='size-6' />, href: '/auth/login' },
-    { name: 'Sign Up', icon: <CursorArrowRippleIcon className='size-6' />, href: '/auth/sign-up' },
+    { name: 'Đăng nhập', icon: <ArrowRightStartOnRectangleIcon className='size-6' />, href: '/auth/login' },
+    { name: 'Đăng ký', icon: <CursorArrowRippleIcon className='size-6' />, href: '/auth/sign-up' },
   ];
 
   const customer = [
-    { name: 'Profile', icon: <UserIcon className='size-6' />, click: handleGoToProfile, href: '/profile' },
-    { name: 'Logout', icon: <ArrowLeftStartOnRectangleIcon className='size-6' />, click: handleLogout, href: '/auth/login' },
+    { name: 'Tài khoản', icon: <UserIcon className='size-6' />, click: handleGoToProfile, href: '/profile' },
+    { name: 'Đăng xuất', icon: <ArrowLeftStartOnRectangleIcon className='size-6' />, click: handleLogout, href: '/auth/login' },
   ];
 
   return (
@@ -80,7 +80,7 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
       <MenuButton className="flex items-center p-1 rounded-md">
         {isLogin ? (
           <span className="inline-flex items-center gap-1 px-4 py-2 rounded-xl text-sm bg-gray-800 text-white hover:bg-gray-900 hover:border-none">
-            <i className="italic font-medium not-italic:font-normal">Welcome,</i>
+            <i className="italic font-medium not-italic:font-normal">Xin chào,</i>
             <span className="font-semibold">{localStorage.getItem('name')}</span>
           </span>
         ) : (

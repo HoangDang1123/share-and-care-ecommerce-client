@@ -53,7 +53,7 @@ export default function Page() {
           username: formData.name,
           password: formData.password,
         });
-        toast.success("A verification email has been sent to your inbox. Please check your email to verify your account.");
+        toast.success("Một email xác minh đã được gửi đến hộp thư của bạn. Vui lòng kiểm tra email để xác minh tài khoản.");
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) { }
@@ -71,11 +71,11 @@ export default function Page() {
         email: formData.email,
         username: formData.name,
       });
-      toast.success("A verification email has been re-sent to your inbox. Please check your email to verify your account.");
+      toast.success("Một email xác minh đã được gửi đến hộp thư của bạn. Vui lòng kiểm tra email để xác minh tài khoản.");
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      toast.error("An error occurred during sign-up.");
+      toast.error("Đã có lỗi xảy ra trong quá trình đăng ký.");
     }
   }
 
@@ -85,18 +85,19 @@ export default function Page() {
         <div
           className='flex flex-col justify-center'
         >
-          <h3>Sign Up</h3>
+          <span className='text-5xl font-bold'>Đăng ký</span>
 
           <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label htmlFor="name" className="block text-xl font-bold text-gray-900">
-                  Name
+                <label htmlFor="name" className="block text-xl font-semibold text-gray-900">
+                  Họ và tên
                 </label>
                 <div className="mt-1">
                   <input
                     id="name"
                     name="name"
+                    placeholder="Nhập họ và tên..."
                     type="text"
                     required
                     autoComplete="name"
@@ -108,13 +109,14 @@ export default function Page() {
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-xl font-bold text-gray-900">
+                <label htmlFor="email" className="block text-xl font-semibold text-gray-900">
                   Email
                 </label>
                 <div className="mt-1">
                   <input
                     id="email"
                     name="email"
+                    placeholder="Nhập email..."
                     type="email"
                     required
                     autoComplete="email"
@@ -126,13 +128,14 @@ export default function Page() {
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-xl font-bold text-gray-900">
-                  Password
+                <label htmlFor="password" className="block text-xl font-semibold text-gray-900">
+                  Mật khẩu
                 </label>
                 <div className="mt-1 relative">
                   <input
                     id="password"
                     name="password"
+                    placeholder="Nhập mật khẩu..."
                     type={showPassword ? 'text' : 'password'}
                     required
                     value={formData.password}
@@ -155,13 +158,14 @@ export default function Page() {
               </div>
 
               <div>
-                <label htmlFor="confirm-password" className="block text-xl font-bold text-gray-900">
-                  Confirm Password
+                <label htmlFor="confirm-password" className="block text-xl font-semibold text-gray-900">
+                  Nhập lại mật khẩu
                 </label>
                 <div className="mt-1 relative">
                   <input
                     id="confirm-password"
                     name="confirmPassword"
+                    placeholder="Nhập lại mật khẩu..."
                     type={showConfirmPassword ? 'text' : 'password'}
                     required
                     value={formData.confirmPassword}
@@ -187,9 +191,9 @@ export default function Page() {
                 <div className="flex w-full justify-end mt-2">
                   <button
                     onClick={handleResendVerification}
-                    className="font-bold underline text-gray-900 hover:text-gray-700"
+                    className="font-semibold underline text-gray-900 hover:text-gray-700"
                   >
-                    Resend email verification
+                    Gửi lại xác thực email
                   </button>
                 </div>
               </div>
@@ -207,20 +211,20 @@ export default function Page() {
                       aria-label="Loading Spinner"
                     />
                   ) : (
-                    'SIGN UP'
+                    'ĐĂNG KÝ'
                   )}
                 </button>
               </div>
             </form>
 
             <p className="mt-10 text-left text-md text-gray-500">
-              Already have an account? {' '}
+              Bạn đã có tài khoản? {' '}
               <button
                 type="button"
                 onClick={() => router.push('/auth/login')}
                 className="font-bold underline text-gray-900 hover:text-gray-700"
               >
-                Login
+                Đăng nhập ngay
               </button>
             </p>
           </div>

@@ -59,12 +59,12 @@ export default function Page() {
   if (userId === "" || accessToken === "") {
     return (
       <div className="flex justify-center items-center h-[750px] bg-black gap-x-4">
-        <h6 className="text-white">Please log in to continue</h6>
+        <span className="text-white">Bạn cần đăng nhập để tiếp tục</span>
         <Link
           href="/auth/login"
           className="flex-none rounded-full bg-white px-3 py-1 sm:text-xs md:text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
         >
-          Go to Login <span aria-hidden="true">&rarr;</span>
+          Đi tới trang đăng nhập <span aria-hidden="true">&rarr;</span>
         </Link>
       </div>
     )
@@ -77,10 +77,10 @@ export default function Page() {
 
         <ul className="flex space-x-1 sm:text-md md:text-xl">
           <li>
-            <Link href="/" className='text-gray-400 text-base hover:text-gray-900'>Home / </Link>
+            <Link href="/" className='text-gray-400 text-base hover:text-gray-900'>Trang chủ / </Link>
           </li>
           <li>
-            <span className="text-base">Order</span>
+            <span className="text-base">Đơn hàng</span>
           </li>
         </ul>
       </div>

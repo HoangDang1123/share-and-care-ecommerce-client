@@ -45,7 +45,7 @@ export default function Banner() {
           href="/shop"
           className="flex-none rounded-full bg-teal-600 px-3 py-1 sm:text-xs md:text-sm font-semibold text-white shadow-sm hover:bg-teal-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
         >
-          Visit now <span aria-hidden="true">&rarr;</span>
+          Xem ngay <span aria-hidden="true">&rarr;</span>
         </Link>
       </div>
       <style jsx>{`

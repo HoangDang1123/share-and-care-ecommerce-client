@@ -119,10 +119,10 @@ export const ShippingAddress: React.FC<ShippingAddressProps> = ({ userId, access
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
           } catch (error) { }
 
-          toast.success("Delete address successful.");
+          toast.success("Xóa địa chỉ thành công.");
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
-          toast.error("Failed to delete address.");
+          toast.error("Đã có lỗi xảy ra trong quá trình xóa địa chỉ.");
         } finally {
           newLoadingItems[index] = false;
           setLoadingItems(newLoadingItems);
@@ -194,7 +194,7 @@ export const ShippingAddress: React.FC<ShippingAddressProps> = ({ userId, access
           district: district.Name,
           city: city.Name,
         }, userId, accessToken);
-        toast.success("Create address successful.");
+        toast.success("Thêm địa chỉ thành công.");
 
         setIsRefresh(true);
         setOpenDialog(false);
@@ -212,12 +212,12 @@ export const ShippingAddress: React.FC<ShippingAddressProps> = ({ userId, access
         onClick={() => setOpenDialog(true)}
         className='w-fit px-3 py-1 bg-gray-600 text-white font-medium text-base rounded-lg hover:bg-gray-700'
       >
-        New Address
+        Thêm địa chỉ mới
       </button>
 
       <div className='w-full'>
         {addressList.length === 0 ? (
-          <div className='flex justify-center items-center w-full text-lg py-4'>There&apos;s no address.</div>
+          <div className='flex justify-center items-center w-full text-lg py-4'>Bạn chưa có địa chỉ nào.</div>
         ) : (
           <RadioGroup className="grid" value={selected} onChange={setSelected} aria-label="Address">
             {addressList.map((address, index) => (
@@ -264,13 +264,13 @@ export const ShippingAddress: React.FC<ShippingAddressProps> = ({ userId, access
         />
         <div className="fixed inset-0 flex items-center justify-center p-4">
           <DialogPanel className="space-y-4 border bg-white p-12 rounded-xl">
-            <DialogTitle className="font-bold">Create New Address</DialogTitle>
+            <DialogTitle className="font-bold">Thêm địa chỉ mới</DialogTitle>
 
             <form onSubmit={handleSubmit} className='mt-4'>
               <div className="grid sm:gap-4 md:gap-6 sm:grid-cols-6">
                 <div className="sm:col-span-4">
                   <label htmlFor="full-name" className="block sm:text-sm md:text-base font-semibold text-gray-700 mb-1">
-                    Full Name
+                    Họ và tên
                   </label>
                   <input
                     id="name"
@@ -278,14 +278,14 @@ export const ShippingAddress: React.FC<ShippingAddressProps> = ({ userId, access
                     type="text"
                     autoComplete="name"
                     className="block w-full rounded-xl border border-gray-300 py-2 sm:px-2 md:px-3 sm:text-sm md:text-base text-gray-900 shadow-sm placeholder:text-gray-400"
-                    placeholder="Enter your full name"
+                    placeholder="Nhập họ và tên"
                     onChange={(e) => { handleInputChange(e) }}
                   />
                 </div>
 
                 <div className="sm:col-span-2">
                   <label htmlFor="phone" className="block sm:text-sm md:text-base font-semibold text-gray-700 mb-1">
-                    Phone Number
+                    Số điện thoại
                   </label>
                   <input
                     id="phone"
@@ -293,14 +293,14 @@ export const ShippingAddress: React.FC<ShippingAddressProps> = ({ userId, access
                     type="text"
                     autoComplete="tel"
                     className="block w-full rounded-xl border border-gray-300 py-2 sm:px-2 md:px-3 sm:text-sm md:text-base text-gray-900 shadow-sm placeholder:text-gray-400"
-                    placeholder="Enter your phone number"
+                    placeholder="Nhập số điện thoại"
                     onChange={(e) => { handleInputChange(e) }}
                   />
                 </div>
 
                 <div className="sm:col-span-2">
                   <label htmlFor="region" className="block sm:text-sm md:text-base font-semibold text-gray-700 mb-1">
-                    Province / City
+                    Tỉnh / Thành phố
                   </label>
                   <select
                     id="city"
@@ -310,7 +310,7 @@ export const ShippingAddress: React.FC<ShippingAddressProps> = ({ userId, access
                     className="block w-full rounded-xl border border-gray-300 py-2 sm:px-2 md:px-3 sm:text-sm md:text-base text-gray-900 shadow-sm placeholder:text-gray-400"
                   >
                     <option value="">
-                      Select your province or city
+                      Chọn tỉnh / thành phố
                     </option>
                     {cities?.map(city => (
                       <option key={city.Id} value={city.Id}>{city.Name}</option>
@@ -320,7 +320,7 @@ export const ShippingAddress: React.FC<ShippingAddressProps> = ({ userId, access
 
                 <div className="sm:col-span-2">
                   <label htmlFor="city" className="block sm:text-sm md:text-base font-semibold text-gray-700 mb-1">
-                    City / District
+                    Quận / Huyện
                   </label>
                   <select
                     id="district"
@@ -330,7 +330,7 @@ export const ShippingAddress: React.FC<ShippingAddressProps> = ({ userId, access
                     className="block w-full rounded-xl border border-gray-300 py-2 sm:px-2 md:px-3 sm:text-sm md:text-base text-gray-900 shadow-sm placeholder:text-gray-400"
                   >
                     <option value="">
-                      Select your city or district
+                      Chọn quận / huyện
                     </option>
                     {districts?.map(district => (
                       <option key={district.Id} value={district.Id}>{district.Name}</option>
@@ -340,7 +340,7 @@ export const ShippingAddress: React.FC<ShippingAddressProps> = ({ userId, access
 
                 <div className="sm:col-span-2">
                   <label htmlFor="ward" className="block sm:text-sm md:text-base font-semibold text-gray-700 mb-1">
-                    Ward
+                    Phường / xã
                   </label>
                   <select
                     id="ward"
@@ -350,7 +350,7 @@ export const ShippingAddress: React.FC<ShippingAddressProps> = ({ userId, access
                     className="block w-full rounded-xl border border-gray-300 py-2 sm:px-2 md:px-3 sm:text-sm md:text-base text-gray-900 shadow-sm placeholder:text-gray-400"
                   >
                     <option value="">
-                      Select your ward
+                      Chọn phường / xã
                     </option>
                     {wards?.map(ward => (
                       <option key={ward.Id} value={ward.Id}>{ward.Name}</option>
@@ -360,7 +360,7 @@ export const ShippingAddress: React.FC<ShippingAddressProps> = ({ userId, access
 
                 <div className="col-span-full">
                   <label htmlFor="street-address" className="block sm:text-sm md:text-base font-semibold text-gray-700 mb-1">
-                    Street Address
+                    Địa chỉ
                   </label>
                   <input
                     id="street"
@@ -369,7 +369,7 @@ export const ShippingAddress: React.FC<ShippingAddressProps> = ({ userId, access
                     autoComplete="street"
                     value={street}
                     className="block w-full rounded-xl border border-gray-300 py-2 sm:px-2 md:px-3 sm:text-sm md:text-base text-gray-900 shadow-sm placeholder:text-gray-400"
-                    placeholder="Enter your street address"
+                    placeholder="Nhập địa chỉ"
                     onChange={(e) => { handleStreetInputChange(e) }}
                   />
 
@@ -400,7 +400,7 @@ export const ShippingAddress: React.FC<ShippingAddressProps> = ({ userId, access
                       aria-label="Loading Spinner"
                     />
                   ) : (
-                    'Save'
+                    'Thêm'
                   )}
                 </button>
               </div>

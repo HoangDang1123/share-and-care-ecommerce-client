@@ -9,7 +9,7 @@ export default function NavIcons() {
 
   return (
     <div className="flex items-center justify-center sm:space-x-2 md:space-x-4">
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div>Đang tải...</div>}>
         <Search />
         <Cart isLogin={isLogin} />
         <User isLogin={isLogin} />

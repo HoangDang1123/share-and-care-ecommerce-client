@@ -23,14 +23,14 @@ const SelectedColor: React.FC<SelectedColorProps> = ({ product, selectedColorInd
   };
 
   if (!colors) {
-    return <div>There&apos;s no color</div>;
+    return <div className='italic'>Màu sắc không khả dụng.</div>;
   }
 
   return (
     <div className='flex flex-col space-y-2'>
-      <h6 className='sm:text-base md:text-xl font-semibold'>
-        {`Selected Color: ${selectedColorIndex !== null && selectedColorIndex !== -1 ? colors.values[selectedColorIndex].value : ''}`}
-      </h6>
+      <h3 className='sm:text-base md:text-xl font-semibold'>
+        {`Màu đã chọn: ${selectedColorIndex !== null && selectedColorIndex !== -1 ? colors.values[selectedColorIndex].value : ''}`}
+      </h3>
       <ul className='grid sm:grid-cols-10 md:grid-cols-12'>
         {colors.values.map((value, index) => (
           <li

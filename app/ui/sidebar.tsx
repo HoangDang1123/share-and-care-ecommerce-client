@@ -4,13 +4,13 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 
 const links = [
-  { name: 'Shop', href: '/shop' },
-  { name: 'About Us', href: '/about' },
+  { name: 'Cửa hàng', href: '/shop' },
+  { name: 'Về chúng tôi', href: '/about' },
   {
     name: 'Blog',
     href: '/blog',
   },
-  { name: 'Service', href: '/customer-service' },
+  { name: 'Dịch vụ khách hàng', href: '/customer-service' },
 ];
 
 export default function Sidebar() {
@@ -33,7 +33,7 @@ export default function Sidebar() {
             <MenuItem key={link.name}>
               <Link
                 href={link.href}
-                className='flex grow items-center justify-start gap-2 rounded-md text-lg text-gray-900 font-medium px-3 py-2'
+                className='flex grow items-center justify-start gap-2 rounded-md text-base text-gray-900 font-medium px-3 py-2'
               >
                 <strong>{link.name}</strong>
               </Link>

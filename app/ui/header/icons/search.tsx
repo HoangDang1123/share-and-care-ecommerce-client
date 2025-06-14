@@ -81,7 +81,7 @@ export default function Search() {
               id="search"
               name="search"
               type="text"
-              placeholder="Search..."
+              placeholder="Tìm kiếm..."
               onChange={handleChangeInput}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {

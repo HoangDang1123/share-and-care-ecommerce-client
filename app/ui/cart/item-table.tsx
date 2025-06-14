@@ -76,10 +76,10 @@ const ItemTable: React.FC<ItemTableProps> = ({ selectedAll, selectedItem, setSel
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
           } catch (error) { }
 
-          toast.success("Delete item successful.");
+          toast.success("Xóa sản phẩm thành công.");
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
-          toast.error("Failed to delete item.");
+          toast.error("Xóa sản phẩm thất bại.");
         } finally {
           newLoadingItems[index] = false;
           setLoadingItems(newLoadingItems);
@@ -163,10 +163,10 @@ const ItemTable: React.FC<ItemTableProps> = ({ selectedAll, selectedItem, setSel
         <thead className='w-full'>
           <tr className='w-full'>
             <th />
-            <th>Product</th>
-            <th>Quantity</th>
-            <th>Product Price</th>
-            <th>Total Price</th>
+            <th>Sản phẩm</th>
+            <th>Số lượng</th>
+            <th>Giá sản phẩm</th>
+            <th>Tổng tiền</th>
             <th />
           </tr>
         </thead>
@@ -196,7 +196,7 @@ const ItemTable: React.FC<ItemTableProps> = ({ selectedAll, selectedItem, setSel
                   className='w-auto h-auto'
                 />
                 <div className='flex flex-col justify-between w-[200px]'>
-                  <h6 className='font-semibold text-left'>{item.productName}</h6>
+                  <span className='font-semibold text-left'>{item.productName}</span>
                   {renderVariantDetails(item.variants, item.variantSlug)}
                 </div>
               </td>

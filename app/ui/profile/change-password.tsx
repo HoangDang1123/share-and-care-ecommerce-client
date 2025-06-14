@@ -39,7 +39,7 @@ export const ChangePassword: React.FC<ChangePasswordProps> = ({ userId, accessTo
       setLoading(false);
 
       router.refresh();
-      toast.success("Change password successful!");
+      toast.success("Đổi mật khẩu mới thành công");
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) { }
     finally {
@@ -49,13 +49,13 @@ export const ChangePassword: React.FC<ChangePasswordProps> = ({ userId, accessTo
 
   return (
     <div className="flex flex-col items-center w-full gap-2 rounded-md px-3 py-1">
-      <span className="font-semibold text-lg">Change Password</span>
+      <span className="font-semibold text-lg">Đổi mật khẩu</span>
 
       <div className="relative w-80">
         <input
           type={displayOldPassword}
           name="oldPassword"
-          placeholder="Enter current password"
+          placeholder="Nhập mật khẩu hiện tại"
           value={password.oldPassword}
           onChange={handleChange}
           className="border border-gray-300 rounded-md w-full text-base px-3 py-1 pr-10 focus:outline-none focus:ring-2 focus:ring-gray-500"
@@ -79,7 +79,7 @@ export const ChangePassword: React.FC<ChangePasswordProps> = ({ userId, accessTo
         <input
           type={displayNewPassword}
           name="newPassword"
-          placeholder="Enter new password"
+          placeholder="Nhập mật khẩu mới"
           value={password.newPassword}
           onChange={handleChange}
           className="border border-gray-300 rounded-md w-full text-base px-3 py-1 pr-10 focus:outline-none focus:ring-2 focus:ring-gray-500"
@@ -110,7 +110,7 @@ export const ChangePassword: React.FC<ChangePasswordProps> = ({ userId, accessTo
             aria-label="Loading Spinner"
           />
         ) : (
-          'Change'
+          'Đổi'
         )}
       </button>
     </div>

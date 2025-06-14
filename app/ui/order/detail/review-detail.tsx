@@ -42,7 +42,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({ orderId, productId, vari
 
   if (!reviewDetail) {
     return (
-      <div>Loading...</div>
+      <div>Đang tải...</div>
     )
   }
 
@@ -75,7 +75,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({ orderId, productId, vari
 
       {reviewDetail.review.reply && (
         <div className="mt-2 p-3 rounded-md bg-gray-50 border">
-          <p className="text-sm font-semibold text-gray-700">Seller&apos;s reply:</p>
+          <p className="text-sm font-semibold text-gray-700">Phản hồi của cửa hàng:</p>
           <p className="text-sm text-gray-800">{reviewDetail.review.reply}</p>
         </div>
       )}

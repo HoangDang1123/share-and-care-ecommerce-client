@@ -92,7 +92,7 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
     setLoadingAddToCart(true);
     if (!isLogin) {
       router.push("/auth/login");
-      toast.warn("Please login to continue !");
+      toast.warn("Vui lòng đăng nhập để tiếp tục");
     } else {
       if (userId !== "" && accessToken !== "") {
         const itemData = {
@@ -103,7 +103,7 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
 
         try {
           await addProductToCart(itemData, userId, accessToken);
-          toast.success("Add product to cart successful.");
+          toast.success("Thêm sản phẩm vào giỏ hàng thành công.");
           try {
             const response = await getCart(userId, accessToken);
             setCart(response);
@@ -122,7 +122,7 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
     setLoadingBuyNow(true);
     if (!isLogin) {
       router.push("/auth/login");
-      toast.warn("Please login to continue !");
+      toast.warn("Vui lòng đăng nhập để tiếp tục");
     } else {
       if (userId !== "" && accessToken !== "") {
         const itemData = [{
@@ -175,12 +175,12 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
       <div className='flex flex-col w-full h-full space-y-10'>
         <div className='md:flex justify-between items-start sm:space-y-4 md:space-y-0'>
           <div className='sm:space-y-2 md:space-y-2'>
-            <h3 className='sm:text-2xl md:text-4xl font-semibold'>{product.product.name}</h3>
+            <h1 className='sm:text-2xl md:text-4xl font-semibold'>{product.product.name}</h1>
 
-            <h6 className='sm:text-sm md:text-lg'>{`Code: ${product.product.code}`}</h6>
+            <h3 className='sm:text-sm md:text-lg font-medium'>{`Code: ${product.product.code}`}</h3>
 
             <div className='flex items-center px-2 py-1 gap-x-2'>
-              <h6 className='text-lg mb-0.5'>{product.product.rating}</h6>
+              <h3 className='text-lg mb-0.5'>{product.product.rating}</h3>
               <Rate
                 disabled
                 allowHalf
@@ -189,16 +189,16 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
                 defaultValue={product.product.rating}
               />
               <span>|</span>
-              <h6 className='text-lg mb-0.5'>{`${product.product.ratingCount} reviews`}</h6>
+              <h3 className='text-lg mb-0.5 font-medium'>{`${product.product.ratingCount} đánh giá`}</h3>
             </div>
 
             <div className='flex items-end space-x-5'>
               {typeof product.product.price === 'number' ? (
-                <h1 className='sm:text-xl md:text-[2em] font-semibold'>{formatPrice(product.product.price)}</h1>
+                <h2 className='sm:text-xl md:text-[2em] font-semibold'>{formatPrice(product.product.price)}</h2>
               ) : (
-                <h1 className='sm:text-xl md:text-[2em] font-semibold'>{`${formatPrice(product.product.price.min)} - ${formatPrice(product.product.price.max)}`}</h1>
+                <h2 className='sm:text-xl md:text-[2em] font-semibold'>{`${formatPrice(product.product.price.min)} - ${formatPrice(product.product.price.max)}`}</h2>
               )}
-              {/* <h6 className='sm:text-lg md:text-xl mb-2 line-through'>{formatPrice(product.product.originalPrice)}</h6> */}
+              {/* <h3 className='sm:text-lg md:text-xl mb-2 line-through'>{formatPrice(product.product.originalPrice)}</h3> */}
             </div>
           </div>
 
@@ -236,7 +236,7 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
           ) : (
             <span className='flex'>
               <PlusIcon className='size-7 mr-3' />
-              Add To Cart
+              Thêm vào giỏ hàng
             </span>
           )}
         </button>
@@ -251,7 +251,7 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
           ) : (
             <span className='flex'>
               <ShoppingCartIcon className='size-7 mr-3' />
-              Buy Now
+              Mua ngay
             </span>
           )}
         </button>
