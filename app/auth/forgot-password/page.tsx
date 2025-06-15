@@ -40,7 +40,7 @@ export default function Page() {
         <div className='flex'>
           <BackButton />
         </div>
-        <div className='space-y-4'>
+        <div className='flex flex-col space-y-4'>
           <span className='text-5xl font-bold'>Quên mật khẩu</span>
           <span className='text-xl'>Nhập email của bạn để nhận hướng dẫn đặt lại mật khẩu.</span>
         </div>

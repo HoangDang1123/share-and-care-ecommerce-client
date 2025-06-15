@@ -30,14 +30,14 @@ export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId, status }) =
   const router = useRouter();
 
   const reasonLabels: Record<RefundReason, string> = {
-    [RefundReason.DEFECTIVE]: "Defective",
-    [RefundReason.WRONG_ITEM]: "Wrong Item",
-    [RefundReason.NOT_AS_DESCRIBED]: "Not As Described",
-    [RefundReason.CHANGE_MIND]: "Change Mind",
-    [RefundReason.NOT_SUITABLE_SIZE]: "Not Suitable Size",
-    [RefundReason.NOT_SUITABLE_STYLE]: "Not Suitable Style",
-    [RefundReason.BOM_HANG]: "Bom Hang",
-    [RefundReason.OTHER]: "Other",
+    [RefundReason.DEFECTIVE]: "Sản phẩm bị lỗi",
+    [RefundReason.WRONG_ITEM]: "Giao sai sản phẩm",
+    [RefundReason.NOT_AS_DESCRIBED]: "Không đúng mô tả",
+    [RefundReason.CHANGE_MIND]: "Thay đổi ý định",
+    [RefundReason.NOT_SUITABLE_SIZE]: "Không vừa kích cỡ",
+    [RefundReason.NOT_SUITABLE_STYLE]: "Không hợp phong cách",
+    [RefundReason.BOM_HANG]: "Bùng hàng",
+    [RefundReason.OTHER]: "Lý do khác",
   };
 
   const [request, setRequest] = useState<CreateReturn>({

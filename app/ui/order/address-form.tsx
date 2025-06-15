@@ -71,20 +71,41 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
   const handleCityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const cityId = e.target.value;
     setSelectedCity(cityId);
-    setDistricts(cityId ? cities?.find(city => city.Id === cityId)?.Districts : []);
+    const cityObj = cities?.find(city => city.Id === cityId);
+    setDistricts(cityObj?.Districts || []);
     setWards([]);
     setSelectedDistrict('');
+
+    setInputData(prev => ({
+      ...prev,
+      city: cityObj?.Name || '',
+      district: '',
+      ward: '',
+    }));
   };
 
   const handleDistrictChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const districtId = e.target.value;
     setSelectedDistrict(districtId);
-    setWards(districtId ? districts?.find(district => district.Id === districtId)?.Wards : []);
+    const districtObj = districts?.find(d => d.Id === districtId);
+    setWards(districtObj?.Wards || []);
+
+    setInputData(prev => ({
+      ...prev,
+      district: districtObj?.Name || '',
+      ward: '',
+    }));
   };
 
   const handleWardChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const wardId = e.target.value;
     setSelectedWard(wardId);
+    const wardObj = wards?.find(w => w.Id === wardId);
+
+    setInputData(prev => ({
+      ...prev,
+      ward: wardObj?.Name || '',
+    }));
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -100,16 +121,20 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
     setStreet(value);
     setInputData(prevData => ({
       ...prevData,
-      [name]: value.split(',')[0],
+      [name]: value,
     }));
 
     debouncedFetch(value, setAutoComplete);
   }
 
-  const handleSelectSuggestion = (street: string) => {
-    setStreet(street);
+  const handleSelectSuggestion = (selectedStreet: string) => {
+    setInputData(prev => ({
+      ...prev,
+      street: selectedStreet,
+    }));
+    setStreet(selectedStreet);
     setAutoComplete([]);
-  }
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
