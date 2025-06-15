@@ -59,12 +59,30 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
   useEffect(() => {
     let tierIndex: number[] | null = null;
 
-    if (selectedColorIndex !== null && selectedSizeIndex !== null) {
-      tierIndex = [selectedColorIndex, selectedSizeIndex];
-    } else if (selectedColorIndex !== null) {
-      tierIndex = [selectedColorIndex];
-    } else if (selectedSizeIndex !== null) {
-      tierIndex = [selectedSizeIndex];
+    const colorIndex = selectedColorIndex;
+    const sizeIndex = selectedSizeIndex;
+
+    const variants = product.product.variants;
+    const colorPosition = variants.findIndex(v => v.name === "Màu sắc");
+    const sizePosition = variants.findIndex(v => v.name === "Kích thước");
+
+    const hasColor = colorIndex !== null;
+    const hasSize = sizeIndex !== null;
+    const colorSelected = colorIndex !== -1;
+    const sizeSelected = sizeIndex !== -1;
+
+    if (hasColor && hasSize) {
+      if (colorSelected && sizeSelected) {
+        tierIndex = colorPosition < sizePosition
+          ? [colorIndex, sizeIndex]
+          : [sizeIndex, colorIndex];
+      } else {
+        tierIndex = null; // có cả 2 nhưng chưa chọn hết
+      }
+    } else if (hasColor && colorSelected) {
+      tierIndex = [colorIndex];
+    } else if (hasSize && sizeSelected) {
+      tierIndex = [sizeIndex];
     }
 
     if (tierIndex) {
@@ -72,8 +90,10 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
         (item) => JSON.stringify(item.tierIndex) === JSON.stringify(tierIndex)
       );
       setSkuItem(foundSkuItem || null);
+    } else {
+      setSkuItem(null);
     }
-  }, [selectedColorIndex, selectedSizeIndex, product.skuList.skuList]);
+  }, [selectedColorIndex, selectedSizeIndex, product]);
 
   useEffect(() => {
     if (skuItem) {

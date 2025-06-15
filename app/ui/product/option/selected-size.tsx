@@ -18,10 +18,6 @@ const SelectedSize: React.FC<SelectedSizeProps> = ({ product, selectedSizeIndex,
     }
   }, [sizes, setSelectedSizeIndex]);
 
-  useEffect(() => {
-    console.log(sizes)
-  }, [sizes, setSelectedSizeIndex]);
-
   const handleSizeClick = (index: number) => {
     setSelectedSizeIndex(index);
   };
