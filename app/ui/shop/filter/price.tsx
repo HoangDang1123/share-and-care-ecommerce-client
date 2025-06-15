@@ -34,7 +34,7 @@ export default function PriceFilter() {
 
   return (
     <div className='flex flex-col'>
-      <h2 className='sm:hidden md:flex font-bold mb-2'>Giá</h2>
+      <span className='font-bold sm:text-lg md:text-2xl mb-2'>Giá</span>
       <Range
         step={1000}
         min={0}

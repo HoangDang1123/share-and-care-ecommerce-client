@@ -32,7 +32,7 @@ export default function FilterContainer() {
   }
 
   return (
-    <div className="sm:hidden lg:flex flex-col h-fit gap-y-4 md:px-4 py-4 md:shadow-xl bg-white rounded-xl">
+    <div className="flex flex-col h-fit gap-y-4 md:px-4 py-4 md:shadow-xl bg-white rounded-xl">
       <div className="flex border-b border-gray-200">
         {TABS.map((tab) => (
           <button

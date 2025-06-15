@@ -10,7 +10,7 @@ interface SelectedColorProps {
 }
 
 const SelectedColor: React.FC<SelectedColorProps> = ({ product, selectedColorIndex, setSelectedColorIndex }) => {
-  const colors = product.product.variantAttributes.find(item => item.type === "COLOR");
+  const colors = product.product.variantAttributes.find(item => item.name.includes("Màu sắc"));
 
   useEffect(() => {
     if (!colors) {

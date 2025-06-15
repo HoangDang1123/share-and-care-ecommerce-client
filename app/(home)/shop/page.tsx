@@ -153,7 +153,7 @@ export default function Page() {
 
         <div
           className={`
-          fixed top-0 right-0 h-full w-1/3 bg-white shadow-xl z-40 p-4 transition-transform duration-300 overflow-scroll
+          fixed top-0 right-0 h-full sm:w-2/3 lg:w-1/3 bg-white shadow-xl z-40 p-4 transition-transform duration-300 overflow-scroll
           ${isOpen ? 'translate-x-0' : 'translate-x-full'}
         `}
         >

@@ -10,12 +10,16 @@ interface SelectedSizeProps {
 }
 
 const SelectedSize: React.FC<SelectedSizeProps> = ({ product, selectedSizeIndex, setSelectedSizeIndex }) => {
-  const sizes = product.product.variantAttributes.find(item => item.name.includes("Size"));
+  const sizes = product.product.variantAttributes.find(item => item.name.includes("Kích thước"));
 
   useEffect(() => {
     if (!sizes) {
       setSelectedSizeIndex(null);
     }
+  }, [sizes, setSelectedSizeIndex]);
+
+  useEffect(() => {
+    console.log(sizes)
   }, [sizes, setSelectedSizeIndex]);
 
   const handleSizeClick = (index: number) => {

@@ -67,13 +67,13 @@ export default function AttributeFilter() {
   const renderAttribute = (attribute: AllAttributeResponse["attributes"][number]) => {
     return (
       <div key={attribute.id} className="mb-4">
-        <h4 className="font-semibold mb-2">{attribute.name}</h4>
+        <span className="font-semibold mb-2">{attribute.name}</span>
         <div className="flex flex-wrap gap-3">
           {attribute.values.map(value => {
             const isChecked = selectedAttributes.find(a => a.id === attribute.id)?.values.includes(value.id) || false;
 
             return (
-              <label key={value.id} className="flex items-center gap-x-2 text-sm cursor-pointer">
+              <label key={value.id} className="flex items-center gap-x-2 sm:text-xs md:text-sm cursor-pointer">
                 <input
                   type="checkbox"
                   checked={isChecked}
@@ -91,10 +91,10 @@ export default function AttributeFilter() {
   return (
     <div className="flex flex-col gap-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="font-bold text-lg">Thuộc tính</h2>
+        <span className="font-bold sm:text-lg md:text-2xl">Thuộc tính</span>
         <button
           onClick={handleClearAll}
-          className="px-3 py-1 rounded-xl bg-gray-200 hover:bg-gray-300 text-sm"
+          className="px-3 py-1 rounded-xl bg-gray-200 hover:bg-gray-300 sm:text-xs md:text-sm"
         >
           Xóa tất cả
         </button>

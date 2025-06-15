@@ -105,7 +105,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ item, orderId, status }) =
                 : 'bg-amber-50 text-amber-700'
                 }`}
             >
-              {item.canReturn ? `Hoàn trả trong ${item.returnDays}` : 'Không thể hoàn trả'}
+              {item.canReturn ? `Hoàn trả trong ${item.returnDays} ngày` : 'Không thể hoàn trả'}
             </span>
 
             <div className='flex flex-wrap gap-2'>
