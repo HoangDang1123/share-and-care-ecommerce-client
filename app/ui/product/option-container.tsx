@@ -39,8 +39,8 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";
 
   useEffect(() => {
-    if (selectedColorIndex && selectedColorIndex !== -1) {
-      const colorVariant = product.product.variants.find(variant => variant.name === "Color");
+    if (selectedColorIndex !== null && selectedColorIndex !== -1) {
+      const colorVariant = product.product.variants.find(variant => variant.name === "Màu sắc");
 
       if (colorVariant?.images?.[selectedColorIndex]) {
         setVariantImage(colorVariant.images[selectedColorIndex]);
