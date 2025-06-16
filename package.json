@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack -p 3030",
-    "build": "next build && npx next-sitemap",
-    "start": "next start -p 3030",
-    "lint": "next lint"
+    "build": "next build",
+    "start": "next start -p 3030 && npx next-sitemap",
+    "lint": "next lint",
+    "sitemap": "npx next-sitemap"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
