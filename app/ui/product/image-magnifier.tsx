@@ -3,10 +3,11 @@ import { MouseEvent, useState } from 'react';
 
 interface ImageMagnifierProps {
   src: string,
+  alt: string,
+  title: string,
   className: string,
   width: number,
   height: number,
-  alt: string,
   magnifierHeight: number,
   magnifierWidth: number,
   zoomLevel: number,
@@ -14,10 +15,11 @@ interface ImageMagnifierProps {
 
 const ImageMagnifier: React.FC<ImageMagnifierProps> = ({
   src,
+  alt,
+  title,
   className,
   width,
   height,
-  alt,
   magnifierHeight = 150,
   magnifierWidth = 150,
   zoomLevel = 3
@@ -52,10 +54,11 @@ const ImageMagnifier: React.FC<ImageMagnifierProps> = ({
   return <div className="relative inline-block">
     <Image
       src={src}
+      alt={alt}
+      title={title}
       className={className}
       width={width}
       height={height}
-      alt={alt}
       onMouseEnter={(e) => mouseEnter(e)}
       onMouseLeave={(e) => mouseLeave(e)}
       onMouseMove={(e) => mouseMove(e)}

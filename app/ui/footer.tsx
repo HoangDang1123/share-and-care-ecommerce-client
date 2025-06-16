@@ -3,6 +3,29 @@ import Link from 'next/link'
 import React from 'react'
 
 export default function Footer() {
+  const footerLinks = [
+    {
+      title: "Cột 1",
+      items: [
+        { href: "/about", label: "Về chúng tôi" },
+        { href: "/shop", label: "Cửa hàng" },
+        { href: "/shipping", label: "Giao hàng & vận chuyển" },
+        { href: "/privacy-policy", label: "Chính sách bảo mật" },
+        { href: "/blog", label: "Blog" },
+      ],
+    },
+    {
+      title: "Cột 2",
+      items: [
+        { href: "/services", label: "Dịch vụ của chúng tôi" },
+        { href: "/company-profile", label: "Hồ sơ công ty" },
+        { href: "/faq", label: "Câu hỏi thường gặp" },
+        { href: "/contact", label: "Liên hệ" },
+        { href: "/terms", label: "Điều khoản & điều kiện" },
+      ],
+    },
+  ];
+
   return (
     <div className='select-none text-white'>
       <div className="w-[85%] flex flex-wrap mx-auto border-b py-16 md-lg:pb-10 sm:pb-6">
@@ -11,6 +34,7 @@ export default function Footer() {
           <div className="flex flex-col gap-3">
             <Image
               alt="Share And Care"
+              title='Cửa hàng ShareAndCare'
               src="/assets/logo.png"
               width={120}
               height={100}
@@ -30,21 +54,15 @@ export default function Footer() {
             <div>
               <span className="font-bold text-lg">Liên kết hữu ích</span>
               <div className="flex justify-between gap-[80px] lg:gap-[40px]">
-                <ul className="flex flex-col gap-2 text-sm font-semibold">
-                  <li><Link href="/about">Về chúng tôi</Link></li>
-                  <li><Link href="/shop">Cửa hàng</Link></li>
-                  <li><Link href="/shipping">Giao hàng & vận chuyển</Link></li>
-                  <li><Link href="/privacy-policy">Chính sách bảo mật</Link></li>
-                  <li><Link href="/blog">Blog</Link></li>
-                </ul>
-
-                <ul className="flex flex-col gap-2 text-sm font-semibold">
-                  <li><Link href="/services">Dịch vụ của chúng tôi</Link></li>
-                  <li><Link href="/company-profile">Hồ sơ công ty</Link></li>
-                  <li><Link href="/faq">Câu hỏi thường gặp</Link></li>
-                  <li><Link href="/contact">Liên hệ</Link></li>
-                  <li><Link href="/terms">Điều khoản & điều kiện</Link></li>
-                </ul>
+                {footerLinks.map((column, colIndex) => (
+                  <ul key={colIndex} className="flex flex-col gap-2 text-sm font-semibold">
+                    {column.items.map((item, index) => (
+                      <li key={index}>
+                        <Link href={item.href} title={item.label}>{item.label}</Link>
+                      </li>
+                    ))}
+                  </ul>
+                ))}
               </div>
             </div>
           </div>
@@ -57,14 +75,16 @@ export default function Footer() {
         <div className="flex items-center gap-6">
           <Image
             src="/assets/vnpay.png"
-            alt="VNPAY"
+            alt="Logo VNPAY"
+            title='Thanh toán qua VNPAY'
             width={100}
             height={50}
             className="object-contain"
           />
           <Image
             src="/assets/momo.png"
-            alt="MoMo"
+            alt="Logo MoMo"
+            title='Thanh toán qua Momo'
             width={100}
             height={50}
             className="object-contain"

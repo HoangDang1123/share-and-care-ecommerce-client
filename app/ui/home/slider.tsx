@@ -37,6 +37,7 @@ export function Slider() {
             key={index}
             src={url}
             alt={alt}
+            title={alt}
             width={1920}
             height={960}
             aria-hidden={imageIndex !== index}

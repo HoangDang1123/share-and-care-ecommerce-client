@@ -242,6 +242,7 @@ export default function Chat() {
               <Image
                 src="/assets/favicon.png"
                 alt="avatar"
+                title="ShareAndCare avatar"
                 width={32}
                 height={32}
                 className="w-10 h-10 rounded-full"
@@ -288,6 +289,7 @@ export default function Chat() {
                             : msg.userId?.avatar || '/assets/default-avatar-icon.jpg'
                         }
                         alt="avatar"
+                        title="avatar"
                         width={32}
                         height={32}
                         className="w-8 h-8 rounded-full"

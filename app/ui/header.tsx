@@ -47,6 +47,7 @@ export default function Header() {
           >
             <Image
               alt="Share And Care"
+              title='Cửa hàng ShareAndCare'
               src="/assets/logo.png"
               width={120}
               height={100}
@@ -59,6 +60,7 @@ export default function Header() {
           <Link href="/" passHref>
             <Image
               alt="Share And Care"
+              title='Cửa hàng ShareAndCare'
               src="/assets/logo.png"
               width={60}
               height={50}

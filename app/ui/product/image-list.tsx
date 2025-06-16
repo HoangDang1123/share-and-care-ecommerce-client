@@ -41,7 +41,8 @@ const ImageList: React.FC<ImageSliderProps> = ({ images, video, variantImage }) 
           >
             <Image
               src={videoThumbnail}
-              alt="Video Thumbnail"
+              alt={videoThumbnail}
+              title={videoThumbnail}
               width={100}
               height={30}
               className="object-cover rounded-xl"
@@ -60,7 +61,8 @@ const ImageList: React.FC<ImageSliderProps> = ({ images, video, variantImage }) 
           >
             <Image
               src={item}
-              alt=""
+              alt={item}
+              title={item}
               width={100}
               height={30}
               className="object-cover rounded-xl"
@@ -84,13 +86,14 @@ const ImageList: React.FC<ImageSliderProps> = ({ images, video, variantImage }) 
             <ImageMagnifier
               key={index}
               src={item}
+              alt={item}
+              title={item}
               className={`${imageIndex === index ? 'block rounded-2xl' : 'hidden'}`}
               width={600}
               height={600}
               magnifierHeight={150}
               magnifierWidth={150}
               zoomLevel={2}
-              alt="Main Image"
             />
           ))
         )}
@@ -104,7 +107,8 @@ const ImageList: React.FC<ImageSliderProps> = ({ images, video, variantImage }) 
             <Image
               key={index}
               src={item}
-              alt=""
+              alt={item}
+              title={item}
               width={1920}
               height={1080}
               className={`${imageIndex === index ? 'block' : 'hidden'} object-cover w-full`}
@@ -125,7 +129,8 @@ const ImageList: React.FC<ImageSliderProps> = ({ images, video, variantImage }) 
           >
             <Image
               src={videoThumbnail}
-              alt="Video Thumbnail"
+              alt={videoThumbnail}
+              title={videoThumbnail}
               width={80}
               height={24}
               className="object-cover"
@@ -144,7 +149,8 @@ const ImageList: React.FC<ImageSliderProps> = ({ images, video, variantImage }) 
           >
             <Image
               src={item}
-              alt=""
+              alt={item}
+              title={item}
               width={80}
               height={24}
               className="object-cover"

@@ -12,9 +12,10 @@ interface CardProps {
 const Card: React.FC<CardProps> = ({ product }) => {
   return (
     <div className='relative w-full h-full flex flex-col justify-between select-none'>
-      <Link href={`/product/${product.code}`}>
+      <Link href={`/product/${product.code}`} title={product.name}>
         <Image
           alt={product.name}
+          title={product.name}
           src={product.mainImage}
           priority
           width={270}

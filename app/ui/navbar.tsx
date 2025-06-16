@@ -22,6 +22,7 @@ export default function Navbar() {
           <Link
             key={link.name}
             href={link.href}
+            title={link.name}
             className={`relative flex items-center justify-center md:text-sm font-medium flex-none mx-1 my-2 px-2 py-1 transition-transform transform-gpu will-change-transform hover:rounded-md ${isActive ? 'bg-gray-200 text-black rounded-md hover:bg-white' : 'text-white hover:bg-gray-700 hover:scale-105'}`}
           >
             <strong>{link.name}</strong>
