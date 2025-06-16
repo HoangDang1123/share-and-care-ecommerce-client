@@ -1,20 +1,10 @@
 /** @type {import('next-sitemap').IConfig} */
 const config = {
   siteUrl: 'https://share-and-care-client.vercel.app',
-  generateRobotsTxt: true,
+  generateRobotsTxt: false,
   sitemapSize: 5000,
   changefreq: 'daily',
-  priority: 0.7,
-  exclude: ['/admin/*', '/private/*'],
-  robotsTxtOptions: {
-    policies: [
-      {
-        userAgent: '*',
-        allow: '/',
-        disallow: ['/admin', '/private'],
-      },
-    ],
-  },
+  priority: 0.9,
   additionalPaths: async () => {
     const result = [];
     const response = await fetch(
