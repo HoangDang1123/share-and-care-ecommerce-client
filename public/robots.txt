@@ -1,11 +1,4 @@
-# *
 User-agent: *
 Allow: /
-Disallow: /admin
-Disallow: /private
 
-# Host
-Host: https://share-and-care-client.vercel.app
-
-# Sitemaps
 Sitemap: https://share-and-care-client.vercel.app/sitemap.xml
