@@ -6,18 +6,18 @@ import Card from "@/app/ui/card";
 import Pagination from "@/app/ui/pagination";
 import FilterContainer from "@/app/ui/shop/filter-container";
 import SortSelected from "@/app/ui/shop/sort-selected";
-import { FetchProductsParams, ProductResponse } from "@/interface/product";
+import { FetchProductsParams, Product } from "@/interface/product";
 import { FunnelIcon, MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Page() {
   const { price } = useFilter();
-  const [productList, setProductList] = useState<ProductResponse[]>([]);
+  const [productList, setProductList] = useState<Product>();
   const [searchData, setSearchData] = useState('');
   const [sort, setSort] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(10);
   const [isOpen, setIsOpen] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -27,7 +27,8 @@ export default function Page() {
     const categoryData = searchParams.get('category');
     const minPriceData = searchParams.get('minPrice');
     const maxPriceData = searchParams.get('maxPrice');
-    const attributeParam = searchParams.get('attribute');
+    const minRatingData = searchParams.get('minRating');
+    const attributesParam = searchParams.get('attributes');
 
     let response;
 
@@ -38,22 +39,23 @@ export default function Page() {
       if (categoryData) filters.categoryId = categoryData;
       if (minPriceData) filters.minPrice = Number(minPriceData);
       if (maxPriceData) filters.maxPrice = Number(maxPriceData);
+      if (minRatingData) filters.minRating = Number(minRatingData);
       if (sort) filters.sort = sort;
 
-      if (attributeParam) {
+      if (attributesParam) {
         try {
-          const decoded = decodeURIComponent(attributeParam);
-          filters.attributeId = JSON.parse(decoded);
+          const decoded = decodeURIComponent(attributesParam);
+          filters.attributes = JSON.parse(decoded);
         } catch (err) {
           console.error("Invalid attribute filter:", err);
         }
       }
 
       response = Object.keys(filters).length > 0
-        ? await getShopProducts(filters)
-        : await getAllProduct();
+      ? await getShopProducts(filters, currentPage, pageSize)
+      : await getAllProduct(currentPage, pageSize);
 
-      setProductList(response.items);
+      setProductList(response);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
@@ -62,7 +64,7 @@ export default function Page() {
   useEffect(() => {
     fetchProducts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [price.values, searchParams, sort]);
+  }, [price.values, searchParams, sort, currentPage, pageSize]);
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
@@ -88,7 +90,7 @@ export default function Page() {
 
   return (
     <div className="flex flex-col space-y-8">
-      <div className="sm:hidden md:flex justify-between w-full bg-gray-200 p-4 gap-x-96 rounded-xl">
+      <div className="sm:hidden md:flex justify-between w-full bg-gray-200 p-4 gap-x-10 rounded-xl">
         <div className='relative w-full'>
           <input
             id="search"
@@ -104,14 +106,14 @@ export default function Page() {
         <SortSelected setSort={setSort} />
       </div>
 
-      {productList.length === 0 ? (
+      {!productList || productList.total === 0 ? (
         <div className='h-[480px] flex justify-center items-center'>
           Sản phẩm không tồn tại.
         </div>
       ) : (
         <div className="flex flex-col gap-y-20">
           <div className="w-full grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-10 sm:gap-y-8 md:gap-y-16 items-stretch">
-            {productList.map((product, index) => (
+            {productList.items.map((product, index) => (
               <Card key={index} product={product} />
             ))}
           </div>
@@ -119,7 +121,7 @@ export default function Page() {
           <div className='flex justify-center items-center gap-x-4 mt-4'>
             <Pagination
               currentPage={currentPage}
-              totalItems={productList.length}
+              totalItems={productList.total}
               itemsPerPage={pageSize}
               onPageChange={setCurrentPage}
             />

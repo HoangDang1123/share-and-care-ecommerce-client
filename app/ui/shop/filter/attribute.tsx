@@ -25,11 +25,24 @@ export default function AttributeFilter() {
   }, []);
 
   useEffect(() => {
+    const attributeParam = searchParams.get('attributes');
+    if (attributeParam) {
+      try {
+        const decoded = decodeURIComponent(attributeParam);
+        const parsed = JSON.parse(decoded) as AttributeParams[];
+        setSelectedAttributes(parsed);
+      } catch (err) {
+        console.error("Invalid attribute filter:", err);
+      }
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
     const params = new URLSearchParams(searchParams);
     if (selectedAttributes.length > 0) {
-      params.set("attribute", encodeURIComponent(JSON.stringify(selectedAttributes)));
+      params.set("attributes", encodeURIComponent(JSON.stringify(selectedAttributes)));
     } else {
-      params.delete("attribute");
+      params.delete("attributes");
     }
     router.push(`/shop?${params.toString()}`);
   }, [selectedAttributes]);

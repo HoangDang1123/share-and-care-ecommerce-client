@@ -6,9 +6,9 @@ import get from 'lodash/get';
 
 const PRODUCT_URL = '/products/public';
 
-export const getAllProduct = async (): Promise<Product.Product> => {
+export const getAllProduct = async (page: number, size: number): Promise<Product.Product> => {
     try {
-        const response = await api.get(`${PRODUCT_URL}?size=20`);
+        const response = await api.get(`${PRODUCT_URL}?page=${page}&size=${size}`);
         return response.data.metadata;
     } catch (error) {
         const errorMessage = get(error, 'response.data.error.message', '');
@@ -22,7 +22,7 @@ export const getAllProduct = async (): Promise<Product.Product> => {
 
 export const getTopSearchProduct = async (search: string): Promise<Product.Product> => {
     try {
-        const response = await api.get(`${PRODUCT_URL}?search=${search}&size=6`);
+        const response = await api.get(`${PRODUCT_URL}?search=${search}&size=5`);
         return response.data.metadata;
     } catch (error) {
         const errorMessage = get(error, 'response.data.error.message', '');
@@ -48,24 +48,30 @@ export const getTopCategoriesProduct = async (categoryId: string): Promise<Produ
     }
 }
 
-export const getShopProducts = async (params: Product.FetchProductsParams = {}): Promise<Product.Product> => {
-    const { search, categoryId, attributeId, minPrice, maxPrice, sort } = params;
+export const getShopProducts = async (
+    filters: Product.FetchProductsParams = {},
+    page: number,
+    size: number
+): Promise<Product.Product> => {
+    const { search, categoryId, attributes, minPrice, maxPrice, minRating, sort } = filters;
 
     try {
-        let url = `${PRODUCT_URL}?size=20`;
+        let url = `${PRODUCT_URL}?page=${page}&size=${size}`;
 
         if (search) {
             url += `&search=${search}`;
         } if (categoryId) {
             url += `&category=${categoryId}`;
-        } if (attributeId && Array.isArray(attributeId)) {
-            const encodedAttributes = encodeURIComponent(JSON.stringify(attributeId));
+        } if (attributes && Array.isArray(attributes)) {
+            const encodedAttributes = encodeURIComponent(JSON.stringify(attributes));
             console.log(encodedAttributes)
-            url += `&attributeId=${encodedAttributes}`;
+            url += `&attributes=${encodedAttributes}`;
         } if (minPrice) {
             url += `&minPrice=${minPrice}`;
         } if (maxPrice) {
             url += `&maxPrice=${maxPrice}`;
+        } if (minRating) {
+            url += `&minRating=${minRating}`;
         } if (sort) {
             url += `&sort=${sort}`;
         }

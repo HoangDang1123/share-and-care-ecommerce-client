@@ -26,6 +26,13 @@ export default function CategoryFilter() {
   }, []);
 
   useEffect(() => {
+  const categoryParam = searchParams.get('category');
+  if (categoryParam) {
+    setSelected(categoryParam);
+  }
+}, [searchParams]);
+
+  useEffect(() => {
     const params = new URLSearchParams(searchParams);
 
     if (selected) {

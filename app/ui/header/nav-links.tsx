@@ -43,7 +43,7 @@ export default function NavLinks() {
           onMouseLeave={() => handleOnMouseLeave()}
         >
           <Link
-            href="/shop"
+            href={`/shop?category=${category.id}`}
             title={category.name}
             className={`flex grow items-center justify-center gap-2 rounded-xl md:text-base xl:text-xl text-gray-900 font-bold flex-none px-4 py-2 ${hoveredIndex === index ? 'bg-gray-200' : ''}`}
           >

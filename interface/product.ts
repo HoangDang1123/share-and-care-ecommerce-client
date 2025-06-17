@@ -77,8 +77,9 @@ export interface ProductDetailResponse {
 export interface FetchProductsParams {
     search?: string,
     categoryId?: string,
-    attributeId?: AttributeParams[],
+    attributes?: AttributeParams[],
     minPrice?: number,
     maxPrice?: number,
+    minRating?: number,
     sort?: string,
 }
