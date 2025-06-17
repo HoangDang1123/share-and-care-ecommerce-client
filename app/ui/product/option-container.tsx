@@ -63,8 +63,8 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
     const sizeIndex = selectedSizeIndex;
 
     const variants = product.product.variants;
-    const colorPosition = variants.findIndex(v => v.name === "Màu sắc");
-    const sizePosition = variants.findIndex(v => v.name === "Kích thước");
+    const colorPosition = variants.findIndex(v => (v.name === "Màu sắc" || v.name === "Color"));
+    const sizePosition = variants.findIndex(v => (v.name === "Kích thước" || v.name === "Size"));
 
     const hasColor = colorIndex !== null;
     const hasSize = sizeIndex !== null;
@@ -98,11 +98,8 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
   useEffect(() => {
     if (skuItem) {
       setQuantityInStock(skuItem.quantity);
-    } else if (product.skuList.skuList.length === 0
-      && ((selectedColorIndex !== null && selectedColorIndex !== -1) || (selectedSizeIndex !== null && selectedSizeIndex !== -1))) {
-      setQuantityInStock(product.product.quantity);
     } else {
-      setQuantityInStock(0);
+      setQuantityInStock(product.product.quantity);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedColorIndex, selectedSizeIndex, skuItem]);
