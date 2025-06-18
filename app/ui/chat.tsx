@@ -8,8 +8,6 @@ import {
 import {
   ArrowPathIcon,
   ChatBubbleLeftEllipsisIcon,
-  FaceSmileIcon,
-  GifIcon,
   PhotoIcon
 } from "@heroicons/react/24/outline";
 import { useEffect, useRef, useState } from "react";
@@ -22,6 +20,7 @@ import { getAllConversation, getConversation } from "../api/chat";
 import { useSocket } from "../context/SocketContext";
 import ClipLoader from "react-spinners/ClipLoader";
 import { useAuth } from "../context/AppContext";
+import { uploadChatImage } from "../api/upload";
 
 export default function Chat() {
   const [userId, setUserId] = useState('');
@@ -29,11 +28,13 @@ export default function Chat() {
   const [deviceToken, setDeviceToken] = useState('');
   const [useAI, setUseAI] = useState(false);
   const [conversationId, setConversationId] = useState<string | null>(null);
-  const [openChatFrame, setOpenChatFrame] = useState(false);
+  const [openChatFrame, setOpenChatFrame] = useState(true);
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<MessageItem[]>([]);
   const [loadingConversation, setLoadingConversation] = useState(false);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const [fileImages, setFileImages] = useState<File[] | undefined>();
+  const [sendingMessage, setSendingMessage] = useState(false);
   const messTextareaRef = useRef<HTMLTextAreaElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const messageContainerRef = useRef<HTMLDivElement | null>(null);
@@ -172,30 +173,54 @@ export default function Chat() {
     }
   };
 
-  const handleSubmit = () => {
-    if (!message.trim()) return;
+  const handleSubmit = async () => {
+    if (!message.trim() && (!fileImages || fileImages.length === 0)) return;
 
-    if (socket) {
-      socket.emit("send_message", {
-        conversationId: conversationId,
-        content: message,
-        imageUrls: [],
-        useAI: useAI,
-      });
+    setSendingMessage(true);
 
-      if (!conversationId && userId && accessToken) {
-        setTimeout(async () => {
-          const response = await getAllConversation(userId, accessToken);
-          const firstConversation = response?.items?.[0];
-          if (firstConversation) {
-            setConversationId(firstConversation.id);
-          }
-        }, 10);
+    let imageUrls: string[] = [];
+
+    try {
+      if (fileImages && fileImages.length > 0) {
+        const uploadedImages = await Promise.all(
+          fileImages.map(async (file) => {
+            const response = await uploadChatImage(file, userId, accessToken);
+            return response;
+          })
+        );
+
+        imageUrls = [...imageUrls, ...uploadedImages];
       }
-    }
 
-    setMessage('');
+      if (socket) {
+        socket.emit("send_message", {
+          conversationId: conversationId,
+          content: message,
+          imageUrls: imageUrls,
+          useAI: useAI,
+        });
+
+        if (!conversationId && userId && accessToken) {
+          setTimeout(async () => {
+            const response = await getAllConversation(userId, accessToken);
+            const firstConversation = response?.items?.[0];
+            if (firstConversation) {
+              setConversationId(firstConversation.id);
+            }
+          }, 10);
+        }
+      }
+
+      setMessage('');
+      setImagePreviews([]);
+      setFileImages(undefined);
+    } catch (err) {
+      console.error('Send message error:', err);
+    } finally {
+      setSendingMessage(false);
+    }
   };
+
 
   const handleClick = () => {
     if (fileInputRef.current) {
@@ -203,10 +228,42 @@ export default function Chat() {
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-    const newPreviews = files.map(file => URL.createObjectURL(file));
-    setImagePreviews(prev => [...prev, ...newPreviews]);
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files) return;
+
+    const newFiles = Array.from(event.target.files);
+
+    setFileImages(prevFiles => [...(prevFiles || []), ...newFiles]);
+
+    const newPreviewUrls = newFiles.map(file => URL.createObjectURL(file));
+    setImagePreviews(prevImages => [...prevImages, ...newPreviewUrls]);
+  };
+
+  const handleDelete = (indexToRemove: number) => {
+    setImagePreviews(prevImages => prevImages.filter((_, index) => index !== indexToRemove));
+    setFileImages(prevFiles => prevFiles?.filter((_, index) => index !== indexToRemove));
+  };
+
+  const renderMessageContent = (content: string) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const parts = content.split(urlRegex);
+
+    return parts.map((part, index) => {
+      if (urlRegex.test(part)) {
+        return (
+          <a
+            key={index}
+            href={part}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 underline break-all"
+          >
+            {part}
+          </a>
+        );
+      }
+      return <span key={index}>{part}</span>;
+    });
   };
 
   return (
@@ -296,10 +353,20 @@ export default function Chat() {
                       />
 
                       <div
-                        className={`flex flex-col gap-y-2 max-w-52 p-2 rounded-lg shadow text-sm break-words whitespace-pre-wrap ${isUser ? 'bg-blue-100' : 'bg-white'
+                        className={`flex flex-col gap-y-2 max-w-44 p-2 rounded-lg shadow text-sm break-words whitespace-pre-wrap ${isUser ? 'bg-blue-100' : 'bg-white'
                           }`}
                       >
-                        <p className="text-gray-800">{msg.content}</p>
+                        {msg.image ? (
+                          <Image
+                            src={msg.image}
+                            alt="chat-image"
+                            width={300}
+                            height={300}
+                            className="rounded-md object-contain"
+                          />
+                        ) : (
+                          <p className="text-gray-800">{renderMessageContent(msg.content)}</p>
+                        )}
                         <p className="text-xs text-gray-500 text-right">
                           {formatTimestamp(msg.createdAt)}
                         </p>
@@ -312,7 +379,7 @@ export default function Chat() {
           </div>
         </div>
 
-        <div className="h-[12%] border-t-2">
+        <div className="h-[8%] border-t-2">
           <textarea
             name="message"
             value={message}
@@ -337,9 +404,7 @@ export default function Chat() {
                   className="object-cover w-14 h-14"
                 />
                 <button
-                  onClick={() =>
-                    setImagePreviews(prev => prev.filter((_, i) => i !== idx))
-                  }
+                  onClick={() => handleDelete}
                   className="absolute top-0 right-0 bg-white bg-opacity-70 text-red-500 px-1 rounded-full text-xs hover:bg-gray-200 hover:text-red-700"
                 >
                   ×
@@ -348,7 +413,6 @@ export default function Chat() {
             ))}
           </div>
         )}
-
 
         <div className="flex justify-between items-center w-full h-[10%] p-2">
           <div className="flex justify-start space-x-2">
@@ -366,19 +430,21 @@ export default function Chat() {
               />
             </button>
 
-            <button>
+            {/* <button>
               <FaceSmileIcon className="size-6" />
             </button>
 
             <button>
               <GifIcon className="size-6" />
-            </button>
+            </button> */}
           </div>
 
-          <button
-            onClick={handleSubmit}
-          >
-            <PaperAirplaneIcon className="size-6 text-gray-900" />
+          <button onClick={handleSubmit} disabled={sendingMessage}>
+            {sendingMessage ? (
+              <ClipLoader size={18} color="#1f2937" />
+            ) : (
+              <PaperAirplaneIcon className="size-6 text-gray-900" />
+            )}
           </button>
         </div>
       </motion.div>

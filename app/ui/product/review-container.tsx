@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import ReviewRating from './review/review-rating';
 import ReviewItem from './review/review-item';
 import ReviewFilter from './review/review-filter';
@@ -34,23 +34,19 @@ const ReviewContainer: React.FC<ReviewContainerProps> = ({ productId }) => {
   }, [currentPage, hasImageFilter, pageSize, productId, ratingFilter]);
 
   return (
-    <Row
-      className='flex justify-between bg-gray-100 rounded-md p-10'
-    >
+    <div className='bg-gray-100 rounded-md p-4 md:p-10 w-full'>
       {!reviews ? (
         <div className='flex justify-center items-center w-full text-lg'>
           Đang tải...
         </div>
       ) : (
-        <div className='flex w-full'>
-          <Col span={8} >
+        <Row gutter={[24, 24]}>
+          <Col xs={0} md={8}>
             <ReviewRating productId={productId} total={reviews.total} />
           </Col>
 
-          <Col span={1} />
-
-          <Col span={15} className='flex flex-col justify-between items-center w-full'>
-            <div className='flex flex-col items-center'>
+          <Col xs={24} md={16}>
+            <div className='flex flex-col items-center w-full'>
               <ReviewFilter setRatingFilter={setRatingFilter} setHasImageFilter={setHasImageFilter} />
 
               <div className='flex flex-col justify-center items-center w-full mt-10 gap-y-8'>
@@ -62,37 +58,37 @@ const ReviewContainer: React.FC<ReviewContainerProps> = ({ productId }) => {
                   ))
                 )}
               </div>
-            </div>
 
-            <div className='flex justify-center items-center gap-x-4 mt-4'>
-              <Pagination
-                currentPage={currentPage}
-                totalItems={reviews.total}
-                itemsPerPage={pageSize}
-                onPageChange={setCurrentPage}
-              />
+              <div className='flex flex-col sm:flex-row justify-center items-center gap-4 mt-6 w-full'>
+                <Pagination
+                  currentPage={currentPage}
+                  totalItems={reviews.total}
+                  itemsPerPage={pageSize}
+                  onPageChange={setCurrentPage}
+                />
 
-              <div className='flex justify-center items-center gap-x-2'>
-                <select
-                  onChange={(e) => {
-                    setPageSize(Number(e.target.value))
-                    setCurrentPage(1)
-                  }}
-                  className="border rounded-md p-1 text-base"
-                >
-                  <option value="5">5</option>
-                  <option value="10">10</option>
-                  <option value="15">15</option>
-                  <option value="20">20</option>
-                </select>
-                <span>sản phẩm mỗi trang</span>
+                <div className='flex items-center gap-x-2'>
+                  <select
+                    onChange={(e) => {
+                      setPageSize(Number(e.target.value));
+                      setCurrentPage(1);
+                    }}
+                    className="border rounded-md p-1 text-base"
+                  >
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                  </select>
+                  <span>sản phẩm mỗi trang</span>
+                </div>
               </div>
             </div>
           </Col>
-        </div>
+        </Row>
       )}
-    </Row>
-  )
-}
+    </div>
+  );
+};
 
 export default ReviewContainer;

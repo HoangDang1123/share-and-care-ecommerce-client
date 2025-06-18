@@ -103,12 +103,12 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ item }) => {
               alt={item.reply.user.avatar}
               width={100}
               height={100}
-              className='w-6 h-6 rounded-full'
+              className='w-8 h-8 rounded-full'
             />
             <span className='font-semibold text-sm'>{item.reply.user.name}</span>
           </div>
 
-          <p className='text-sm leading-8 text-justify mt-2 ml-16'>{item.reply.content}</p>
+          <p className='text-sm leading-8 text-justify ml-20'>{item.reply.content}</p>
         </div>
       )}
 
