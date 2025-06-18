@@ -42,7 +42,12 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsRefresh, existAddress })
   useEffect(() => {
     const fetchData = async () => {
       const response = await axios.get('https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json');
-      setCities(response.data);
+
+      const hcmCity = response.data.find((city: City) =>
+        city.Name.toLowerCase().includes('hồ chí minh')
+      );
+
+      setCities(hcmCity ? [hcmCity] : []);
     };
     fetchData();
   }, []);

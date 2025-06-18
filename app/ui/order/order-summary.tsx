@@ -12,6 +12,8 @@ import {
   TruckIcon,
   CurrencyDollarIcon,
   ReceiptPercentIcon,
+  TicketIcon,
+  GiftIcon,
 } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -21,29 +23,57 @@ import { toast } from 'react-toastify';
 export default function OrderSummary() {
   const [preview, setPreview] = useState<OrderPricingSummary | null>(null);
   const [loading, setLoading] = useState(false);
-  const [couponInput, setCouponInput] = useState('');
   const router = useRouter();
   const { setCart } = useCart();
   const { order, setOrder } = useOrder();
+  const [couponInput, setCouponInput] = useState(order?.couponCode ?? '');
 
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : "";
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";
 
   useEffect(() => {
-  if (!order || !userId || !accessToken) return;
+    if (!order || !userId || !accessToken) return;
 
-  const handler = setTimeout(async () => {
+    const handler = setTimeout(async () => {
+      try {
+        const response = await getPreviewOrder(order, userId, accessToken);
+        setPreview(response);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (error) {
+        if (order.couponCode) {
+          setOrder((prev) =>
+            prev ? { ...prev, couponCode: null } : null
+          );
+          toast.error("Mã giảm giá không hợp lệ.");
+        }
+        setPreview(null);
+      }
+    }, 500);
+
+    return () => clearTimeout(handler);
+  }, [order, userId, accessToken]);
+
+  const handleFetchCoupon = async (code: string) => {
+    if (!userId || !accessToken || !order) return;
+
+    const previewOrder = {
+      ...order,
+      couponCode: code,
+    };
+
     try {
-      const response = await getPreviewOrder(order, userId, accessToken);
-      setPreview(response);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-      setPreview(null);
-    }
-  }, 500);
+      const result = await getPreviewOrder(previewOrder, userId, accessToken);
+      setPreview(result);
+      setOrder(previewOrder);
 
-  return () => clearTimeout(handler);
-}, [order, userId, accessToken]);
+      if (code) {
+        toast.success("Áp dụng mã giảm giá thành công!");
+      } else {
+        toast.success("Đã xóa mã giảm giá.");
+      }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) { }
+  }
 
   const handleCreateOrder = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
@@ -91,11 +121,6 @@ export default function OrderSummary() {
         }
 
         localStorage.removeItem('productInCart');
-
-        setOrder(null);
-        if (typeof window !== "undefined") {
-          localStorage.setItem('productPrice', '0');
-        }
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) { } finally {
@@ -146,21 +171,46 @@ export default function OrderSummary() {
                 placeholder='Nhập mã giảm giá'
                 value={couponInput}
                 onChange={(e) => setCouponInput(e.target.value)}
-                className='px-4 py-2 bg-orange-100 border border-orange-300 rounded-md text-sm w-28 md:w-40 shadow-inner placeholder-orange-800
+                className='px-4 py-2 bg-orange-100 border border-orange-300 rounded-md text-sm w-28 md:w-48 shadow-inner placeholder-orange-800
         focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500
         hover:bg-orange-100 transition duration-200'
               />
             </div>
-            <button
-              onClick={() =>
-                setOrder((prev) =>
-                  prev ? { ...prev, couponCode: couponInput } : null
-                )
-              }
-              className='self-end px-4 py-1 text-sm text-white bg-orange-600 hover:bg-orange-700 rounded-md transition duration-200'
-            >
-              Áp dụng mã
-            </button>
+            <div className='flex justify-end gap-1'>
+              <button
+                onClick={() => {
+                  setCouponInput('');
+                  handleFetchCoupon('');
+                }}
+                className='px-4 py-1 text-sm text-orange-600 border border-orange-600 hover:bg-orange-50 rounded-md transition duration-200'
+              >
+                Xóa mã
+              </button>
+              <button
+                onClick={() => handleFetchCoupon(couponInput)}
+                className='px-4 py-1 text-sm text-white bg-orange-600 hover:bg-orange-700 rounded-md transition duration-200'
+              >
+                Áp dụng mã
+              </button>
+            </div>
+          </div>
+
+          <div className='flex justify-between items-center'>
+            <div className='flex items-center gap-2'>
+              <TicketIcon className='w-5 h-5 text-green-600' />
+              <span className='font-semibold sm:text-lg md:text-xl'>Giảm giá mã khuyến mãi:</span>
+            </div>
+            <span className='sm:text-lg md:text-xl'>{formatPrice(preview.couponDiscount)}</span>
+          </div>
+
+          <div className='w-full h-0.5 bg-gray-200' />
+
+          <div className='flex justify-between items-center'>
+            <div className='flex items-center gap-2'>
+              <GiftIcon className='w-5 h-5 text-green-600' />
+              <span className='font-semibold sm:text-lg md:text-xl'>Tiết kiệm:</span>
+            </div>
+            <span className='sm:text-lg md:text-xl'>{formatPrice(preview.totalSavings)}</span>
           </div>
 
           <div className='w-full h-0.5 bg-gray-200' />

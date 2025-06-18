@@ -43,13 +43,34 @@ const Card: React.FC<CardProps> = ({ product }) => {
 
   const getDisplayPrice = () => {
     if (product.hasDiscount && product.discountedPrice !== null) {
-      if (typeof product.discountedPrice === 'number') return formatPrice(product.discountedPrice);
-      if (typeof product.discountedPrice === 'object') return formatPrice(product.discountedPrice.min);
+      if (typeof product.discountedPrice === 'number') {
+        return {
+          original: formatPrice(product.price as number),
+          discounted: formatPrice(product.discountedPrice),
+        };
+      }
+
+      if (typeof product.discountedPrice === 'object') {
+        return {
+          original: formatPrice((product.price as { min: number }).min),
+          discounted: formatPrice(product.discountedPrice.min),
+        };
+      }
     }
 
-    if (typeof product.price === 'number') return formatPrice(product.price);
-    return formatPrice(product.price.min);
+    if (typeof product.price === 'number') {
+      return {
+        original: formatPrice(product.price),
+        discounted: null,
+      };
+    }
+
+    return {
+      original: formatPrice(product.price.min),
+      discounted: null,
+    };
   };
+
 
   return (
     <div className="relative w-full h-full flex flex-col justify-between select-none">
@@ -73,11 +94,28 @@ const Card: React.FC<CardProps> = ({ product }) => {
           )}
         </div>
 
-        <div className="flex flex-col justify-between sm:h-28 md:h-40">
+        <div className="flex flex-col justify-between sm:h-28 md:h-36">
           <h1 className="md:my-2 sm:text-base md:text-2xl">{product.name}</h1>
 
           <div className="flex justify-between items-center">
-            <h2 className="md:mt-1 sm:text-base md:text-2xl">{getDisplayPrice()}</h2>
+            {(() => {
+              const price = getDisplayPrice();
+
+              return price.discounted ? (
+                <div className="flex flex-col md:gap-1">
+                  <span className="text-red-500 font-semibold sm:text-base md:text-2xl">
+                    {price.discounted}
+                  </span>
+                  <span className="line-through text-gray-500 text-sm md:text-base">
+                    {price.original}
+                  </span>
+                </div>
+              ) : (
+                <span className="font-semibold sm:text-base md:text-2xl">
+                  {price.original}
+                </span>
+              );
+            })()}
 
             <div className="flex items-center">
               <h2 className="md:mt-1 sm:text-base md:text-2xl">{product.rating}</h2>

@@ -1,6 +1,5 @@
 import { UserIcon } from '@heroicons/react/20/solid';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import Link from 'next/link';
 import { logoutRequest } from '@/app/api/auth';
 import { toast } from 'react-toastify';
 import { motion } from 'framer-motion';
@@ -11,17 +10,21 @@ import {
 } from '@heroicons/react/24/outline';
 import { reconnectSocket } from '@/utils/socket';
 import { useSocket } from '@/app/context/SocketContext';
+import { useRouter } from 'next/navigation';
 
 interface UserProps {
   isLogin: boolean;
 }
 
 const User: React.FC<UserProps> = ({ isLogin }) => {
+  const router = useRouter();
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : "";
   const { setSocket } = useSocket();
 
-  const handleGoToProfile = () => { }
+  const handleGoToProfile = () => {
+    router.push('/profile');
+  }
 
   const handleLogout = async () => {
     if (!accessToken) {
@@ -99,8 +102,7 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
         {isLogin ? (
           customer.map((item, index) => (
             <MenuItem key={index}>
-              <Link
-                href={item.href}
+              <button
                 onClick={() => {
                   item.click();
                 }}
@@ -108,19 +110,21 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
               >
                 {item.icon}
                 {item.name}
-              </Link>
+              </button>
             </MenuItem>
           ))
         ) : (
           guest.map((item, index) => (
             <MenuItem key={index}>
-              <Link
-                href={item.href}
+              <button
+                onClick={() => {
+                  router.push(item.href);
+                }}
                 className="flex items-center gap-x-2 rounded-lg sm:text-md xl:text-lg py-2 px-3 transition hover:bg-gray-200"
               >
                 {item.icon}
                 {item.name}
-              </Link>
+              </button>
             </MenuItem>
           ))
         )}

@@ -48,14 +48,6 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedColorIndex])
-  
-  useEffect(() => {
-    console.log("skuItem:", skuItem)
-  }, [skuItem])
-  
-  useEffect(() => {
-    console.log("product:", product)
-  }, [product])
 
   useEffect(() => {
     const hasVariants = product.product.variants.length > 0;

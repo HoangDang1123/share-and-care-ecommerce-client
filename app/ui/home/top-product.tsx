@@ -78,8 +78,12 @@ const TopProduct: React.FC<TopProductProps> = ({ category }) => {
       {banners.length > 0 && (
         <div className="relative w-full h-[200px] md:h-[300px] rounded-xl overflow-hidden mb-4">
           {banners.map((banner, index) => (
-            <div
+            <button
               key={banner.id}
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.href = banner.ctaUrl;
+              }}
               className={`absolute inset-0 transition-opacity duration-700 ${index === bannerIndex ? 'opacity-100 z-0' : 'opacity-0 z-[-1]'}`}
             >
               <Image
@@ -90,25 +94,7 @@ const TopProduct: React.FC<TopProductProps> = ({ category }) => {
                 className="object-cover rounded-xl"
                 priority={index === 0}
               />
-
-              {(banner.title || banner.subtitle || banner.ctaText) && (
-                <div className="absolute inset-0 flex flex-col justify-end items-end p-4 bg-gradient-to-t from-black/60 via-transparent to-transparent text-white">
-                  {banner.title && <h2 className="text-lg md:text-2xl font-bold mb-1">{banner.title}</h2>}
-                  {banner.subtitle && <p className="text-sm md:text-base mb-2">{banner.subtitle}</p>}
-                  {banner.ctaText && (
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        window.location.href = banner.ctaUrl;
-                      }}
-                      className="bg-white text-black text-xs md:text-sm px-4 py-1.5 rounded-full font-semibold hover:bg-gray-200 transition"
-                    >
-                      {banner.ctaText}
-                    </button>
-                  )}
-                </div>
-              )}
-            </div>
+            </button>
           ))}
 
           {banners.length > 1 && (

@@ -223,7 +223,7 @@ export default function Chat() {
         animate={{ scale: openChatFrame ? 1 : 0.2, opacity: openChatFrame ? 1 : 0 }}
         exit={{ scale: 0.2, opacity: 0 }}
         transition={{ duration: 0.3, ease: "easeOut" }}
-        className="fixed flex-col bottom-0 md:right-[90px] sm:w-full md:w-96 md:h-[60vh] shadow-2xl shadow-gray-400 bg-white rounded-tl-lg rounded-tr-lg"
+        className="fixed flex-col bottom-0 md:right-[90px] sm:w-full md:w-96 sm:h-[80vh] md:h-[60vh] shadow-2xl shadow-gray-400 bg-white rounded-tl-lg rounded-tr-lg"
         style={{ display: openChatFrame ? "flex" : "hidden", transformOrigin: "bottom right" }}
       >
         <div className="flex justify-between w-full items-center px-4 py-2 bg-gray-900 rounded-tl-lg rounded-tr-lg">
