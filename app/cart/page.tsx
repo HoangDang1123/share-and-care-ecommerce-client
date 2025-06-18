@@ -392,31 +392,33 @@ export default function Page() {
             </div>
           )}
 
-          <div className='flex flex-col space-y-4'>
-            <button
-              disabled={loading}
-              onClick={goToOrder}
-              className='flex justify-center items-center h-12 bg-gray-900 px-6 rounded-md'
-            >
-              {loading ? (
-                <ClipLoader
-                  size={20}
-                  color='#ffffff'
-                  aria-label="Loading Spinner"
-                />
-              ) : (
-                <div className='flex justify-center items-center'>
-                  {orderMessage && (
-                    <div className='text-red-500 font-semibold text-lg'>
-                      {orderMessage}
-                    </div>
-                  )}
+          <div className='flex flex-col gap-y-2'>
+            {orderMessage && (
+              <div className='text-red-500 font-semibold text-lg'>
+                {orderMessage}
+              </div>
+            )}
 
-                  <ShoppingCartIcon className='size-8 mr-3 text-white' />
-                  <span className='text-xl font-semibold text-white'>Tiến hành đặt hàng</span>
-                </div>
-              )}
-            </button>
+            <div className='flex flex-col space-y-4'>
+              <button
+                disabled={loading}
+                onClick={goToOrder}
+                className='flex justify-center items-center h-12 bg-gray-900 px-6 rounded-md'
+              >
+                {loading ? (
+                  <ClipLoader
+                    size={20}
+                    color='#ffffff'
+                    aria-label="Loading Spinner"
+                  />
+                ) : (
+                  <div className='flex justify-center items-center'>
+                    <ShoppingCartIcon className='size-8 mr-3 text-white' />
+                    <span className='text-xl font-semibold text-white'>Tiến hành đặt hàng</span>
+                  </div>
+                )}
+              </button>
+            </div>
           </div>
         </Col>
       </Row>

@@ -36,6 +36,8 @@ const User: React.FC<UserProps> = ({ isLogin }) => {
       await logoutRequest(userId, accessToken);
       toast.success("Đăng xuất thành công.");
 
+      router.push("/auth/login");
+
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("Đã có lỗi xảy ra trong quá trình đăng xuất.");
