@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { lato } from '@/app/ui/fonts';
-import Banner from "./ui/banner";
+import Advertisement from "./ui/advertisement";
 import Header from "./ui/header";
 import Footer from "./ui/footer";
 import ScrollToTopButton from "./ui/scroll-to-top";
@@ -146,7 +146,7 @@ export default function RootLayout({
           <main>
             <div className={`${lato.className} antialiased fixed w-screen top-0 z-10 flex flex-col`}>
               <ToastContainer />
-              <Banner />
+              <Advertisement />
               <Navbar />
               <Header />
             </div>

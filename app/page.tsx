@@ -84,20 +84,37 @@ export default function Home() {
     const fetchCategories = async () => {
       try {
         const response = await getAllCategories();
-        setCategories(response);
+        const allFlatCategories = flattenCategories(response);
+        setCategories(allFlatCategories);
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
     };
 
     fetchCategories();
-  }, [setCategories]);
+  }, []);
+
+  function flattenCategories(categories: CategoryResponse[]): CategoryResponse[] {
+    const result: CategoryResponse[] = [];
+
+    const traverse = (categoryList: CategoryResponse[]) => {
+      for (const cat of categoryList) {
+        result.push({ ...cat, children: [] });
+        if (cat.children && cat.children.length > 0) {
+          traverse(cat.children);
+        }
+      }
+    };
+
+    traverse(categories);
+    return result;
+  }
 
   return (
     <div className="flex flex-col overflow-hidden items-center sm:space-y-10 md:space-y-20 mb-10">
       <Slider />
 
-      <Suspense fallback={<div>Loading categories...</div>}>
+      <Suspense fallback={<div>Đang tải...</div>}>
         {categories.map((category, index) => (
           <div key={index} className="flex flex-col px-10">
             <TopProduct category={category} />

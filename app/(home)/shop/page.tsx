@@ -47,7 +47,7 @@ export default function Page() {
           const decoded = decodeURIComponent(attributesParam);
           filters.attributes = JSON.parse(decoded);
         } catch (err) {
-          console.error("Invalid attribute filter:", err);
+          console.error("Lọc thuộc tính không hợp lệ:", err);
         }
       }
 
@@ -57,7 +57,7 @@ export default function Page() {
 
       setProductList(response);
     } catch (error) {
-      console.error("Error fetching products:", error);
+      console.error("Lỗi lấy sản phẩm:", error);
     }
   };
 

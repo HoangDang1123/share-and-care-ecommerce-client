@@ -20,16 +20,18 @@ export default function Search() {
   const { isMenu, setIsMenu } = useMenu();
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await getTopSearchProduct(searchData);
-        setSearchProductList(response.items);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
+    if (searchData) {
+      const fetchProducts = async () => {
+        try {
+          const response = await getTopSearchProduct(searchData);
+          setSearchProductList(response.items);
+        } catch (error) {
+          console.error("Error fetching products:", error);
+        }
+      };
 
-    fetchProducts();
+      fetchProducts();
+    }
   }, [searchData, setSearchProductList]);
 
   useEffect(() => {

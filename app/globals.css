@@ -135,6 +135,14 @@ img {
   height: 0px;
 }
 
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 @media screen and (min-width: 0px) {
   th,
   td {

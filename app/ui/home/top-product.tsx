@@ -1,14 +1,17 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react';
 import Card from '../card';
 import Carousel from 'react-multi-carousel';
-import "react-multi-carousel/lib/styles.css";
+import 'react-multi-carousel/lib/styles.css';
 import { CategoryResponse } from '@/interface/category';
 import { getTopCategoriesProduct } from '@/app/api/product';
 import { ProductResponse } from '@/interface/product';
-import Link from 'next/link';
-import { ChevronDoubleRightIcon } from '@heroicons/react/24/outline';
+import { ChevronDoubleRightIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import Image from 'next/image';
+import { getCategoryBanner } from '@/app/api/banner';
+import { BannerItem } from '@/interface/banner';
+import { useRouter } from 'next/navigation';
 
 const responsive = {
   superLargeDesktop: {
@@ -31,94 +34,147 @@ const responsive = {
     breakpoint: { max: 480, min: 0 },
     items: 2
   }
-};
-
-interface TopProductProps {
-  category: CategoryResponse,
 }
 
-// // eslint-disable-next-line @typescript-eslint/no-explicit-any
-// const CustomLeftArrow = ({ onClick, ...rest }: any) => {
-//   const {
-//     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-//     carouselState: { currentSlide, deviceType }
-//   } = rest;
-//   return (
-//     <button onClick={onClick} className='w-10 h-10 z-20'>
-//       <ArrowLeftIcon className="size-6" />
-//     </button>
-//   );
-// };
-
-// // eslint-disable-next-line @typescript-eslint/no-explicit-any
-// const CustomRightArrow = ({ onClick, ...rest }: any) => {
-//   const {
-//     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-//     carouselState: { currentSlide, deviceType }
-//   } = rest;
-//   return (
-//     <button onClick={onClick} className='w-10 h-10 z-20'>
-//       <ArrowRightIcon className="size-6" />
-//     </button>
-//   );
-// };
+interface TopProductProps {
+  category: CategoryResponse
+}
 
 const TopProduct: React.FC<TopProductProps> = ({ category }) => {
   const [topProduct, setTopProduct] = useState<ProductResponse[]>([]);
+  const [banners, setBanners] = useState<BannerItem[]>([]);
+  const [bannerIndex, setBannerIndex] = useState(0);
+
+  const router = useRouter();
+
+  const showNextBanner = useCallback(() => {
+    setBannerIndex((prev) => (prev === banners.length - 1 ? 0 : prev + 1))
+  }, [banners.length])
+
+  const showPrevBanner = useCallback(() => {
+    setBannerIndex((prev) => (prev === 0 ? banners.length - 1 : prev - 1))
+  }, [banners.length])
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchData = async () => {
       try {
-        const response = await getTopCategoriesProduct(category.id);
-        setTopProduct(response.items);
+        const [productsRes, bannerRes] = await Promise.all([
+          getTopCategoriesProduct(category.id),
+          getCategoryBanner(category.id)
+        ])
+        setTopProduct(productsRes.items)
+        setBanners(bannerRes.items || [])
       } catch (error) {
-        console.error("Error fetching products:", error);
+        console.error('Error fetching category data:', error)
       }
-    };
+    }
 
-    fetchProducts();
-  }, [category, setTopProduct]);
+    fetchData()
+  }, [category])
 
   return (
-    <div className='md:mt-8 px-20'>
+    <div className="md:mt-8 px-4 md:px-20">
+      {/* Banner */}
+      {banners.length > 0 && (
+        <div className="relative w-full h-[200px] md:h-[300px] rounded-xl overflow-hidden mb-4">
+          {banners.map((banner, index) => (
+            <div
+              key={banner.id}
+              className={`absolute inset-0 transition-opacity duration-700 ${index === bannerIndex ? 'opacity-100 z-0' : 'opacity-0 z-[-1]'}`}
+            >
+              <Image
+                src={banner.imageUrl}
+                alt={banner.title}
+                title={banner.title}
+                fill
+                className="object-cover rounded-xl"
+                priority={index === 0}
+              />
+
+              {(banner.title || banner.subtitle || banner.ctaText) && (
+                <div className="absolute inset-0 flex flex-col justify-end items-end p-4 bg-gradient-to-t from-black/60 via-transparent to-transparent text-white">
+                  {banner.title && <h2 className="text-lg md:text-2xl font-bold mb-1">{banner.title}</h2>}
+                  {banner.subtitle && <p className="text-sm md:text-base mb-2">{banner.subtitle}</p>}
+                  {banner.ctaText && (
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        window.location.href = banner.ctaUrl;
+                      }}
+                      className="bg-white text-black text-xs md:text-sm px-4 py-1.5 rounded-full font-semibold hover:bg-gray-200 transition"
+                    >
+                      {banner.ctaText}
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+          ))}
+
+          {banners.length > 1 && (
+            <>
+              <button
+                onClick={showPrevBanner}
+                className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white/70 hover:bg-white p-1.5 rounded-full"
+              >
+                <ChevronLeftIcon className="size-5" />
+              </button>
+              <button
+                onClick={showNextBanner}
+                className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/70 hover:bg-white p-1.5 rounded-full"
+              >
+                <ChevronRightIcon className="size-5" />
+              </button>
+              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                {banners.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setBannerIndex(index)}
+                    className={`w-2 h-2 rounded-full ${index === bannerIndex ? 'bg-gray-800' : 'bg-white border'}`}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+      )}
+
+      {/* Title */}
       <div className="flex justify-between items-center md:mb-2">
-        <span className='sm:text-xl md:text-3xl font-semibold'>{category.name.toUpperCase()}</span>
-        <Link
-          href={{ pathname: "/shop", query: { category: category.id } }}
+        <span className="sm:text-xl md:text-3xl font-semibold">
+          {category.name.toUpperCase()}
+        </span>
+        <button
+          onClick={() => router.push(`/shop?category=${category.id}`)}
           className="flex justify-center items-center sm:space-x-1 md:space-x-2 bg-gray-700 text-white sm:text-sm md:text-base xl:text-lg h-fit sm:px-3 md:px-4 py-1 rounded-full hover:bg-gray-800"
         >
-          <span>
-            Xem tất cả
-          </span>
-          <ChevronDoubleRightIcon className='size-4' />
-        </Link>
+          <span>Xem tất cả</span>
+          <ChevronDoubleRightIcon className="size-4" />
+        </button>
       </div>
 
+      {/* Products */}
       {topProduct.length === 0 ? (
-        <div className='w-88vw h-[360px] flex justify-center items-center bg-gray-200 rounded-xl'>
-          Sản phẩm không tồn tại.
+        <div className="w-88vw h-[360px] flex justify-center items-center bg-gray-200 t rounded-xl">
+          Chưa có sản phẩm.
         </div>
       ) : (
         <Carousel
-          ssr={true}
+          ssr
           responsive={responsive}
-          swipeable={true}
-          draggable={true}
-          infinite={true}
-          containerClass='w-88vw py-5'
-          itemClass='px-5'
-          // customLeftArrow={<CustomLeftArrow />}
-          // customRightArrow={<CustomRightArrow />}
+          swipeable
+          draggable
+          infinite
+          containerClass="w-88vw py-5"
+          itemClass="px-5"
         >
-          {topProduct.map((item, index) => {
-            return (
-              <Card key={index} product={item} />
-            )
-          })}
+          {topProduct.map((item, index) => (
+            <Card key={index} product={item} />
+          ))}
         </Carousel>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default TopProduct;
+export default TopProduct

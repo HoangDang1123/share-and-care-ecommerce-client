@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-export default function Banner() {
+export default function Advertisement() {
   return (
     <div className="relative isolate flex items-center justify-center gap-x-6 overflow-hidden bg-gray-50 sm:px-2 md:px-6 py-2">
       <div

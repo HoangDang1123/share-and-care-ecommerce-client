@@ -22,7 +22,7 @@ export const getAllProduct = async (page: number, size: number): Promise<Product
 
 export const getTopSearchProduct = async (search: string): Promise<Product.Product> => {
     try {
-        const response = await api.get(`${PRODUCT_URL}?search=${search}&size=5`);
+        const response = await api.get(`${PRODUCT_URL}?search=${search}&size=6`);
         return response.data.metadata;
     } catch (error) {
         const errorMessage = get(error, 'response.data.error.message', '');

@@ -160,7 +160,6 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
                               e.preventDefault();
                               toggleReviewDetail(`${order.id}-${index}`);
                             }}
-                            disabled={order.status !== OrderStatus.DELIVERED}
                             className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
                           >
                             Xem đánh giá
@@ -199,7 +198,6 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
                             e.preventDefault();
                             toggleReviewDetail(`${order.id}-${index}`);
                           }}
-                          disabled={order.status !== OrderStatus.DELIVERED}
                           className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300 text-sm'
                         >
                           Xem đánh giá
@@ -374,7 +372,6 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
                             e.preventDefault();
                             toggleReviewDetail(`${order.id}-${index}`);
                           }}
-                          disabled={order.status !== OrderStatus.DELIVERED}
                           className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300'
                         >
                           Xem đánh giá
@@ -413,7 +410,6 @@ const OrderItem: React.FC<OrderItemProps> = ({ userId, accessToken, filter, tota
                           e.preventDefault();
                           toggleReviewDetail(`${order.id}-${index}`);
                         }}
-                        disabled={order.status !== OrderStatus.DELIVERED}
                         className='flex justify-center items-center px-3 py-1 font-medium rounded-lg bg-gray-800 hover:bg-gray-900 text-white disabled:bg-gray-300 text-sm'
                       >
                         Xem đánh giá
