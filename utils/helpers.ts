@@ -54,15 +54,6 @@ export function formatTimestamp(isoDate: string): string {
     }
 }
 
-export const formatReason = (reason: string) => {
-    if (!reason) return "N/A";
-    return reason
-        .toLowerCase()
-        .split('_')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ');
-}
-
 export const getOrderStatusLabel = (status: OrderStatus): string => {
     switch (status) {
         case OrderStatus.PENDING:

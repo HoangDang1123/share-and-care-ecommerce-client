@@ -1,6 +1,6 @@
 import { ReturnInfo } from "@/interface/order";
-import { ReturnStatus } from "@/interface/return";
-import { formatPrice, formatReason } from "@/utils/helpers";
+import { RefundReason, ReturnStatus } from "@/interface/return";
+import { formatPrice } from "@/utils/helpers";
 import {
   ClipboardDocumentIcon,
   CurrencyDollarIcon,
@@ -23,6 +23,17 @@ const statusStyles: Record<ReturnStatus, string> = {
   [ReturnStatus.FAILED]: "border-red-300 bg-red-50 text-red-700",
   [ReturnStatus.REJECTED]: "border-red-300 bg-red-50 text-red-700",
   [ReturnStatus.NOT_RETURNED]: "border-gray-300 bg-gray-50 text-gray-700",
+};
+
+const refundReasonMap: Record<RefundReason, string> = {
+  [RefundReason.DEFECTIVE]: "Sản phẩm bị lỗi",
+  [RefundReason.WRONG_ITEM]: "Giao sai sản phẩm",
+  [RefundReason.NOT_AS_DESCRIBED]: "Không đúng mô tả",
+  [RefundReason.CHANGE_MIND]: "Thay đổi ý định",
+  [RefundReason.NOT_SUITABLE_SIZE]: "Không vừa kích cỡ",
+  [RefundReason.NOT_SUITABLE_STYLE]: "Không hợp phong cách",
+  [RefundReason.BOM_HANG]: "Bùng hàng",
+  [RefundReason.OTHER]: "Lý do khác",
 };
 
 export const ReturnStatusCard: React.FC<ReturnStatusCardProps> = ({ returnStatus }) => {
@@ -80,7 +91,7 @@ export const ReturnStatusCard: React.FC<ReturnStatusCardProps> = ({ returnStatus
             <div>
               <p className="text-gray-500">Lý do hoàn trả</p>
               <p className="inline-block px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 font-medium">
-                {formatReason(returnStatus.reason)}
+                {refundReasonMap[returnStatus.reason as RefundReason] ?? "Không rõ lý do"}
               </p>
             </div>
           </div>
@@ -89,7 +100,7 @@ export const ReturnStatusCard: React.FC<ReturnStatusCardProps> = ({ returnStatus
             <UserIcon className="w-5 h-5 text-gray-500" />
             <div>
               <p className="text-gray-500">Xem xét thủ công</p>
-              <p className="font-medium">{returnStatus.manualRequired ? "Yes" : "No"}</p>
+              <p className="font-medium">{returnStatus.manualRequired ? "Có" : "Không"}</p>
             </div>
           </div>
 

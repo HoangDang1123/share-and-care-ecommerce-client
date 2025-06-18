@@ -2,6 +2,8 @@
 
 import { getReviewDetail } from '@/app/api/review';
 import { ReviewDetailResponse } from '@/interface/review';
+import { convertDateTime } from '@/utils/helpers';
+import { ArrowUturnDownIcon } from '@heroicons/react/24/outline';
 import { Rate } from 'antd';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react'
@@ -51,7 +53,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({ orderId, productId, vari
       <div className="flex justify-between items-center">
         <Rate disabled defaultValue={reviewDetail.review.star} />
         <span className="text-sm text-muted-foreground">
-          {reviewDetail.review.createdAt}
+          {convertDateTime(reviewDetail.review.createdAt)}
         </span>
       </div>
 
@@ -74,9 +76,20 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({ orderId, productId, vari
       )}
 
       {reviewDetail.review.reply && (
-        <div className="mt-2 p-3 rounded-md bg-gray-50 border">
-          <p className="text-sm font-semibold text-gray-700">Phản hồi của cửa hàng:</p>
-          <p className="text-sm text-gray-800">{reviewDetail.review.reply}</p>
+        <div className='flex flex-col p-4 bg-gray-100 rounded-lg mt-4 ml-12'>
+          <div className='flex items-center gap-x-2'>
+            <ArrowUturnDownIcon className='size-5 -rotate-90 mr-2' />
+            <Image
+              src={reviewDetail.review.reply.user.avatar}
+              alt={reviewDetail.review.reply.user.avatar}
+              width={100}
+              height={100}
+              className='w-6 h-6 rounded-full'
+            />
+            <span className='font-semibold text-base'>{reviewDetail.review.reply.user.name}</span>
+          </div>
+
+          <p className='text-sm leading-8 text-justify mt-2 ml-16'>{reviewDetail.review.reply.content}</p>
         </div>
       )}
     </div>

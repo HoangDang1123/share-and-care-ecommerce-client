@@ -75,7 +75,11 @@ export interface Review {
   star: number;
   images: string[];
   createdAt: string;
-  reply: string | null;
+  reply: {
+    content: string,
+    user: User,
+    createdAt: string,
+  } | null;
 }
 
 export interface ReviewDetailResponse {
