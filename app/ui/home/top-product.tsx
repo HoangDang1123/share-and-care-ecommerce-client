@@ -76,7 +76,7 @@ const TopProduct: React.FC<TopProductProps> = ({ category }) => {
     <div className="md:mt-8 px-4 md:px-20">
       {/* Banner */}
       {banners.length > 0 && (
-        <div className="relative w-full h-[200px] md:h-[300px] rounded-xl overflow-hidden mb-4">
+        <div className="relative w-full h-[200px] md:h-[600px] rounded-xl overflow-hidden mb-4">
           {banners.map((banner, index) => (
             <button
               key={banner.id}
@@ -90,8 +90,9 @@ const TopProduct: React.FC<TopProductProps> = ({ category }) => {
                 src={banner.imageUrl}
                 alt={banner.title}
                 title={banner.title}
-                fill
-                className="object-cover rounded-xl"
+                width={1920}
+                height={790}
+                className="object-cover rounded-xl h-full"
                 priority={index === 0}
               />
             </button>

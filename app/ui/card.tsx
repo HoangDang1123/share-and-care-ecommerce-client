@@ -88,7 +88,7 @@ const Card: React.FC<CardProps> = ({ product }) => {
           />
 
           {product.hasDiscount && (
-            <div className="absolute top-2 right-2 bg-red-500 text-white text-base font-semibold px-2 py-1 rounded-full z-10">
+            <div className="absolute top-2 right-2 bg-red-500 text-white sm:text-xs md:text-base font-semibold px-2 py-1 rounded-full z-10">
               {getDiscountPercentRange() || 'Giảm giá'}
             </div>
           )}
@@ -102,11 +102,11 @@ const Card: React.FC<CardProps> = ({ product }) => {
               const price = getDisplayPrice();
 
               return price.discounted ? (
-                <div className="flex flex-col md:gap-1">
-                  <span className="text-red-500 font-semibold sm:text-base md:text-2xl">
+                <div className="flex sm:flex-col md:flex-row md:gap-2">
+                  <span className="text-red-500 font-semibold sm:text-sm md:text-2xl">
                     {price.discounted}
                   </span>
-                  <span className="line-through text-gray-500 text-sm md:text-base">
+                  <span className="line-through text-gray-500 text-xs md:text-base">
                     {price.original}
                   </span>
                 </div>

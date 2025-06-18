@@ -145,10 +145,20 @@ export default function OrderSummary() {
           <div className='flex justify-between items-center'>
             <div className='flex items-center gap-2'>
               <BanknotesIcon className='w-5 h-5 text-blue-600' />
-              <span className='font-semibold sm:text-lg md:text-xl'>Giá sản phẩm:</span>
+              <span className='font-semibold sm:text-lg md:text-xl'>Tổng tiền hàng:</span>
             </div>
             <span className='sm:text-lg md:text-xl'>{formatPrice(preview.itemsPrice)}</span>
           </div>
+
+          <div className='flex justify-between items-center'>
+            <div className='flex items-center gap-2'>
+              <BanknotesIcon className='w-5 h-5 text-green-600' />
+              <span className='font-semibold sm:text-lg md:text-xl'>Giảm giá sản phẩm:</span>
+            </div>
+            <span className='sm:text-lg md:text-xl'>{`- ${formatPrice(preview.productDiscount)}`}</span>
+          </div>
+
+          <div className='w-full h-0.5 bg-gray-200' />
 
           <div className='flex justify-between items-center'>
             <div className='flex items-center gap-2'>
@@ -208,7 +218,7 @@ export default function OrderSummary() {
           <div className='flex justify-between items-center'>
             <div className='flex items-center gap-2'>
               <GiftIcon className='w-5 h-5 text-green-600' />
-              <span className='font-semibold sm:text-lg md:text-xl'>Tiết kiệm:</span>
+              <span className='font-semibold sm:text-lg md:text-xl'>Tổng tiết kiệm:</span>
             </div>
             <span className='sm:text-lg md:text-xl'>{formatPrice(preview.totalSavings)}</span>
           </div>

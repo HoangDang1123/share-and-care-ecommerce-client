@@ -14,7 +14,6 @@ import { addProductToCart, getCart } from '@/app/api/cart';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { CreateOrder } from '@/interface/order';
 import { Rate } from 'antd';
-import Image from 'next/image';
 
 interface OptionContainerProps {
   product: ProductDetailResponse,
@@ -283,15 +282,6 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
               )}
             </div>
           </div>
-
-          <Image
-            src={product.product.qrCode}
-            alt={product.product.qrCode}
-            title={product.product.qrCode}
-            width={1200}
-            height={1200}
-            className='flex place-items-end sm:size-full md:size-32 md:border-2 md:border-gray-400 rounded-lg'
-          />
         </div>
 
         <SelectedColor product={product} selectedColorIndex={selectedColorIndex} setSelectedColorIndex={setSelectedColorIndex} />

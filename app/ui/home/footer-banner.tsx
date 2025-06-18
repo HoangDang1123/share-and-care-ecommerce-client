@@ -96,25 +96,26 @@ export function FooterBanner() {
         <ChevronRightIcon className="sm:size-4 md:size-6 xl:size-8" />
       </button>
 
-      <div className="absolute sm:bottom-2 md:bottom-5 sm:-right-5 md:right-5 transform -translate-x-1/2 flex gap-1">
-        {banners.map((_, index) => (
-          <button
-            key={index}
-            className="flex items-center justify-center cursor-pointer sm:p-1 md:p-1.5 transition-transform duration-100"
-            aria-label={`View Image ${index + 1}`}
-            onClick={() => setImageIndex(index)}
-          >
-            <div
-              className={`rounded-full ${
-                index === imageIndex
-                  ? "bg-gray-700"
-                  : "bg-white border border-gray-300"
-              } sm:w-1.5 md:w-2.5 xl:w-3 sm:h-1.5 md:h-2.5 xl:h-3`}
-              aria-hidden
-            />
-          </button>
-        ))}
-      </div>
+      {banners.length > 1 && (
+        <div className="absolute sm:bottom-2 md:bottom-5 sm:-right-5 md:right-5 transform -translate-x-1/2 flex gap-1">
+          {banners.map((_, index) => (
+            <button
+              key={index}
+              className="flex items-center justify-center cursor-pointer sm:p-1 md:p-1.5 transition-transform duration-100"
+              aria-label={`View Image ${index + 1}`}
+              onClick={() => setImageIndex(index)}
+            >
+              <div
+                className={`rounded-full ${index === imageIndex
+                    ? "bg-gray-700"
+                    : "bg-white border border-gray-300"
+                  } sm:w-1.5 md:w-2.5 xl:w-3 sm:h-1.5 md:h-2.5 xl:h-3`}
+                aria-hidden
+              />
+            </button>
+          ))}
+        </div>
+      )}
     </section>
   );
 }

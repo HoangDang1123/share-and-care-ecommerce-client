@@ -311,6 +311,16 @@ export default function Page() {
 
               <div className='flex justify-between items-center'>
                 <div className='flex items-center gap-2'>
+                  <BanknotesIcon className='w-5 h-5 text-green-600' />
+                  <span className='font-semibold sm:text-lg md:text-xl'>Giảm giá sản phẩm:</span>
+                </div>
+                <span className='sm:text-lg md:text-xl'>{`- ${formatPrice(preview.productDiscount)}`}</span>
+              </div>
+
+              <div className='w-full h-0.5 bg-gray-200' />
+
+              <div className='flex justify-between items-center'>
+                <div className='flex items-center gap-2'>
                   <TruckIcon className='w-5 h-5 text-green-600' />
                   <span className='font-semibold sm:text-lg md:text-xl'>Phí vận chuyển:</span>
                 </div>
@@ -354,7 +364,6 @@ export default function Page() {
                 </div>
               </div>
 
-
               <div className='flex justify-between items-center'>
                 <div className='flex items-center gap-2'>
                   <TicketIcon className='w-5 h-5 text-green-600' />
@@ -368,7 +377,7 @@ export default function Page() {
               <div className='flex justify-between items-center'>
                 <div className='flex items-center gap-2'>
                   <GiftIcon className='w-5 h-5 text-green-600' />
-                  <span className='font-semibold sm:text-lg md:text-xl'>Tiết kiệm:</span>
+                  <span className='font-semibold sm:text-lg md:text-xl'>Tổng tiết kiệm:</span>
                 </div>
                 <span className='sm:text-lg md:text-xl'>{formatPrice(preview.totalSavings)}</span>
               </div>
