@@ -104,6 +104,45 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedColorIndex, selectedSizeIndex, skuItem]);
 
+  const getDiscountPercentRange = () => {
+    if (!product.product.hasDiscount || product.product.discountedPrice === null) return null;
+
+    if (
+      typeof product.product.price === 'object' &&
+      typeof product.product.discountedPrice === 'object'
+    ) {
+      const { min: minPrice, max: maxPrice } = product.product.price;
+      const { min: minDiscount, max: maxDiscount } = product.product.discountedPrice;
+
+      const minPercent = Math.round(100 - (minDiscount / minPrice) * 100);
+      const maxPercent = Math.round(100 - (maxDiscount / maxPrice) * 100);
+
+      return minPercent === maxPercent
+        ? `-${minPercent}%`
+        : `-${minPercent}% đến -${maxPercent}%`;
+    }
+
+    if (
+      typeof product.product.price === 'number' &&
+      typeof product.product.discountedPrice === 'number'
+    ) {
+      const percent = Math.round(100 - (product.product.discountedPrice / product.product.price) * 100);
+      return `-${percent}%`;
+    }
+
+    return null;
+  };
+
+  const getDisplayPrice = () => {
+    if (product.product.hasDiscount && product.product.discountedPrice !== null) {
+      if (typeof product.product.discountedPrice === 'number') return formatPrice(product.product.discountedPrice);
+      if (typeof product.product.discountedPrice === 'object') return formatPrice(product.product.discountedPrice.min);
+    }
+
+    if (typeof product.product.price === 'number') return formatPrice(product.product.price);
+    return formatPrice(product.product.price.min);
+  };
+
   const handleAddToCart = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setLoadingAddToCart(true);
@@ -209,13 +248,30 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
               <h3 className='text-lg mb-0.5 font-medium'>{`${product.product.ratingCount} đánh giá`}</h3>
             </div>
 
-            <div className='flex items-end space-x-5'>
-              {typeof product.product.price === 'number' ? (
-                <h2 className='sm:text-xl md:text-[2em] font-semibold'>{formatPrice(product.product.price)}</h2>
-              ) : (
-                <h2 className='sm:text-xl md:text-[2em] font-semibold'>{`${formatPrice(product.product.price.min)} - ${formatPrice(product.product.price.max)}`}</h2>
+            <div className="flex items-end space-x-3">
+              {product.product.hasDiscount && (
+                <>
+                  <h2 className="sm:text-xl md:text-[2em] font-semibold text-red-500">
+                    {getDisplayPrice()}
+                  </h2>
+                  <span className="line-through text-gray-500 sm:text-base md:text-xl">
+                    {typeof product.product.price === 'number'
+                      ? formatPrice(product.product.price)
+                      : `${formatPrice(product.product.price.min)} - ${formatPrice(product.product.price.max)}`}
+                  </span>
+                  <div className="bg-red-500 text-white text-base font-semibold px-2 py-1 rounded-full">
+                    {getDiscountPercentRange() || 'Giảm giá'}
+                  </div>
+                </>
               )}
-              {/* <h3 className='sm:text-lg md:text-xl mb-2 line-through'>{formatPrice(product.product.originalPrice)}</h3> */}
+
+              {!product.product.hasDiscount && (
+                <h2 className="sm:text-xl md:text-[2em] font-semibold">
+                  {typeof product.product.price === 'number'
+                    ? formatPrice(product.product.price)
+                    : `${formatPrice(product.product.price.min)} - ${formatPrice(product.product.price.max)}`}
+                </h2>
+              )}
             </div>
           </div>
 

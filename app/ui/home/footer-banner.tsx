@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { getSlideBanner } from "@/app/api/banner";
+import { getBanner } from "@/app/api/banner";
 
 export interface BannerItem {
   id: string;
@@ -24,14 +24,14 @@ export interface BannerResponse {
   items: BannerItem[];
 }
 
-export function Slider() {
+export function FooterBanner() {
   const [banners, setBanners] = useState<BannerItem[]>([]);
   const [imageIndex, setImageIndex] = useState(0);
   const router = useRouter();
 
   const fetchBanners = async () => {
     try {
-      const data = await getSlideBanner();
+      const data = await getBanner('FOOTER');
       setBanners(data.items);
     } catch (err) {
       console.error("Error fetching banners:", err);
@@ -58,7 +58,7 @@ export function Slider() {
   if (banners.length === 0) return null;
 
   return (
-    <section className="relative w-full h-full" aria-label="Slider">
+    <section className="relative w-full h-full px-10" aria-label="Slider">
       <div className="flex w-full h-full overflow-hidden">
         {banners.map(({ imageUrl, title, ctaUrl }, index) => (
           <div

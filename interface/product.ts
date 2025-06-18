@@ -24,7 +24,7 @@ export interface ProductResponse {
         min: number,
         max: number,
     },
-    discountedPrice: null | {
+    discountedPrice: null | number | {
         min: number,
         max: number,
     },
@@ -63,7 +63,7 @@ export interface ProductDetailResponse {
             min: number,
             max: number,
         },
-        discountedPrice: null | {
+        discountedPrice: null | number | {
             min: number,
             max: number,
         },

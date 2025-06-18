@@ -3,41 +3,89 @@ import { formatPrice } from '@/utils/helpers';
 import { StarIcon } from '@heroicons/react/20/solid';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react'
+import React from 'react';
 
 interface CardProps {
   product: ProductResponse;
 }
 
 const Card: React.FC<CardProps> = ({ product }) => {
+  const getDiscountPercentRange = () => {
+    if (!product.hasDiscount || product.discountedPrice === null) return null;
+
+    if (
+      typeof product.price === 'object' &&
+      typeof product.discountedPrice === 'object'
+    ) {
+      const { min: minPrice, max: maxPrice } = product.price;
+      const { min: minDiscount, max: maxDiscount } = product.discountedPrice;
+
+      const minPercent = Math.round(100 - (minDiscount / minPrice) * 100);
+      const maxPercent = Math.round(100 - (maxDiscount / maxPrice) * 100);
+
+      return minPercent === maxPercent
+        ? `-${minPercent}%`
+        : `-${minPercent}% đến -${maxPercent}%`;
+    }
+
+    if (
+      typeof product.price === 'number' &&
+      typeof product.discountedPrice === 'number'
+    ) {
+      const percent = Math.round(100 - (product.discountedPrice / product.price) * 100);
+      return `-${percent}%`;
+    }
+
+    return null;
+  };
+
+  const getDisplayPrice = () => {
+    if (product.hasDiscount && product.discountedPrice !== null) {
+      if (typeof product.discountedPrice === 'number') return formatPrice(product.discountedPrice);
+      if (typeof product.discountedPrice === 'object') return formatPrice(product.discountedPrice.min);
+    }
+
+    if (typeof product.price === 'number') return formatPrice(product.price);
+    return formatPrice(product.price.min);
+  };
+
   return (
-    <div className='relative w-full h-full flex flex-col justify-between select-none'>
+    <div className="relative w-full h-full flex flex-col justify-between select-none">
       <Link href={`/product/${product.code}`} title={product.name}>
-        <Image
-          alt={product.name}
-          title={product.name}
-          src={product.mainImage}
-          priority
-          width={270}
-          height={360}
-          style={{ borderRadius: "10px" }}
-          className='object-cover w-auto h-auto block transition ease-in-out hover:scale-110 duration-300 mb-4'
-        />
-        <div className='flex flex-col justify-between sm:h-28 md:h-40'>
-          <h1 className='md:my-2 sm:text-base md:text-2xl'>{product.name}</h1>
-          <div className='flex justify-between'>
-            <h2 className='md:mt-1 sm:text-base md:text-2xl'>
-              {formatPrice(typeof product.price === 'number' ? product.price : product.price.min)}
-            </h2>
-            <div className='flex products-center'>
-              <h2 className='md:mt-1 sm:text-base md:text-2xl'>{product.rating}</h2>
-              <StarIcon className='sm:size-4 md:size-7 mt-1 text-yellow-500' />
+        <div className="relative w-fit">
+          <Image
+            alt={product.name}
+            title={product.name}
+            src={product.mainImage}
+            priority
+            width={270}
+            height={360}
+            style={{ borderRadius: "10px" }}
+            className="object-cover w-auto h-auto block transition ease-in-out hover:scale-110 duration-300 mb-4"
+          />
+
+          {product.hasDiscount && (
+            <div className="absolute top-2 right-2 bg-red-500 text-white text-base font-semibold px-2 py-1 rounded-full z-10">
+              {getDiscountPercentRange() || 'Giảm giá'}
+            </div>
+          )}
+        </div>
+
+        <div className="flex flex-col justify-between sm:h-28 md:h-40">
+          <h1 className="md:my-2 sm:text-base md:text-2xl">{product.name}</h1>
+
+          <div className="flex justify-between items-center">
+            <h2 className="md:mt-1 sm:text-base md:text-2xl">{getDisplayPrice()}</h2>
+
+            <div className="flex items-center">
+              <h2 className="md:mt-1 sm:text-base md:text-2xl">{product.rating}</h2>
+              <StarIcon className="sm:size-4 md:size-7 mt-1 text-yellow-500" />
             </div>
           </div>
         </div>
       </Link>
     </div>
-  )
-}
+  );
+};
 
 export default Card;

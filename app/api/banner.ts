@@ -6,9 +6,9 @@ import get from 'lodash/get';
 
 const BANNER_URL = '/banner/public';
 
-export const getSlideBanner = async (): Promise<Banner.BannerResponse> => {
+export const getBanner = async (position: string): Promise<Banner.BannerResponse> => {
     try {
-        const response = await api.get(`${BANNER_URL}?position=SLIDE`);
+        const response = await api.get(`${BANNER_URL}?position=${position}`);
         return response.data.metadata;
     } catch (error) {
         const errorMessage = get(error, 'response.data.error.message', '');
