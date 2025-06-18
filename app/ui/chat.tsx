@@ -28,7 +28,7 @@ export default function Chat() {
   const [deviceToken, setDeviceToken] = useState('');
   const [useAI, setUseAI] = useState(false);
   const [conversationId, setConversationId] = useState<string | null>(null);
-  const [openChatFrame, setOpenChatFrame] = useState(true);
+  const [openChatFrame, setOpenChatFrame] = useState(false);
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<MessageItem[]>([]);
   const [loadingConversation, setLoadingConversation] = useState(false);
@@ -246,24 +246,51 @@ export default function Chat() {
 
   const renderMessageContent = (content: string) => {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
-    const parts = content.split(urlRegex);
+    const matches = [...content.matchAll(urlRegex)];
+    const result: React.ReactNode[] = [];
+    let lastIndex = 0;
 
-    return parts.map((part, index) => {
-      if (urlRegex.test(part)) {
-        return (
-          <a
-            key={index}
-            href={part}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 underline break-all"
-          >
-            {part}
-          </a>
-        );
+    matches.forEach((match, i) => {
+      const fullMatch = match[0];
+      const matchIndex = match.index ?? 0;
+
+      // Text trước link
+      if (lastIndex < matchIndex) {
+        result.push(<span key={`text-${i}`}>{content.slice(lastIndex, matchIndex)}</span>);
       }
-      return <span key={index}>{part}</span>;
+
+      // Tách phần cuối nếu có dấu
+      const urlMatch = fullMatch.match(/^(.+?)([.,!?;:"'”’)]*)$/);
+      const cleanUrl = urlMatch?.[1] || fullMatch;
+      const trailingPunctuation = urlMatch?.[2] || '';
+
+      // Link
+      result.push(
+        <a
+          key={`link-${i}`}
+          href={cleanUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 underline break-all"
+        >
+          {cleanUrl}
+        </a>
+      );
+
+      // Dấu tách riêng
+      if (trailingPunctuation) {
+        result.push(<span key={`punct-${i}`}>{trailingPunctuation}</span>);
+      }
+
+      lastIndex = matchIndex + fullMatch.length;
     });
+
+    // Text sau link cuối
+    if (lastIndex < content.length) {
+      result.push(<span key={`text-end`}>{content.slice(lastIndex)}</span>);
+    }
+
+    return result;
   };
 
   return (
