@@ -33,7 +33,7 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
   const router = useRouter();
   const { isLogin } = useAuth();
   const { setCart } = useCart();
-  const { setOrder, setProductPrice } = useOrder();
+  const { setOrder } = useOrder();
 
   const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : "";
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";
@@ -48,6 +48,14 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedColorIndex])
+  
+  useEffect(() => {
+    console.log("skuItem:", skuItem)
+  }, [skuItem])
+  
+  useEffect(() => {
+    console.log("product:", product)
+  }, [product])
 
   useEffect(() => {
     const hasVariants = product.product.variants.length > 0;
@@ -85,8 +93,10 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
       tierIndex = [sizeIndex];
     }
 
+    console.log("tierIndex:", tierIndex)
+
     if (tierIndex) {
-      const foundSkuItem = product.skuList.skuList.find(
+      const foundSkuItem = product.skuList.find(
         (item) => JSON.stringify(item.tierIndex) === JSON.stringify(tierIndex)
       );
       setSkuItem(foundSkuItem || null);
@@ -134,13 +144,28 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
   };
 
   const getDisplayPrice = () => {
-    if (product.product.hasDiscount && product.product.discountedPrice !== null) {
-      if (typeof product.product.discountedPrice === 'number') return formatPrice(product.product.discountedPrice);
-      if (typeof product.product.discountedPrice === 'object') return formatPrice(product.product.discountedPrice.min);
+    if (skuItem) {
+      // Ưu tiên hiển thị giá theo SKU nếu đã chọn
+      return formatPrice(skuItem.discountedPrice && skuItem.discountedPrice < skuItem.price
+        ? skuItem.discountedPrice
+        : skuItem.price);
     }
 
-    if (typeof product.product.price === 'number') return formatPrice(product.product.price);
-    return formatPrice(product.product.price.min);
+    // Nếu chưa chọn SKU, dùng giá sản phẩm chung
+    if (product.product.hasDiscount && product.product.discountedPrice !== null) {
+      if (typeof product.product.discountedPrice === 'number') {
+        return formatPrice(product.product.discountedPrice);
+      }
+      if (typeof product.product.discountedPrice === 'object') {
+        return `${formatPrice(product.product.discountedPrice.min)} - ${formatPrice(product.product.discountedPrice.max)}`;
+      }
+    }
+
+    if (typeof product.product.price === 'number') {
+      return formatPrice(product.product.price);
+    }
+
+    return `${formatPrice(product.product.price.min)} - ${formatPrice(product.product.price.max)}`;
   };
 
   const handleAddToCart = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -209,18 +234,6 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
           };
         });
 
-        if (skuItem) {
-          setProductPrice(skuItem.price * quantity);
-        } else if (product.skuList.skuList.length === 0
-          && typeof (product.product.price) === 'number'
-          && ((selectedColorIndex !== null && selectedColorIndex !== -1) || (selectedSizeIndex !== null && selectedSizeIndex !== -1))) {
-          setProductPrice(product.product.price * quantity);
-        } else {
-          setProductPrice(0);
-        }
-
-        localStorage.setItem('productInCart', 'false');
-
         router.push("/order");
       }
     }
@@ -250,26 +263,30 @@ const OptionContainer: React.FC<OptionContainerProps> = ({ product, setVariantIm
 
             <div className="flex items-end space-x-3">
               {product.product.hasDiscount && (
-                <>
-                  <h2 className="sm:text-xl md:text-[2em] font-semibold text-red-500">
+                <div className='flex gap-x-2'>
+                  <h2 className="sm:text-xl md:text-3xl font-semibold text-red-500">
                     {getDisplayPrice()}
                   </h2>
                   <span className="line-through text-gray-500 sm:text-base md:text-xl">
-                    {typeof product.product.price === 'number'
-                      ? formatPrice(product.product.price)
-                      : `${formatPrice(product.product.price.min)} - ${formatPrice(product.product.price.max)}`}
+                    {skuItem
+                      ? formatPrice(skuItem.price)
+                      : typeof product.product.price === 'number'
+                        ? formatPrice(product.product.price)
+                        : `${formatPrice(product.product.price.min)} - ${formatPrice(product.product.price.max)}`}
                   </span>
                   <div className="bg-red-500 text-white text-base font-semibold px-2 py-1 rounded-full">
                     {getDiscountPercentRange() || 'Giảm giá'}
                   </div>
-                </>
+                </div>
               )}
 
               {!product.product.hasDiscount && (
                 <h2 className="sm:text-xl md:text-[2em] font-semibold">
-                  {typeof product.product.price === 'number'
-                    ? formatPrice(product.product.price)
-                    : `${formatPrice(product.product.price.min)} - ${formatPrice(product.product.price.max)}`}
+                  {skuItem
+                    ? formatPrice(skuItem.price)
+                    : typeof product.product.price === 'number'
+                      ? formatPrice(product.product.price)
+                      : `${formatPrice(product.product.price.min)} - ${formatPrice(product.product.price.max)}`}
                 </h2>
               )}
             </div>

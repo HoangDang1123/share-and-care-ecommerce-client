@@ -145,6 +145,32 @@ export interface ReturnInfo {
     completedAt: string | null,
 }
 
+export interface OrderPricingItem {
+  productId: string,
+  variantId: string | null,
+  productName: string,
+  variantSlug: string,
+  image: string,
+  price: number,
+  quantity: number,
+  productDiscount: number,
+  couponDiscount: number,
+  returnDays: number,
+  total: number,
+}
+
+export interface OrderPricingSummary {
+  itemsPrice: number,
+  productDiscount: number,
+  couponDiscount: number,
+  shippingPrice: number,
+  shippingDiscount: number,
+  orderDiscount: number,
+  totalSavings: number,
+  totalPrice: number,
+  items: OrderItem[],
+}
+
 export enum OrderStatus {
     PENDING = 'PENDING', // Đơn hàng mới tạo (COD hoặc chưa thanh toán)
     AWAITING_PAYMENT = 'AWAITING_PAYMENT', // Chờ thanh toán (VNPay/MoMo)

@@ -2,7 +2,7 @@ import { ProductResponse } from '@/interface/product';
 import { formatPrice } from '@/utils/helpers';
 import { StarIcon } from '@heroicons/react/20/solid';
 import Image from 'next/image';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 interface CardProps {
@@ -10,6 +10,8 @@ interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({ product }) => {
+  const router = useRouter();
+
   const getDiscountPercentRange = () => {
     if (!product.hasDiscount || product.discountedPrice === null) return null;
 
@@ -51,7 +53,7 @@ const Card: React.FC<CardProps> = ({ product }) => {
 
   return (
     <div className="relative w-full h-full flex flex-col justify-between select-none">
-      <Link href={`/product/${product.code}`} title={product.name}>
+      <button onClick={() => router.push(`/product/${product.code}`)}>
         <div className="relative w-fit">
           <Image
             alt={product.name}
@@ -83,7 +85,7 @@ const Card: React.FC<CardProps> = ({ product }) => {
             </div>
           </div>
         </div>
-      </Link>
+      </button>
     </div>
   );
 };

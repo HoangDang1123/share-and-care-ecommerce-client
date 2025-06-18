@@ -24,8 +24,6 @@ interface CartContextType {
 interface OrderContextType {
     order: CreateOrder | null,
     setOrder: React.Dispatch<React.SetStateAction<CreateOrder | null>>,
-    productPrice: number | null,
-    setProductPrice: React.Dispatch<React.SetStateAction<number>>,
 }
 
 const MenuContext = createContext<MenuContextType | undefined>(undefined);
@@ -38,7 +36,6 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const [isLogin, setIsLogin] = useState<boolean>(false);
     const [cart, setCart] = useState<CartResponse | null>(null);
     const [order, setOrder] = useState<CreateOrder | null>(null);
-    const [productPrice, setProductPrice] = useState<number>(0);
 
     const checkAccessToken = () => {
         const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";
@@ -76,31 +73,27 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         setIsLogin(checkAccessToken());
 
         const storedOrder = typeof window !== "undefined" ? localStorage.getItem("order") || "" : "";
-        const storedPrice = typeof window !== "undefined" ? localStorage.getItem("productPrice") || "0" : "0";
-        if (storedOrder && storedPrice) {
+        if (storedOrder) {
             setOrder(JSON.parse(storedOrder));
         }
-        setProductPrice(Number(storedPrice));
     }, []);
 
     useEffect(() => {
         if (typeof window !== "undefined") {
             if (order) {
                 localStorage.setItem('order', JSON.stringify(order));
-                localStorage.setItem('productPrice', JSON.stringify(productPrice));
             } else {
                 localStorage.removeItem('order');
-                localStorage.removeItem('productPrice');
             }
         }
-    }, [order, productPrice]);
+    }, [order]);
 
     return (
         <SocketProvider>
             <MenuContext.Provider value={{ isMenu, setIsMenu }}>
                 <AuthContext.Provider value={{ isLogin, setIsLogin, checkAccessToken }}>
                     <CartContext.Provider value={{ cart, setCart }}>
-                        <OrderContext.Provider value={{ order, setOrder, productPrice, setProductPrice }}>
+                        <OrderContext.Provider value={{ order, setOrder }}>
                             {children}
                         </OrderContext.Provider>
                     </CartContext.Provider>

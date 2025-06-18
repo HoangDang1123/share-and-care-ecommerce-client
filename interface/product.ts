@@ -9,6 +9,9 @@ export interface SkuList {
     isDefault: boolean,
     price: number,
     quantity: number,
+    returned: number,
+    productDiscount: number,
+    discountedPrice: number,
 }
 
 export interface ProductResponse {
@@ -69,9 +72,7 @@ export interface ProductDetailResponse {
         },
         hasDiscount: boolean,
     },
-    skuList: {
-        skuList: SkuList[],
-    }
+    skuList: SkuList[]
 }
 
 export interface FetchProductsParams {

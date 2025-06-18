@@ -6,6 +6,25 @@ import get from 'lodash/get';
 
 const ORDER_URL = '/order';
 
+export const getPreviewOrder = async (data: Order.CreateOrder, clientId: string, accessToken: string): Promise<Order.OrderPricingSummary> => {
+    try {
+        const response = await api.post(`${ORDER_URL}/review`, data, {
+            headers: {
+                'x-client-id': clientId,
+                'Authorization': accessToken
+            }
+        });
+        return response.data.metadata;
+    } catch (error) {
+        const errorMessage = get(error, 'response.data.error.message', '');
+
+        if (errorMessage) {
+            toast.error(errorMessage);
+        }
+        throw new Error(errorMessage || 'An unknown error occurred.');
+    }
+}
+
 export const createOrder = async (data: Order.CreateOrder, clientId: string, accessToken: string): Promise<Order.CreateOrderResponse> => {
     try {
         const response = await api.post(`${ORDER_URL}/`, data, {

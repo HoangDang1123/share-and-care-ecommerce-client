@@ -13,6 +13,7 @@ import { toast } from 'react-toastify';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { useCart, useOrder } from '../context/AppContext';
 import { CreateOrder } from '@/interface/order';
+import { getPreviewOrder } from '../api/order';
 import { Col, Row } from 'antd';
 
 export default function Page() {
@@ -20,9 +21,11 @@ export default function Page() {
   const [selectedItem, setSelectedItem] = useState<boolean[]>([]);
   const [orderMessage, setOrderMessage] = useState('');
   const [loading, setLoading] = useState(true);
-  const { setOrder, setProductPrice } = useOrder();
+  const { setOrder } = useOrder();
+  const [totalCost, setTotalCost] = useState(0);
   const [userId, setUserId] = useState('');
   const [accessToken, setAccessToken] = useState('');
+  const [loadingTotalCost, setLoadingTotalCost] = useState(false);
   const router = useRouter();
   const { cart, setCart } = useCart();
 
@@ -50,16 +53,52 @@ export default function Page() {
     fetchCart();
   }, [accessToken, setCart, userId]);
 
-  const totalCost = selectedItem.reduce((total, isSelected, index) => {
-    if (!isSelected) return total;
+  useEffect(() => {
+    const fetchPreviewOrder = async () => {
+      const selectedProducts = cart?.items.filter((_, index) => selectedItem[index]) || [];
 
-    const item = cart?.items[index];
-    if (!item) return total;
+      if (selectedProducts.length === 0) {
+        setTotalCost(0);
+        return;
+      }
 
-    const price = item?.variantSlug ? item?.itemTotalPrice : item?.itemTotalOriginalPrice;
+      const itemData = selectedProducts.map(item => ({
+        productId: item.productId,
+        variantId: item.variantId !== undefined ? item.variantId : undefined,
+        quantity: item.quantity,
+      }));
 
-    return total + (price || 0);
-  }, 0);
+      const previewOrder = {
+        shippingAddress: {
+          fullname: '',
+          phone: '',
+          street: '',
+          ward: '',
+          district: '',
+          city: ''
+        },
+        items: itemData,
+        couponCode: '',
+        paymentMethod: '',
+        deliveryId: ''
+      };
+
+      try {
+        setLoadingTotalCost(true);
+        const response = await getPreviewOrder(previewOrder, userId, accessToken);
+        setTotalCost(response.itemsPrice); // hoặc response.totalPrice nếu muốn lấy toàn bộ
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (error) {
+        toast.error("Không thể tính tổng đơn hàng");
+      } finally {
+        setLoadingTotalCost(false);
+      }
+    };
+
+    if (userId && accessToken) {
+      fetchPreviewOrder();
+    }
+  }, [selectedItem, userId, accessToken, cart]);
 
   const handleClearAll = async () => {
     setLoading(true);
@@ -121,10 +160,6 @@ export default function Page() {
         items: itemData,
       };
     });
-
-    setProductPrice(totalCost);
-
-    localStorage.setItem('productInCart', 'true');
 
     router.push("/order");
   }
@@ -204,7 +239,9 @@ export default function Page() {
 
           <div className='flex justify-between'>
             <span className='text-xl font-semibold'>Tổng tiền:</span>
-            <span className='text-xl'>{formatPrice(totalCost)}</span>
+            <span className='text-xl'>
+              {loadingTotalCost ? 'Đang tính…' : formatPrice(totalCost)}
+            </span>
           </div>
 
           <div className='flex flex-col space-y-4'>

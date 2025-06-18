@@ -142,7 +142,6 @@ export default function Page() {
           <div className='flex flex-col gap-y-2 w-full'>
             <label className="block font-semibold text-lg">Số sao đánh giá</label>
             <Rate
-              allowHalf
               onChange={(value) => setReview((prev) => ({
                 ...prev,
                 star: value,
