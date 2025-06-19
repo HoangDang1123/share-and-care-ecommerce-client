@@ -218,6 +218,8 @@ export default function Page() {
       };
     });
 
+    localStorage.setItem('productInCart', 'true');
+
     router.push("/order");
   }
 
