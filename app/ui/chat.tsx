@@ -324,7 +324,10 @@ export default function Chat() {
           <div className="flex justify-between gap-x-2 border-b-2 shadow-md p-2 bg-white">
             <div className="flex items-center gap-x-2">
               <Image
-                src="/assets/favicon.png"
+                src={`${useAI
+                  ? 'https://res.cloudinary.com/dkvobuzm9/image/upload/v1750545582/shareandcare/avatars/AI_felld3.png'
+                  : '/assets/favicon.png'}`
+                }
                 alt="avatar"
                 title="ShareAndCare avatar"
                 width={32}
@@ -368,9 +371,11 @@ export default function Chat() {
                     <div className={`flex items-start gap-x-2 ${isUser ? 'flex-row-reverse' : ''}`}>
                       <Image
                         src={
-                          msg.userId?.avatar === 'https://via.placeholder.com/400x400.png'
-                            ? '/assets/default-avatar-icon.jpg'
-                            : msg.userId?.avatar || '/assets/default-avatar-icon.jpg'
+                          !msg.userId && msg.senderType === 'assistant'
+                            ? 'https://res.cloudinary.com/dkvobuzm9/image/upload/v1750545582/shareandcare/avatars/AI_felld3.png'
+                            : msg.userId?.avatar === 'https://via.placeholder.com/400x400.png'
+                              ? '/assets/default-avatar-icon.jpg'
+                              : msg.userId?.avatar || '/assets/default-avatar-icon.jpg'
                         }
                         alt="avatar"
                         title="avatar"
